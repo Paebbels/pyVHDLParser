@@ -58,6 +58,7 @@ if (len(sys.argv) == 2):
 elif (len(sys.argv) == 3):
 	file = Path(sys.argv[1])
 	mode = int(sys.argv[2])
+	print("mode={0}".format(mode))
 else:
 	print("File name expected.")
 	Exit.exit(-1)
@@ -73,10 +74,10 @@ with file.open('r') as fileHandle:
 alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
 
 # ==============================================================================
-if (mode % 1 == 0):
+if (mode & 2 == 2):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=not True)
+	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -101,10 +102,10 @@ if (mode % 1 == 0):
 
 
 # ==============================================================================
-if (mode % 2 == 0):
+if (mode & 4 == 4):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=not True)
+	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		blockIterator = iter(vhdlBlockStream)
@@ -166,10 +167,10 @@ if (mode % 2 == 0):
 		print("NotImplementedError: " + str(ex))
 
 # ==============================================================================
-if (mode % 4 == 0):
+if (mode & 8 == 8):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=not True)
+	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -192,10 +193,10 @@ if (mode % 4 == 0):
 
 
 # ==============================================================================
-if (mode % 8 == 0):
+if (mode & 16 == 16):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream)
+	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
 	strippedBlockStream = StripAndFuse(vhdlBlockStream)
 
 	try:
