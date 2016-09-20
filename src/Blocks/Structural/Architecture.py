@@ -90,7 +90,14 @@ class NameBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected architecture name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.TokenMarker = None
+				# parserState.NextState =   cls.stateArchitectureName
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -146,7 +153,14 @@ class NameBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after architecture name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.TokenMarker = None
+				# parserState.NextState =   cls.stateOfKeyword
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -171,29 +185,29 @@ class NameBlock(Block):
 		errorMessage = "Expected whitespace after keyword OF."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken = LinebreakToken(token)
-				parserState.NewBlock = NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NextState = cls.stateWhitespace3
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NextState =     cls.stateWhitespace3
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -203,21 +217,28 @@ class NameBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected entity name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
-				parserState.NewBlock = NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			if (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				# parserState.NextState =   cls.stateEntityName
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
-			parserState.NewToken = IdentifierToken(token)
-			parserState.NextState = cls.stateEntityName
+			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     cls.stateEntityName
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -259,7 +280,14 @@ class NameBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after entity name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.TokenMarker = None
+				# parserState.NextState =   cls.stateDeclarativeRegion
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -440,6 +468,13 @@ class EndBlock(Block):
 				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
+			elif (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.TokenMarker = None
+				# parserState.NextState =   cls.stateWhitespace1
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				return
 			elif (token == "-"):
 				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
@@ -510,6 +545,13 @@ class EndBlock(Block):
 				parserState.NewToken =    EndToken(token)
 				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
+				return
+			elif (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				# parserState.TokenMarker = None
+				# parserState.NextState =   cls.stateWhitespace1
+				parserState.PushState =   EmptyLineBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
