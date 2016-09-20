@@ -27,8 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Functions  import Console
-from src.VHDLBlocks import *
+from src.Blocks.Document import StartOfDocumentBlock
 
 
 class BlockParserState:

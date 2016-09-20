@@ -27,7 +27,8 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Parser import ValuedToken, ParserException, StringToken
+from src.Token.Parser import ParserException, StringToken
+from src.Token.Tokens import ValuedToken
 
 
 class VHDLToken(ValuedToken):

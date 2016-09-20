@@ -27,14 +27,17 @@
 # limitations under the License.
 # ==============================================================================
 #
-from colorama  import init
+from src.Blocks.Comment     import CommentBlock
+from src.Blocks.Common      import *
+from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
+from src.Blocks.List        import GenericList, PortList
+from src.Blocks.Structural  import Entity
+from src.Functions          import Console
+from src.Token.Parser import Tokenizer, StartOfDocumentToken
 
-from src.Functions      import Console
-from src.Parser         import Tokenizer, StartOfDocumentToken
-from src.VHDLBlocks     import *
 # from src.VHDLExamples   import CodeSnippet
-from src.VHDLParser     import VHDL
-
+from src.Blocks.Parser import VHDL
+from src.Token.Tokens import EndOfDocumentToken
 
 
 Console.init()
