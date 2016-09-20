@@ -49,7 +49,7 @@ class Block:
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):
-				raise ParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
+				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
 			token = token.NextToken
 
 		yield self.EndToken

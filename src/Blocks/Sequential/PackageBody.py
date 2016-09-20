@@ -46,7 +46,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -70,7 +70,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.statePackageName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def statePackageName(cls, parserState):
@@ -102,7 +102,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -127,7 +127,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateDeclarativeRegion
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState):
@@ -178,13 +178,13 @@ class NameBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:
-				raise ParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 class EndBlock(Block):
 	def RegisterStates(self):
@@ -233,7 +233,7 @@ class EndBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -266,7 +266,7 @@ class EndBlock(Block):
 				parserState.NextState =   cls.statePackageName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def statePackageKeyword(cls, parserState):
@@ -304,7 +304,7 @@ class EndBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -333,7 +333,7 @@ class EndBlock(Block):
 			parserState.NextState =   cls.statePackageName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def statePackageName(cls, parserState):
@@ -393,5 +393,5 @@ class EndBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 

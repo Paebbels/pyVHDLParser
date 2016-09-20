@@ -47,7 +47,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -71,7 +71,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateWhileName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhileName(cls, parserState):
@@ -103,7 +103,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -128,7 +128,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateDeclarativeRegion
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState):
@@ -164,13 +164,13 @@ class ConditionBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndLoopBlock.stateEndKeyword
 			else:
-				raise ParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 class EndLoopBlock(Block):
 	def RegisterStates(self):
@@ -219,7 +219,7 @@ class EndLoopBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -252,7 +252,7 @@ class EndLoopBlock(Block):
 				parserState.NextState =   cls.stateGenerateName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateGenerateKeyword(cls, parserState):
@@ -290,7 +290,7 @@ class EndLoopBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -319,7 +319,7 @@ class EndLoopBlock(Block):
 			parserState.NextState =   cls.stateGenerateName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateGenerateName(cls, parserState):
@@ -379,5 +379,5 @@ class EndLoopBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 

@@ -1,4 +1,6 @@
-from src.Blocks.Common import EmptyLineBlock, SingleLineCommentBlock, MultiLineCommentBlock, Block
+from src.Blocks.Base          import Block
+from src.Blocks.Common        import EmptyLineBlock, IndentationBlock
+from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Token.Parser import *
 from src.Token.Keywords import *
 
@@ -44,7 +46,7 @@ class ReturnBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -68,7 +70,7 @@ class ReturnBlock(Block):
 			parserState.NextState =     cls.stateReturnName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateReturnName(cls, parserState):
@@ -100,7 +102,7 @@ class ReturnBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -125,5 +127,5 @@ class ReturnBlock(Block):
 				parserState.NextState =     cls.stateDeclarativeRegion
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 

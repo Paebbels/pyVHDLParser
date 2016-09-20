@@ -44,7 +44,7 @@ class BreakBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -68,7 +68,7 @@ class BreakBlock(Block):
 			parserState.NextState =     cls.stateBreakName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateBreakName(cls, parserState):
@@ -100,7 +100,7 @@ class BreakBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -125,4 +125,4 @@ class BreakBlock(Block):
 				parserState.NextState =     cls.stateDeclarativeRegion
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)

@@ -112,7 +112,7 @@ class KeywordToken(VHDLToken):
 
 	def __init__(self, stringToken):
 		if (not (isinstance(stringToken, StringToken) and (stringToken <= self.__KEYWORD__))):
-			raise ParserException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), stringToken)
+			raise BlockParserException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), stringToken)
 		super().__init__(stringToken.PreviousToken, self.__KEYWORD__, stringToken.Start, stringToken.End)
 
 	def __str__(self):

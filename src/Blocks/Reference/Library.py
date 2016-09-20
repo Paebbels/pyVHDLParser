@@ -44,7 +44,7 @@ class LibraryBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -68,7 +68,7 @@ class LibraryBlock(Block):
 			parserState.NextState =     cls.stateLibraryName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateLibraryName(cls, parserState):
@@ -105,7 +105,7 @@ class LibraryBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -130,5 +130,5 @@ class LibraryBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 

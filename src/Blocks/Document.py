@@ -4,8 +4,7 @@ from src.Blocks.Reference import Context
 from src.Blocks.Reference.Library import LibraryBlock
 from src.Blocks.Reference.Use import UseBlock
 from src.Blocks.Sequential import Package
-from src.Blocks.Structural import Entity
-from src.Model.VHDLModel import Architecture
+from src.Blocks.Structural import Entity, Architecture, Configuration
 from src.Token.Parser import CharacterToken, SpaceToken, StringToken, ParserException, EndOfDocumentToken
 from src.Token.Keywords import LinebreakToken, IndentationToken, LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, \
 	PackageKeyword
@@ -73,7 +72,7 @@ class StartOfDocumentBlock(Block):
 				newToken = PackageKeyword(token)
 				parserState.PushState =   Package.NameBlock.statePackageKeyword
 			else:
-				raise ParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
@@ -82,7 +81,7 @@ class StartOfDocumentBlock(Block):
 			parserState.NewBlock =      EndOfDocumentBlock(token)
 			raise StopIteration()
 		else:  # tokenType
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 
 
 class EndOfDocumentBlock(Block):

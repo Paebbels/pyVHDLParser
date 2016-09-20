@@ -31,7 +31,7 @@
 from enum             import Enum
 
 from src.Base         import ParserException
-from src.Token.Tokens import CharacterToken, StartOfDocumentToken, SpaceToken, StringToken, NumberToken, EndOfDocumentToken
+from src.Token.Tokens import CharacterToken, StartOfDocumentToken, SpaceToken, StringToken, NumberToken, EndOfDocumentToken, SourceCodePosition
 
 
 class TokenizerException(ParserException):
@@ -148,7 +148,7 @@ class Tokenizer:
 
 			# State: unknown
 			else:
-				raise ParserException("Unknown state.")
+				raise BlockParserException("Unknown state.")
 
 			if (char == "\n"):
 				column =  0

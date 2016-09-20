@@ -1,7 +1,7 @@
 from src.Blocks.Base      import Block
 from src.Blocks.Common    import IndentationBlock
 from src.Token.Parser     import CharacterToken, SpaceToken
-from src.Token.Keywords import IndentationToken, SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
+from src.Token.Keywords   import IndentationToken, SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 
 
 class CommentBlock(Block):

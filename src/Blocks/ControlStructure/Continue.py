@@ -44,7 +44,7 @@ class ContinueBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -68,7 +68,7 @@ class ContinueBlock(Block):
 			parserState.NextState =     cls.stateContinueName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateContinueName(cls, parserState):
@@ -100,7 +100,7 @@ class ContinueBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -125,4 +125,4 @@ class ContinueBlock(Block):
 				parserState.NextState =     cls.stateDeclarativeRegion
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)

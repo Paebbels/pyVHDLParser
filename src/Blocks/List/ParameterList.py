@@ -48,7 +48,7 @@ class OpenBlock(Block):
 			parserState.NextState = cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -85,7 +85,7 @@ class OpenBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState):
@@ -133,7 +133,7 @@ class OpenBlock(Block):
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token)
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 class ItemBlock(Block):
@@ -162,7 +162,7 @@ class ItemBlock(Block):
 					parserState.TokenMarker = parserState.NewToken
 					parserState.NextState = DelimiterBlock.stateItemDelimiter
 				else:
-					raise ParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
 class DelimiterBlock(Block):
@@ -191,7 +191,7 @@ class DelimiterBlock(Block):
 			parserState.NextState = ItemBlock.stateItemRemainder
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 class CloseBlock(Block):
@@ -234,7 +234,7 @@ class CloseBlock(Block):
 			parserState.NextState = cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -264,5 +264,5 @@ class CloseBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 

@@ -126,7 +126,7 @@ def StripAndFuse(generator):
 					if isinstance(nextBlock, (IndentationBlock, CommentBlock, EmptyLineBlock)):
 						continue
 					if (type(block) is not type(nextBlock)):
-						raise ParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)))
+						raise BlockParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)))
 
 					nextBlock.StartToken.PreviousToken = block.EndToken
 					block.EndToken = nextBlock.EndToken

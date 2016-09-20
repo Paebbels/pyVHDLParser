@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 from src.Blocks.Base    import Block
-from src.Blocks.Comment import SingleLineCommentBlock, MultiLineCommentBlock
+#from src.Blocks.Comment import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Token.Parser   import CharacterToken, SpaceToken
 from src.Token.Keywords import *
 
@@ -121,7 +121,7 @@ class SensitivityList:
 		# 		parserState.NextState = cls.stateWhitespace1
 		# 		return
 		#
-		# 	raise ParserException(errorMessage, token)
+		# 	raise BlockParserException(errorMessage, token)
 		#
 		# @classmethod
 		# def stateWhitespace1(cls, parserState):
@@ -158,7 +158,7 @@ class SensitivityList:
 		# 			parserState.TokenMarker = token
 		# 			return
 		#
-		# 	raise ParserException(errorMessage, token)
+		# 	raise BlockParserException(errorMessage, token)
 
 		@classmethod
 		def stateOpeningParenthesis(cls, parserState):
@@ -206,7 +206,7 @@ class SensitivityList:
 				# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token)
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 
 	class ItemBlock(Block):
 		def RegisterStates(self):
@@ -234,7 +234,7 @@ class SensitivityList:
 						parserState.TokenMarker = parserState.NewToken
 						parserState.NextState =   SensitivityList.DelimiterBlock.stateItemDelimiter
 					else:
-						raise ParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
+						raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 	class DelimiterBlock(Block):
 		def RegisterStates(self):
@@ -262,7 +262,7 @@ class SensitivityList:
 				parserState.NextState = SensitivityList.ItemBlock.stateItemRemainder
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 
 	class CloseBlock(Block):
 		def RegisterStates(self):
@@ -299,7 +299,7 @@ class SensitivityList:
 				parserState.NextState = cls.stateWhitespace1
 				return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 
 		@classmethod
 		def stateWhitespace1(cls, parserState):
@@ -329,7 +329,7 @@ class SensitivityList:
 					parserState.TokenMarker = token
 					return
 
-			raise ParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, token)
 
 
 class SignalBlock(Block): pass
@@ -349,17 +349,17 @@ class VariableAssignmentBlock(Block): pass
 class AssertStatementBlock(Block): pass
 class ReportStatementBlock(Block): pass
 
-class Instantiation(BlockGroup):
-	class InstantiationBlock(Block): pass
-	class InstantiationGenericMapBeginBlock(Block): pass
-	class InstantiationGenericMapItemBlock(Block): pass
-	class InstantiationGenericMapDelimiterBlock(Block): pass
-	class InstantiationGenericMapEndBlock(Block): pass
-	class InstantiationPortMapBeginBlock(Block): pass
-	class InstantiationPortMapItemBlock(Block): pass
-	class InstantiationPortMapDelimiterBlock(Block): pass
-	class InstantiationPortMapEndBlock(Block): pass
-	class InstantiationEndBlock(Block): pass
+
+class InstantiationBlock(Block): pass
+class InstantiationGenericMapBeginBlock(Block): pass
+class InstantiationGenericMapItemBlock(Block): pass
+class InstantiationGenericMapDelimiterBlock(Block): pass
+class InstantiationGenericMapEndBlock(Block): pass
+class InstantiationPortMapBeginBlock(Block): pass
+class InstantiationPortMapItemBlock(Block): pass
+class InstantiationPortMapDelimiterBlock(Block): pass
+class InstantiationPortMapEndBlock(Block): pass
+class InstantiationEndBlock(Block): pass
 
 class PackageInstantiationBlock(Block): pass
 class ProcedureInstantiationBlock(Block): pass

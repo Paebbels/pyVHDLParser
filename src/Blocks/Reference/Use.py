@@ -48,7 +48,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState):
@@ -72,7 +72,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateLibraryName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateLibraryName(cls, parserState):
@@ -108,7 +108,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDot1(cls, parserState):
@@ -132,7 +132,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.statePackageName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def statePackageName(cls, parserState):
@@ -168,7 +168,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateDot2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDot2(cls, parserState):
@@ -195,7 +195,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateObjectName
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateObjectName(cls, parserState):
@@ -232,7 +232,7 @@ class UseBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
@@ -257,4 +257,4 @@ class UseBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise ParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
