@@ -28,9 +28,6 @@
 # limitations under the License.
 # ==============================================================================
 #
-from enum       import Enum
-
-
 class ExceptionBase(Exception):
 	def __init__(self, message):
 		self._message = message

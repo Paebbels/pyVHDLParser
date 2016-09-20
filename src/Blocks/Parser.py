@@ -27,7 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Blocks.Document import StartOfDocumentBlock
+from src.Blocks.Document      import StartOfDocumentBlock
 
 
 class BlockParserState:

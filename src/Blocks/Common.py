@@ -27,10 +27,10 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Blocks.Base    import Block
-#from src.Blocks.Comment import SingleLineCommentBlock, MultiLineCommentBlock
-from src.Token.Parser   import CharacterToken, SpaceToken
-from src.Token.Keywords import *
+from src.Token.Keywords       import *
+from src.Token.Parser         import CharacterToken, SpaceToken
+from src.Blocks.Base          import Block
+# from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
 class WhitespaceBlock(Block):

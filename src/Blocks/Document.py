@@ -1,13 +1,44 @@
-from src.Blocks.Comment   import SingleLineCommentBlock, MultiLineCommentBlock
-from src.Blocks.Common    import Block, EmptyLineBlock, IndentationBlock
-from src.Blocks.Reference import Context
-from src.Blocks.Reference.Library import LibraryBlock
-from src.Blocks.Reference.Use import UseBlock
-from src.Blocks.Sequential import Package
-from src.Blocks.Structural import Entity, Architecture, Configuration
-from src.Token.Parser import CharacterToken, SpaceToken, StringToken, ParserException, EndOfDocumentToken
-from src.Token.Keywords import LinebreakToken, IndentationToken, LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, \
-	PackageKeyword
+# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python functions:   A streaming VHDL parser
+#
+# Description:
+# ------------------------------------
+#		TODO:
+#
+# License:
+# ==============================================================================
+# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
+from src.Token.Tokens         import EndOfDocumentToken
+from src.Token.Keywords       import LinebreakToken, IndentationToken
+from src.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword
+from src.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword, ConfigurationKeyword
+from src.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from src.Blocks.Exception     import BlockParserException
+from src.Blocks.Base          import Block
+from src.Blocks.Common        import EmptyLineBlock, IndentationBlock
+from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+from src.Blocks.Reference     import Context, Library, Use
+from src.Blocks.Sequential    import Package
+from src.Blocks.Structural    import Entity, Architecture, Configuration
 
 
 class StartOfDocumentBlock(Block):
@@ -55,10 +86,10 @@ class StartOfDocumentBlock(Block):
 			keyword = token.Value.lower()
 			if (keyword == "library"):
 				newToken = LibraryKeyword(token)
-				parserState.PushState =   LibraryBlock.stateLibraryKeyword
+				parserState.PushState =   Library.LibraryBlock.stateLibraryKeyword
 			elif (keyword == "use"):
 				newToken = UseKeyword(token)
-				parserState.PushState =   UseBlock.stateUseKeyword
+				parserState.PushState =   Use.UseBlock.stateUseKeyword
 			elif (keyword == "context"):
 				newToken = ContextKeyword(token)
 				parserState.PushState =   Context.NameBlock.stateContextKeyword

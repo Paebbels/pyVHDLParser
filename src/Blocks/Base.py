@@ -27,8 +27,8 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Token.Parser import CharacterToken
-from src.Token.Keywords import *
+from src.Token.Parser         import CharacterToken
+from src.Blocks.Exception     import BlockParserException
 
 
 class Block:
@@ -68,7 +68,7 @@ class Block:
 
 	def __str__(self):
 		return "[{blockName: <30s} '{stream!r: <60s}' at {start!s} .. {end!s}]".format(
-			blockName=type(self).__name__,
+			blockName=type(self).__name__ + ("*" if self.MultiPart else ""),
 			stream=self,
 			start=self.StartToken.Start,
 			end=self.EndToken.End

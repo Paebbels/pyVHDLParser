@@ -35,10 +35,12 @@ from src.Token.Tokens import CharacterToken, StartOfDocumentToken, SpaceToken, S
 
 
 class TokenizerException(ParserException):
-	def __init__(self, message, token):
+	def __init__(self, message, position):
 		super().__init__(message)
-		self._token = token
+		self.Position = position
 
+	def __str__(self):
+		return "{0!s}: {1}".format(self.Position, self._message)
 
 class Tokenizer:
 	class TokenKind(Enum):
@@ -47,22 +49,6 @@ class Tokenizer:
 		NumberChars =     2
 		DelimiterChars =  3
 		OtherChars =      4
-
-	@classmethod
-	def GetCharacterTokenizer(cls, iterable):
-		previousToken = None
-		absolute =      0
-		column =        0
-		row =           1
-
-		for char in iterable:
-			absolute += 1
-			column +=   1
-			previousToken = CharacterToken(previousToken, char, SourceCodePosition(row, column, absolute))
-			yield previousToken
-			if (char == "\n"):
-				column =  0
-				row +=    1
 
 	__ALPHA_CHARS__ =   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	__NUMBER_CHARS__ =  "0123456789"
@@ -123,7 +109,7 @@ class Tokenizer:
 				if (char in numberCharacters):
 					buffer += char
 				else:
-					previousToken = NumberToken(previousToken, buffer, start,SourceCodePosition(row, column, absolute))
+					previousToken = NumberToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
 					yield previousToken
 
 					start =   SourceCodePosition(row, column, absolute)
@@ -148,7 +134,7 @@ class Tokenizer:
 
 			# State: unknown
 			else:
-				raise BlockParserException("Unknown state.")
+				raise TokenizerException("Unknown state.", SourceCodePosition(row, column, absolute))
 
 			if (char == "\n"):
 				column =  0

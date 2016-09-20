@@ -1,13 +1,42 @@
+# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python functions:   A streaming VHDL parser
+#
+# Description:
+# ------------------------------------
+#		TODO:
+#
+# License:
+# ==============================================================================
+# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
+from src.Token.Keywords       import *
+from src.Token.Parser         import *
+from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
 from src.Blocks.Common        import EmptyLineBlock, IndentationBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
-from src.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop
-from src.Blocks.ControlStructure.Return import ReturnBlock
-from src.Blocks.List import GenericList, PortList
-from src.Blocks.Reporting.Report import ReportBlock
-from src.Blocks.Sequential import Process
-from src.Token.Parser import *
-from src.Token.Keywords import *
+from src.Blocks.List          import GenericList, PortList
+from src.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop, Return
+from src.Blocks.Reporting     import Report
+from src.Blocks.Sequential    import Process
 
 
 class NameBlock(Block):
@@ -225,10 +254,10 @@ class BeginBlock(Block):
 				parserState.PushState =   WhileLoop.ConditionBlock.stateWhileKeyword
 			elif (keyword == "return"):
 				newToken =                ReturnKeyword(token)
-				parserState.PushState =   ReturnBlock.stateReturnKeyword
+				parserState.PushState =   Return.ReturnBlock.stateReturnKeyword
 			elif (keyword == "report"):
 				newToken =                ReportKeyword(token)
-				parserState.PushState =   ReportBlock.stateReportKeyword
+				parserState.PushState =   Report.ReportBlock.stateReportKeyword
 			elif (keyword == "end"):
 				newToken = EndKeyword(token)
 				parserState.NextState =   Process.EndBlock.stateEndKeyword
