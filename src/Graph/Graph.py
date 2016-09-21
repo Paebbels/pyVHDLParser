@@ -78,21 +78,48 @@ class Graph:
 			if startNode.Color is not NodeColors.White:
 				self.__colorize(startNode)
 
+	def GetTopologicalOrder(self):
+		workList =    []
+		resultList =  []
+
+		for node in self._nodes:
+			node.Weight = len(node._incomingEdges)
+			if (node.Weight > 0):
+				workList.append(node)
+
+		while (len(workList) > 0):
+			node = workList.pop()
+			for edge in node._outgoingEdges:
+				end = edge.End
+				end.Weight -= 1
+				if (end.Weight == 0):
+					workList.append(end)
+
+			resultList.append(node)
+
+		return resultList
+
 	def ClearColors(self):
 		for node in self._nodes:
 			node.Color = NodeColors.Black
 
+	def ClearWeights(self):
+		for node in self._nodes:
+			node.Weight = 0
+
 
 class Node:
 	def __init__(self):
-		self.Graph =    None
-		self._edges =   []
-		self.Visited =  False
-		self.Color =    NodeColors.Black
+		self.Graph =          None
+		self._outgoingEdges = []
+		self._incomingEdges = []
+		self.Weight =         0
+		self.Color =          NodeColors.Black
 
 	def DependsOn(self, node):
 		edge = Edge(self.Graph, self, node)
-		self._edges.append(edge)
+		self._outgoingEdges.append(edge)
+		node._incomingEdges.append(edge)
 
 
 class Edge:
