@@ -37,13 +37,24 @@ from src.Blocks.Base          import Block
 class WhitespaceBlock(Block):
 	pass
 
-class LinebreakBlock(WhitespaceBlock):
+class SimpleWhitespaceBlock(WhitespaceBlock):
+	def __init__(self, previousBlock, startToken):
+		previousBlock.NextBlock = self
+		self._previousBlock =     previousBlock
+		self.NextBlock =          None
+		self.StartToken =         startToken
+		self.EndToken =           startToken
+		self.MultiPart =          False
+
+
+class LinebreakBlock(SimpleWhitespaceBlock):
 	def __str__(self):
-		buffer = ""
-		for token in self:
-			buffer += token.Value
-		buffer = buffer.replace("\t", "\\t").replace("\n", "\\n")
-		return "[LinebreakBlock: '{0}']".format(buffer)
+		return "[{blockName: <30s}  {stream}  at {start!s} .. {end!s}]".format(
+			blockName=type(self).__name__,
+			stream=" "*60,
+			start=self.StartToken.Start,
+			end=self.EndToken.End
+		)
 
 	@classmethod
 	def stateLinebreak(cls, parserState):
@@ -61,19 +72,23 @@ class LinebreakBlock(WhitespaceBlock):
 			parserState.NextState(parserState)
 
 
-class IndentationBlock(WhitespaceBlock):
+class EmptyLineBlock(LinebreakBlock):
+	pass
+
+
+class IndentationBlock(SimpleWhitespaceBlock):
 	__TABSIZE__ = 2
 
 	def __str__(self):
-		buffer = ""
-		for token in self:
-			buffer += token.Value
-		actual = sum([(self.__TABSIZE__ if (c=="\t") else 1) for c in buffer])
-		return "[IndentationBlock: length={len} ({actual})]".format(len=len(self), actual=actual)
+		length = len(self.StartToken.Value)
+		actual = sum([(self.__TABSIZE__ if (c == "\t") else 1) for c in self.StartToken.Value])
 
-
-
-
+		return "[{blockName: <30s}  length={len: <53}  at {start!s} .. {end!s}]".format(
+			blockName=type(self).__name__,
+			len="{len} ({actual}) ".format(len=length, actual=actual),
+			start=self.StartToken.Start,
+			end=self.EndToken.End
+		)
 
 
 class SensitivityList:

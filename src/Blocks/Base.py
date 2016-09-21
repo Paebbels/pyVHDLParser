@@ -67,9 +67,9 @@ class Block:
 		return buffer
 
 	def __str__(self):
-		return "[{blockName: <30s} '{stream!r: <60s}' at {start!s} .. {end!s}]".format(
+		return "[{blockName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
 			blockName=type(self).__name__ + ("*" if self.MultiPart else ""),
-			stream=self,
+			stream="'" + repr(self) + "'",
 			start=self.StartToken.Start,
 			end=self.EndToken.End
 		)

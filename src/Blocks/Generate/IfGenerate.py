@@ -199,8 +199,8 @@ class IfConditionBlock(Block):
 				parserState.NextState = EndGenerateBlock.stateEndKeyword
 			elif (keyword == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
-				parserState.NewBlock =  eginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.NextState = eginBlock.stateBeginKeyword
+				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.NextState = BeginBlock.stateBeginKeyword
 				return
 			else:
 				raise BlockParserException(errorMessage, token)
@@ -211,7 +211,7 @@ class IfConditionBlock(Block):
 
 		raise BlockParserException(errorMessage, token)
 
-class eginBlock(Block):
+class BeginBlock(Block):
 	def RegisterStates(self):
 		return [
 			self.stateBeginKeyword

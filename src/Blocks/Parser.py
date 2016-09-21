@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+from src.Blocks.Common import LinebreakBlock, EmptyLineBlock
 from src.Blocks.Document      import StartOfDocumentBlock
 
 
@@ -114,7 +115,12 @@ class TokenToBlockParser:
 
 				# a new block is assembled
 				while (self.NewBlock is not None):
-					self.LastBlock = self.NewBlock
+					if (isinstance(self.NewBlock, LinebreakBlock) and isinstance(self.LastBlock, (LinebreakBlock, EmptyLineBlock))):
+						self.LastBlock = EmptyLineBlock(self.LastBlock, self.NewBlock.StartToken)
+						self.LastBlock.NextBlock = self.NewBlock.NextBlock
+					else:
+						self.LastBlock = self.NewBlock
+
 					self.NewBlock =  self.NewBlock.NextBlock
 					yield self.LastBlock
 
