@@ -168,7 +168,7 @@ class NameBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -181,7 +181,7 @@ class NameBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
@@ -545,7 +545,7 @@ class EndBlock(Block):
 # 		if isinstance(parserState.Token, CharacterToken):
 # 			if (token == "\n"):
 # 				parserState.NewToken =    LinebreakToken(token)
-# 				parserState.NewBlock =    EmptyLineBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+# 				parserState.NewBlock =    EmptyLineBlock(parserState.LastBlock, parserState.NewToken)
 # 				parserState.TokenMarker = parserState.NewToken
 # 				return
 # 			elif (token == "-"):
@@ -558,7 +558,7 @@ class EndBlock(Block):
 # 				return
 # 		elif isinstance(token, SpaceToken):
 # 			parserState.NewToken =      IndentationToken(token)
-# 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+# 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 # 			return
 # 		elif isinstance(token, StringToken):
 # 			keyword = token.Value.lower()
@@ -573,7 +573,7 @@ class EndBlock(Block):
 # 				parserState.NextState = Component.EndBlock.stateEndKeyword
 # 			elif (keyword == "begin"):
 # 				parserState.NewToken =  BeginKeyword(token)
-# 				parserState.NewBlock =  Component.BeginBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+# 				parserState.NewBlock =  Component.BeginBlock(parserState.LastBlock, parserState.NewToken)
 # 				parserState.NextState = Component.BeginBlock.stateBeginKeyword
 # 				return
 # 			else:

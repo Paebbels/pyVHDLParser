@@ -318,7 +318,7 @@ class NameBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -331,7 +331,7 @@ class NameBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
@@ -352,7 +352,7 @@ class NameBlock(Block):
 			# 	parserState.NextState = EndBlock.stateEndKeyword
 			elif (keyword == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
-				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = BeginBlock.stateBeginKeyword
 				return
 			else:
@@ -376,39 +376,38 @@ class BeginBlock(Block):
 		errorMessage = "Expected label or one of these keywords: assert, process."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken = LinebreakToken(token)
-				parserState.NewBlock = LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
-				parserState.TokenMarker = parserState.NewToken
+				parserState.NewToken =      LinebreakToken(token)
+				parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker =   None
 				return
 			elif (token == "-"):
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
+				parserState.PushState =     SingleLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
 				return
 			elif (token == "/"):
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
+				parserState.PushState =     MultiLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
 				return
 		elif isinstance(token, SpaceToken):
+			parserState.NewToken =        IndentationToken(token)
+			parserState.NewBlock =        IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		# 	parserState.NewToken = IndentationToken(token)
-		# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
-		# 	return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
 			if (keyword == "process"):
-				newToken =                ProcessKeyword(token)
-				parserState.PushState =   Process.OpenBlock.stateProcessKeyword
+				newToken =                  ProcessKeyword(token)
+				parserState.PushState =     Process.OpenBlock.stateProcessKeyword
 			elif (keyword == "assert"):
-				newToken =                AssertKeyword(token)
-				parserState.PushState =   Assert.AssertBlock.stateAssertKeyword
+				newToken =                  AssertKeyword(token)
+				parserState.PushState =     Assert.AssertBlock.stateAssertKeyword
 			elif (keyword == "end"):
-				newToken =                EndKeyword(token)
-				parserState.NextState =   EndBlock.stateEndKeyword
+				newToken =                  EndKeyword(token)
+				parserState.NextState =     EndBlock.stateEndKeyword
 			else:
 				raise BlockParserException(errorMessage, token)
 
-			parserState.NewToken =      newToken
-			parserState.TokenMarker =   newToken
+			parserState.NewToken =        newToken
+			parserState.TokenMarker =     newToken
 			return
 
 		raise BlockParserException(errorMessage, token)

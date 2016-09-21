@@ -167,7 +167,7 @@ class IfConditionBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -180,7 +180,7 @@ class IfConditionBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
@@ -333,7 +333,7 @@ class ElsIfConditionBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -346,7 +346,7 @@ class ElsIfConditionBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
@@ -499,7 +499,7 @@ class ElseBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -512,7 +512,7 @@ class ElseBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()

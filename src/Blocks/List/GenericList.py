@@ -153,7 +153,7 @@ class OpenBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)

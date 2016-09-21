@@ -70,7 +70,7 @@ class SingleLineCommentBlock(CommentBlock):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = IndentationToken(token)
-			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()
 		else:
 			parserState.Pop()

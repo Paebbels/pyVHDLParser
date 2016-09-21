@@ -172,7 +172,7 @@ class NameBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -185,7 +185,7 @@ class NameBlock(Block):
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
@@ -197,7 +197,7 @@ class NameBlock(Block):
 				parserState.PushState =   Variable.VariableBlock.stateVariableKeyword
 			elif (keyword == "begin"):
 				parserState.NewToken =    BeginKeyword(token)
-				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState =   BeginBlock.stateBeginKeyword
 				return
 			else:
