@@ -38,7 +38,7 @@ from src.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringTok
 from src.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
 from src.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from src.Token.Parser       import Tokenizer, StartOfDocumentToken
-from src.Blocks.Common      import EmptyLineBlock, IndentationBlock
+from src.Blocks.Common      import LinebreakBlock, IndentationBlock
 from src.Blocks.Comment     import CommentBlock
 from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from src.Blocks.Structural  import Entity
@@ -80,7 +80,7 @@ if (mode & 2 == 2):
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
-			if isinstance(vhdlBlock, (EmptyLineBlock, IndentationBlock)):
+			if isinstance(vhdlBlock, (LinebreakBlock, IndentationBlock)):
 				print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			elif isinstance(vhdlBlock, CommentBlock):
 				print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
@@ -200,7 +200,7 @@ if (mode & 16 == 16):
 
 	try:
 		for vhdlBlock in strippedBlockStream:
-			if isinstance(vhdlBlock, (EmptyLineBlock, IndentationBlock)):
+			if isinstance(vhdlBlock, (LinebreakBlock, IndentationBlock)):
 				print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			elif isinstance(vhdlBlock, CommentBlock):
 				print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))

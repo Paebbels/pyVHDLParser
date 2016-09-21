@@ -31,7 +31,7 @@ from src.Token.Keywords       import *
 from src.Token.Parser         import *
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import EmptyLineBlock
+from src.Blocks.Common        import LinebreakBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
@@ -55,7 +55,7 @@ class ContinueBlock(Block):
 				parserState.NewBlock =    ContinueBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    ContinueBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -112,7 +112,7 @@ class ContinueBlock(Block):
 				parserState.NewBlock =    ContinueBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    ContinueBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)

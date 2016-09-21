@@ -31,7 +31,7 @@ from src.Token.Keywords       import *
 from src.Token.Parser         import *
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import EmptyLineBlock, IndentationBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
@@ -60,7 +60,7 @@ class OpenBlock(Block):
 				parserState.NewBlock = OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState = cls.stateWhitespace1
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.PushState = LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock = OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -100,7 +100,7 @@ class OpenBlock(Block):
 				parserState.NewBlock = OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState = cls.stateWhitespace1
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.PushState = LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock = OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -135,7 +135,7 @@ class OpenBlock(Block):
 				# parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				# parserState.NextState =   cls.stateWhitespace1
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.PushState = LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -245,7 +245,7 @@ class CloseBlock(Block):
 				return
 			elif (token == "\n"):
 				parserState.NewToken = LinebreakToken(token)
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.PushState = LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -280,7 +280,7 @@ class CloseBlock(Block):
 				return
 			elif (token == "\n"):
 				parserState.NewToken = LinebreakToken(token)
-				parserState.PushState = EmptyLineBlock.stateLinebreak
+				parserState.PushState = LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):

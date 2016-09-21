@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 from src.Blocks.Exception import BlockParserException
-from src.Blocks.Common    import IndentationBlock, EmptyLineBlock
+from src.Blocks.Common    import IndentationBlock, LinebreakBlock
 from src.Blocks.Comment   import CommentBlock
 
 
@@ -40,13 +40,13 @@ def StripAndFuse(generator):
 	yield lastBlock
 
 	for block in iterator:
-		if isinstance(block, (IndentationBlock, CommentBlock, EmptyLineBlock)):
+		if isinstance(block, (IndentationBlock, CommentBlock, LinebreakBlock)):
 			continue
 		else:
 			if (block.MultiPart == True):
 				while True:
 					nextBlock = next(iterator)
-					if isinstance(nextBlock, (IndentationBlock, CommentBlock, EmptyLineBlock)):
+					if isinstance(nextBlock, (IndentationBlock, CommentBlock, LinebreakBlock)):
 						continue
 					if (type(block) is not type(nextBlock)):
 						raise BlockParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)))

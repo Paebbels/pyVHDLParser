@@ -32,7 +32,7 @@ from src.Token.Keywords       import IsKeyword, EndKeyword, GenericKeyword, Port
 from src.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import EmptyLineBlock, IndentationBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.List          import GenericList, PortList
 
@@ -57,7 +57,7 @@ class ConditionBlock(Block):
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -114,7 +114,7 @@ class ConditionBlock(Block):
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -168,7 +168,7 @@ class ConditionBlock(Block):
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    EmptyLineBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
@@ -229,7 +229,7 @@ class EndLoopBlock(Block):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -300,7 +300,7 @@ class EndLoopBlock(Block):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -367,7 +367,7 @@ class EndLoopBlock(Block):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
-				parserState.PushState =   EmptyLineBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    EndLoopBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)

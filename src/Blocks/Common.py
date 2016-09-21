@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+from src.Blocks.Exception import BlockParserException
 from src.Token.Keywords       import *
 from src.Token.Parser         import CharacterToken, SpaceToken
 from src.Blocks.Base          import Block
@@ -36,20 +37,20 @@ from src.Blocks.Base          import Block
 class WhitespaceBlock(Block):
 	pass
 
-class EmptyLineBlock(WhitespaceBlock):
+class LinebreakBlock(WhitespaceBlock):
 	def __str__(self):
 		buffer = ""
 		for token in self:
 			buffer += token.Value
 		buffer = buffer.replace("\t", "\\t").replace("\n", "\\n")
-		return "[EmptyLineBlock: '{0}']".format(buffer)
+		return "[LinebreakBlock: '{0}']".format(buffer)
 
 	@classmethod
 	def stateLinebreak(cls, parserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = IndentationToken(token)
-			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()
 		else:
 			parserState.Pop()
@@ -176,7 +177,7 @@ class SensitivityList:
 					# parserState.NewBlock =    SensitivityList.OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 					parserState.TokenMarker = None
 					# parserState.NextState =   cls.stateWhitespace1
-					parserState.PushState =   EmptyLineBlock.stateLinebreak
+					parserState.PushState =   LinebreakBlock.stateLinebreak
 					parserState.TokenMarker = parserState.NewToken
 					return
 				elif (token == "-"):
@@ -278,7 +279,7 @@ class SensitivityList:
 			if isinstance(token, CharacterToken):
 				if (token == "\n"):
 					parserState.NewToken =    LinebreakToken(token)
-					parserState.PushState =   EmptyLineBlock.stateLinebreak
+					parserState.PushState =   LinebreakBlock.stateLinebreak
 					parserState.TokenMarker = parserState.NewToken
 					return
 				elif (token == "-"):
@@ -313,7 +314,7 @@ class SensitivityList:
 					return
 				elif (token == "\n"):
 					parserState.NewToken = LinebreakToken(token)
-					parserState.PushState = EmptyLineBlock.stateLinebreak
+					parserState.PushState = LinebreakBlock.stateLinebreak
 					parserState.TokenMarker = parserState.NewToken
 					return
 				elif (token == "-"):
