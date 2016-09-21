@@ -43,9 +43,8 @@ from src.Blocks.Comment     import CommentBlock
 from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from src.Blocks.Structural  import Entity
 from src.Blocks.List        import GenericList, PortList
-from src.Blocks.Parser      import VHDL
+from src.Blocks.Parser      import TokenToBlockParser
 
-# from src.VHDLExamples   import CodeSnippet
 
 Console.init()
 
@@ -77,7 +76,7 @@ alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
 if (mode & 2 == 2):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -105,7 +104,7 @@ if (mode & 2 == 2):
 if (mode & 4 == 4):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		blockIterator = iter(vhdlBlockStream)
@@ -170,7 +169,7 @@ if (mode & 4 == 4):
 if (mode & 8 == 8):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -196,7 +195,7 @@ if (mode & 8 == 8):
 if (mode & 16 == 16):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-	vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 	strippedBlockStream = StripAndFuse(vhdlBlockStream)
 
 	try:

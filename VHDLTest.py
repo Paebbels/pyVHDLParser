@@ -36,7 +36,7 @@ from src.Functions          import Console
 from src.Token.Parser import Tokenizer, StartOfDocumentToken
 
 # from src.VHDLExamples   import CodeSnippet
-from src.Blocks.Parser import VHDL
+from src.Blocks.Parser import TokenToBlockParser
 from src.Token.Tokens import EndOfDocumentToken
 
 
@@ -143,7 +143,7 @@ def StripAndFuse(generator):
 print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
 wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug= True)
+vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug= True)
 
 try:
 	for vhdlBlock in vhdlBlockStream:
@@ -171,7 +171,7 @@ except NotImplementedError as ex:
 print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
 wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream, debug=not True)
+vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=not True)
 
 try:
 	blockIterator = iter(vhdlBlockStream)
@@ -253,7 +253,7 @@ except NotImplementedError as ex:
 # ==============================================================================
 print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters)
-vhdlBlockStream = VHDL.TransformTokensToBlocks(wordTokenStream)
+vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
 strippedBlockStream = StripAndFuse(vhdlBlockStream)
 
 try:

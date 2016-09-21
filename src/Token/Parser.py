@@ -42,6 +42,7 @@ class TokenizerException(ParserException):
 	def __str__(self):
 		return "{0!s}: {1}".format(self.Position, self._message)
 
+
 class Tokenizer:
 	class TokenKind(Enum):
 		SpaceChars =      0

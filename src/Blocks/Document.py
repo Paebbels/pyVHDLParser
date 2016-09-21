@@ -44,9 +44,9 @@ from src.Blocks.Structural    import Entity, Architecture, Configuration
 class StartOfDocumentBlock(Block):
 	def __init__(self, startToken):
 		self._previousBlock =     None
-		self._nextBlock =         None
+		self.NextBlock =          None
 		self.StartToken =         startToken
-		self._endToken =          startToken
+		self.EndToken =           startToken
 		self.MultiPart =          False
 
 	def __len__(self):

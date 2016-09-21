@@ -35,9 +35,9 @@ class Block:
 	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
 		previousBlock.NextBlock = self
 		self._previousBlock =     previousBlock
-		self._nextBlock =         None
+		self.NextBlock =          None
 		self.StartToken =         startToken
-		self._endToken =          endToken
+		self.EndToken =           startToken if (endToken is None) else endToken
 		self.MultiPart =          multiPart
 
 	def __len__(self):
@@ -81,20 +81,6 @@ class Block:
 	def PreviousBlock(self, value):
 		self._previousBlock = value
 		value.NextBlock = self
-
-	@property
-	def NextBlock(self):
-		return self._nextBlock
-	@NextBlock.setter
-	def NextBlock(self, value):
-		self._nextBlock = value
-
-	@property
-	def EndToken(self):
-		return self._endToken
-	@EndToken.setter
-	def EndToken(self, value):
-		self._endToken = value
 
 	@property
 	def Length(self):
