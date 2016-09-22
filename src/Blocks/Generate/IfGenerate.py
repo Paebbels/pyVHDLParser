@@ -89,7 +89,14 @@ class IfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -146,7 +153,14 @@ class IfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -311,7 +325,14 @@ class ElsIfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -368,7 +389,14 @@ class ElsIfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -533,7 +561,14 @@ class ElseGenerateBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -590,7 +625,14 @@ class ElseGenerateBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart

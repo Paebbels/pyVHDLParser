@@ -88,7 +88,14 @@ class RangeBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    RangeBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    RangeBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -145,7 +152,14 @@ class RangeBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    RangeBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    RangeBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart

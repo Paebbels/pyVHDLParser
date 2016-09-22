@@ -85,7 +85,14 @@ class IfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected if name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -142,7 +149,14 @@ class IfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after if name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -253,7 +267,14 @@ class ElsIfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected elsIf name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -310,7 +331,14 @@ class ElsIfConditionBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after elsIf name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -421,7 +449,14 @@ class ElseBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected else name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -478,7 +513,14 @@ class ElseBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after else name."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ElseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ElseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart

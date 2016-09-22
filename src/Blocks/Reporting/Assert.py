@@ -83,7 +83,14 @@ class AssertBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected assert name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -140,7 +147,14 @@ class AssertBlock(Block):
 			token = parserState.Token
 			errorMessage = "Expected keyword IS after assert name."
 			if isinstance(token, CharacterToken):
-				if (token == "-"):
+				if (token == "\n"):
+					parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+					parserState.NewToken =    LinebreakToken(token)
+					_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.TokenMarker = None
+					parserState.PushState =   LinebreakBlock.stateLinebreak
+					return
+				elif (token == "-"):
 					parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					parserState.TokenMarker = None
 					parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart

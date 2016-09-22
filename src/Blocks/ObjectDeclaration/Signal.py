@@ -87,7 +87,14 @@ class SignalBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected signal name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -152,6 +159,13 @@ class SignalBlock(Block):
 				parserState.NewToken =    BoundaryToken(token)
 				parserState.NextState =   cls.stateColon1
 				return
+			elif (token == "\n"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
 			elif (token == "-"):
 				parserState.NewBlock = SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
@@ -214,16 +228,23 @@ class SignalBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected signal name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
-				parserState.NewBlock = SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			if (token == "\n"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
@@ -278,6 +299,13 @@ class SignalBlock(Block):
 			if (token == ":"):
 				parserState.NewToken =    BoundaryToken(token)
 				parserState.NextState =   cls.statePossibleVariableAssignment
+				return
+			elif (token == "\n"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -343,10 +371,17 @@ class SignalBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected expression after ':='."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
-				parserState.NewBlock = SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			if (token == "\n"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    SignalBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):

@@ -87,7 +87,14 @@ class SharedVariableBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected sharedVariable name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -152,16 +159,23 @@ class SharedVariableBlock(Block):
 				parserState.NewToken =    BoundaryToken(token)
 				parserState.NextState =   cls.stateColon1
 				return
-			elif (token == "-"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			elif (token == "\n"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
@@ -214,16 +228,23 @@ class SharedVariableBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected sharedVariable name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			if (token == "\n"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
@@ -279,6 +300,13 @@ class SharedVariableBlock(Block):
 				parserState.NewToken =    BoundaryToken(token)
 				parserState.NextState =   cls.statePossibleVariableAssignment
 				return
+			elif (token == "\n"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
 			elif (token == "-"):
 				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
@@ -319,17 +347,17 @@ class SharedVariableBlock(Block):
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace5
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace5
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace5
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace5
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
@@ -343,10 +371,17 @@ class SharedVariableBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected expression after ':='."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
-				parserState.NewBlock = SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			if (token == "\n"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =    SharedVariableBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):

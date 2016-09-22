@@ -83,7 +83,14 @@ class ReportBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected report name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "-"):
+			if (token == "\n"):
+				parserState.NewBlock =    ReportBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
 				parserState.NewBlock =    ReportBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
@@ -140,7 +147,14 @@ class ReportBlock(Block):
 			token = parserState.Token
 			errorMessage = "Expected keyword IS after report name."
 			if isinstance(token, CharacterToken):
-				if (token == "-"):
+				if (token == "\n"):
+					parserState.NewBlock =    ReportBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+					parserState.NewToken =    LinebreakToken(token)
+					_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.TokenMarker = None
+					parserState.PushState =   LinebreakBlock.stateLinebreak
+					return
+				elif (token == "-"):
 					parserState.NewBlock =    ReportBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					parserState.TokenMarker = None
 					parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
