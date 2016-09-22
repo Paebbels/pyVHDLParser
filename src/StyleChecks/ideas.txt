@@ -1,0 +1,28 @@
+Checkable rules
+=====================
+
+1. license / header check
+   parse first consecutive comment lines after StartOfDocument
+
+2. n empty lines between
+   - library/use and entity
+   - entity and architecture
+   - package and package body
+
+3. warn multi entity per document
+
+4. naming style for identifiers
+   - search for xxx name, apply a regexp
+
+5. check for END <keyword>
+   - check if EndKeyword is followed by XxxKeyword before EndToken
+
+6. check trailing white space
+   - check for space tokens before linebreak tokens
+
+7. check lower cases keywords
+   - scan all keywords and check for is_lower
+
+8. check indentations
+   - tab vs. space / mixed?
+
