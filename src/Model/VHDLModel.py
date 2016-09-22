@@ -150,7 +150,7 @@ class PackageBody(ModelEntity):
 		self._declaredItems =   []
 
 
-class UseClause(ModelEntity):
+class Use(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._library = None
@@ -158,7 +158,7 @@ class UseClause(ModelEntity):
 		self._item =    None
 
 
-class LibraryClause(ModelEntity):
+class LibraryReference(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._library = None

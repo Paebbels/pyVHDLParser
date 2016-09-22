@@ -38,10 +38,10 @@ class TokenToBlockParser:
 		firstToken =  next(iterator)
 		firstBlock =  StartOfDocumentBlock(firstToken)
 		startState =  StartOfDocumentBlock.stateDocument
-		return cls.__BlockParserState(startState, firstBlock, debug=debug).GetGenerator(iterator)
+		return cls.__TokenParserState(startState, firstBlock, debug=debug).GetGenerator(iterator)
 
 
-	class __BlockParserState:
+	class __TokenParserState:
 		def __init__(self, startState, startBlock, debug):
 			self._stack =       []
 			self._tokenMarker = None
