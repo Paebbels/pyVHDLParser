@@ -54,8 +54,9 @@ class UseBlock(Block):
 		errorMessage = "Expected whitespace after keyword USE."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -115,8 +116,9 @@ class UseBlock(Block):
 				parserState.NextState =   cls.stateDot1
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -175,8 +177,9 @@ class UseBlock(Block):
 				parserState.NextState =   cls.stateDot2
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -239,8 +242,9 @@ class UseBlock(Block):
 				parserState.Pop()
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    UseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak

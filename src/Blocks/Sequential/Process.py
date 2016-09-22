@@ -54,21 +54,15 @@ class OpenBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "("):
 				parserState.NewToken =    BoundaryToken(token)
-
-				# print(dir(OpenBlock))
-				print(OpenBlock.__init__)
-				print(OpenBlock.__qualname__)
-				print(OpenBlock.__class__.__qualname__)
-
-				a = OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-				parserState.NewBlock =    a
+				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateDeclarativeRegion
 				parserState.PushState =   SensitivityList.OpenBlock.stateOpeningParenthesis
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak

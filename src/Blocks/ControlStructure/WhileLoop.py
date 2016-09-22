@@ -53,8 +53,9 @@ class ConditionBlock(Block):
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -110,10 +111,11 @@ class ConditionBlock(Block):
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace2
+				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):

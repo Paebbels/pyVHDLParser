@@ -41,8 +41,7 @@ class ReturnBlock(Block):
 			self.stateReturnKeyword,
 			self.stateWhitespace1,
 			self.stateReturnName,
-			self.stateWhitespace2,
-			self.stateDeclarativeRegion
+			self.stateWhitespace2
 		]
 
 	@classmethod
@@ -51,8 +50,9 @@ class ReturnBlock(Block):
 		errorMessage = "Expected whitespace after keyword RETURN."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ReturnBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ReturnBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -108,8 +108,9 @@ class ReturnBlock(Block):
 		errorMessage = "Expected whitespace after keyword RETURN."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ReturnBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ReturnBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak

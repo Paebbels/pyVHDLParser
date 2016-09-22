@@ -54,8 +54,9 @@ class ConstantBlock(Block):
 		errorMessage = "Expected whitespace after keyword CONSTANT."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -115,8 +116,9 @@ class ConstantBlock(Block):
 				parserState.NextState =   cls.stateColon1
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -175,8 +177,9 @@ class ConstantBlock(Block):
 		errorMessage = "Expected typemark or whitespace after ':'."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
+				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace3
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -240,23 +243,24 @@ class ConstantBlock(Block):
 				parserState.NextState =   cls.statePossibleVariableAssignment
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace2
+				parserState.NextState =   cls.stateWhitespace4
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace2
+				parserState.NextState =   cls.stateWhitespace4
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
 				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace2
+				parserState.NextState =   cls.stateWhitespace4
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
@@ -307,11 +311,12 @@ class ConstantBlock(Block):
 		errorMessage = "Expected ':=' or whitespace after type mark."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken = LinebreakToken(token)
-				parserState.NewBlock = ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace5
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.NextState =   cls.stateWhitespace5
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
 				parserState.NewBlock = ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
