@@ -104,3 +104,6 @@ end architecture rtl21;
 architecture rtl23 of myEntity23 is
 begin
 end architecture rtl23 ;
+
+architecture/* comment0 */rtl24/* comment1 */of/* comment2 */myEntity24/* comment3 */is/* comment4 */begin/* comment5 */end/* comment6 */;/* comment7 */
+architecture /* comment0 */ rtl25 /* comment1 */ of /* comment2 */ myEntity25 /* comment3 */ is /* comment4 */ begin /* comment5 */ end /* comment6 */ ; /* comment7 */

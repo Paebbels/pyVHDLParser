@@ -33,7 +33,7 @@ from src.Token.Keywords       import IsKeyword, EndKeyword, GenericKeyword, Port
 from src.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import LinebreakBlock, IndentationBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.List          import GenericList, PortList
 from src.Blocks.Sequential    import Process
@@ -115,6 +115,11 @@ class IfConditionBlock(Block):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -182,6 +187,11 @@ class IfConditionBlock(Block):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
+			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -357,6 +367,11 @@ class ElsIfConditionBlock(Block):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -424,6 +439,11 @@ class ElsIfConditionBlock(Block):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
+			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -599,6 +619,11 @@ class ElseGenerateBlock(Block):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -666,6 +691,11 @@ class ElseGenerateBlock(Block):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
+			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -856,6 +886,11 @@ class EndGenerateBlock(Block):
 				parserState.NewToken =    IdentifierToken(token)
 				parserState.NextState =   cls.stateGenerateName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -934,6 +969,11 @@ class EndGenerateBlock(Block):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateGenerateName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -1005,5 +1045,10 @@ class EndGenerateBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)

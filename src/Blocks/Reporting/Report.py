@@ -31,7 +31,7 @@ from src.Token.Keywords       import *
 from src.Token.Parser         import *
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import LinebreakBlock, IndentationBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
@@ -109,6 +109,11 @@ class ReportBlock(Block):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateReportName
 			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -176,6 +181,11 @@ class ReportBlock(Block):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ReportBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
+			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)

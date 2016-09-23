@@ -31,7 +31,7 @@ from src.Token.Keywords       import *
 from src.Token.Parser         import *
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import LinebreakBlock, IndentationBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
@@ -121,6 +121,11 @@ class OpenBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 
@@ -282,6 +287,7 @@ class CloseBlock(Block):
 				parserState.Pop()
 				return
 			elif (token == "\n"):
+				# TODO: review this linebreak case
 				parserState.NewToken = LinebreakToken(token)
 				parserState.PushState = LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
@@ -298,6 +304,11 @@ class CloseBlock(Block):
 				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)
 

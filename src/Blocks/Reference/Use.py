@@ -31,7 +31,7 @@ from src.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierTo
 from src.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import LinebreakBlock
+from src.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 
@@ -112,6 +112,11 @@ class UseBlock(Block):
 		elif isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateLibraryName
+			return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -325,5 +330,10 @@ class UseBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
 
 		raise BlockParserException(errorMessage, token)

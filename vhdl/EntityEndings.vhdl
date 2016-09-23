@@ -63,3 +63,7 @@ end entity myEntity22;
 
 entity myEntity23 is
 end entity myEntity23 ;
+
+entity/* comment0 */myEntity24/* comment1 */is/* comment2 */end/* comment3 */;/* comment4 */
+
+entity /* comment0 */ myEntity25 /* comment1 */ is /* comment2 */ end /* comment3 */ ; /* comment4 */

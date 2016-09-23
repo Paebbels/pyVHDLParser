@@ -35,14 +35,9 @@ from src.Blocks.Base          import Block
 
 
 class WhitespaceBlock(Block):
-	pass
-
-class SimpleWhitespaceBlock(WhitespaceBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
 
-
-class LinebreakBlock(SimpleWhitespaceBlock):
 	def __str__(self):
 		return "[{blockName: <30s}  {stream}  at {start!s} .. {end!s}]".format(
 			blockName=type(self).__name__,
@@ -51,6 +46,8 @@ class LinebreakBlock(SimpleWhitespaceBlock):
 			end=self.EndToken.End
 		)
 
+
+class LinebreakBlock(WhitespaceBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState):
 		token = parserState.Token
@@ -71,7 +68,7 @@ class EmptyLineBlock(LinebreakBlock):
 	pass
 
 
-class IndentationBlock(SimpleWhitespaceBlock):
+class IndentationBlock(WhitespaceBlock):
 	__TABSIZE__ = 2
 
 	def __str__(self):
@@ -339,6 +336,11 @@ class SensitivityList:
 					parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 					parserState.TokenMarker = token
 					return
+			elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				parserState.NewToken =      BoundaryToken(token)
+				parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker =   None
+				return
 
 			raise BlockParserException(errorMessage, token)
 
