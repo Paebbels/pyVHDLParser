@@ -102,10 +102,14 @@ begin
 end architecture;
 ```
 
-And this is the filtered and fused result stream:
+This is the result stream:
 [![][4]][4] 
 
- [4]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1_Fused.png
+And this is the filtered and fused result stream:
+[![][5]][5]
+
+ [4]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1.png
+ [5]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1_Fused.png
 
 
 #### License
