@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+from src.Blocks.Exception import BlockParserException
 from src.Token.Parser import ParserException, StringToken
 from src.Token.Tokens import ValuedToken
 
@@ -40,35 +41,35 @@ class IndentationToken(VHDLToken):
 		super().__init__(spaceToken.PreviousToken, spaceToken.Value, spaceToken.Start, spaceToken.End)
 
 	def __str__(self):
-		return "<IndentationToken '{value}' at {line}:{col}>".format(value=self.Value, line=self.Start.Row, col=self.Start.Column)
+		return "<IndentationToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class BoundaryToken(VHDLToken):
 	def __init__(self, spaceToken):
 		super().__init__(spaceToken.PreviousToken, spaceToken.Value, spaceToken.Start, spaceToken.End)
 
 	def __str__(self):
-		return "<BoundaryToken '{value}' at {line}:{col}>".format(value=self.Value, line=self.Start.Row, col=self.Start.Column)
+		return "<BoundaryToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class LinebreakToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
 	def __str__(self):
-		return "<LinebreakToken '\\n' at {line}:{col}>".format(line=self.Start.Row, col=self.Start.Column)
+		return "<LinebreakToken '\\n' at {pos!r}>".format(pos=self.Start)
 
 class DelimiterToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
 	def __str__(self):
-		return "<DelimiterToken '{value}' at {line}:{col}>".format(value=self.Value, line=self.Start.Row, col=self.Start.Column)
+		return "<DelimiterToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class EndToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
 	def __str__(self):
-		return "<EndToken ';' at {line}:{col}>".format(line=self.Start.Row, col=self.Start.Column)
+		return "<EndToken ';' at {pos!r}>".format(pos=self.Start)
 
 
 class IdentifierToken(VHDLToken):
@@ -76,35 +77,32 @@ class IdentifierToken(VHDLToken):
 		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
 
 	def __str__(self):
-		return "<Identifier '{value}' at {line}:{col}>".format(
-			value=self.Value, line=self.Start.Row, col=self.Start.Column)
+		return "<Identifier '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 
-class CommentKeyword(VHDLToken):
+class TwoCharKeyword(VHDLToken):
 	__KEYWORD__ = None
 
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.NextToken.End)
 
 	def __str__(self):
-		return "<{className} '{value}'>".format(className=self.__class__.__name__, value=self.__KEYWORD__)
+		return "<{className} '{value}' at {pos!r}>".format(
+			className=self.__class__.__name__[:-7],
+			value=self.__KEYWORD__,
+			pos=self.Start
+		)
 
+
+class CommentKeyword(TwoCharKeyword):                         pass
 class SingleLineCommentKeyword(CommentKeyword):               __KEYWORD__ = "--"
 class MultiLineCommentKeyword(CommentKeyword):                pass
 class MultiLineCommentStartKeyword(MultiLineCommentKeyword):  __KEYWORD__ = "/*"
 class MultiLineCommentEndKeyword(MultiLineCommentKeyword):    __KEYWORD__ = "*/"
 
-class AssignmentKeyword(VHDLToken):
-	__KEYWORD__ = None
-
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.NextToken.End)
-
-	def __str__(self):
-		return "<{className} '{value}'>".format(className=self.__class__.__name__, value=self.__KEYWORD__)
-
-class VariableAssignmentKeyword(AssignmentKeyword):  __KEYWORD__ = ":="
-class SignalAssignmentKeyword(AssignmentKeyword):    __KEYWORD__ = "<="
+class AssignmentKeyword(TwoCharKeyword):                      pass
+class VariableAssignmentKeyword(AssignmentKeyword):           __KEYWORD__ = ":="
+class SignalAssignmentKeyword(AssignmentKeyword):             __KEYWORD__ = "<="
 
 
 class KeywordToken(VHDLToken):

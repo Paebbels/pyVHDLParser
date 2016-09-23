@@ -323,20 +323,20 @@ class SensitivityList:
 					parserState.Pop()
 					return
 				elif (token == "\n"):
-					parserState.NewToken = LinebreakToken(token)
-					parserState.PushState = LinebreakBlock.stateLinebreak
+					parserState.NewToken =    LinebreakToken(token)
+					parserState.PushState =   LinebreakBlock.stateLinebreak
 					parserState.TokenMarker = parserState.NewToken
 					return
 				elif (token == "-"):
-					parserState.NewBlock = SensitivityList.CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+					parserState.NewBlock =    SensitivityList.CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					parserState.TokenMarker = None
-					parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+					parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 					parserState.TokenMarker = token
 					return
 				elif (token == "/"):
-					parserState.NewBlock = SensitivityList.CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+					parserState.NewBlock =    SensitivityList.CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					parserState.TokenMarker = None
-					parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+					parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 					parserState.TokenMarker = token
 					return
 

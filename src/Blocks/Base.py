@@ -45,7 +45,7 @@ class Block:
 
 	def __iter__(self):
 		token = self.StartToken
-		# print("start={0!s}  end={1!s}".format(self.StartToken, self.EndToken))
+		# print("block={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):

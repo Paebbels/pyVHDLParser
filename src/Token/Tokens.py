@@ -34,6 +34,9 @@ class SourceCodePosition:
 		self.Column =    column
 		self.Absolute =  absolute
 
+	def __repr__(self):
+		return "{0}:{1}".format(self.Row, self.Column)
+
 	def __str__(self):
 		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
 

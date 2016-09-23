@@ -84,9 +84,12 @@ class AssertBlock(Block):
 		errorMessage = "Expected assert name (identifier)."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+					parserState.NewBlock =  AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				else:
+					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
@@ -144,33 +147,35 @@ class AssertBlock(Block):
 
 	@classmethod
 	def stateWhitespace2(cls, parserState):
-			token = parserState.Token
-			errorMessage = "Expected keyword IS after assert name."
-			if isinstance(token, CharacterToken):
-				if (token == "\n"):
-					parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-					parserState.NewToken =    LinebreakToken(token)
-					_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
-					parserState.TokenMarker = None
-					parserState.PushState =   LinebreakBlock.stateLinebreak
-					return
-				elif (token == "-"):
-					parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-					parserState.TokenMarker = None
-					parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
-					parserState.TokenMarker = token
-					return
-				elif (token == "/"):
-					parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-					parserState.TokenMarker = None
-					parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
-					parserState.TokenMarker = token
-					return
-			elif (isinstance(token, StringToken) and (token <= "is")):
-				parserState.NewToken =      IsKeyword(token)
-				parserState.NewBlock =      AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-				parserState.NextState =     cls.stateDeclarativeRegion
+		token = parserState.Token
+		errorMessage = "Expected keyword IS after assert name."
+		if isinstance(token, CharacterToken):
+			if (token == "\n"):
+				parserState.NewToken =    LinebreakToken(token)
+				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+					parserState.NewBlock =  AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				else:
+					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
+			elif (token == "-"):
+				parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker = token
+				return
+			elif (token == "/"):
+				parserState.NewBlock =    AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker = None
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker = token
+				return
+		elif (isinstance(token, StringToken) and (token <= "is")):
+			parserState.NewToken =      IsKeyword(token)
+			parserState.NewBlock =      AssertBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NextState =     cls.stateDeclarativeRegion
+			return
 
-			raise BlockParserException(errorMessage, token)
-
+		raise BlockParserException(errorMessage, token)

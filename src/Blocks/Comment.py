@@ -97,7 +97,14 @@ class MultiLineCommentBlock(CommentBlock):
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   cls.stateConsumeComment
 			return
-
+		else:
+			parserState.Pop()
+			# if (parserState.TokenMarker is None):
+				# print("  new marker: None -> {0!s}".format(token))
+				# parserState.TokenMarker = token
+			# print("  re-issue: {0!s}".format(parserState))
+			parserState.NextState(parserState)
+			
 		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
 
 	@classmethod
@@ -121,3 +128,4 @@ class MultiLineCommentBlock(CommentBlock):
 			return
 		else:
 			parserState.Pop()
+			parserState.NextState(parserState)
