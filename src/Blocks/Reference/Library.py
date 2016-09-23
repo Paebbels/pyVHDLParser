@@ -157,6 +157,13 @@ class LibraryBlock(Block):
 				parserState.NewBlock =    LibraryBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
+			elif (token == "\n"):
+				parserState.NewBlock =    LibraryBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.PushState =   LinebreakBlock.stateLinebreak
+				return
 			elif (token == "-"):
 				parserState.NewBlock =    LibraryBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None

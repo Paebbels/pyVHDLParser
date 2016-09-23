@@ -191,6 +191,7 @@ class ItemBlock(Block):
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
+
 class DelimiterBlock(Block):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
