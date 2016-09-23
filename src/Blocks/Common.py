@@ -39,12 +39,7 @@ class WhitespaceBlock(Block):
 
 class SimpleWhitespaceBlock(WhitespaceBlock):
 	def __init__(self, previousBlock, startToken):
-		previousBlock.NextBlock = self
-		self._previousBlock =     previousBlock
-		self.NextBlock =          None
-		self.StartToken =         startToken
-		self.EndToken =           startToken
-		self.MultiPart =          False
+		super().__init__(previousBlock, startToken, startToken)
 
 
 class LinebreakBlock(SimpleWhitespaceBlock):

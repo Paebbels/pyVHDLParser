@@ -96,8 +96,9 @@ class OpenBlock(Block):
 				parserState.Counter =     1
 				return
 			elif (token == "\n"):
+				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -132,23 +133,17 @@ class OpenBlock(Block):
 				return
 			elif (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
-				# parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				# parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
-				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token == "-"):
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
@@ -188,14 +183,18 @@ class ItemBlock(Block):
 					parserState.TokenMarker = parserState.NewToken
 			elif (token == ";"):
 				if (parserState.Counter == 1):
-					parserState.NewToken =  DelimiterToken(token)
-					parserState.NewBlock =  ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					parserState.TokenMarker = parserState.NewToken
-					parserState.NextState = DelimiterBlock.stateItemDelimiter
+					parserState.NewToken =    DelimiterToken(token)
+					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
+
 class DelimiterBlock(Block):
+	def __init__(self, previousBlock, startToken):
+		super().__init__(previousBlock, startToken, startToken)
+
 	def RegisterStates(self):
 		return [
 			self.stateItemDelimiter
@@ -206,11 +205,12 @@ class DelimiterBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected generic name (identifier)."
 
-		# produce a new block for the last generated token (delimiter)
-		parserState.NewBlock =        DelimiterBlock(parserState.LastBlock, parserState.TokenMarker, parserState.TokenMarker)
-
 		if (isinstance(token, CharacterToken) and (token == "\n")):
+			parserState.NewToken =      LinebreakToken(token)
+			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			parserState.NextState =     OpenBlock.stateOpeningParenthesis
+			parserState.PushState =     LinebreakBlock.stateLinebreak
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NextState =     OpenBlock.stateOpeningParenthesis
