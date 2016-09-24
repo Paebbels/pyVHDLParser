@@ -27,11 +27,12 @@
 # limitations under the License.
 # ==============================================================================
 #
+from src.Blocks.List import SensitivityList
 from src.Token.Keywords       import *
 from src.Token.Parser         import *
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
-from src.Blocks.Common        import LinebreakBlock, IndentationBlock, SensitivityList, WhitespaceBlock
+from src.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from src.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop
 from src.Blocks.Reporting     import Report

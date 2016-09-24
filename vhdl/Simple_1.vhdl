@@ -17,5 +17,8 @@ end entity;
 architecture rtl of myEntity is
 
 begin
-
+	process(Clock)
+	begin
+	end process;
+	
 end architecture;
