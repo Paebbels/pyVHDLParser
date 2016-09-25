@@ -112,7 +112,7 @@ if (mode & 4 == 4):
 		if (not isinstance(firstBlock, StartOfDocumentBlock)):
 			print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
 		elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)):
-			print("{RED}First block is not StartOfDocumentBlock: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
+			print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
 
 		lastBlock = None
 		lastToken = firstBlock.StartToken
@@ -156,9 +156,9 @@ if (mode & 4 == 4):
 			print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
 
 		if (not isinstance(lastBlock, EndOfDocumentBlock)):
-			print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
+			print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
 		elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)):
-			print("{RED}First block is not StartOfDocumentBlock: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
+			print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
 
 	except ParserException as ex:
 		print("ERROR: " + str(ex))

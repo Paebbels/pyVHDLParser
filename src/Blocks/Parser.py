@@ -28,7 +28,9 @@
 # ==============================================================================
 #
 from src.Blocks.Common import LinebreakBlock, EmptyLineBlock
-from src.Blocks.Document      import StartOfDocumentBlock
+from src.Blocks.Document      import StartOfDocumentBlock, EndOfDocumentBlock
+from src.Blocks.Exception import BlockParserException
+from src.Token.Tokens import EndOfDocumentToken
 
 
 class TokenToBlockParser:
@@ -125,4 +127,12 @@ class TokenToBlockParser:
 					yield self.LastBlock
 
 				# execute a state
+				# try:
 				self.NextState(self)
+				# except StopIteration as ex:
+				# 	break
+			else:
+				if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
+					yield self.NewBlock
+				else:
+					raise BlockParserException("Unexpected end of document.", self.Token)

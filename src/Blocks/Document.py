@@ -110,7 +110,7 @@ class StartOfDocumentBlock(Block):
 			return
 		elif isinstance(token, EndOfDocumentToken):
 			parserState.NewBlock =      EndOfDocumentBlock(token)
-			raise StopIteration()
+			return
 		else:  # tokenType
 			raise BlockParserException(errorMessage, token)
 

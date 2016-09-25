@@ -34,8 +34,6 @@ from src.Blocks.Structural  import Entity as EntityBlock
 
 
 class Entity(EntityModel):
-	pass
-
 	@classmethod
 	def stateParse(cls, parserState, currentBlock, blockIterator):
 		if currentBlock.MultiPart:

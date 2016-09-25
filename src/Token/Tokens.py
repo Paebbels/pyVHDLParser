@@ -130,8 +130,8 @@ class CharacterToken(ValuedToken):
 	}
 
 	def __str__(self):
-		return "<CharacterToken '{char}' at {line}:{col}>".format(
-						char=self.__repr__(), pos=self.Start.Absolute, line=self.Start.Row, col=self.Start.Column)
+		return "<CharacterToken '{char}' at {pos!r}>".format(
+						char=self.__repr__(), pos=self.Start)
 
 	def __repr__(self):
 		if (self.Value in self.__CHARACTER_TRANSLATION__):
@@ -142,18 +142,18 @@ class CharacterToken(ValuedToken):
 
 class SpaceToken(ValuedToken):
 	def __str__(self):
-		return "<SpaceToken '{value}' at {line}:{col}>".format(
-						value=self.Value, pos=self.Start.Absolute, line=self.Start.Row, col=self.Start.Column)
+		return "<SpaceToken '{value}' at {pos!r}>".format(
+						value=self.Value, pos=self.Start)
 
 class DelimiterToken(ValuedToken):
 	def __str__(self):
-		return "<DelimiterToken '{value}' at {line}:{col}>".format(
-						value=self.Value, pos=self.Start.Absolute, line=self.Start.Row, col=self.Start.Column)
+		return "<DelimiterToken '{value}' at {pos!r}>".format(
+						value=self.Value, pos=self.Start)
 
 class NumberToken(ValuedToken):
 	def __str__(self):
-		return "<NumberToken '{value}' at {line}:{col}>".format(
-						value=self.Value, pos=self.Start.Absolute, line=self.Start.Row, col=self.Start.Column)
+		return "<NumberToken '{value}' at {pos!r}>".format(
+						value=self.Value, pos=self.Start)
 
 class StringToken(ValuedToken):
 	def __eq__(self, other):  return self.Value == other
@@ -162,5 +162,5 @@ class StringToken(ValuedToken):
 	def __ge__(self, other):  return self.Value.upper() == other
 
 	def __str__(self):
-		return "<StringToken '{value}' at {line}:{col}>".format(
-						value=self.Value, pos=self.Start.Absolute, line=self.Start.Row, col=self.Start.Column)
+		return "<StringToken '{value}' at {pos!r}>".format(
+						value=self.Value, pos=self.Start)
