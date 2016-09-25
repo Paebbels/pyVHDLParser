@@ -32,14 +32,14 @@ from pathlib import Path
 import sys
 
 from src.Base               import ParserException
-from src.Filter.Comment     import StripAndFuse
+from src.Filters.Comment     import StripAndFuse
 from src.Functions          import Console, Exit
 from src.Token.Tokens       import EndOfDocumentToken
 from src.Token.Parser       import Tokenizer, StartOfDocumentToken
 from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from src.Blocks.Parser      import TokenToBlockParser
 
-from test                   import LibraryTest, EntityEndingsTest, ArchitectureEndingsTest
+from test                   import LibraryTest, UseTest, EntityTest, GenericListTest, PortListTest, ArchitectureTest, ProcessTest
 
 
 Console.init()
@@ -47,10 +47,14 @@ Console.init()
 rootDirectory = Path(".")
 vhdlDirectory = rootDirectory / "vhdl"
 
-testSuites = [
+testCases = [
 	LibraryTest.TestCase,
-	EntityEndingsTest.TestCase,
-	ArchitectureEndingsTest.TestCase
+	UseTest.TestCase,
+	EntityTest.TestCase,
+	GenericListTest.TestCase,
+	PortListTest.TestCase,
+	ArchitectureTest.TestCase,
+	ProcessTest.TestCase
 ]
 
 alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
@@ -59,11 +63,13 @@ runExpectedBlocks =           True
 runExpectedBlocksAfterStrip = not True
 runConnectivity =             True
 
-for testSuite in testSuites:
-	file = vhdlDirectory / testSuite.__FILENAME__
+for testCase in testCases:
+	print("Testcase: {CYAN}{name}.{NOCOLOR}".format(name=testCase.__NAME__, **Console.Foreground))
+
+	file = vhdlDirectory / testCase.__FILENAME__
 
 	if (not file.exists()):
-		print("File '{0!s}' does not exist.".format(file))
+		print("  {RED}File '{0!s}' does not exist.{NOCOLOR}".format(file, **Console.Foreground))
 		continue
 
 	with file.open('r') as fileHandle:
@@ -71,7 +77,7 @@ for testSuite in testSuites:
 
 	# History check
 	if runExpectedBlocks:
-		counter =         testSuite.GetExpectedBlocks()
+		counter =         testCase.GetExpectedBlocks()
 		wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
 		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
 
@@ -90,7 +96,7 @@ for testSuite in testSuites:
 
 	# History check
 	if runExpectedBlocksAfterStrip:
-		counter =             testSuite.GetExpectedBlocksAfterStrip()
+		counter =             testCase.GetExpectedBlocksAfterStrip()
 		wordTokenStream =     Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
 		vhdlBlockStream =     TokenToBlockParser.Transform(wordTokenStream)
 		strippedBlockStream = StripAndFuse(vhdlBlockStream)
@@ -141,5 +147,7 @@ for testSuite in testSuites:
 
 		except ParserException as ex:     print("ERROR: " + str(ex))
 		except NotImplementedError as ex: print("NotImplementedError: " + str(ex))
+
+	print()
 
 print("COMPLETED")

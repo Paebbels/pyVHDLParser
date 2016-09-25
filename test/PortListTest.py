@@ -30,12 +30,14 @@
 from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from src.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Structural          import Architecture
+from src.Blocks.Structural          import Entity
+from src.Blocks.List                import PortList
 from test.Counter                   import Counter
 
 
 class TestCase:
-	__FILENAME__ = "ArchitectureEndings.vhdl"
+	__NAME__ =      "Port lists"
+	__FILENAME__ =  "PortList.vhdl"
 
 	def __init__(self):
 		pass
@@ -43,20 +45,23 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 15)
-		counter.AddType(LinebreakBlock, 78)
-		counter.AddType(IndentationBlock, 43)
-		counter.AddType(WhitespaceBlock, 5)
-		counter.AddType(SingleLineCommentBlock, 16)
-		counter.AddType(MultiLineCommentBlock, 32)
+		counter.AddType(EmptyLineBlock, 14)
+		counter.AddType(LinebreakBlock, 45)
+		counter.AddType(IndentationBlock, 18)
+		counter.AddType(WhitespaceBlock, 3)
+		counter.AddType(SingleLineCommentBlock, 10)
+		counter.AddType(MultiLineCommentBlock, 20)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Architecture.NameBlock, 63)
-		counter.AddType(Architecture.BeginBlock, 27)
-		counter.AddType(Architecture.EndBlock, 36)
+		counter.AddType(Entity.NameBlock, 39)
+		counter.AddType(PortList.OpenBlock, 39)
+		counter.AddType(PortList.ItemBlock, 39)
+		counter.AddType(PortList.DelimiterBlock, 39)
+		counter.AddType(PortList.CloseBlock, 39)
+		counter.AddType(Entity.EndBlock, 32)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

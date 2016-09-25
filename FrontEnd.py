@@ -32,7 +32,7 @@ from pathlib import Path
 import sys
 
 from src.Base               import ParserException
-from src.Filter.Comment     import StripAndFuse
+from src.Filters.Comment     import StripAndFuse
 from src.Functions          import Console, Exit
 from src.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
 from src.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken

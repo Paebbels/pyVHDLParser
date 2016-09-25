@@ -28,15 +28,16 @@
 # ==============================================================================
 #
 from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from src.Blocks.Comment             import SingleLineCommentBlock
+from src.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
+from src.Blocks.Structural          import Entity
+from src.Blocks.List                import GenericList
 from test.Counter                   import Counter
 
 
 class TestCase:
-	__NAME__ =      "Library clauses"
-	__FILENAME__ =  "Library.vhdl"
+	__NAME__ =      "Generic lists"
+	__FILENAME__ =  "GenericList.vhdl"
 
 	def __init__(self):
 		pass
@@ -44,20 +45,20 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 7)
-		counter.AddType(LinebreakBlock, 19)
-		counter.AddType(IndentationBlock, 12)
-		counter.AddType(WhitespaceBlock, 2)
-		counter.AddType(SingleLineCommentBlock, 7)
+		counter.AddType(EmptyLineBlock, 8)
+		counter.AddType(LinebreakBlock, 37)
+		counter.AddType(IndentationBlock, 18)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(LibraryBlock, 11)
-		counter.AddType(LibraryNameBlock, 14)
-		counter.AddType(LibraryDelimiterBlock, 3)
-		counter.AddType(LibraryEndBlock, 11)
+		counter.AddType(Entity.NameBlock, 9)
+		counter.AddType(GenericList.OpenBlock, 9)
+		counter.AddType(GenericList.ItemBlock, 13)
+		counter.AddType(GenericList.DelimiterBlock, 4)
+		counter.AddType(GenericList.CloseBlock, 9)
+		counter.AddType(Entity.EndBlock, 9)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

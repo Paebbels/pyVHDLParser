@@ -28,15 +28,15 @@
 # ==============================================================================
 #
 from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from src.Blocks.Comment             import SingleLineCommentBlock
+from src.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
+from src.Blocks.Structural          import Architecture
 from test.Counter                   import Counter
 
 
 class TestCase:
-	__NAME__ =      "Library clauses"
-	__FILENAME__ =  "Library.vhdl"
+	__NAME__ =      "Architecture declarations"
+	__FILENAME__ =  "Architecture.vhdl"
 
 	def __init__(self):
 		pass
@@ -44,20 +44,20 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 7)
-		counter.AddType(LinebreakBlock, 19)
-		counter.AddType(IndentationBlock, 12)
-		counter.AddType(WhitespaceBlock, 2)
-		counter.AddType(SingleLineCommentBlock, 7)
+		counter.AddType(EmptyLineBlock, 15)
+		counter.AddType(LinebreakBlock, 78)
+		counter.AddType(IndentationBlock, 43)
+		counter.AddType(WhitespaceBlock, 5)
+		counter.AddType(SingleLineCommentBlock, 16)
+		counter.AddType(MultiLineCommentBlock, 32)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(LibraryBlock, 11)
-		counter.AddType(LibraryNameBlock, 14)
-		counter.AddType(LibraryDelimiterBlock, 3)
-		counter.AddType(LibraryEndBlock, 11)
+		counter.AddType(Architecture.NameBlock, 63)
+		counter.AddType(Architecture.BeginBlock, 27)
+		counter.AddType(Architecture.EndBlock, 36)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

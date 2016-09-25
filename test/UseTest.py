@@ -30,13 +30,13 @@
 from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from src.Blocks.Comment             import SingleLineCommentBlock
 from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
+from src.Blocks.Reference.Use       import UseBlock#, UseNameBlock, UseDelimiterBlock, UseEndBlock
 from test.Counter                   import Counter
 
 
 class TestCase:
-	__NAME__ =      "Library clauses"
-	__FILENAME__ =  "Library.vhdl"
+	__NAME__ =      "Use clauses"
+	__FILENAME__ =  "Use.vhdl"
 
 	def __init__(self):
 		pass
@@ -55,9 +55,9 @@ class TestCase:
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(LibraryBlock, 11)
-		counter.AddType(LibraryNameBlock, 14)
-		counter.AddType(LibraryDelimiterBlock, 3)
-		counter.AddType(LibraryEndBlock, 11)
+		counter.AddType(UseBlock, 11)
+		# counter.AddType(UseNameBlock, 14)
+		# counter.AddType(UseDelimiterBlock, 3)
+		# counter.AddType(UseEndBlock, 11)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

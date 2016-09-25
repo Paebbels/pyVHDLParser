@@ -30,12 +30,15 @@
 from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from src.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
 from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Structural          import Entity
+from src.Blocks.Structural          import Architecture
+from src.Blocks.List                import SensitivityList
+from src.Blocks.Sequential          import Process
 from test.Counter                   import Counter
 
 
 class TestCase:
-	__FILENAME__ = "EntityEndings.vhdl"
+	__NAME__ =      "Process declarations"
+	__FILENAME__ =  "Process.vhdl"
 
 	def __init__(self):
 		pass
@@ -43,19 +46,26 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
+		counter.AddType(EmptyLineBlock, 6)
+		counter.AddType(LinebreakBlock, 23)
+		counter.AddType(IndentationBlock, 29)
+		counter.AddType(SingleLineCommentBlock, 9)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
+		counter.AddType(Architecture.NameBlock, 1)
+		counter.AddType(Architecture.BeginBlock, 1)
+		counter.AddType(Process.OpenBlock, 7)
+		counter.AddType(Process.OpenBlock2, 2)
+		counter.AddType(SensitivityList.OpenBlock, 7)
+		counter.AddType(SensitivityList.ItemBlock, 8)
+		counter.AddType(SensitivityList.DelimiterBlock, 1)
+		counter.AddType(SensitivityList.CloseBlock, 7)
+		counter.AddType(Process.BeginBlock, 7)
+		counter.AddType(Process.EndBlock, 7)
+		counter.AddType(Architecture.EndBlock, 1)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter
