@@ -56,7 +56,7 @@ class LinebreakBlock(WhitespaceBlock):
 			parserState.NewToken = IndentationToken(token)
 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()
-			print("  {GREEN}continue: {0!s}{NOCOLOR}".format(parserState, **Console.Foreground))
+			# print("  {GREEN}continue: {0!s}{NOCOLOR}".format(parserState, **Console.Foreground))
 		else:
 			parserState.Pop()
 			if (parserState.TokenMarker is None):

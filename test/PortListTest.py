@@ -45,23 +45,21 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
+		counter.AddType(EmptyLineBlock, 8)
+		counter.AddType(LinebreakBlock, 37)
 		counter.AddType(IndentationBlock, 18)
 		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(PortList.OpenBlock, 39)
-		counter.AddType(PortList.ItemBlock, 39)
-		counter.AddType(PortList.DelimiterBlock, 39)
-		counter.AddType(PortList.CloseBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
+		counter.AddType(Entity.NameBlock, 9)
+		counter.AddType(PortList.OpenBlock, 9)
+		counter.AddType(PortList.ItemBlock, 13)
+		counter.AddType(PortList.DelimiterBlock, 4)
+		counter.AddType(PortList.CloseBlock, 9)
+		counter.AddType(Entity.EndBlock, 9)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter
