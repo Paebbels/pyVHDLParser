@@ -32,7 +32,6 @@ from pathlib import Path
 import sys
 
 from src.Base               import ParserException
-from src.Blocks.Reference.Library import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
 from src.Filter.Comment     import StripAndFuse
 from src.Functions          import Console, Exit
 from src.Token.Tokens       import EndOfDocumentToken
@@ -40,8 +39,7 @@ from src.Token.Parser       import Tokenizer, StartOfDocumentToken
 from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from src.Blocks.Parser      import TokenToBlockParser
 
-from test import LibraryTest
-from test.Counter import Counter
+from test                   import LibraryTest, EntityEndingsTest, ArchitectureEndingsTest
 
 
 Console.init()
@@ -50,7 +48,9 @@ rootDirectory = Path(".")
 vhdlDirectory = rootDirectory / "vhdl"
 
 testSuites = [
-	LibraryTest.TestCase
+	LibraryTest.TestCase,
+	EntityEndingsTest.TestCase,
+	ArchitectureEndingsTest.TestCase
 ]
 
 alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
