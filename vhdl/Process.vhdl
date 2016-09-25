@@ -25,15 +25,15 @@ begin
 	process(Clock) is begin
 	end process;
 
-	proc:process(Clock)
-	begin
-	end process;
+	-- proc:process(Clock)
+	-- begin
+	-- end process;
 
-	proc: process(Clock)
-	begin
-	end process;
+	-- proc: process(Clock)
+	-- begin
+	-- end process;
 
-	proc : process(Clock)
-	begin
-	end process;
+	-- proc : process(Clock)
+	-- begin
+	-- end process;
 end architecture;

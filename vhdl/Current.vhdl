@@ -1,2 +1,9 @@
-entity/* comment0 */myEntity1/* comment1 */is/* comment2 */end/* comment3 */;/* comment4 */
-entity /* comment0 */ myEntity1 /* comment1 */ is /* comment2 */ end /* comment3 */ ; /* comment4 */
+architecture rtl of myEntity is
+begin
+	process(Clock) is
+	begin
+	end process;
+
+	process(Clock) is begin
+	end process;
+end architecture;

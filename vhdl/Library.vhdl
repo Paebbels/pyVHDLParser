@@ -23,3 +23,11 @@ library-- comment
 library
 library7
 ;
+
+library library81, library82;
+
+library library91, library92;
+
+library
+	library101,
+	library102;

@@ -123,9 +123,9 @@ class CharacterToken(ValuedToken):
 	def __ne__(self, other):  return self.Value != other
 
 	__CHARACTER_TRANSLATION__ = {
-		"\r":    "CR",
-		"\n":    "NL",
-		"\t":    "TAB",
+		"\r":    "\\r",
+		"\n":    "\\n",
+		"\t":    "\\t",
 		" ":     "SPACE"
 	}
 

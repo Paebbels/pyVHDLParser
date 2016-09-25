@@ -68,7 +68,11 @@ class Block:
 
 	def __str__(self):
 		return "[{blockName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
-			blockName=type(self).__name__ + ("*" if self.MultiPart else ""),
+			blockName="{module}.{classname}{multiparted}".format(
+				module=self.__module__.rpartition(".")[2],
+				classname=self.__class__.__name__,
+				multiparted=("*" if self.MultiPart else "")
+			),
 			stream="'" + repr(self) + "'",
 			start=self.StartToken.Start,
 			end=self.EndToken.End

@@ -44,8 +44,7 @@ class OpenBlock(Block):
 	def RegisterStates(self):
 		return [
 			self.stateProcessKeyword,
-			self.stateWhitespace1,
-			self.stateDeclarativeRegion
+			self.stateWhitespace1
 		]
 
 	@classmethod
@@ -54,11 +53,13 @@ class OpenBlock(Block):
 		errorMessage = "Expected '(' or whitespace after keyword "
 		if isinstance(token, CharacterToken):
 			if (token == "("):
+				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				parserState.NewToken =    BoundaryToken(token)
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       SensitivityList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState =   cls.stateDeclarativeRegion
+				parserState.NextState =   OpenBlock2.stateAfterSensitivityList
 				parserState.PushState =   SensitivityList.OpenBlock.stateOpeningParenthesis
+				parserState.Counter =     1
 				return
 			elif (token == "\n"):
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -94,11 +95,13 @@ class OpenBlock(Block):
 		errorMessage = "Expected '(' after PROCESS keyword."
 		if isinstance(token, CharacterToken):
 			if (token == "("):
+				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				parserState.NewToken =    BoundaryToken(token)
-				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       SensitivityList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   OpenBlock2.stateAfterSensitivityList
+				parserState.PushState =   SensitivityList.OpenBlock.stateOpeningParenthesis
+				parserState.Counter =     1
 				return
 			elif (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
@@ -127,6 +130,93 @@ class OpenBlock(Block):
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
+
+		raise BlockParserException(errorMessage, token)
+
+
+class OpenBlock2(Block):
+	def RegisterStates(self):
+		return [
+			self.stateAfterSensitivityList,
+			self.stateWhitespace1,
+			self.stateDeclarativeRegion
+		]
+	@classmethod
+	def stateAfterSensitivityList(cls, parserState):
+		token = parserState.Token
+		if isinstance(parserState.Token, CharacterToken):
+			if (token == "\n"):
+				parserState.NewToken =      LinebreakToken(token)
+				parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker =   None
+				parserState.NextState =     cls.stateWhitespace1
+				parserState.PushState =     LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.PushState =     SingleLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
+				return
+			elif (token == "/"):
+				parserState.PushState =     MultiLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
+				return
+		elif isinstance(token, SpaceToken):
+			parserState.NewToken =        BoundaryToken(token)
+			parserState.TokenMarker =     parserState.NewToken
+			parserState.NextState =       cls.stateWhitespace1
+			return
+		elif isinstance(token, StringToken):
+			if (token <= "is"):
+				parserState.NewToken =      IsKeyword(token)
+				parserState.NewBlock =      OpenBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				return
+			else:
+				parserState.NextState =     cls.stateDeclarativeRegion
+				parserState.NextState(parserState)
+				return
+
+	@classmethod
+	def stateWhitespace1(cls, parserState):
+		token = parserState.Token
+		errorMessage = "Expected BEGIN after IS keyword."
+		if isinstance(token, CharacterToken):
+			if (token == "\n"):
+				parserState.NewToken =      LinebreakToken(token)
+				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+					parserState.NewBlock =    OpenBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+				else:
+					parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker =   None
+				parserState.PushState =     LinebreakBlock.stateLinebreak
+				return
+			elif (token == "-"):
+				parserState.NewBlock =      OpenBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker =   None
+				parserState.PushState =     SingleLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
+				return
+			elif (token == "/"):
+				parserState.NewBlock =      OpenBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.TokenMarker =   None
+				parserState.PushState =     MultiLineCommentBlock.statePossibleCommentStart
+				parserState.TokenMarker =   token
+				return
+		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+			parserState.NewToken =        BoundaryToken(token)
+			parserState.NewBlock =        WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =     None
+			return
+		elif isinstance(token, StringToken):
+			if (token <= "is"):
+				parserState.NewToken =      IsKeyword(token)
+				parserState.NewBlock =      OpenBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.NextState =     cls.stateDeclarativeRegion
+				return
+			else:
+				parserState.NextState =     cls.stateDeclarativeRegion
+				parserState.NextState(parserState)
+				return
 
 		raise BlockParserException(errorMessage, token)
 

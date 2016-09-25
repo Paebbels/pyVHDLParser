@@ -27,7 +27,8 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Token.Keywords       import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken
+from src.Token.Keywords       import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken, ClosingRoundBracketToken, \
+	OpeningRoundBracketToken
 from src.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from src.Blocks.Exception     import BlockParserException
 from src.Blocks.Base          import Block
@@ -182,14 +183,17 @@ class ItemBlock(Block):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (token == "("):
+				parserState.NewToken =      OpeningRoundBracketToken(token)
 				parserState.Counter += 1
 			elif (token == ")"):
 				parserState.Counter -= 1
 				if (parserState.Counter == 0):
-					parserState.NewToken =  BoundaryToken(token)
-					parserState.NewBlock =  ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+					parserState.NewToken =    BoundaryToken(token)
+					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					parserState.Pop()
 					parserState.TokenMarker = parserState.NewToken
+				else:
+					parserState.NewToken =    ClosingRoundBracketToken(token)
 			elif (token == ";"):
 				if (parserState.Counter == 1):
 					parserState.NewToken = DelimiterToken(token)
