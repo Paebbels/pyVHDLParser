@@ -72,10 +72,9 @@ class TokenToBlockParser:
 
 		@property
 		def TokenMarker(self):
-			if (self.NewToken is not None):
-				if (self._tokenMarker is self.Token):
-					if self.debug: print("  update marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
-					self._tokenMarker = self.NewToken
+			if ((self.NewToken is not None) and (self._tokenMarker is self.Token)):
+				if self.debug: print("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **Console.Foreground))
+				self._tokenMarker = self.NewToken
 			return self._tokenMarker
 		@TokenMarker.setter
 		def TokenMarker(self, value):
@@ -97,7 +96,6 @@ class TokenToBlockParser:
 
 		def GetGenerator(self, iterator):
 			for token in iterator:
-				if self.debug: print("  state={state!s: <50}  token={token!s: <40}   ".format(state=self, token=token))
 
 				# overwrite an existing token and connect the next token with the new one
 				if (self.NewToken is not None):
@@ -127,10 +125,11 @@ class TokenToBlockParser:
 					self.NewBlock =  self.NewBlock.NextBlock
 					yield self.LastBlock
 
+				# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
+				if self.debug: print("  state={state!s: <50}  token={token!s: <40}   ".format(state=self, token=token))
 				# execute a state
 				self.NextState(self)
 
-				if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			else:
 				if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
 					yield self.NewBlock

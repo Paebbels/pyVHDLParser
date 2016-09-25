@@ -77,7 +77,7 @@ class SingleLineCommentBlock(CommentBlock):
 			if (parserState.TokenMarker is None):
 				# print("  new marker: None -> {0!s}".format(token))
 				parserState.TokenMarker = token
-				print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+				# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
 			parserState.NextState(parserState)
 
 
@@ -99,10 +99,7 @@ class MultiLineCommentBlock(CommentBlock):
 			return
 		else:
 			parserState.Pop()
-			# if (parserState.TokenMarker is None):
-				# print("  new marker: None -> {0!s}".format(token))
-				# parserState.TokenMarker = token
-			print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+			# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
 			parserState.NextState(parserState)
 
 	@classmethod

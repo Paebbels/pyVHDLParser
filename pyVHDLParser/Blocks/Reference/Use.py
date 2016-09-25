@@ -179,11 +179,13 @@ class UseNameBlock(Block):
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
@@ -246,11 +248,13 @@ class UseNameBlock(Block):
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
@@ -320,11 +324,13 @@ class UseNameBlock(Block):
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
@@ -369,6 +375,7 @@ class UseNameBlock(Block):
 				parserState.NewToken =    AllKeyword(token)
 			else:
 				parserState.NewToken =    IdentifierToken(token)
+			parserState.NewBlock =      UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateObjectName
 			return
 		elif isinstance(token, SpaceToken):
@@ -390,11 +397,13 @@ class UseNameBlock(Block):
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
+				parserState.NewBlock =    UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
@@ -404,7 +413,7 @@ class UseNameBlock(Block):
 				parserState.NewToken =    AllKeyword(token)
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-			parserState.NewBlock =      UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+			parserState.NewBlock =      UseNameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     UseNameBlock.stateObjectName
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
@@ -427,7 +436,7 @@ class UseNameBlock(Block):
 				return
 			elif (token == ";"):
 				parserState.NewToken =    EndToken(token)
-				parserState.NewBlock =    UseEndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+				parserState.NewBlock =    UseEndBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == "\n"):
@@ -450,7 +459,9 @@ class UseNameBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, token)
 			parserState.NextState =     cls.stateWhitespace5
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -525,7 +536,6 @@ class UseDelimiterBlock(Block):
 				return
 		elif isinstance(token, StringToken):
 			parserState.NewToken =        IdentifierToken(token)
-			parserState.NewBlock =        UseNameBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.NextState =       UseNameBlock.stateLibraryName
 			parserState.TokenMarker =     parserState.NewToken
 			return
@@ -561,7 +571,6 @@ class UseDelimiterBlock(Block):
 				return
 		elif isinstance(token, StringToken):
 			parserState.NewToken =        IdentifierToken(token)
-			parserState.NewBlock =        UseNameBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.NextState =       UseNameBlock.stateLibraryName
 			parserState.TokenMarker =     parserState.NewToken
 			return

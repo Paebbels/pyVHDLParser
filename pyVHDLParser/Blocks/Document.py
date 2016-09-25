@@ -49,6 +49,9 @@ class StartOfDocumentBlock(Block):
 		self.EndToken =           startToken
 		self.MultiPart =          False
 
+	def __iter__(self):
+		yield self.StartToken
+
 	def __len__(self):
 		return 0
 
@@ -118,10 +121,13 @@ class StartOfDocumentBlock(Block):
 class EndOfDocumentBlock(Block):
 	def __init__(self, endToken):
 		self._previousBlock =     None
-		self._nextBlock =         None
+		self.NextBlock =          None
 		self.StartToken =         endToken
-		self._endToken =          endToken
+		self.EndToken =           endToken
 		self.MultiPart =          False
+
+	def __iter__(self):
+		yield self.StartToken
 
 	def __len__(self):
 		return 0
