@@ -27,15 +27,17 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Token.Keywords       import *
-from pyVHDLParser.Token.Parser         import *
-from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.ObjectDeclaration import Constant, Variable, SharedVariable
-from pyVHDLParser.Blocks.List          import GenericList
-from pyVHDLParser.Blocks.Sequential    import Procedure, Function
+from pyVHDLParser.Token.Parser              import CharacterToken, StringToken, SpaceToken
+from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, LinebreakToken, BoundaryToken, IdentifierToken, \
+	IndentationToken, GenericKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, FunctionKeyword, PureKeyword, ImpureKeyword, EndToken, \
+	BodyKeyword
+from pyVHDLParser.Blocks.Exception          import BlockParserException
+from pyVHDLParser.Blocks.Base               import Block
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable, SharedVariable
+from pyVHDLParser.Blocks.List               import GenericList
+from pyVHDLParser.Blocks.Sequential         import PackageBody, Procedure, Function
 
 
 class NameBlock(Block):
@@ -51,7 +53,7 @@ class NameBlock(Block):
 	@classmethod
 	def statePackageKeyword(cls, parserState):
 		token = parserState.Token
-		errorMessage = "Expected whitespace after keyword "
+		errorMessage = "Expected whitespace after keyword PACKAGE."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -110,9 +112,14 @@ class NameBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
-			parserState.NewToken =      IdentifierToken(token)
-			parserState.NextState =     cls.statePackageName
-			return
+			if (token <= "body"):
+				parserState.NewToken =    BodyKeyword(token)
+				parserState.NextState =   PackageBody.NameBlock.stateBodyKeyword
+				return
+			else:
+				parserState.NewToken =    IdentifierToken(token)
+				parserState.NextState =   cls.statePackageName
+				return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)

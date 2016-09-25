@@ -1,9 +1,5 @@
-architecture rtl of myEntity is
-begin
-	process(Clock) is
-	begin
-	end process;
+package pkg0 is
+end package;
 
-	process(Clock) is begin
-	end process;
-end architecture;
+package body pkg0 is
+end package body;
