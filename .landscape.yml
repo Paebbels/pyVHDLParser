@@ -1,0 +1,20 @@
+python-targets:
+-3
+test-warnings: yes
+strictness: medium
+max-line-length: 180
+pylint:
+  disable:
+  - too-many-arguments
+pep8:
+  disable:
+  - E704
+  enable:
+  options:
+    max-line-length: 180
+mccabe:
+  options:
+    max-complexity: 20
+ignore-paths:
+- docs
+- vhdl
