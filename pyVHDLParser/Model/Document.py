@@ -27,36 +27,29 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Structural          import Entity
-from test.Counter                   import Counter
+from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Blocks.Reference           import Library, Use, Context
+from pyVHDLParser.Blocks.Structural          import Entity, Architecture, Component
+from pyVHDLParser.Blocks.Sequential          import Package, PackageBody
+from pyVHDLParser.Model.VHDLModel            import Document as DocumentModel
+from pyVHDLParser.Model.Reference            import Library as LibraryModel, Use as UseModel
 
 
-class TestCase:
-	__NAME__ =      "Entity declarations"
-	__FILENAME__ =  "Entity.vhdl"
-
-	def __init__(self):
-		pass
+class Document(DocumentModel):
+	pass
 
 	@classmethod
-	def GetExpectedBlocks(cls):
-		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
-		return counter
-
-	@classmethod
-	def GetExpectedBlocksAfterStrip(cls):
-		counter = Counter()
-		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
-		counter.AddType(EndOfDocumentBlock, 1)
-		return counter
+	def stateParse(cls, parserState):
+		for block in parserState:
+			if isinstance(block, Library.LibraryBlock):
+				parserState.NextState = LibraryModel.stateParse
+			elif isinstance(block, Use.UseBlock):
+				pass
+			elif isinstance(block, Entity.NameBlock):
+				pass
+			elif isinstance(block, Architecture.NameBlock):
+				pass
+			elif isinstance(block, Package.NameBlock):
+				pass
+			elif isinstance(block, PackageBody.NameBlock):
+				pass

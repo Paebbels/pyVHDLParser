@@ -27,36 +27,29 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Structural          import Entity
-from test.Counter                   import Counter
+from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Model.VHDLModel    import Entity as EntityModel
+from pyVHDLParser.Token.Keywords     import EntityKeyword, IdentifierToken
+from pyVHDLParser.Blocks.Structural  import Entity as EntityBlock
 
 
-class TestCase:
-	__NAME__ =      "Entity declarations"
-	__FILENAME__ =  "Entity.vhdl"
-
-	def __init__(self):
-		pass
-
+class Entity(EntityModel):
 	@classmethod
-	def GetExpectedBlocks(cls):
-		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
-		return counter
+	def stateParse(cls, parserState, currentBlock, blockIterator):
+		if currentBlock.MultiPart:
+			tokenIterator = iter(MultiPartIterator(currentBlock, blockIterator, EntityBlock.NameBlock))
+		else:
+			tokenIterator = iter(currentBlock)
 
-	@classmethod
-	def GetExpectedBlocksAfterStrip(cls):
-		counter = Counter()
-		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
-		counter.AddType(EndOfDocumentBlock, 1)
-		return counter
+		firstToken = next(tokenIterator)
+		if (not isinstance(firstToken, EntityKeyword)): raise ParserException()
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				newEntity = cls(token.Value)
+				parserState.CurrentNode.AddEntity(newEntity)
+
+			# if (not isinstance(token, EntityKeyword)): raise ParserException()
+
+		# block = next(iterator)
+

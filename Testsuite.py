@@ -31,13 +31,13 @@ from pathlib import Path
 
 import sys
 
-from src.Base               import ParserException
-from src.Filters.Comment     import StripAndFuse
-from src.Functions          import Console, Exit
-from src.Token.Tokens       import EndOfDocumentToken
-from src.Token.Parser       import Tokenizer, StartOfDocumentToken
-from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Parser      import TokenToBlockParser
+from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Filters.Comment     import StripAndFuse
+from pyVHDLParser.Functions          import Console, Exit
+from pyVHDLParser.Token.Tokens       import EndOfDocumentToken
+from pyVHDLParser.Token.Parser       import Tokenizer, StartOfDocumentToken
+from pyVHDLParser.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
 
 from test                   import LibraryTest, UseTest, EntityTest, GenericListTest, PortListTest, ArchitectureTest, ProcessTest
 

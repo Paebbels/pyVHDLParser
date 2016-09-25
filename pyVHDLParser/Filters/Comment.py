@@ -27,36 +27,36 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Structural          import Entity
-from test.Counter                   import Counter
+from pyVHDLParser.Blocks.Exception import BlockParserException
+from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment   import CommentBlock
 
 
-class TestCase:
-	__NAME__ =      "Entity declarations"
-	__FILENAME__ =  "Entity.vhdl"
+def StripAndFuse(generator):
+	iterator =  iter(generator)
+	lastBlock = next(iterator)
 
-	def __init__(self):
-		pass
+	# don't filter the first block
+	yield lastBlock
 
-	@classmethod
-	def GetExpectedBlocks(cls):
-		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
-		return counter
+	for block in iterator:
+		if isinstance(block, (IndentationBlock, CommentBlock, LinebreakBlock)):
+			continue
+		else:
+			if (block.MultiPart == True):
+				while True:
+					nextBlock = next(iterator)
+					if isinstance(nextBlock, (WhitespaceBlock, CommentBlock)):
+						continue
+					if (type(block) is not type(nextBlock)):
+						raise BlockParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)), None)   # TODO: review exception type
 
-	@classmethod
-	def GetExpectedBlocksAfterStrip(cls):
-		counter = Counter()
-		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
-		counter.AddType(EndOfDocumentBlock, 1)
-		return counter
+					nextBlock.StartToken.PreviousToken = block.EndToken
+					block.EndToken = nextBlock.EndToken
+					if (nextBlock.MultiPart == False):
+						break
+
+			block.PreviousBlock = lastBlock
+			block.StartToken.PreviousToken = lastBlock.EndToken
+			yield block
+			lastBlock = block

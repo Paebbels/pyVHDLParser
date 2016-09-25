@@ -27,10 +27,10 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from src.Blocks.Comment             import SingleLineCommentBlock
-from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
+from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock
+from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
 from test.Counter                   import Counter
 
 

@@ -27,36 +27,21 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Structural          import Entity
-from test.Counter                   import Counter
+from pyVHDLParser.Graph.Graph   import Graph as BaseGraph
+from pyVHDLParser.Graph.Graph   import Node as  BaseNode
 
-
-class TestCase:
-	__NAME__ =      "Entity declarations"
-	__FILENAME__ =  "Entity.vhdl"
-
+class Graph(BaseGraph):
 	def __init__(self):
+		self._nodes =   []
+
+	def AddFile(self, file):
+		super().AddNode(file)
+
+	def GetCompileOrder(self):
 		pass
 
-	@classmethod
-	def GetExpectedBlocks(cls):
-		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
-		return counter
 
-	@classmethod
-	def GetExpectedBlocksAfterStrip(cls):
-		counter = Counter()
-		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 39)
-		counter.AddType(Entity.EndBlock, 32)
-		counter.AddType(EndOfDocumentBlock, 1)
-		return counter
+class VHDLDocument(BaseNode):
+	def __init__(self, file):
+		super().__init__()
+		self.File =     file

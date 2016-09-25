@@ -31,19 +31,19 @@ from pathlib import Path
 
 import sys
 
-from src.Base               import ParserException
-from src.Filters.Comment     import StripAndFuse
-from src.Functions          import Console, Exit
-from src.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
-from src.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
-from src.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
-from src.Token.Parser       import Tokenizer, StartOfDocumentToken
-from src.Blocks.Common      import LinebreakBlock, IndentationBlock
-from src.Blocks.Comment     import CommentBlock
-from src.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Structural  import Entity
-from src.Blocks.List        import GenericList, PortList
-from src.Blocks.Parser      import TokenToBlockParser
+from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Filters.Comment     import StripAndFuse
+from pyVHDLParser.Functions          import Console, Exit
+from pyVHDLParser.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
+from pyVHDLParser.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
+from pyVHDLParser.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
+from pyVHDLParser.Token.Parser       import Tokenizer, StartOfDocumentToken
+from pyVHDLParser.Blocks.Common      import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment     import CommentBlock
+from pyVHDLParser.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Structural  import Entity
+from pyVHDLParser.Blocks.List        import GenericList, PortList
+from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
 
 
 Console.init()

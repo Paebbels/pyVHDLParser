@@ -27,11 +27,11 @@
 # limitations under the License.
 # ==============================================================================
 #
-from src.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from src.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from src.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from src.Blocks.Structural          import Entity
-from src.Blocks.List                import GenericList
+from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Structural          import Entity
+from pyVHDLParser.Blocks.List                import GenericList
 from test.Counter                   import Counter
 
 
