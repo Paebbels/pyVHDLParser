@@ -9,7 +9,6 @@ pylint:
 pep8:
   disable:
   - E704
-  enable:
   options:
     max-line-length: 180
 mccabe:
