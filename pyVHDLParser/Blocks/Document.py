@@ -32,6 +32,7 @@ from pyVHDLParser.Token.Keywords       import LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword
 from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword, ConfigurationKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock
@@ -39,6 +40,9 @@ from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineC
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential    import Package
 from pyVHDLParser.Blocks.Structural    import Entity, Architecture, Configuration
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class StartOfDocumentBlock(Block):
@@ -64,7 +68,7 @@ class StartOfDocumentBlock(Block):
 		]
 
 	@classmethod
-	def stateDocument(cls, parserState):
+	def stateDocument(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected keywords: architecture, context, entity, library, package, use."
 		if isinstance(parserState.Token, CharacterToken):

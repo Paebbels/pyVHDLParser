@@ -35,5 +35,5 @@ class Library(LibraryBase):
 	pass
 
 	@classmethod
-	def stateParse(cls, parserState):
+	def stateParse(cls, parserState: ParserState):
 		pass

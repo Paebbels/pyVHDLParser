@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class ReportBlock(Block):
@@ -45,7 +49,7 @@ class ReportBlock(Block):
 		]
 
 	@classmethod
-	def stateReportKeyword(cls, parserState):
+	def stateReportKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword REPORT."
 		if isinstance(token, CharacterToken):
@@ -79,7 +83,7 @@ class ReportBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected report name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -118,7 +122,7 @@ class ReportBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateReportName(cls, parserState):
+	def stateReportName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword REPORT."
 		if isinstance(token, CharacterToken):
@@ -151,7 +155,7 @@ class ReportBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after report name."
 		if isinstance(token, CharacterToken):

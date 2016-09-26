@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class ContinueBlock(Block):
@@ -45,7 +49,7 @@ class ContinueBlock(Block):
 		]
 
 	@classmethod
-	def stateContinueKeyword(cls, parserState):
+	def stateContinueKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword CONTINUE."
 		if isinstance(token, CharacterToken):
@@ -79,7 +83,7 @@ class ContinueBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected continue name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -118,7 +122,7 @@ class ContinueBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateContinueName(cls, parserState):
+	def stateContinueName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword CONTINUE."
 		if isinstance(token, CharacterToken):
@@ -151,7 +155,7 @@ class ContinueBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after continue name."
 		if isinstance(token, CharacterToken):

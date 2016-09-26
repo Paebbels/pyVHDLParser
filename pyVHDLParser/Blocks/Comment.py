@@ -30,8 +30,12 @@
 from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords       import IndentationToken, SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import IndentationBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class CommentBlock(Block):
@@ -45,7 +49,7 @@ class SingleLineCommentBlock(CommentBlock):
 		]
 
 	@classmethod
-	def statePossibleCommentStart(cls, parserState):
+	def statePossibleCommentStart(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "-")):
 			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
@@ -56,7 +60,7 @@ class SingleLineCommentBlock(CommentBlock):
 		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
 
 	@classmethod
-	def stateConsumeComment(cls, parserState):
+	def stateConsumeComment(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == "\n")):
 			parserState.NewBlock =    SingleLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.Token)
@@ -66,7 +70,7 @@ class SingleLineCommentBlock(CommentBlock):
 			pass	# consume everything until "\n"
 
 	@classmethod
-	def stateLinebreak(cls, parserState):
+	def stateLinebreak(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = IndentationToken(token)
@@ -90,7 +94,7 @@ class MultiLineCommentBlock(CommentBlock):
 		]
 
 	@classmethod
-	def statePossibleCommentStart(cls, parserState):
+	def statePossibleCommentStart(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "*")):
 			parserState.NewToken =    MultiLineCommentStartKeyword(parserState.TokenMarker)
@@ -103,7 +107,7 @@ class MultiLineCommentBlock(CommentBlock):
 			parserState.NextState(parserState)
 
 	@classmethod
-	def stateConsumeComment(cls, parserState):
+	def stateConsumeComment(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "*")):
 			parserState.PushState =   cls.statePossibleCommentEnd
@@ -113,7 +117,7 @@ class MultiLineCommentBlock(CommentBlock):
 			pass  # consume everything until "*/"
 
 	@classmethod
-	def statePossibleCommentEnd(cls, parserState):
+	def statePossibleCommentEnd(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "/")):
 			parserState.NewToken = MultiLineCommentEndKeyword(parserState.TokenMarker)

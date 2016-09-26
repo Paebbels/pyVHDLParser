@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class TypeBlock(Block):
@@ -49,7 +53,7 @@ class TypeBlock(Block):
 		]
 
 	@classmethod
-	def stateTypeKeyword(cls, parserState):
+	def stateTypeKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword TYPE."
 		if isinstance(token, CharacterToken):
@@ -83,7 +87,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected type name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -122,7 +126,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateTypeName(cls, parserState):
+	def stateTypeName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' after library name."
 		if isinstance(token, CharacterToken):
@@ -159,7 +163,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected type name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -202,7 +206,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateColon1(cls, parserState):
+	def stateColon1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected typemark or whitespace after ':'."
 		if isinstance(token, CharacterToken):
@@ -240,7 +244,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected type name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -279,7 +283,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateTypeMarkName(cls, parserState):
+	def stateTypeMarkName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ':=' or whitespace after type mark."
 		if isinstance(token, CharacterToken):
@@ -316,7 +320,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState):
+	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ':=' after type mark."
 		if isinstance(token, CharacterToken):
@@ -355,7 +359,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def statePossibleVariableAssignment(cls, parserState):
+	def statePossibleVariableAssignment(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "=")):
 			parserState.NewToken =      VariableAssignmentKeyword(parserState.TokenMarker)
@@ -366,7 +370,7 @@ class TypeBlock(Block):
 		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
 
 	@classmethod
-	def stateVariableAssignment(cls, parserState):
+	def stateVariableAssignment(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ':=' or whitespace after type mark."
 		if isinstance(token, CharacterToken):
@@ -399,7 +403,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace5(cls, parserState):
+	def stateWhitespace5(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected expression after ':='."
 		if isinstance(token, CharacterToken):
@@ -437,7 +441,7 @@ class TypeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateExpressionEnd(cls, parserState):
+	def stateExpressionEnd(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

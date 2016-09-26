@@ -27,12 +27,13 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Exception import BlockParserException
-from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Base          import Block
-# from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class WhitespaceBlock(Block):
@@ -50,7 +51,7 @@ class WhitespaceBlock(Block):
 
 class LinebreakBlock(WhitespaceBlock):
 	@classmethod
-	def stateLinebreak(cls, parserState):
+	def stateLinebreak(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = IndentationToken(token)

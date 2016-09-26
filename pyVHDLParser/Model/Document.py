@@ -39,7 +39,7 @@ class Document(DocumentModel):
 	pass
 
 	@classmethod
-	def stateParse(cls, parserState):
+	def stateParse(cls, parserState: ParserState):
 		for block in parserState:
 			if isinstance(block, Library.LibraryBlock):
 				parserState.NextState = LibraryModel.stateParse

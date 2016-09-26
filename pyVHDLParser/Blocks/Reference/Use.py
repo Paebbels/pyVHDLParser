@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, DelimiterToken, EndToken, AllKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class UseBlock(Block):
@@ -43,7 +47,7 @@ class UseBlock(Block):
 		]
 
 	@classmethod
-	def stateUseKeyword(cls, parserState):
+	def stateUseKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword USE."
 		if isinstance(token, CharacterToken):
@@ -78,7 +82,7 @@ class UseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -127,7 +131,7 @@ class UseNameBlock(Block):
 		]
 
 	@classmethod
-	def stateLibraryName(cls, parserState):
+	def stateLibraryName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '.' after library name."
 		if isinstance(token, CharacterToken):
@@ -164,7 +168,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '.'."
 		if isinstance(token, CharacterToken):
@@ -199,7 +203,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDot1(cls, parserState):
+	def stateDot1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected package name after '.'."
 		if isinstance(token, CharacterToken):
@@ -237,7 +241,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected package name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -272,7 +276,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def statePackageName(cls, parserState):
+	def statePackageName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '.' after package name."
 		if isinstance(token, CharacterToken):
@@ -309,7 +313,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '.'."
 		if isinstance(token, CharacterToken):
@@ -344,7 +348,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDot2(cls, parserState):
+	def stateDot2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected object name after '.'."
 		if isinstance(token, CharacterToken):
@@ -386,7 +390,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState):
+	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected object name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -425,7 +429,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateObjectName(cls, parserState):
+	def stateObjectName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ',', ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -467,7 +471,7 @@ class UseNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace5(cls, parserState):
+	def stateWhitespace5(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
@@ -514,7 +518,7 @@ class UseDelimiterBlock(Block):
 		]
 
 	@classmethod
-	def stateDelimiter(cls, parserState):
+	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -549,7 +553,7 @@ class UseDelimiterBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):

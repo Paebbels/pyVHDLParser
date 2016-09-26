@@ -27,24 +27,22 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common import LinebreakBlock, EmptyLineBlock
-from pyVHDLParser.Blocks.Document      import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Exception import BlockParserException
-from pyVHDLParser.Functions import Console
-from pyVHDLParser.Token.Tokens import EndOfDocumentToken
+from pyVHDLParser.Functions         import Console
 
 
 class TokenToBlockParser:
 	@classmethod
 	def Transform(cls, rawTokenGenerator, debug=False):
+		from pyVHDLParser.Blocks.Document import StartOfDocumentBlock
+
 		iterator =    iter(rawTokenGenerator)
 		firstToken =  next(iterator)
 		firstBlock =  StartOfDocumentBlock(firstToken)
 		startState =  StartOfDocumentBlock.stateDocument
-		return cls.__TokenParserState(startState, firstBlock, debug=debug).GetGenerator(iterator)
+		return cls.TokenParserState(startState, firstBlock, debug=debug).GetGenerator(iterator)
 
 
-	class __TokenParserState:
+	class TokenParserState:
 		def __init__(self, startState, startBlock, debug):
 			self._stack =       []
 			self._tokenMarker = None
@@ -95,8 +93,12 @@ class TokenToBlockParser:
 			self.Counter =      top[2]
 
 		def GetGenerator(self, iterator):
-			for token in iterator:
+			from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
+			from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
+			from pyVHDLParser.Blocks.Exception  import BlockParserException
+			from pyVHDLParser.Token.Tokens      import EndOfDocumentToken
 
+			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one
 				if (self.NewToken is not None):
 					# print("{GREEN}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))

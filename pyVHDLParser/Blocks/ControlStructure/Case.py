@@ -30,10 +30,14 @@
 from pyVHDLParser.Blocks.Exception import BlockParserException
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.List          import GenericList, PortList
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class CaseBlock(Block):
@@ -47,7 +51,7 @@ class CaseBlock(Block):
 		]
 
 	@classmethod
-	def stateCaseKeyword(cls, parserState):
+	def stateCaseKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword CASE."
 		if isinstance(token, CharacterToken):
@@ -81,7 +85,7 @@ class CaseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected case name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -120,7 +124,7 @@ class CaseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateCaseName(cls, parserState):
+	def stateCaseName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword CASE."
 		if isinstance(token, CharacterToken):
@@ -153,7 +157,7 @@ class CaseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after case name."
 		if isinstance(token, CharacterToken):
@@ -193,7 +197,7 @@ class CaseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState):
+	def stateDeclarativeRegion(cls, parserState: ParserState):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -252,7 +256,7 @@ class EndBlock(Block):
 		]
 
 	@classmethod
-	def stateEndKeyword(cls, parserState):
+	def stateEndKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -291,7 +295,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';', GENERATE keyword or generate name."
 		if isinstance(token, CharacterToken):
@@ -339,7 +343,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateGenerateKeyword(cls, parserState):
+	def stateGenerateKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -378,7 +382,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or generate name."
 		if isinstance(token, CharacterToken):
@@ -422,7 +426,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateGenerateName(cls, parserState):
+	def stateGenerateName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -458,7 +462,7 @@ class EndBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace3(cls, parserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

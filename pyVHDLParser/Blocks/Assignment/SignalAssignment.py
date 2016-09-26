@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class SignalAssignmentBlock(Block):
@@ -45,7 +49,7 @@ class SignalAssignmentBlock(Block):
 		]
 
 	@classmethod
-	def stateSignalAssignmentKeyword(cls, parserState):
+	def stateSignalAssignmentKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword SignalAssignment."
 		if isinstance(token, CharacterToken):
@@ -79,7 +83,7 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected signalAssignment name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -118,7 +122,7 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateSignalAssignmentName(cls, parserState):
+	def stateSignalAssignmentName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' after signalAssignment name."
 		if isinstance(token, CharacterToken):
@@ -156,7 +160,7 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

@@ -30,6 +30,7 @@
 from pyVHDLParser.Blocks.List import SensitivityList
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -38,6 +39,9 @@ from pyVHDLParser.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop
 from pyVHDLParser.Blocks.Reporting     import Report
 from pyVHDLParser.Blocks.Sequential    import Process
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant, Variable
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class OpenBlock(Block):
@@ -48,7 +52,7 @@ class OpenBlock(Block):
 		]
 
 	@classmethod
-	def stateProcessKeyword(cls, parserState):
+	def stateProcessKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '(' or whitespace after keyword "
 		if isinstance(token, CharacterToken):
@@ -90,7 +94,7 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected '(' after PROCESS keyword."
 		if isinstance(token, CharacterToken):
@@ -142,7 +146,7 @@ class OpenBlock2(Block):
 			self.stateDeclarativeRegion
 		]
 	@classmethod
-	def stateAfterSensitivityList(cls, parserState):
+	def stateAfterSensitivityList(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
@@ -176,7 +180,7 @@ class OpenBlock2(Block):
 				return
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected BEGIN after IS keyword."
 		if isinstance(token, CharacterToken):
@@ -221,7 +225,7 @@ class OpenBlock2(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState):
+	def stateDeclarativeRegion(cls, parserState: ParserState):
 		errorMessage = "Expected one of these keywords: generic, port, is, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -276,7 +280,7 @@ class BeginBlock(Block):
 		]
 
 	@classmethod
-	def stateBeginKeyword(cls, parserState):
+	def stateBeginKeyword(cls, parserState: ParserState):
 		errorMessage = "Expected label or one of these keywords: if, case, for, while, report, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -338,7 +342,7 @@ class EndBlock(Block):
 		]
 
 	@classmethod
-	def stateEndKeyword(cls, parserState):
+	def stateEndKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -377,7 +381,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';', PROCESS keyword or process name."
 		if isinstance(token, CharacterToken):
@@ -425,7 +429,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateProcessKeyword(cls, parserState):
+	def stateProcessKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -464,7 +468,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or process name."
 		if isinstance(token, CharacterToken):
@@ -508,7 +512,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateProcessName(cls, parserState):
+	def stateProcessName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -544,7 +548,7 @@ class EndBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace3(cls, parserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

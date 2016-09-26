@@ -29,10 +29,14 @@
 #
 from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, EndToken, DelimiterToken
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 from pyVHDLParser.Blocks.Base          import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class LibraryBlock(Block):
@@ -43,7 +47,7 @@ class LibraryBlock(Block):
 		]
 
 	@classmethod
-	def stateLibraryKeyword(cls, parserState):
+	def stateLibraryKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword LIBRARY."
 		if isinstance(token, CharacterToken):
@@ -78,7 +82,7 @@ class LibraryBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -121,7 +125,7 @@ class LibraryNameBlock(Block):
 		]
 
 	@classmethod
-	def stateLibraryName(cls, parserState):
+	def stateLibraryName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' after library name."
 		if isinstance(token, CharacterToken):
@@ -161,7 +165,7 @@ class LibraryNameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
@@ -208,7 +212,7 @@ class LibraryDelimiterBlock(Block):
 		]
 
 	@classmethod
-	def stateDelimiter(cls, parserState):
+	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -244,7 +248,7 @@ class LibraryDelimiterBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected library name (identifier)."
 		if isinstance(token, CharacterToken):

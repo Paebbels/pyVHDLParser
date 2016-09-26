@@ -31,6 +31,7 @@ from pyVHDLParser.Token.Parser              import CharacterToken, StringToken, 
 from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, LinebreakToken, BoundaryToken, IdentifierToken, \
 	IndentationToken, GenericKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, FunctionKeyword, PureKeyword, ImpureKeyword, EndToken, \
 	BodyKeyword
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception          import BlockParserException
 from pyVHDLParser.Blocks.Base               import Block
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -38,6 +39,9 @@ from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, Multi
 from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable, SharedVariable
 from pyVHDLParser.Blocks.List               import GenericList
 from pyVHDLParser.Blocks.Sequential         import PackageBody, Procedure, Function
+
+# Type alias for type hinting
+ParserState = TokenToBlockParser.TokenParserState
 
 
 class NameBlock(Block):
@@ -51,7 +55,7 @@ class NameBlock(Block):
 		]
 
 	@classmethod
-	def statePackageKeyword(cls, parserState):
+	def statePackageKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword PACKAGE."
 		if isinstance(token, CharacterToken):
@@ -85,7 +89,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected package name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -129,7 +133,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def statePackageName(cls, parserState):
+	def statePackageName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword "
 		if isinstance(token, CharacterToken):
@@ -162,7 +166,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after package name."
 		if isinstance(token, CharacterToken):
@@ -202,7 +206,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState):
+	def stateDeclarativeRegion(cls, parserState: ParserState):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -273,7 +277,7 @@ class EndBlock(Block):
 		]
 
 	@classmethod
-	def stateEndKeyword(cls, parserState):
+	def stateEndKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -312,7 +316,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState):
+	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';', PACKAGE keyword or package name."
 		if isinstance(token, CharacterToken):
@@ -360,7 +364,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def statePackageKeyword(cls, parserState):
+	def statePackageKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -399,7 +403,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or package name."
 		if isinstance(token, CharacterToken):
@@ -443,7 +447,7 @@ class EndBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def statePackageName(cls, parserState):
+	def statePackageName(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -479,7 +483,7 @@ class EndBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace3(cls, parserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
