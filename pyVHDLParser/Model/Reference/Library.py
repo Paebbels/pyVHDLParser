@@ -27,8 +27,12 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Model.VHDLModel            import LibraryReference as LibraryBase
+from pyVHDLParser.Blocks.Reference.Library import LibraryNameBlock, LibraryEndBlock, LibraryBlock
+from pyVHDLParser.Model.VHDLModel   import LibraryReference as LibraryBase
+from pyVHDLParser.Model.Parser      import BlockToModelParser
+
+# Type alias for type hinting
+ParserState = BlockToModelParser.BlockParserState
 
 
 class Library(LibraryBase):
@@ -36,4 +40,11 @@ class Library(LibraryBase):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		pass
+		assert isinstance(parserState.CurrentBlock, LibraryBlock)
+		for block in parserState.BlockIterator:
+			if isinstance(block, LibraryNameBlock):
+				parserState.CurrentNode.AddLibrary(block.StartToken.Value)
+			elif isinstance(block, LibraryEndBlock):
+				break
+
+		parserState.Pop()

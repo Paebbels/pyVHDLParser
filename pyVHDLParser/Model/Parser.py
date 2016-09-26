@@ -27,10 +27,10 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common import LinebreakBlock, EmptyLineBlock
-from pyVHDLParser.Blocks.Document      import StartOfDocumentBlock
-from pyVHDLParser.Model import Document
-from pyVHDLParser.Model.Structural import Entity
+# from pyVHDLParser.Blocks.Common import LinebreakBlock, EmptyLineBlock
+# from pyVHDLParser.Blocks.Document      import StartOfDocumentBlock
+# from pyVHDLParser.Model import Document
+# from pyVHDLParser.Model.Structural import Entity
 
 # def MultiPartIterator(currentBlock, blockIterator):
 # 	def __Generator(currentBlock, blockIterator):
@@ -49,12 +49,14 @@ from pyVHDLParser.Model.Structural import Entity
 # 		return iter(__Generator(currentBlock, blockIterator))
 # 	else:
 # 		return iter(currentBlock)
+from pyVHDLParser.Blocks.Document import StartOfDocumentBlock
+
 
 class BlockToModelParser:
 	@classmethod
 	def Transform(cls, document, blockGenerator, debug=False):
-		startState = Document.stateParse
-		parser = cls.__BlockParserState(startState, document, blockGenerator, debug=debug).GetGenerator()
+		startState = document.__class__.stateParse
+		parser = cls.BlockParserState(startState, document, blockGenerator, debug=debug).GetGenerator()
 
 	@staticmethod
 	def _Generator(currentBlock, blockIterator):
@@ -69,13 +71,18 @@ class BlockToModelParser:
 				if (not block.MultiPart):
 					break
 
-	class __BlockParserState:
-		def __init__(self, startState, blockGenerator, debug):
+	class BlockParserState:
+		def __init__(self, startState, document, blockGenerator, debug):
+			blockIterator =       iter(blockGenerator)
+			firstBlock =          next(blockIterator)
+			assert isinstance(firstBlock, StartOfDocumentBlock)
+
 			self._stack =         []
 			self.NextState =      startState
-			self.CurrentBlock =   None
-			self.BlockIterator =  iter(blockGenerator)
-			self.CurrentNode =    None
+			self.BlockIterator =  blockIterator
+			self.CurrentBlock =   next(blockIterator)
+			self.Document =       document
+			self.CurrentNode =    document
 
 			self.debug =          debug
 
@@ -110,6 +117,7 @@ class BlockToModelParser:
 			for i in range(10):
 				if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=self.CurrentBlock))
 				self.NextState(self)
+
 
 				# execute a state
 				# self.NextState(self)

@@ -28,16 +28,20 @@
 # ==============================================================================
 #
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Model.VHDLModel    import Entity as EntityModel
 from pyVHDLParser.Token.Keywords     import EntityKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Entity as EntityBlock
+from pyVHDLParser.Model.VHDLModel    import Entity as EntityModel
+from pyVHDLParser.Model.Parser       import BlockToModelParser, MultiPartIterator
+
+# Type alias for type hinting
+ParserState = BlockToModelParser.BlockParserState
 
 
 class Entity(EntityModel):
 	@classmethod
-	def stateParse(cls, parserState, currentBlock, blockIterator):
+	def stateParse(cls, parserState: ParserState, currentBlock, blockIterator):
 		if currentBlock.MultiPart:
-			tokenIterator = iter(MultiPartIterator(currentBlock, blockIterator, EntityBlock.NameBlock))
+			tokenIterator = iter(MultiPartIterator(currentBlock, blockIterator))
 		else:
 			tokenIterator = iter(currentBlock)
 

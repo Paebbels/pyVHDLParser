@@ -28,28 +28,42 @@
 # ==============================================================================
 #
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Blocks.Reference           import Library, Use, Context
-from pyVHDLParser.Blocks.Structural          import Entity, Architecture, Component
-from pyVHDLParser.Blocks.Sequential          import Package, PackageBody
-from pyVHDLParser.Model.VHDLModel            import Document as DocumentModel
-from pyVHDLParser.Model.Reference            import Library as LibraryModel, Use as UseModel
+from pyVHDLParser.Blocks.Reference  import Library, Use, Context
+from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
+from pyVHDLParser.Blocks.Sequential import Package, PackageBody
+from pyVHDLParser.Model.VHDLModel   import Document as DocumentModel
+from pyVHDLParser.Model.Reference   import Library as LibraryModel, Use as UseModel
+from pyVHDLParser.Model.Parser      import BlockToModelParser
+
+# Type alias for type hinting
+ParserState = BlockToModelParser.BlockParserState
 
 
 class Document(DocumentModel):
-	pass
+	def __init__(self):
+		self.__libraries = []
+		self.__uses =      []
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		for block in parserState:
-			if isinstance(block, Library.LibraryBlock):
-				parserState.NextState = LibraryModel.stateParse
-			elif isinstance(block, Use.UseBlock):
-				pass
-			elif isinstance(block, Entity.NameBlock):
-				pass
-			elif isinstance(block, Architecture.NameBlock):
-				pass
-			elif isinstance(block, Package.NameBlock):
-				pass
-			elif isinstance(block, PackageBody.NameBlock):
-				pass
+		block = parserState.CurrentBlock
+		if isinstance(block, Library.LibraryBlock):
+			parserState.PushState = LibraryModel.Library.stateParse
+		elif isinstance(block, Use.UseBlock):
+			pass
+		elif isinstance(block, Entity.NameBlock):
+			pass
+		elif isinstance(block, Architecture.NameBlock):
+			pass
+		elif isinstance(block, Package.NameBlock):
+			pass
+		elif isinstance(block, PackageBody.NameBlock):
+			pass
+		else:
+			parserState.CurrentBlock = next(parserState.BlockIterator)
+
+	def AddLibrary(self, libraryName):
+		self.__libraries.append(libraryName)
+
+	def AddUse(self, libraryName, packageName, objectName):
+		self.__uses.append((libraryName, packageName, objectName))

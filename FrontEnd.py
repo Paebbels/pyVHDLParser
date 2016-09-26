@@ -34,6 +34,8 @@ import sys
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Filters.Comment     import StripAndFuse
 from pyVHDLParser.Functions          import Console, Exit
+from pyVHDLParser.Model.Document import Document
+from pyVHDLParser.Model.Parser import BlockToModelParser
 from pyVHDLParser.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
 from pyVHDLParser.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
 from pyVHDLParser.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
@@ -218,3 +220,13 @@ if (mode & 16 == 16):
 		print("ERROR: " + str(ex))
 	except NotImplementedError as ex:
 		print("NotImplementedError: " + str(ex))
+
+
+if (mode & 32 == 32):
+	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+
+	document = Document()
+	BlockToModelParser.Transform(document, vhdlBlockStream, debug=True)
+

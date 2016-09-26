@@ -28,7 +28,11 @@
 # ==============================================================================
 #
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Model.VHDLModel            import Use as UseModel
+from pyVHDLParser.Model.VHDLModel   import Use as UseModel
+from pyVHDLParser.Model.Parser      import BlockToModelParser
+
+# Type alias for type hinting
+ParserState = BlockToModelParser.BlockParserState
 
 
 class Use(UseModel):
