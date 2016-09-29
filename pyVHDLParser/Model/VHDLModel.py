@@ -77,6 +77,7 @@ class Architecture(ModelEntity):
 		super().__init__()
 		self._name =            None
 		self._entity =          None
+		self._libraries =       []
 		self._uses =            []
 		self._declaredItems =   []
 		self._bodyItems =       []

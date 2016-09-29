@@ -14,6 +14,8 @@ entity myEntity is
 	);
 end entity;
 
+use     STD.TextIO.all;
+
 architecture rtl of myEntity is
 
 begin

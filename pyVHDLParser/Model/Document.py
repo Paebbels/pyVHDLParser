@@ -27,13 +27,12 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Blocks.Reference  import Library, Use, Context
 from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
 from pyVHDLParser.Blocks.Sequential import Package, PackageBody
 from pyVHDLParser.Model.VHDLModel   import Document as DocumentModel
 from pyVHDLParser.Model.Reference   import Library as LibraryModel, Use as UseModel
-from pyVHDLParser.Model.Structural  import Entity as EntityModel
+from pyVHDLParser.Model.Structural  import Entity as EntityModel, Architecture as ArchitectureModel
 from pyVHDLParser.Model.Parser      import BlockToModelParser
 
 # Type alias for type hinting
@@ -59,7 +58,8 @@ class Document(DocumentModel):
 			parserState.PushState = EntityModel.Entity.stateParse
 			parserState.ReIssue()
 		elif isinstance(block, Architecture.NameBlock):
-			pass
+			parserState.PushState = ArchitectureModel.Architecture.stateParse
+			parserState.ReIssue()
 		elif isinstance(block, Package.NameBlock):
 			pass
 		elif isinstance(block, PackageBody.NameBlock):
@@ -85,6 +85,9 @@ class Document(DocumentModel):
 	def AddEntity(self, entity):
 		self._entities.append(entity)
 
+	def AddArchitecture(self, architecture):
+		self._architectures.append(architecture)
+
 	def Print(self, indent=0):
 		if (len(self.__libraries) > 0):
 			for lib in self.__libraries:
@@ -93,7 +96,10 @@ class Document(DocumentModel):
 			for lib, pack, obj in self.__uses:
 				print("{indent}-- unused USE {lib}.{pack}.{obj};".format(indent="  " * indent, lib=lib, pack=pack, obj=obj))
 		print()
-		for ent in self._entities:
-			ent.Print()
+		for entity in self._entities:
+			entity.Print()
+		print()
+		for architecture in self._architectures:
+			architecture.Print()
 
 
