@@ -39,6 +39,8 @@ setup(
 	description="A streaming-based VHDL parser.",
 	long_description=open("README.rst").read(),
 	url="https://github.com/Paebbels/pyVHDLParser",
+	download_url="https://github.com/Paebbels/pyVHDLParser/tarball/0.1.0",
+	license=open("LICENSE.md").read(),
 	packages=[
 		"pyVHDLParser",
 		"pyVHDLParser.Block",
@@ -58,6 +60,8 @@ setup(
 		"pyVHDLParser.Graph",
 		"pyVHDLParser.Group",
 		"pyVHDLParser.Model",
+		"pyVHDLParser.Model.Reference",
+		"pyVHDLParser.Model.Structural",
 		"pyVHDLParser.StyleCheck",
 		"pyVHDLParser.Token"
 	],
@@ -65,6 +69,7 @@ setup(
 		'pyVHDLParser': dataFiles
 	},
 	zip_safe=False,
+	keywords=["VHDL", "Parser"],
 	classifiers=[
 		"Development Status :: 3 - Alpha",
 		"License :: OSI Approved :: Apache License 2.0",

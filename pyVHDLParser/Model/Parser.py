@@ -49,17 +49,38 @@
 # 		return iter(__Generator(currentBlock, blockIterator))
 # 	else:
 # 		return iter(currentBlock)
-from pyVHDLParser.Blocks.Document import StartOfDocumentBlock
+from typing import Iterator
 
+from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Exception  import BlockParserException
+from pyVHDLParser.Filters.Comment   import FastForward
+
+
+# __ALL__ = [BlockToModelParser]
+
+
+class _BlockIterator:
+	def __init__(self, parserState, blockGenerator: Iterator):
+		self._parserState =     parserState
+		self._blockIterator =   iter(FastForward(blockGenerator))
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		nextBlock = self._blockIterator.__next__()
+		self._parserState.CurrentBlock = nextBlock
+		return nextBlock
 
 class BlockToModelParser:
 	@classmethod
 	def Transform(cls, document, blockGenerator, debug=False):
 		startState = document.__class__.stateParse
-		parser = cls.BlockParserState(startState, document, blockGenerator, debug=debug).GetGenerator()
+		parser = cls.BlockParserState(startState, document, blockGenerator, debug=debug)
+		parser.Run()
 
 	@staticmethod
-	def _Generator(currentBlock, blockIterator):
+	def _TokenGenerator(currentBlock, blockIterator):
 		blockType = type(currentBlock)
 
 		for token in currentBlock:
@@ -73,33 +94,34 @@ class BlockToModelParser:
 
 	class BlockParserState:
 		def __init__(self, startState, document, blockGenerator, debug):
-			blockIterator =       iter(blockGenerator)
-			firstBlock =          next(blockIterator)
+			blockIterator = _BlockIterator(self, blockGenerator)
+			firstBlock = blockIterator.__next__()
 			assert isinstance(firstBlock, StartOfDocumentBlock)
 
-			self._stack =         []
-			self.NextState =      startState
-			self.BlockIterator =  blockIterator
-			self.CurrentBlock =   next(blockIterator)
-			self.Document =       document
-			self.CurrentNode =    document
+			self._stack = []
+			self.NextState = startState
+			self.BlockIterator = blockIterator
+			self.CurrentBlock = None  # next(blockIterator)
+			self.Document = document
+			self.CurrentNode = document
 
-			self.debug =          debug
+			self.debug = debug
 
 		@property
 		def PushState(self):
 			return self.NextState
+
 		@PushState.setter
 		def PushState(self, value):
 			self._stack.append((
 				self.NextState,
 				self.CurrentNode
 			))
-			self.NextState =    value
+			self.NextState = value
 
 		def __iter__(self):
 			if self.CurrentBlock.MultiPart:
-				return iter(BlockToModelParser._Generator(self.CurrentBlock, self.BlockIterator))
+				return iter(BlockToModelParser._TokenGenerator(self.CurrentBlock, self.BlockIterator))
 			else:
 				return iter(self.CurrentBlock)
 
@@ -110,14 +132,20 @@ class BlockToModelParser:
 			top = None
 			for i in range(n):
 				top = self._stack.pop()
-			self.NextState =    top[0]
-			self.CurrentNode =  top[1]
+			self.NextState = top[0]
+			self.CurrentNode = top[1]
 
-		def GetGenerator(self):
-			for i in range(10):
-				if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=self.CurrentBlock))
+		def ReIssue(self):
+			self.NextState(self)
+
+		def Run(self):
+			for block in self.BlockIterator:
+				# self.CurrentBlock = block
+				if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=block))
+
+				if isinstance(block, EndOfDocumentBlock):
+					break
+
 				self.NextState(self)
-
-
-				# execute a state
-				# self.NextState(self)
+			else:
+				raise BlockParserException("", None)

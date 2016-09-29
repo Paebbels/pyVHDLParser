@@ -33,6 +33,7 @@ from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
 from pyVHDLParser.Blocks.Sequential import Package, PackageBody
 from pyVHDLParser.Model.VHDLModel   import Document as DocumentModel
 from pyVHDLParser.Model.Reference   import Library as LibraryModel, Use as UseModel
+from pyVHDLParser.Model.Structural  import Entity as EntityModel
 from pyVHDLParser.Model.Parser      import BlockToModelParser
 
 # Type alias for type hinting
@@ -41,6 +42,7 @@ ParserState = BlockToModelParser.BlockParserState
 
 class Document(DocumentModel):
 	def __init__(self):
+		super().__init__()
 		self.__libraries = []
 		self.__uses =      []
 
@@ -49,10 +51,13 @@ class Document(DocumentModel):
 		block = parserState.CurrentBlock
 		if isinstance(block, Library.LibraryBlock):
 			parserState.PushState = LibraryModel.Library.stateParse
+			parserState.ReIssue()
 		elif isinstance(block, Use.UseBlock):
-			pass
+			parserState.PushState = UseModel.Use.stateParse
+			parserState.ReIssue()
 		elif isinstance(block, Entity.NameBlock):
-			pass
+			parserState.PushState = EntityModel.Entity.stateParse
+			parserState.ReIssue()
 		elif isinstance(block, Architecture.NameBlock):
 			pass
 		elif isinstance(block, Package.NameBlock):
@@ -60,10 +65,35 @@ class Document(DocumentModel):
 		elif isinstance(block, PackageBody.NameBlock):
 			pass
 		else:
-			parserState.CurrentBlock = next(parserState.BlockIterator)
+			pass
+			# parserState.CurrentBlock = next(parserState.BlockIterator)
 
 	def AddLibrary(self, libraryName):
 		self.__libraries.append(libraryName)
 
 	def AddUse(self, libraryName, packageName, objectName):
 		self.__uses.append((libraryName, packageName, objectName))
+
+	@property
+	def Libraries(self):
+		return self.__libraries
+
+	@property
+	def Uses(self):
+		return self.__uses
+
+	def AddEntity(self, entity):
+		self._entities.append(entity)
+
+	def Print(self, indent=0):
+		if (len(self.__libraries) > 0):
+			for lib in self.__libraries:
+				print("{indent}-- unused LIBRARY {lib};".format(indent="  " * indent, lib=lib))
+		if (len(self.__uses) > 0):
+			for lib, pack, obj in self.__uses:
+				print("{indent}-- unused USE {lib}.{pack}.{obj};".format(indent="  " * indent, lib=lib, pack=pack, obj=obj))
+		print()
+		for ent in self._entities:
+			ent.Print()
+
+

@@ -230,3 +230,4 @@ if (mode & 32 == 32):
 	document = Document()
 	BlockToModelParser.Transform(document, vhdlBlockStream, debug=True)
 
+	document.Print(0)

@@ -93,6 +93,7 @@ class Entity(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._name =            None
+		self._libraries =       []
 		self._uses =            []
 		self._genericItems =    []
 		self._portItems =       []
@@ -431,7 +432,7 @@ class LoopControlStatement(ModelEntity):
 		self._condition = None
 
 
-class ContinueStatement(LoopControlStatement):
+class NextStatement(LoopControlStatement):
 	def __init__(self):
 		super().__init__()
 

@@ -28,32 +28,160 @@
 # ==============================================================================
 #
 from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Blocks.Exception   import BlockParserException
+from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
+from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Token.Keywords     import EntityKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Entity as EntityBlock
 from pyVHDLParser.Model.VHDLModel    import Entity as EntityModel
-from pyVHDLParser.Model.Parser       import BlockToModelParser, MultiPartIterator
+from pyVHDLParser.Model.Parser       import BlockToModelParser
 
 # Type alias for type hinting
 ParserState = BlockToModelParser.BlockParserState
 
 
 class Entity(EntityModel):
-	@classmethod
-	def stateParse(cls, parserState: ParserState, currentBlock, blockIterator):
-		if currentBlock.MultiPart:
-			tokenIterator = iter(MultiPartIterator(currentBlock, blockIterator))
-		else:
-			tokenIterator = iter(currentBlock)
+	def __init__(self, entityName):
+		super().__init__()
+		self._name = entityName
 
-		firstToken = next(tokenIterator)
-		if (not isinstance(firstToken, EntityKeyword)): raise ParserException()
+	@classmethod
+	def stateParse(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, EntityBlock.NameBlock)
+		cls.stateParseEntityName(parserState)
+
+		for block in parserState.BlockIterator:
+			if isinstance(block, GenericListBlocks.OpenBlock):
+				parserState.PushState = cls.stateParseGenericList
+				parserState.ReIssue()
+			elif isinstance(block, PortListBlocks.OpenBlock):
+				parserState.PushState = cls.stateParsePortList
+				parserState.ReIssue()
+			elif isinstance(block, Constant.ConstantBlock):
+				raise NotImplementedError()
+			elif isinstance(block, EntityBlock.BeginBlock):
+				raise NotImplementedError()
+			elif isinstance(block, EntityBlock.EndBlock):
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.Pop()
+		# parserState.CurrentBlock = None
+
+	@classmethod
+	def stateParseEntityName(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, EntityBlock.NameBlock)
+
+		tokenIterator = iter(parserState)
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
-				newEntity = cls(token.Value)
-				parserState.CurrentNode.AddEntity(newEntity)
+				entityName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
 
-			# if (not isinstance(token, EntityKeyword)): raise ParserException()
+		oldNode = parserState.CurrentNode
+		entity = cls(entityName)
 
-		# block = next(iterator)
+		parserState.CurrentNode.AddEntity(entity)
+		parserState.CurrentNode = entity
+		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
+		parserState.CurrentNode.AddUses(oldNode.Uses)
+
+		oldNode.Libraries.clear()
+		oldNode.Uses.clear()
+
+	@classmethod
+	def stateParseGenericList(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, GenericListBlocks.OpenBlock)
+
+		for block in parserState.BlockIterator:
+			if isinstance(block, GenericListBlocks.ItemBlock):
+				cls.stateParseGeneric(parserState)
+			elif isinstance(block, GenericListBlocks.CloseBlock):
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.Pop()
+
+	@classmethod
+	def stateParseGeneric(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, GenericListBlocks.ItemBlock)
+
+		tokenIterator = iter(parserState)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				genericName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.CurrentNode.AddGeneric(genericName)
+
+	@classmethod
+	def stateParsePortList(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, PortListBlocks.OpenBlock)
+
+		for block in parserState.BlockIterator:
+			if isinstance(block, PortListBlocks.ItemBlock):
+				cls.stateParsePort(parserState)
+			elif isinstance(block, PortListBlocks.CloseBlock):
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.Pop()
+
+	@classmethod
+	def stateParsePort(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, PortListBlocks.ItemBlock)
+
+		tokenIterator = iter(parserState)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				portName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.CurrentNode.AddPort(portName)
+
+	def AddLibraries(self, libraries):
+		for library in libraries:
+			self._libraries.append(library)
+
+	def AddUses(self, uses):
+		for use in uses:
+			self._uses.append(use)
+
+	def AddGeneric(self, generic):
+		self._genericItems.append(generic)
+
+	def AddPort(self, port):
+		self._portItems.append(port)
+
+	def Print(self, indent=0):
+		indentation = "  "*indent
+		for lib in self._libraries:
+			print("{indent}LIBRARY {lib};".format(indent=indentation, lib=lib))
+		for lib, pack, obj in self._uses:
+			print("{indent}USE {lib}.{pack}.{obj};".format(indent=indentation, lib=lib, pack=pack, obj=obj))
+		print()
+		print("{indent}ENTITY {name} IS".format(name=self._name, indent=indentation))
+		if (len(self._genericItems) > 0):
+			print("{indent}  GENERIC (".format(indent=indentation))
+			for generic in self._genericItems:
+				print("{indent}    {name} : {type}".format(indent=indentation, name=generic, type=""))
+			print("{indent}  );".format(indent=indentation))
+		if (len(self._portItems) > 0):
+			print("{indent}  PORT (".format(indent=indentation))
+			for port in self._portItems:
+				print("{indent}    {name} : {type}".format(indent=indentation, name=port, type=""))
+			print("{indent}  );".format(indent=indentation))
+		print("{indent}END ENTITY;".format(name=self._name, indent=indentation))
 

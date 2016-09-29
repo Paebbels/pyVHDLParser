@@ -60,3 +60,14 @@ def StripAndFuse(generator):
 			block.StartToken.PreviousToken = lastBlock.EndToken
 			yield block
 			lastBlock = block
+
+def FastForward(generator):
+	iterator =  iter(generator)
+	# don't filter the first block
+	yield next(iterator)
+
+	for block in iterator:
+		if isinstance(block, (IndentationBlock, CommentBlock, LinebreakBlock)):
+			continue
+		else:
+			yield block

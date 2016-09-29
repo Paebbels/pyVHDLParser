@@ -36,7 +36,8 @@ ParserState = BlockToModelParser.BlockParserState
 
 
 class Library(LibraryBase):
-	pass
+	def __init__(self):
+		super().__init__()
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -48,3 +49,4 @@ class Library(LibraryBase):
 				break
 
 		parserState.Pop()
+		# parserState.CurrentBlock = None

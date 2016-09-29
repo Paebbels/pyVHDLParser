@@ -28,16 +28,65 @@
 # ==============================================================================
 #
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Model.VHDLModel   import Use as UseModel
-from pyVHDLParser.Model.Parser      import BlockToModelParser
+from pyVHDLParser.Blocks.Exception import BlockParserException
+from pyVHDLParser.Blocks.Reference.Use  import UseBlock, UseNameBlock, UseEndBlock
+from pyVHDLParser.Model.VHDLModel       import Use as UseModel
+from pyVHDLParser.Model.Parser          import BlockToModelParser
 
 # Type alias for type hinting
+from pyVHDLParser.Token.Keywords import IdentifierToken, AllKeyword
+
+
 ParserState = BlockToModelParser.BlockParserState
 
 
 class Use(UseModel):
-	pass
+	def __init__(self):
+		super().__init__()
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		pass
+		assert isinstance(parserState.CurrentBlock, UseBlock)
+		for block in parserState.BlockIterator:
+			if isinstance(block, UseNameBlock):
+				# parserState.CurrentBlock = block
+				cls.stateParseTokens(parserState)
+			elif isinstance(block, UseEndBlock):
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.Pop()
+		# parserState.CurrentBlock = None
+
+	@classmethod
+	def stateParseTokens(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, UseNameBlock)
+
+		tokenIterator = iter(parserState)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				libraryName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				packageName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				objectName = token.Value
+				break
+			elif isinstance(token, AllKeyword):
+				objectName = "ALL"
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.CurrentNode.AddUse(libraryName, packageName, objectName)
