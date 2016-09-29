@@ -32,6 +32,7 @@ from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
 from pyVHDLParser.Blocks.Sequential import Package, PackageBody
 from pyVHDLParser.Model.VHDLModel   import Document as DocumentModel
 from pyVHDLParser.Model.Reference   import Library as LibraryModel, Use as UseModel
+from pyVHDLParser.Model.Sequential  import Package as PackageModel, PackageBody as PackageBodyModel
 from pyVHDLParser.Model.Structural  import Entity as EntityModel, Architecture as ArchitectureModel
 from pyVHDLParser.Model.Parser      import BlockToModelParser
 
@@ -61,9 +62,11 @@ class Document(DocumentModel):
 			parserState.PushState = ArchitectureModel.Architecture.stateParse
 			parserState.ReIssue()
 		elif isinstance(block, Package.NameBlock):
-			pass
+			parserState.PushState = PackageModel.Package.stateParse
+			parserState.ReIssue()
 		elif isinstance(block, PackageBody.NameBlock):
-			pass
+			parserState.PushState = PackageBodyModel.PackageBody.stateParse
+			parserState.ReIssue()
 		else:
 			pass
 			# parserState.CurrentBlock = next(parserState.BlockIterator)
@@ -88,6 +91,12 @@ class Document(DocumentModel):
 	def AddArchitecture(self, architecture):
 		self._architectures.append(architecture)
 
+	def AddPackage(self, package):
+		self._packages.append(package)
+
+	def AddPackageBody(self, packageBody):
+		self._packageBodies.append(packageBody)
+
 	def Print(self, indent=0):
 		if (len(self.__libraries) > 0):
 			for lib in self.__libraries:
@@ -101,5 +110,11 @@ class Document(DocumentModel):
 		print()
 		for architecture in self._architectures:
 			architecture.Print()
+		print()
+		for package in self._packages:
+			package.Print()
+		print()
+		for packageBody in self._packageBodies:
+			packageBody.Print()
 
 

@@ -24,3 +24,20 @@ begin
 	end process;
 	
 end architecture;
+
+library PoC;
+use     PoC.Utils.all;
+use     PoC.Common.all;
+use     PoC.Strings.all;
+
+package Components is
+
+end package;
+
+
+library PoC;
+use     PoC.Vectors.all;
+
+package body Components is
+
+end package body;

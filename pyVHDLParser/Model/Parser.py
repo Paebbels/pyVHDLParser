@@ -141,7 +141,7 @@ class BlockToModelParser:
 		def Run(self):
 			for block in self.BlockIterator:
 				# self.CurrentBlock = block
-				if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=block))
+				# if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=block))
 
 				if isinstance(block, EndOfDocumentBlock):
 					break

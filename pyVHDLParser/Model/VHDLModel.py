@@ -139,6 +139,7 @@ class Package(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._name =            None
+		self._libraries =       []
 		self._uses =            []
 		self._genericItems =    []
 		self._declaredItems =   []
@@ -148,6 +149,7 @@ class PackageBody(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._package =         None
+		self._libraries =       []
 		self._uses =            []
 		self._declaredItems =   []
 
