@@ -30,6 +30,7 @@
 from pyVHDLParser.Blocks.Exception   import BlockParserException
 from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
+from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import IdentifierToken
 from pyVHDLParser.Blocks.Sequential  import Package as PackageBlock
 from pyVHDLParser.Model.VHDLModel    import Package as PackageModel
@@ -162,15 +163,15 @@ class Package(PackageModel):
 	def Print(self, indent=0):
 		indentation = "  "*indent
 		for lib in self._libraries:
-			print("{indent}LIBRARY {lib};".format(indent=indentation, lib=lib))
+			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
 		for lib, pack, obj in self._uses:
-			print("{indent}USE {lib}.{pack}.{obj};".format(indent=indentation, lib=lib, pack=pack, obj=obj))
+			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
-		print("{indent}PACKAGE {name} IS".format(indent=indentation, name=self._name))
+		print("{indent}{DARK_CYAN}PACKAGE{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
 		if (len(self._genericItems) > 0):
-			print("{indent}  GENERIC (".format(indent=indentation))
+			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for generic in self._genericItems:
-				print("{indent}    {name} : {type}".format(indent=indentation, name=generic, type=""))
+				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
 			print("{indent}  );".format(indent=indentation))
-		print("{indent}END PACKAGE;".format(indent=indentation, name=self._name))
+		print("{indent}{DARK_CYAN}END PACKAGE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 

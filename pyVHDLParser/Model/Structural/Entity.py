@@ -31,6 +31,7 @@ from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Blocks.Exception   import BlockParserException
 from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
+from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import EntityKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Entity as EntityBlock
 from pyVHDLParser.Model.VHDLModel    import Entity as EntityModel
@@ -168,20 +169,20 @@ class Entity(EntityModel):
 	def Print(self, indent=0):
 		indentation = "  "*indent
 		for lib in self._libraries:
-			print("{indent}LIBRARY {lib};".format(indent=indentation, lib=lib))
+			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
 		for lib, pack, obj in self._uses:
-			print("{indent}USE {lib}.{pack}.{obj};".format(indent=indentation, lib=lib, pack=pack, obj=obj))
+			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
-		print("{indent}ENTITY {name} IS".format(name=self._name, indent=indentation))
+		print("{indent}{DARK_CYAN}ENTITY{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(name=self._name, indent=indentation, **Console.Foreground))
 		if (len(self._genericItems) > 0):
-			print("{indent}  GENERIC (".format(indent=indentation))
+			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for generic in self._genericItems:
-				print("{indent}    {name} : {type}".format(indent=indentation, name=generic, type=""))
-			print("{indent}  );".format(indent=indentation))
+				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
+			print("{indent}  );".format(indent=indentation, **Console.Foreground))
 		if (len(self._portItems) > 0):
-			print("{indent}  PORT (".format(indent=indentation))
+			print("{indent}  {DARK_CYAN}PORT{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for port in self._portItems:
-				print("{indent}    {name} : {type}".format(indent=indentation, name=port, type=""))
-			print("{indent}  );".format(indent=indentation))
-		print("{indent}END ENTITY;".format(name=self._name, indent=indentation))
+				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=port, type="", **Console.Foreground))
+			print("{indent}  );".format(indent=indentation, **Console.Foreground))
+		print("{indent}{DARK_CYAN}END ENTITY{NOCOLOR};".format(name=self._name, indent=indentation, **Console.Foreground))
 

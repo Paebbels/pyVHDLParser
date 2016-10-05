@@ -31,6 +31,7 @@ from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Blocks.Exception   import BlockParserException
 from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
+from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import ArchitectureKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Architecture as ArchitectureBlock
 from pyVHDLParser.Model.VHDLModel    import Architecture as ArchitectureModel
@@ -107,11 +108,11 @@ class Architecture(ArchitectureModel):
 	def Print(self, indent=0):
 		indentation = "  "*indent
 		for lib in self._libraries:
-			print("{indent}LIBRARY {lib};".format(indent=indentation, lib=lib))
+			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
 		for lib, pack, obj in self._uses:
-			print("{indent}USE {lib}.{pack}.{obj};".format(indent=indentation, lib=lib, pack=pack, obj=obj))
+			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
-		print("{indent}ARCHITECTURE {name} OF {entity} IS".format(indent=indentation, name=self._name, entity=self._entity))
-		print("{indent}BEGIN".format(indent=indentation))
-		print("{indent}END ARCHITECTURE;".format(indent=indentation, name=self._name))
+		print("{indent}{DARK_CYAN}ARCHITECTURE {YELLOW}{name}{NOCOLOR} {DARK_CYAN}OF{NOCOLOR} {GREEN}{entity}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, entity=self._entity, **Console.Foreground))
+		print("{indent}{DARK_CYAN}BEGIN{NOCOLOR}".format(indent=indentation, **Console.Foreground))
+		print("{indent}{DARK_CYAN}END ARCHITECTURE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 
