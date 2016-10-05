@@ -27,36 +27,9 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment    import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Sequential import Package
-from test.Counter                   import Counter
-
-
 class TestCase:
-	__NAME__ =      "Package declarations"
-	__FILENAME__ =  "Package.vhdl"
+	__NAME__ =      None
+	__FILENAME__ =  None
 
 	def __init__(self):
 		pass
-
-	@classmethod
-	def GetExpectedBlocks(cls):
-		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 45)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 10)
-		counter.AddType(MultiLineCommentBlock, 20)
-		return counter
-
-	@classmethod
-	def GetExpectedBlocksAfterStrip(cls):
-		counter = Counter()
-		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Package.NameBlock, 39)
-		counter.AddType(Package.EndBlock, 32)
-		counter.AddType(EndOfDocumentBlock, 1)
-		return counter

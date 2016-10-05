@@ -11,7 +11,7 @@ install:
 before_script:
   - ./tools/Travis-CI/ghdl.setup.sh
 script:
-  - python3 ./Testsuite.py
+  - python3 ./TestSuite.py
 deploy:
   skip_cleanup: true
   provider: releases

@@ -27,6 +27,9 @@
 # limitations under the License.
 # ==============================================================================
 #
+from pyVHDLParser.Functions import Console
+
+
 class Counter:
 
 
@@ -66,8 +69,8 @@ class Counter:
 	def PrintReport(self):
 		for key,(count,expectedCount) in self._failing.items():
 			if (count == 0):
-				print("Missing {expectedCount} {type}".format(expectedCount=expectedCount, type=key.__name__))
+				print("      {DARK_GRAY}Missing {expectedCount} {type}{NOCOLOR}".format(expectedCount=expectedCount, type=key.__name__, **Console.Foreground))
 			elif (expectedCount == 0):
-				print("Found {count} unexpected {type}".format(count=count, type=key.__name__))
+				print("      {DARK_GRAY}Found {count} unexpected {type}{NOCOLOR}".format(count=count, type=key.__name__, **Console.Foreground))
 			else:
-				print("Expected {expectedCount} of {type}; found {count}".format(count=count, expectedCount=expectedCount, type=key.__name__))
+				print("      {DARK_GRAY}Expected {expectedCount} of {type}; found {count}{NOCOLOR}".format(count=count, expectedCount=expectedCount, type=key.__name__, **Console.Foreground))

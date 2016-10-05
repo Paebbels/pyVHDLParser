@@ -27,16 +27,17 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment    import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Sequential import PackageBody
-from test.Counter                   import Counter
+from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Sequential           import Package
+from test.TestCase                            import TestCase as TestCaseBase
+from test.Counter                             import Counter
 
 
-class TestCase:
-	__NAME__ =      "Package body declarations"
-	__FILENAME__ =  "PackageBody.vhdl"
+class TestCase(TestCaseBase):
+	__NAME__ =      "Package declarations"
+	__FILENAME__ =  "Package.vhdl"
 
 	def __init__(self):
 		pass
@@ -45,18 +46,18 @@ class TestCase:
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
 		counter.AddType(EmptyLineBlock, 14)
-		counter.AddType(LinebreakBlock, 48)
+		counter.AddType(LinebreakBlock, 45)
 		counter.AddType(IndentationBlock, 18)
 		counter.AddType(WhitespaceBlock, 3)
-		counter.AddType(SingleLineCommentBlock, 12)
-		counter.AddType(MultiLineCommentBlock, 22)
+		counter.AddType(SingleLineCommentBlock, 10)
+		counter.AddType(MultiLineCommentBlock, 20)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(PackageBody.NameBlock, 39)
-		counter.AddType(PackageBody.EndBlock, 32)
+		counter.AddType(Package.NameBlock, 39)
+		counter.AddType(Package.EndBlock, 32)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

@@ -27,39 +27,40 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Structural          import Entity
-from pyVHDLParser.Blocks.List                import PortList
-from test.Counter                   import Counter
+from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock
+from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Reference.Library    import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
+from test.TestCase                            import TestCase as TestCaseBase
+from test.Counter                             import Counter
 
 
-class TestCase:
-	__NAME__ =      "Port lists"
-	__FILENAME__ =  "PortList.vhdl"
+class TestCase(TestCaseBase):
+	__NAME__ =      "Library clauses"
+	__FILENAME__ =  "Library.vhdl"
 
 	def __init__(self):
-		pass
+		super().__init__()
 
 	@classmethod
 	def GetExpectedBlocks(cls):
+		pass
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 8)
-		counter.AddType(LinebreakBlock, 37)
-		counter.AddType(IndentationBlock, 18)
-		counter.AddType(WhitespaceBlock, 3)
+		counter.AddType(EmptyLineBlock, 7)
+		counter.AddType(LinebreakBlock, 19)
+		counter.AddType(IndentationBlock, 12)
+		counter.AddType(WhitespaceBlock, 2)
+		counter.AddType(SingleLineCommentBlock, 7)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
+		pass
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(Entity.NameBlock, 9)
-		counter.AddType(PortList.OpenBlock, 9)
-		counter.AddType(PortList.ItemBlock, 13)
-		counter.AddType(PortList.DelimiterBlock, 4)
-		counter.AddType(PortList.CloseBlock, 9)
-		counter.AddType(Entity.EndBlock, 9)
+		counter.AddType(LibraryBlock, 11)
+		counter.AddType(LibraryNameBlock, 14)
+		counter.AddType(LibraryDelimiterBlock, 3)
+		counter.AddType(LibraryEndBlock, 11)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

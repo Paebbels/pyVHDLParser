@@ -27,16 +27,17 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference.Library   import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
-from test.Counter                   import Counter
+from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Sequential           import PackageBody
+from test.TestCase                            import TestCase as TestCaseBase
+from test.Counter                             import Counter
 
 
-class TestCase:
-	__NAME__ =      "Library clauses"
-	__FILENAME__ =  "Library.vhdl"
+class TestCase(TestCaseBase):
+	__NAME__ =      "Package body declarations"
+	__FILENAME__ =  "PackageBody.vhdl"
 
 	def __init__(self):
 		pass
@@ -44,20 +45,19 @@ class TestCase:
 	@classmethod
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
-		counter.AddType(EmptyLineBlock, 7)
-		counter.AddType(LinebreakBlock, 19)
-		counter.AddType(IndentationBlock, 12)
-		counter.AddType(WhitespaceBlock, 2)
-		counter.AddType(SingleLineCommentBlock, 7)
+		counter.AddType(EmptyLineBlock, 14)
+		counter.AddType(LinebreakBlock, 48)
+		counter.AddType(IndentationBlock, 18)
+		counter.AddType(WhitespaceBlock, 3)
+		counter.AddType(SingleLineCommentBlock, 12)
+		counter.AddType(MultiLineCommentBlock, 22)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(LibraryBlock, 11)
-		counter.AddType(LibraryNameBlock, 14)
-		counter.AddType(LibraryDelimiterBlock, 3)
-		counter.AddType(LibraryEndBlock, 11)
+		counter.AddType(PackageBody.NameBlock, 39)
+		counter.AddType(PackageBody.EndBlock, 32)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

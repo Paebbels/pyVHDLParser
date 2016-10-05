@@ -29,128 +29,24 @@
 #
 from pathlib import Path
 
-import sys
-
-from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Filters.Comment   import StripAndFuse
-from pyVHDLParser.Functions         import Console, Exit
-from pyVHDLParser.Token.Tokens      import EndOfDocumentToken
-from pyVHDLParser.Token.Parser      import Tokenizer, StartOfDocumentToken
-from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Parser     import TokenToBlockParser
-
-from test                           import LibraryTest, UseTest, PackageTest, PackageBodyTest
-from test                           import EntityTest, GenericListTest, PortListTest, ArchitectureTest, ProcessTest
-
+from pyVHDLParser.Functions import Console
+from test.BlockParserTests.TestSuite import TestSuite as BlockParserTestSuite
 
 Console.init()
 
 rootDirectory = Path(".")
 vhdlDirectory = rootDirectory / "vhdl"
 
-testCases = [
-	LibraryTest.TestCase,
-	UseTest.TestCase,
-	PackageTest.TestCase,
-	PackageBodyTest.TestCase,
-	EntityTest.TestCase,
-	GenericListTest.TestCase,
-	PortListTest.TestCase,
-	ArchitectureTest.TestCase,
-	ProcessTest.TestCase
+testSuites = [
+	BlockParserTestSuite,
 ]
 
-alphaCharacters = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
+for testSuite in testSuites:
+	print("TestSuite: {CYAN}{name}.{NOCOLOR}".format(name=testSuite.__NAME__, **Console.Foreground))
 
-runExpectedBlocks =           True
-runExpectedBlocksAfterStrip = not True
-runConnectivity =             True
+	testSuite = testSuite(vhdlDirectory)
+	testSuite.RunTests()
 
-for testCase in testCases:
-	print("Testcase: {CYAN}{name}.{NOCOLOR}".format(name=testCase.__NAME__, **Console.Foreground))
+	print("TestSuite: {CYAN}{name} COMPLETED.{NOCOLOR}".format(name=testSuite.__NAME__, **Console.Foreground))
 
-	file = vhdlDirectory / testCase.__FILENAME__
-
-	if (not file.exists()):
-		print("  {RED}File '{0!s}' does not exist.{NOCOLOR}".format(file, **Console.Foreground))
-		continue
-
-	with file.open('r') as fileHandle:
-		content = fileHandle.read()
-
-	# History check
-	if runExpectedBlocks:
-		counter =         testCase.GetExpectedBlocks()
-		wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
-
-		try:
-			for vhdlBlock in vhdlBlockStream:
-				counter.Count(vhdlBlock.__class__)
-
-			if counter.Check():
-				print("  History check - PASSED")
-			else:
-				counter.PrintReport()
-				print("  History check - FAILED")
-
-		except ParserException as ex:     print("ERROR: " + str(ex))
-		except NotImplementedError as ex: print("NotImplementedError: " + str(ex))
-
-	# History check
-	if runExpectedBlocksAfterStrip:
-		counter =             testCase.GetExpectedBlocksAfterStrip()
-		wordTokenStream =     Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-		vhdlBlockStream =     TokenToBlockParser.Transform(wordTokenStream)
-		strippedBlockStream = StripAndFuse(vhdlBlockStream)
-
-		try:
-			for vhdlBlock in strippedBlockStream:
-				counter.Count(vhdlBlock.__class__)
-
-			if counter.Check():
-				print("  History check - PASSED")
-			else:
-				counter.PrintReport()
-				print("  History check - FAILED")
-
-		except ParserException as ex:     print("ERROR: " + str(ex))
-		except NotImplementedError as ex: print("NotImplementedError: " + str(ex))
-
-
-	# Connectivity check
-	if runConnectivity:
-		wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
-
-		try:
-			blockIterator = iter(vhdlBlockStream)
-			firstBlock =    next(blockIterator)
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):              print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
-			elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)): print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
-
-			lastBlock = None
-			lastToken = firstBlock.StartToken
-			for vhdlBlock in blockIterator:
-				if isinstance(vhdlBlock, EndOfDocumentBlock):
-					lastBlock = vhdlBlock
-					break
-				tokenIterator = iter(vhdlBlock)
-
-				for token in tokenIterator:
-					if (token.NextToken is None):                 print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
-					elif (lastToken.NextToken is not token):      print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
-					elif (token.PreviousToken is not lastToken):  print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
-					lastToken = token
-			else:
-				print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
-
-			if (not isinstance(lastBlock, EndOfDocumentBlock)):              print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
-			elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)): print("{RED}Last block is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
-
-		except ParserException as ex:     print("ERROR: " + str(ex))
-		except NotImplementedError as ex: print("NotImplementedError: " + str(ex))
-
-	print()
-
-print("COMPLETED")
+print("All suites COMPLETED.")

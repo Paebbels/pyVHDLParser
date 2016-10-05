@@ -27,16 +27,18 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Blocks.Common              import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment             import SingleLineCommentBlock
-from pyVHDLParser.Blocks.Document            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference.Use       import UseBlock, UseNameBlock, UseDelimiterBlock, UseEndBlock
-from test.Counter                   import Counter
+from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Structural           import Entity
+from pyVHDLParser.Blocks.List                 import GenericList
+from test.TestCase                            import TestCase as TestCaseBase
+from test.Counter                             import Counter
 
 
-class TestCase:
-	__NAME__ =      "Use clauses"
-	__FILENAME__ =  "Use.vhdl"
+class TestCase(TestCaseBase):
+	__NAME__ =      "Generic lists"
+	__FILENAME__ =  "GenericList.vhdl"
 
 	def __init__(self):
 		pass
@@ -45,19 +47,19 @@ class TestCase:
 	def GetExpectedBlocks(cls):
 		counter = cls.GetExpectedBlocksAfterStrip()
 		counter.AddType(EmptyLineBlock, 8)
-		counter.AddType(LinebreakBlock, 16)
-		counter.AddType(IndentationBlock, 1)
-		counter.AddType(WhitespaceBlock, 5)
-		counter.AddType(SingleLineCommentBlock, 1)
+		counter.AddType(LinebreakBlock, 37)
+		counter.AddType(IndentationBlock, 18)
 		return counter
 
 	@classmethod
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(UseBlock, 10)
-		counter.AddType(UseNameBlock, 17)
-		counter.AddType(UseDelimiterBlock, 3)
-		counter.AddType(UseEndBlock, 10)
+		counter.AddType(Entity.NameBlock, 9)
+		counter.AddType(GenericList.OpenBlock, 9)
+		counter.AddType(GenericList.ItemBlock, 13)
+		counter.AddType(GenericList.DelimiterBlock, 4)
+		counter.AddType(GenericList.CloseBlock, 9)
+		counter.AddType(Entity.EndBlock, 9)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter
