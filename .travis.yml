@@ -7,9 +7,9 @@ matrix:
       sudo: false
       python: "3.5"
 install:
-  - pip3 install -r tools/Travis-CI/requirements.txt
+  - pip3 install -r .Travis-CI/requirements.txt
 before_script:
-  - ./tools/Travis-CI/ghdl.setup.sh
+  - ./.PyPI/PyPI.setup.sh
 script:
   - python3 ./TestSuite.py
 deploy:
