@@ -233,78 +233,74 @@ class NameBlock2(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
+		errorMessage = "Expected BEGIN after RETURN keyword."
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken = LinebreakToken(token)
 				parserState.NewBlock = LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace1
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.NextState =   cls.stateWhitespace1
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState = cls.stateWhitespace1
+			parserState.NewToken =     BoundaryToken(token)
+			parserState.TokenMarker =  parserState.NewToken
+			parserState.NextState =    cls.stateWhitespace1
 			return
 		elif isinstance(token, StringToken):
-			if (token <= "is"):
-				parserState.NewToken = IsKeyword(token)
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			if (token <= "return"):
+				parserState.NewToken =    ReturnKeyword(token)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.NextState =   cls.stateReturnKeyword
 				return
-			else:
-				parserState.NextState = cls.stateDeclarativeRegion
-				parserState.NextState(parserState)
-				return
+
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		errorMessage = "Expected BEGIN after IS keyword."
+		errorMessage = "Expected BEGIN after RETURN keyword."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken = LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-					parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
-					_ = LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.NewBlock =  NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
-					parserState.NewBlock = LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NewBlock = WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker = None
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, StringToken):
-			if (token <= "is"):
-				parserState.NewToken = IsKeyword(token)
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
-				parserState.NextState = cls.stateDeclarativeRegion
-				return
-			else:
-				parserState.NextState = cls.stateDeclarativeRegion
-				parserState.NextState(parserState)
+			if (token <= "return"):
+				parserState.NewToken =    ReturnKeyword(token)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.NextState =   cls.stateReturnKeyword
 				return
 
 		raise BlockParserException(errorMessage, token)
@@ -315,69 +311,69 @@ class NameBlock2(Block):
 		errorMessage = "Expected whitespace after keyword RETURN."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken = LinebreakToken(token)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
 				_ = LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.NextState =   cls.stateWhitespace2
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace2
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace3
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace2
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NextState = cls.stateWhitespace3
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NextState =     cls.stateWhitespace2
 			return
 
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		errorMessage = "Expected function name (identifier)."
+		errorMessage = "Expected type mark (return type)."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewToken = LinebreakToken(token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-					parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
-					_ = LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.NewBlock =  NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
-					parserState.NewBlock = LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, StringToken):
-			parserState.NewToken = IdentifierToken(token)
-			parserState.NextState = cls.stateReturnType
+			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     cls.stateReturnType
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NewBlock = WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker = None
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -385,81 +381,72 @@ class NameBlock2(Block):
 	@classmethod
 	def stateReturnType(cls, parserState: ParserState):
 		token = parserState.Token
-		errorMessage = "Expected '(' or whitespace after function name."
+		errorMessage = "Expected whitespace after type mark (return type)."
 		if isinstance(token, CharacterToken):
-			if (token == "("):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-				parserState.NewToken = BoundaryToken(token)
-				_ = ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)
+			if (token == "\n"):
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewToken =    LinebreakToken(token)
+				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState = NameBlock2.stateAfterParameterList
-				parserState.PushState = ParameterList.OpenBlock.stateOpeningParenthesis
-				parserState.Counter = 1
-				return
-			elif (token == "\n"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken = LinebreakToken(token)
-				_ = LinebreakBlock(parserState.NewBlock, parserState.NewToken)
-				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace4
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace4
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.NextState = cls.stateWhitespace4
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.NextState =   cls.stateWhitespace3
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NextState = cls.stateWhitespace4
+			parserState.NextState =     cls.stateWhitespace3
 			return
-
+		
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		errorMessage = "Expected ';' or keyword IS after return type."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken = LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-					parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
-					_ = LinebreakBlock(parserState.NewBlock, parserState.NewToken)
+					parserState.NewBlock =  NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
-					parserState.NewBlock = LinebreakBlock(parserState.LastBlock, parserState.NewToken)
+					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.PushState = LinebreakBlock.stateLinebreak
+				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
 			elif (token == "-"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = SingleLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 			elif (token == "/"):
-				parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
-				parserState.PushState = MultiLineCommentBlock.statePossibleCommentStart
+				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
 		elif (isinstance(token, StringToken) and (token <= "is")):
-			parserState.NewToken = IsKeyword(token)
-			parserState.NewBlock = NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState = NameBlock2.stateDeclarativeRegion
+			parserState.NewToken =      IsKeyword(token)
+			parserState.NewBlock =      NameBlock2(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NextState =     NameBlock2.stateDeclarativeRegion
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NewBlock = WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker = None
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise BlockParserException(errorMessage, token)
@@ -489,15 +476,15 @@ class NameBlock2(Block):
 		elif isinstance(token, StringToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
-				newToken =              GenericKeyword(token)
-				parserState.PushState = GenericList.OpenBlock.stateGenericKeyword
+				newToken =                GenericKeyword(token)
+				parserState.PushState =   GenericList.OpenBlock.stateGenericKeyword
 			elif (keyword == "end"):
-				newToken =              EndKeyword(token)
-				parserState.NextState = EndBlock.stateEndKeyword
+				newToken =                EndKeyword(token)
+				parserState.NextState =   EndBlock.stateEndKeyword
 			elif (keyword == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
-				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.NextState = BeginBlock.stateBeginKeyword
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.NextState =   BeginBlock.stateBeginKeyword
 				return
 			else:
 				raise BlockParserException(errorMessage, token)
