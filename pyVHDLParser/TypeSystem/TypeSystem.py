@@ -67,16 +67,16 @@ class EnumerationLiteral:
 		self.Pos =    pos
 	
 
-class EnumeratedType(Type):
+class EnumerationType(Type):
 	class _Attributes(_Attributes):
 		def __init__(self, enum):
 			self._enum = enum
 		
 		def Low(self):
-			return self._enum._enumeration[0]
+			return self._enum._range.Left
 		
 		def High(self):
-			return self._enum._enumeration[-1]
+			return self._enum._range.Right
 	
 		def Pos(self, value):
 			for pos,enumValue in enumerate(self._enum._enumeration):
@@ -95,6 +95,7 @@ class EnumeratedType(Type):
 	def __init__(self, name, enumerationValues):
 		super().__init__(name)
 		self._enumeration =   tuple([EnumerationLiteral(self, value, pos) for pos,value in enumerate(enumerationValues)])
+		self._range =         Range(self, Direction.To, self._enumeration[0], self._enumeration[-1])
 		self.Attributes =     self._Attributes(self)
 
 
@@ -179,7 +180,12 @@ class EnumerationSubType(SubType):
 		
 		def High(self):
 			return self._subType._range.Right
-		
+
+
+	def __init__(self, name, subType, range=None, resolutionFunction=None):
+		if (range is None):
+			range = subType._range
+		super().__init__(name, subType, range, resolutionFunction)
 
 @unique
 class Direction(Enum):

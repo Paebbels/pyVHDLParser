@@ -29,7 +29,7 @@
 #
 from pyVHDLParser.Common import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package import PackageDeclation, PackageBody, Package
-from pyVHDLParser.TypeSystem.TypeSystem import EnumeratedType, ArrayType, IntegerType, RealType, Direction, SubType, Range, IntegerSubType
+from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, IntegerType, RealType, Direction, SubType, Range, IntegerSubType
 
 
 Boolean_Values = [
@@ -37,7 +37,7 @@ Boolean_Values = [
 	"TRUE"   #
 ]
 
-Boolean =               EnumeratedType("boolean", Boolean_Values)
+Boolean =               EnumerationType("boolean", Boolean_Values)
 
 
 UniversatInteger =      IntegerType("universat_integer")

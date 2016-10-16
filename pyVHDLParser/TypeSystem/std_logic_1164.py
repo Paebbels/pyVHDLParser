@@ -29,7 +29,7 @@
 #
 from pyVHDLParser.Common                import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package    import Parameter, FunctionDeclaration, Function, PackageDeclation, PackageBody, Package
-from pyVHDLParser.TypeSystem.TypeSystem import EnumeratedType, ArrayType, Range, SubType, EnumerationSubType
+from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, Range, SubType, EnumerationSubType
 from pyVHDLParser.TypeSystem.std        import Natural
 
 
@@ -45,7 +45,7 @@ Std_ULogic_Values = [
   "-"   # Don't care
 ]
 
-Std_ULogic =          EnumeratedType("std_ulogic", Std_ULogic_Values)
+Std_ULogic =          EnumerationType("std_ulogic", Std_ULogic_Values)
 Std_ULogic_U =        Std_ULogic.Attributes.Value("U")
 Std_ULogic_Z =        Std_ULogic.Attributes.Value("Z")
 
