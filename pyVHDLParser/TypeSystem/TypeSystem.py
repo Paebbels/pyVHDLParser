@@ -66,6 +66,12 @@ class EnumerationLiteral:
 		self.Name =   name
 		self.Pos =    pos
 	
+	def __repr__(self):
+		return "{enum!r}.{name}".format(enum=self._enum, name=self.Name)
+	
+	def __str__(self):
+		return self.Name
+	
 
 class EnumerationType(Type):
 	class _Attributes(_Attributes):
@@ -97,6 +103,12 @@ class EnumerationType(Type):
 		self._enumeration =   tuple([EnumerationLiteral(self, value, pos) for pos,value in enumerate(enumerationValues)])
 		self._range =         Range(self, Direction.To, self._enumeration[0], self._enumeration[-1])
 		self.Attributes =     self._Attributes(self)
+	
+	def __repr__(self):
+		return self._name
+	
+	def __str__(self):
+		return self._name
 
 
 class ArrayType(Type):
@@ -180,6 +192,9 @@ class EnumerationSubType(SubType):
 		
 		def High(self):
 			return self._subType._range.Right
+		
+		def Value(self, str):
+			return self._subType._subType.Attributes.Value(str)
 
 
 	def __init__(self, name, subType, range=None, resolutionFunction=None):

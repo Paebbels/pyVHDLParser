@@ -27,7 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform
+from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform, Scheduler, Event
 
 
 class Simulation:
@@ -44,17 +44,37 @@ class Simulation:
 	def Initialize(self):
 		for signal in self._signals:
 			signal.Initialize()
+		for process in self._processes:
+			process.Initialize()
 	
 	def Run(self):
-		pass
+		iterators = [(p,iter(p._generator())) for p in self._processes]
+		
+		scheduler = Scheduler()
+		for process,iterator in iterators:
+			signalChanges,time = next(iterator)
+			
+			
+			scheduler.AddEvent(Event(scheduler._now + time, process))
+			
+			
+			print(time)
+		
 		
 	def ExportVCD(self, filename):
 		pass
 
 
 class Path:
-	def __init__(self, path):
-		self._path =              path
+	def __init__(self, name, path):
+		self._name =    name
+		self._path =    path
+	
+	def __repr__(self):
+		return self._path
+	
+	def __str__(self):
+		return self._name
 
 
 class Signal:
@@ -72,15 +92,26 @@ class Signal:
 		else:
 			result = self._subType.Attributes.Low()
 		self._waveform.Initialize(result)
+	
+	def __repr__(self):
+		return "{path!r}: {value}".format(path=self._path, value="------")
+	
+	def __str__(self):
+		return "{path!s}: {value}".format(path=self._path, value="------")
+
 
 class Process:
-	def __init__(self, path, sensitivityList=None):
+	def __init__(self, path, generator, sensitivityList=None):
 		self._path =            path
 		self._sensitivityList = sensitivityList
+		self._generator =       generator
 		self._constants =       []
 		self._variables =       []
 		self._outputs =         []
 		self._instructions =    []
+	
+	def Initialize(self):
+		pass
 
 
 class Source:

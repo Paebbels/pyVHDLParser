@@ -31,10 +31,24 @@ class Scheduler:
 	def __init__(self):
 		self._now =             0
 		self._globalTimeLine =  TimeLine()
+	
+	def AddEvent(self, relTime):
+		pass
 
 	def GetNextTime(self):
 		return None
 
+
+class Event:
+	def __init__(self, time, process):
+		self._previous =  None
+		self._next =      None
+		self._time =      time
+		self.WakeList =   [process]
+	
+	def AddProcess(self, process):
+		self.WakeList.append(process)
+	
 
 class Transaction:
 	def __init__(self, time, value):

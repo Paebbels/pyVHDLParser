@@ -33,14 +33,36 @@ from pyVHDLParser.TypeSystem.std_logic_1164       import Std_Logic
 
 sim = Simulation()
 
-sig1 = Signal(Path("/signal1"), Std_Logic)
-sig2 = Signal(Path("/signal2"), Std_Logic)
+sig1 = Signal(Path("signal1", "/signal1"), Std_Logic)
+sig2 = Signal(Path("signal2", "/signal2"), Std_Logic)
 
 sim.AddSignal(sig1)
 sim.AddSignal(sig2)
 
-proc1 = Process("proc1", sensitivityList=None)
-proc2 = Process("proc2", sensitivityList=None)
+def p1():
+	zero = Std_Logic.Attributes.Value("0")
+	one =  Std_Logic.Attributes.Value("1")
+	for i in range(10):
+		yield ([
+				(sig1, zero)
+		  ], 10)
+		yield ([
+			  (sig1, one)
+		  ], 10)
+
+def p2():
+	zero = Std_Logic.Attributes.Value("0")
+	one =  Std_Logic.Attributes.Value("1")
+	for i in range(20):
+		yield ([
+				(sig2, one)
+		  ], 5)
+		yield ([
+			  (sig2, zero)
+		  ], 5)
+
+proc1 = Process(Path("proc1", "/proc1"), p1)
+proc2 = Process(Path("proc2", "/proc2"), p2)
 
 sim.AddProcess(proc1)
 sim.AddProcess(proc2)
