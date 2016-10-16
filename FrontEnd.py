@@ -34,8 +34,8 @@ import sys
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Filters.Comment     import StripAndFuse
 from pyVHDLParser.Functions          import Console, Exit
-from pyVHDLParser.Model.Document import Document
-from pyVHDLParser.Model.Parser import BlockToModelParser
+from pyVHDLParser.DocumentModel.Document import Document
+from pyVHDLParser.DocumentModel.Parser import BlockToModelParser
 from pyVHDLParser.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
 from pyVHDLParser.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
 from pyVHDLParser.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword

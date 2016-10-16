@@ -34,8 +34,8 @@ from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import ArchitectureKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Architecture as ArchitectureBlock
-from pyVHDLParser.Model.VHDLModel    import Architecture as ArchitectureModel
-from pyVHDLParser.Model.Parser       import BlockToModelParser
+from pyVHDLParser.DocumentModel.VHDLModel    import Architecture as ArchitectureModel
+from pyVHDLParser.DocumentModel.Parser       import BlockToModelParser
 
 # Type alias for type hinting
 ParserState = BlockToModelParser.BlockParserState

@@ -29,8 +29,8 @@
 #
 # from pyVHDLParser.Blocks.Common import LinebreakBlock, EmptyLineBlock
 # from pyVHDLParser.Blocks.Document      import StartOfDocumentBlock
-# from pyVHDLParser.Model import Document
-# from pyVHDLParser.Model.Structural import Entity
+# from pyVHDLParser.DocumentModel import Document
+# from pyVHDLParser.DocumentModel.Structural import Entity
 
 # def MultiPartIterator(currentBlock, blockIterator):
 # 	def __Generator(currentBlock, blockIterator):

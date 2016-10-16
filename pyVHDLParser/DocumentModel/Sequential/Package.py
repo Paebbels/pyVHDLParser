@@ -32,23 +32,23 @@ from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, Po
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import IdentifierToken
-from pyVHDLParser.Blocks.Sequential  import PackageBody as PackageBodyBlock
-from pyVHDLParser.Model.VHDLModel    import PackageBody as PackageBodyModel
-from pyVHDLParser.Model.Parser       import BlockToModelParser
+from pyVHDLParser.Blocks.Sequential  import Package as PackageBlock
+from pyVHDLParser.DocumentModel.VHDLModel    import Package as PackageModel
+from pyVHDLParser.DocumentModel.Parser       import BlockToModelParser
 
 # Type alias for type hinting
 ParserState = BlockToModelParser.BlockParserState
 
 
-class PackageBody(PackageBodyModel):
-	def __init__(self, packageBodyName):
+class Package(PackageModel):
+	def __init__(self, packageName):
 		super().__init__()
-		self._name = packageBodyName
+		self._name = packageName
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
-		cls.stateParsePackageBodyName(parserState)
+		assert isinstance(parserState.CurrentBlock, PackageBlock.NameBlock)
+		cls.stateParsePackageName(parserState)
 
 		for block in parserState.BlockIterator:
 			if isinstance(block, GenericListBlocks.OpenBlock):
@@ -59,7 +59,7 @@ class PackageBody(PackageBodyModel):
 				parserState.ReIssue()
 			elif isinstance(block, Constant.ConstantBlock):
 				raise NotImplementedError()
-			elif isinstance(block, PackageBodyBlock.EndBlock):
+			elif isinstance(block, PackageBlock.EndBlock):
 				break
 		else:
 			raise BlockParserException("", None)
@@ -68,8 +68,8 @@ class PackageBody(PackageBodyModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageBodyName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
+	def stateParsePackageName(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, PackageBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -81,10 +81,10 @@ class PackageBody(PackageBodyModel):
 			raise BlockParserException("", None)
 
 		oldNode = parserState.CurrentNode
-		packageBody = cls(packageName)
+		package = cls(packageName)
 
-		parserState.CurrentNode.AddPackageBody(packageBody)
-		parserState.CurrentNode = packageBody
+		parserState.CurrentNode.AddPackage(package)
+		parserState.CurrentNode = package
 		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
@@ -157,6 +157,9 @@ class PackageBody(PackageBodyModel):
 		for use in uses:
 			self._uses.append(use)
 
+	def AddGeneric(self, generic):
+		self._genericItems.append(generic)
+
 	def Print(self, indent=0):
 		indentation = "  "*indent
 		for lib in self._libraries:
@@ -164,6 +167,11 @@ class PackageBody(PackageBodyModel):
 		for lib, pack, obj in self._uses:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
-		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
-		print("{indent}{DARK_CYAN}END PACKAGE BODY{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
+		print("{indent}{DARK_CYAN}PACKAGE{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
+		if (len(self._genericItems) > 0):
+			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
+			for generic in self._genericItems:
+				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
+			print("{indent}  );".format(indent=indentation))
+		print("{indent}{DARK_CYAN}END PACKAGE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 

@@ -59,9 +59,9 @@ setup(
 		"pyVHDLParser.Filter",
 		"pyVHDLParser.Graph",
 		"pyVHDLParser.Group",
-		"pyVHDLParser.Model",
-		"pyVHDLParser.Model.Reference",
-		"pyVHDLParser.Model.Structural",
+		"pyVHDLParser.DocumentModel",
+		"pyVHDLParser.DocumentModel.Reference",
+		"pyVHDLParser.DocumentModel.Structural",
 		"pyVHDLParser.StyleCheck",
 		"pyVHDLParser.Token"
 	],
