@@ -7,16 +7,16 @@
 This is a token-stream based parser for VHDL-2008.
 
 Main goals:
- * slice a input document into text blocks, which are categorized
+ * slice an input document into text blocks which are categorized
  * group text blocks for fast-forward scanning
  * provide a generic VHDL language model
 
 Use cases:
- * generate a documentations by using the fast-forward scanner
+ * generate documentation by using the fast-forward scanner
  * generate a document/language model by using the grouped text-block scanner
  * extract compile orders and other dependency graphs
  * generate highlighted syntax
- * re-annotate documenting comments to there objects for doc extraction
+ * re-annotate documenting comments to their objects for doc extraction
 
 Long time goals:
  * A Sphinx language plugin for VHDL 
@@ -24,7 +24,7 @@ Long time goals:
 
 ## Example 1 - Use clauses
 
-This is a input file:
+This is an input file:
 
 ```VHDL
 use lib0.pkg0.all;
@@ -58,7 +58,7 @@ EndOfDocumentToken
 ```
 
 ### Step 2
-The tokens from step 1 are translated into special tokens like `DelimiterToken`, `IndentationToken`, and  subtypes of `KeywordToken`. These tokens are grouped into block. In the *Uses* example, the first 8 tokens form a `UseBlock`.
+The tokens from step 1 are translated into special tokens like `DelimiterToken`, `IndentationToken`, and subtypes of `KeywordToken`. These tokens are grouped into blocks. In the *Uses* example, the first 8 tokens form a `UseBlock`.
 
 The following screenshot shows the resulting stream of blocks:
 [![][1]][1]
@@ -78,7 +78,7 @@ This screenshot shows the filtered results:
 
 ## Example 2 - Simple_1
 
-This is a input file:
+This is an input file:
 
 ```VHDL
 -- Copryright 2016
