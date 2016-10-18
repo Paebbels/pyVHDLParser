@@ -32,11 +32,13 @@ from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform
 
 class Simulation:
 	def __init__(self):
-		self._signals =         []
-		self._processes =       []
+		self._signals =     []
+		self._processes =   []
+		self._scheduler =   Scheduler()
 	
 	def AddSignal(self, signal):
 		self._signals.append(signal)
+		signal.Simulator = self
 	
 	def AddProcess(self, process):
 		self._processes.append(process)
@@ -50,15 +52,22 @@ class Simulation:
 	def Run(self):
 		iterators = [(p,iter(p._generator())) for p in self._processes]
 		
-		scheduler = Scheduler()
 		for process,iterator in iterators:
 			signalChanges,time = next(iterator)
+			for signal,value in signalChanges:
+				signal.SetValue(value)
 			
-			
-			scheduler.AddEvent(Event(scheduler._now + time, process))
+			self._scheduler.AddEvent(Event(self._scheduler._now + time, process))
 			
 			
 			print(time)
+		
+		for signal in self._signals:
+			print("{signal!s}: {wave}".format(signal=signal, wave=signal._waveform._transactions))
+	
+	@property
+	def Now(self):
+		return self._scheduler._now
 		
 		
 	def ExportVCD(self, filename):
@@ -85,6 +94,7 @@ class Signal:
 		self._drivingValue =      None
 		self._projectedWaveform = ProjectedWaveform(self)
 		self._waveform =          Waveform(self)
+		self.Simulator =          None
 	
 	def Initialize(self):
 		if (self._initializer is not None):
@@ -92,6 +102,9 @@ class Signal:
 		else:
 			result = self._subType.Attributes.Low()
 		self._waveform.Initialize(result)
+	
+	def SetValue(self, value):
+		self._waveform.AddEvent(self.Simulator.Now, value)
 	
 	def __repr__(self):
 		return "{path!r}: {value}".format(path=self._path, value="------")

@@ -54,6 +54,11 @@ class Transaction:
 	def __init__(self, time, value):
 		self._time =  time
 		self._value = value
+	
+	def __str__(self):
+		return "({time}, {value})".format(time=self._time, value=self._value)
+	
+	__repr__ = __str__
 		
 
 class TimeLine:
@@ -71,7 +76,10 @@ class Waveform:
 	
 	def Initialize(self, value):
 		self._transactions.append(Transaction(0, value))
-
+	
+	def AddEvent(self, time, value):
+		self._transactions.append(Transaction(time, value))
+	
 
 class ProjectedWaveform(TimeLine):
 	def __init__(self, signal):
