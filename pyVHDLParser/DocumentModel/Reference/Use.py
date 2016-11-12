@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Blocks.Exception import BlockParserException
 from pyVHDLParser.Blocks.Reference.Use  import UseBlock, UseNameBlock, UseEndBlock

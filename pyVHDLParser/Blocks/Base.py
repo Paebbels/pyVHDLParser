@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Token.Parser         import CharacterToken
 from pyVHDLParser.Blocks.Exception     import BlockParserException
 

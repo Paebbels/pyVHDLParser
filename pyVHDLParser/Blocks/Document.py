@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Token.Tokens         import EndOfDocumentToken
 from pyVHDLParser.Token.Keywords       import LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword

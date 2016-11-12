@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock

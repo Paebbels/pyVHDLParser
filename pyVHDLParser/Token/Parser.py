@@ -28,6 +28,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from enum             import Enum
 
 from pyVHDLParser.Base         import ParserException

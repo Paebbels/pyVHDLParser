@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser

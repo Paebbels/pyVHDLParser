@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.SimulationModel.SimulationModel import Simulation, Path, Signal, Process
 from pyVHDLParser.TypeSystem.std_logic_1164       import Std_Logic
 

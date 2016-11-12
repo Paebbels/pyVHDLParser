@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Parser     import TokenToBlockParser

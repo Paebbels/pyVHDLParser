@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Blocks.Reference  import Library, Use, Context
 from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
 from pyVHDLParser.Blocks.Sequential import Package, PackageBody

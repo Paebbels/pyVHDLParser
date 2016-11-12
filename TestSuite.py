@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pathlib import Path
 
 from pyVHDLParser.Functions import Console

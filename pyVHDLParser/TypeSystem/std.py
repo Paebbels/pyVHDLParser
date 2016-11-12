@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Common import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package import PackageDeclation, PackageBody, Package
 from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, IntegerType, RealType, Direction, SubType, Range, IntegerSubType

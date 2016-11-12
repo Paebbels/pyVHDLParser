@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform, Scheduler, Event
 
 
@@ -61,6 +62,8 @@ class Simulation:
 			
 			
 			print(time)
+		
+		
 		
 		for signal in self._signals:
 			print("{signal!s}: {wave}".format(signal=signal, wave=signal._waveform._transactions))

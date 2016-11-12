@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Token.Parser              import CharacterToken, StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import PackageKeyword, BodyKeyword, IsKeyword, EndKeyword, LinebreakToken, BoundaryToken, IdentifierToken, \
 	IndentationToken, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, FunctionKeyword, PureKeyword, ImpureKeyword, EndToken

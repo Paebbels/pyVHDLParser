@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Graph.Graph   import Graph as BaseGraph
 from pyVHDLParser.Graph.Graph   import Node as  BaseNode
 

@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Blocks.List import SensitivityList
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *

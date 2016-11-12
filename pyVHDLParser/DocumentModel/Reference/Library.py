@@ -27,6 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from pyVHDLParser.Blocks.Reference.Library import LibraryNameBlock, LibraryEndBlock, LibraryBlock
 from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryBase
 from pyVHDLParser.DocumentModel.Parser      import BlockToModelParser
