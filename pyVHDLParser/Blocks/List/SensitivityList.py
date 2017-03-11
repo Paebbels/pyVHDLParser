@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ from pyVHDLParser.Token.Keywords       import LinebreakToken, BoundaryToken, Ind
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -42,13 +42,6 @@ ParserState = TokenToBlockParser.TokenParserState
 
 
 class OpenBlock(Block):
-	def RegisterStates(self):
-		return [
-			# self.stateProcessKeyword,
-			# self.stateWhitespace1,
-			self.stateOpeningParenthesis
-		]
-
 	# @classmethod
 	# def stateProcessKeyword(cls, parserState: ParserState):
 	# 	token = parserState.Token
@@ -182,11 +175,6 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 class ItemBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateItemRemainder
-		]
-
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
 		token = parserState.Token
@@ -218,11 +206,6 @@ class DelimiterBlock(Block):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
 
-	def RegisterStates(self):
-		return [
-			self.stateItemDelimiter
-		]
-
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
@@ -247,14 +230,6 @@ class DelimiterBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 class CloseBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateAllKeyword,
-			self.stateWhitespace1,
-			self.stateClosingParenthesis,
-			self.stateWhitespace2
-		]
-
 	@classmethod
 	def stateAllKeyword(cls, parserState: ParserState):
 		token = parserState.Token

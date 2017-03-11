@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, Ide
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -41,12 +41,6 @@ ParserState = TokenToBlockParser.TokenParserState
 
 
 class LibraryBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateLibraryKeyword,
-			self.stateWhitespace1
-		]
-
 	@classmethod
 	def stateLibraryKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -119,12 +113,6 @@ class LibraryBlock(Block):
 
 
 class LibraryNameBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateLibraryName,
-			self.stateWhitespace1
-		]
-
 	@classmethod
 	def stateLibraryName(cls, parserState: ParserState):
 		token = parserState.Token
@@ -206,12 +194,6 @@ class LibraryNameBlock(Block):
 
 
 class LibraryDelimiterBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateDelimiter,
-			self.stateWhitespace1
-		]
-
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token

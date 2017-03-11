@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
@@ -62,11 +62,6 @@ class StartOfDocumentBlock(Block):
 
 	def __str__(self):
 		return "[StartOfDocumentBlock]"
-
-	def RegisterStates(self):
-		return [
-			self.stateDocument
-		]
 
 	@classmethod
 	def stateDocument(cls, parserState: ParserState):

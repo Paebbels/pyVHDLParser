@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -120,6 +120,31 @@ class IdentifierToken(VHDLToken):
 
 	def __str__(self):
 		return "<Identifier '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+
+class RepeatedIdentifierToken(IdentifierToken):
+	def __str__(self):
+		return "<RepeatedIdentifier '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+
+
+class SimpleNameToken(VHDLToken):
+	def __init__(self, stringToken):
+		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
+
+	def __str__(self):
+		return "<SimpleName '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+
+
+class LabelToken(VHDLToken):
+	def __init__(self, stringToken):
+		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
+
+	def __str__(self):
+		return "<Label '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+
+
+class RepeatedLabelToken(LabelToken):
+	def __str__(self):
+		return "<RepeatedLabel '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 
 class TwoCharKeyword(VHDLToken):

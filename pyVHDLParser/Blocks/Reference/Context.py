@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Reference.Use import UseBlock
@@ -42,15 +42,6 @@ ParserState = TokenToBlockParser.TokenParserState
 
 
 class NameBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateContextKeyword,
-			self.stateWhitespace1,
-			self.stateContextName,
-			self.stateWhitespace2,
-			self.stateDeclarativeRegion
-		]
-
 	@classmethod
 	def stateContextKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -237,16 +228,6 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 class EndBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateEndKeyword,
-			self.stateWhitespace1,
-			self.stateContextKeyword,
-			self.stateWhitespace2,
-			self.stateContextName,
-			self.stateWhitespace3
-		]
-
 	@classmethod
 	def stateEndKeyword(cls, parserState: ParserState):
 		token = parserState.Token

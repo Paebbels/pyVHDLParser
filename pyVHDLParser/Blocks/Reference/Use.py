@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
+# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, Ide
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks.Base          import Block
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -41,12 +41,6 @@ ParserState = TokenToBlockParser.TokenParserState
 
 
 class UseBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateUseKeyword,
-			self.stateWhitespace1
-		]
-
 	@classmethod
 	def stateUseKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -117,20 +111,6 @@ class UseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 class UseNameBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateLibraryName,
-			self.stateWhitespace1,
-			self.stateDot1,
-			self.stateWhitespace2,
-			self.statePackageName,
-			self.stateWhitespace3,
-			self.stateDot2,
-			self.stateWhitespace4,
-			self.stateObjectName,
-			self.stateWhitespace5
-		]
-
 	@classmethod
 	def stateLibraryName(cls, parserState: ParserState):
 		token = parserState.Token
@@ -512,12 +492,6 @@ class UseNameBlock(Block):
 
 
 class UseDelimiterBlock(Block):
-	def RegisterStates(self):
-		return [
-			self.stateDelimiter,
-			self.stateWhitespace1
-		]
-
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
