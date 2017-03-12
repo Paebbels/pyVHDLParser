@@ -76,8 +76,13 @@ class Model(ModelEntity):
 class Library(ModelEntity):
 	def __init__(self):
 		super().__init__()
-		self._entities =  []
-		self._packages =  []
+		self._configurations =  []
+		self._entities =        []
+		self._packages =        []
+
+	@property
+	def Configurations(self):
+		return self._configurations
 
 	@property
 	def Entities(self):
@@ -109,78 +114,23 @@ class Document(ModelEntity):
 	def PackageBodies(self):  return self._packageBodies
 
 
-class Entity(ModelEntity, NamedEntity):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
-		self._libraryReferences = []
-		self._uses =              []
-		self._genericItems =      []
-		self._portItems =         []
-		self._declaredItems =     []
-		self._bodyItems =         []
-
-	@property
-	def LibraryReferences(self):
-		return self._libraryReferences
-
-	@property
-	def Uses(self):
-		return self._uses
-
-	@property
-	def GenericItems(self):
-		return self._genericItems
-
-	@property
-	def DeclaredItems(self):
-		return self._declaredItems
-
-	@property
-	def BodyItems(self):
-		return self._bodyItems
+class Modes(Enum):
+	Default = 0
+	In =      1
+	Out =     2
+	InOut =   3
+	Buffer =  4
+	Linkage = 5
 
 
-class Architecture(ModelEntity, NamedEntity):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
-		self._entity =            None
-		self._libraryReferences = []
-		self._uses =              []
-		self._declaredItems =     []
-		self._bodyItems =         []
-
-	@property
-	def Entity(self):
-		return self._entity
-
-	@property
-	def LibraryReferences(self):
-		return self._libraryReferences
-
-	@property
-	def Uses(self):
-		return self._uses
-
-	@property
-	def DeclaredItems(self):
-		return self._declaredItems
-
-	@property
-	def BodyItems(self):
-		return self._bodyItems
-
-
-class Context(ModelEntity, NamedEntity):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
-		self._uses =            []
-
-	@property
-	def Uses(self):
-		return self._uses
+class Class(Enum):
+	Default =    0
+	Constant =   1
+	Variable =   2
+	Signal =     3
+	File =       4
+	Type =       5
+	Subprogram = 6
 
 
 class InterfaceItem(ModelEntity):
@@ -270,23 +220,88 @@ class ParameterVariableInterfaceItem(ParameterInterfaceItem):
 # 		self._class =       None
 
 
-class Modes(Enum):
-	Default = 0
-	In =      1
-	Out =     2
-	InOut =   3
-	Buffer =  4
-	Linkage = 5
+class PrimaryUnit(ModelEntity, NamedEntity):
+	def __init__(self):
+		super().__init__()
+		NamedEntity.__init__(self)
 
 
-class Class(Enum):
-	Default =    0
-	Constant =   1
-	Variable =   2
-	Signal =     3
-	File =       4
-	Type =       5
-	Subprogram = 6
+class SecondaryUnit(ModelEntity, NamedEntity):
+	def __init__(self):
+		super().__init__()
+		NamedEntity.__init__(self)
+
+
+class Context(PrimaryUnit):
+	def __init__(self):
+		super().__init__()
+		NamedEntity.__init__(self)
+		self._uses =            []
+
+	@property
+	def Uses(self):
+		return self._uses
+
+
+class Entity(PrimaryUnit):
+	def __init__(self):
+		super().__init__()
+		self._libraryReferences = []
+		self._uses =              []
+		self._genericItems =      []
+		self._portItems =         []
+		self._declaredItems =     []
+		self._bodyItems =         []
+
+	@property
+	def LibraryReferences(self):
+		return self._libraryReferences
+
+	@property
+	def Uses(self):
+		return self._uses
+
+	@property
+	def GenericItems(self):
+		return self._genericItems
+
+	@property
+	def DeclaredItems(self):
+		return self._declaredItems
+
+	@property
+	def BodyItems(self):
+		return self._bodyItems
+
+
+class Architecture(SecondaryUnit):
+	def __init__(self):
+		super().__init__()
+		self._entity =            None
+		self._libraryReferences = []
+		self._uses =              []
+		self._declaredItems =     []
+		self._bodyItems =         []
+
+	@property
+	def Entity(self):
+		return self._entity
+
+	@property
+	def LibraryReferences(self):
+		return self._libraryReferences
+
+	@property
+	def Uses(self):
+		return self._uses
+
+	@property
+	def DeclaredItems(self):
+		return self._declaredItems
+
+	@property
+	def BodyItems(self):
+		return self._bodyItems
 
 
 class AssociationItem(ModelEntity):
@@ -309,7 +324,21 @@ class PortAssociationItem(InterfaceItem):      pass
 class ParameterAssociationItem(InterfaceItem): pass
 
 
-class Package(ModelEntity, NamedEntity):
+class Configuration(ModelEntity, NamedEntity):
+	def __init__(self):
+		super().__init__()
+
+		raise NotImplementedError()
+
+
+class Instantiation(NamedEntity):
+	def __init__(self):
+		super().__init__()
+		self._packageReference =    None
+		self._genericAssociations = []
+
+
+class Package(PrimaryUnit):
 	def __init__(self):
 		super().__init__()
 		NamedEntity.__init__(self)
@@ -335,7 +364,7 @@ class Package(ModelEntity, NamedEntity):
 		return self._declaredItems
 
 
-class PackageBody(ModelEntity):
+class PackageBody(SecondaryUnit):
 	def __init__(self):
 		super().__init__()
 		self._package =           None
@@ -358,6 +387,13 @@ class PackageBody(ModelEntity):
 	@property
 	def DeclaredItems(self):
 		return self._declaredItems
+
+
+class PackageInstantiation(PrimaryUnit, Instantiation):
+	def __init__(self):
+		super().__init__()
+		Instantiation.__init__(self)
+		self._packageReferences = None
 
 
 class LibraryReference(ModelEntity):
@@ -401,7 +437,20 @@ class Object(ModelEntity, NamedEntity):
 		return self._subType
 
 
-class Constant(Object):
+class BaseConstant(Object): pass
+
+
+class DeferredConstant(BaseConstant):
+	def __init__(self):
+		super().__init__()
+		self._constantReference = None
+
+	@property
+	def ConstantReference(self):
+		return self._constantReference
+
+
+class Constant(BaseConstant):
 	def __init__(self):
 		super().__init__()
 		self._defaultExpression = None
@@ -550,6 +599,16 @@ class Function(SubProgramm):
 	@property
 	def IsPure(self):
 		return self._isPure
+
+
+class SubprogramInstantiation(ModelEntity, Instantiation):
+	def __init__(self):
+		super().__init__()
+		Instantiation.__init__(self)
+		self._subprogramReference = None
+
+class ProcedureInstantiation(SubprogramInstantiation):  pass
+class FunctionInstantiation(SubprogramInstantiation):   pass
 
 
 class Method:

@@ -89,7 +89,7 @@ class Entity(EntityModel):
 
 		parserState.CurrentNode.AddEntity(entity)
 		parserState.CurrentNode = entity
-		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
+		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
 		oldNode.Libraries.clear()

@@ -94,7 +94,7 @@ class Package(PackageModel):
 
 		parserState.CurrentNode.AddPackage(package)
 		parserState.CurrentNode = package
-		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
+		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
 		oldNode.Libraries.clear()
@@ -128,11 +128,11 @@ class Package(PackageModel):
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
-	def AddLibraries(self, libraries : List[Library]):
+	def AddLibraryReferences(self, libraries : List[Library]):
 		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
-			self._libraries.append(library._library)
+			self._libraryReferences.append(library._library)
 
 	def AddUses(self, uses : List[Use]):
 		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))

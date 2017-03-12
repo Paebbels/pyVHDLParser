@@ -98,7 +98,7 @@ class PackageBody(PackageBodyModel):
 
 		parserState.CurrentNode.AddPackageBody(packageBody)
 		parserState.CurrentNode = packageBody
-		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
+		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
 		oldNode.Libraries.clear()

@@ -91,7 +91,7 @@ class Architecture(ArchitectureModel):
 
 		parserState.CurrentNode.AddArchitecture(architecture)
 		parserState.CurrentNode = architecture
-		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
+		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
 		oldNode.Libraries.clear()
@@ -99,7 +99,7 @@ class Architecture(ArchitectureModel):
 
 	def AddLibraries(self, libraries):
 		for library in libraries:
-			self._libraries.append(library)
+			self._libraryReferences.append(library)
 
 	def AddUses(self, uses):
 		for use in uses:
@@ -108,7 +108,7 @@ class Architecture(ArchitectureModel):
 
 	def Print(self, indent=0):
 		indentation = "  "*indent
-		for lib in self._libraries:
+		for lib in self._libraryReferences:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
 		for lib, pack, obj in self._uses:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
