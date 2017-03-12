@@ -29,8 +29,14 @@
 #
 from types                          import FunctionType
 
+from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Token.Tokens      import CharacterToken
-from pyVHDLParser.Blocks.Exception  import BlockParserException
+
+
+class TokenParserException(ParserException):
+	def __init__(self, message, token):
+		super().__init__(message)
+		self._token = token
 
 
 class MetaBlock(type):
@@ -65,7 +71,7 @@ class Block(metaclass=MetaBlock):
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):
-				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
+				raise TokenParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
 			token = token.NextToken
 
 		yield self.EndToken

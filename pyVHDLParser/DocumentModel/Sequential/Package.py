@@ -30,8 +30,9 @@
 # load dependencies
 from typing                                         import List
 
+from pyVHDLParser.Blocks.Sequential import Function
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
-from pyVHDLParser.Blocks.Exception                  import BlockParserException
+from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Sequential                 import Package as PackageBlock
@@ -63,10 +64,15 @@ class Package(PackageModel):
 			elif isinstance(block, ConstantBlock):
 				parserState.PushState = Constant.stateParse
 				parserState.ReIssue()
+			elif isinstance(block, Function.BeginBlock):
+				parserState.PushState = Function.stateParse
+				parserState.ReIssue()
 			elif isinstance(block, PackageBlock.EndBlock):
 				break
+			else:
+				raise TokenParserException("Block '{0!r}' not supported in a package.".format(block), block)
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -81,7 +87,7 @@ class Package(PackageModel):
 				packageName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		package = cls(packageName)
@@ -104,7 +110,7 @@ class Package(PackageModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 
@@ -118,7 +124,7 @@ class Package(PackageModel):
 				genericName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 

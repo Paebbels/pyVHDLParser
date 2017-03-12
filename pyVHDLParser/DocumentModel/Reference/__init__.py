@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Exception          import BlockParserException
+from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock, LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
 from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryReferenceModel, Use as UseModel
@@ -78,7 +78,7 @@ class Use(UseModel):
 			elif isinstance(block, UseEndBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 
@@ -93,14 +93,14 @@ class Use(UseModel):
 				libraryName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				packageName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
@@ -110,7 +110,7 @@ class Use(UseModel):
 				itemName = "ALL"
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		use = cls(libraryName, packageName, itemName)
 		parserState.CurrentNode.AddUse(use)

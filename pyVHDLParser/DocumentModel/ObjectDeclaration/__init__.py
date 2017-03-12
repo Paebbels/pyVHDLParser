@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks                            import BlockParserException
+from pyVHDLParser.Blocks                            import TokenParserException
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.DocumentModel.VHDLModel           import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
@@ -63,7 +63,7 @@ class Constant(ConstantBase):
 				constantName = token.Value
 				break
 		else:
-			raise BlockParserException("Constant name (identifier) not found.", None)
+			raise TokenParserException("Constant name (identifier) not found.", None)
 
 		constant = cls(constantName)
 

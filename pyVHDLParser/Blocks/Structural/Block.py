@@ -32,8 +32,8 @@ from pyVHDLParser.Token.Keywords           import BoundaryToken, LinebreakToken,
 from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, AssertKeyword, BlockKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
 from pyVHDLParser.Token.Parser             import CharacterToken, SpaceToken, StringToken
-from pyVHDLParser.Blocks                   import Block
-from pyVHDLParser.Blocks.Exception         import BlockParserException
+from pyVHDLParser.Blocks                   import Block, TokenParserException
+from pyVHDLParser.Blocks.Exception         import TokenParserException
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase
@@ -80,7 +80,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -120,7 +120,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateBlockName(cls, parserState: ParserState):
@@ -153,7 +153,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -193,7 +193,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -231,13 +231,13 @@ class NameBlock(Block):
 				parserState.NextState =   BeginBlock.stateBeginKeyword
 				return
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken = newToken
 			parserState.TokenMarker = newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 class BeginBlock(Block): pass
 

@@ -31,8 +31,7 @@
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks import Block
+from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -73,7 +72,7 @@ class TypeBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -112,7 +111,7 @@ class TypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateTypeName(cls, parserState: ParserState):
@@ -149,7 +148,7 @@ class TypeBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -192,7 +191,7 @@ class TypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
@@ -230,7 +229,7 @@ class TypeBlock(Block):
 			parserState.NextState =     cls.stateTypeMarkName
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -269,7 +268,7 @@ class TypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateTypeMarkName(cls, parserState: ParserState):
@@ -306,7 +305,7 @@ class TypeBlock(Block):
 			parserState.NextState =     cls.stateWhitespace4
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -345,7 +344,7 @@ class TypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def statePossibleVariableAssignment(cls, parserState: ParserState):
@@ -389,7 +388,7 @@ class TypeBlock(Block):
 			parserState.NextState = cls.stateWhitespace5
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace5(cls, parserState: ParserState):
@@ -427,7 +426,7 @@ class TypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateExpressionEnd(cls, parserState: ParserState):
@@ -452,4 +451,4 @@ class TypeBlock(Block):
 				parserState.TokenMarker = token
 				return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)

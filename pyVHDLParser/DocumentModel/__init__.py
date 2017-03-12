@@ -27,5 +27,12 @@
 # limitations under the License.
 # ==============================================================================
 #
+from pyVHDLParser.Base import ParserException
+
 
 DEBUG = True
+
+class BlockParserException(ParserException):
+	def __init__(self, message, block):
+		super().__init__(message)
+		self._block = block

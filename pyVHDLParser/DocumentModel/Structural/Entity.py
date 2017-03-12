@@ -29,7 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Blocks.Exception   import BlockParserException
+from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Functions import Console
@@ -66,7 +66,7 @@ class Entity(EntityModel):
 			elif isinstance(block, EntityBlock.EndBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -82,7 +82,7 @@ class Entity(EntityModel):
 				entityName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		entity = cls(entityName)
@@ -105,7 +105,7 @@ class Entity(EntityModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 
@@ -120,7 +120,7 @@ class Entity(EntityModel):
 				genericName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -134,7 +134,7 @@ class Entity(EntityModel):
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 
@@ -149,7 +149,7 @@ class Entity(EntityModel):
 				portName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.CurrentNode.AddPort(portName)
 

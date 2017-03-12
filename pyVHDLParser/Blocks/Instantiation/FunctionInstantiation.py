@@ -31,8 +31,7 @@
 from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks import Block
+from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -73,7 +72,7 @@ class EntityInstantiationBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -112,7 +111,7 @@ class EntityInstantiationBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateEntityInstantiationName(cls, parserState: ParserState):
@@ -150,7 +149,7 @@ class EntityInstantiationBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -190,7 +189,7 @@ class EntityInstantiationBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 class GenericMapBeginBlock(Block): pass
 class GenericMapItemBlock(Block): pass

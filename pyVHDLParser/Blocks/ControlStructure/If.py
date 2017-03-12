@@ -30,8 +30,7 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
-from pyVHDLParser.Blocks               import Block
-from pyVHDLParser.Blocks.Exception     import BlockParserException
+from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
@@ -75,7 +74,7 @@ class IfConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -114,7 +113,7 @@ class IfConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateIfName(cls, parserState: ParserState):
@@ -147,7 +146,7 @@ class IfConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -187,7 +186,7 @@ class IfConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -223,13 +222,13 @@ class IfConditionBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 class ElsIfConditionBlock(Block):
 	@classmethod
@@ -264,7 +263,7 @@ class ElsIfConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -303,7 +302,7 @@ class ElsIfConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateElsIfName(cls, parserState: ParserState):
@@ -336,7 +335,7 @@ class ElsIfConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -376,7 +375,7 @@ class ElsIfConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -412,13 +411,13 @@ class ElsIfConditionBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 class ElseBlock(Block):
 	@classmethod
@@ -453,7 +452,7 @@ class ElseBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -492,7 +491,7 @@ class ElseBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateElseName(cls, parserState: ParserState):
@@ -525,7 +524,7 @@ class ElseBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -565,7 +564,7 @@ class ElseBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -601,13 +600,13 @@ class ElseBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 
 class EndBlock(EndBlockBase):

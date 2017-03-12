@@ -53,7 +53,7 @@ from typing                         import Iterator
 
 from pyVHDLParser                   import DocumentModel
 from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Exception  import BlockParserException
+from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Filters.Comment   import FastForward
 
 
@@ -156,4 +156,4 @@ class BlockToModelParser:
 
 				self.NextState(self)
 			else:
-				raise BlockParserException("", None)
+				raise TokenParserException("", None)

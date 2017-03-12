@@ -29,7 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Blocks.Exception   import BlockParserException
+from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Functions import Console
@@ -61,7 +61,7 @@ class Architecture(ArchitectureModel):
 			elif isinstance(block, ArchitectureBlock.EndBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -77,14 +77,14 @@ class Architecture(ArchitectureModel):
 				architectureName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				entityName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise TokenParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		architecture = cls(architectureName, entityName)

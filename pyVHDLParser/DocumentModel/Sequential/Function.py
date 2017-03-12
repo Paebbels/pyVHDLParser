@@ -30,39 +30,35 @@
 # load dependencies
 from typing                                         import List
 
-from pyVHDLParser.Functions                         import Console
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
-from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
+from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, ParameterList as ParameterListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
-from pyVHDLParser.Blocks.Sequential                 import PackageBody as PackageBodyBlock
+from pyVHDLParser.Blocks.Sequential                 import Function as FunctionBlock
 from pyVHDLParser.DocumentModel                     import DEBUG
-from pyVHDLParser.DocumentModel.VHDLModel           import PackageBody as PackageBodyModel
+from pyVHDLParser.DocumentModel.VHDLModel           import Function as FunctionModel
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
-from pyVHDLParser.DocumentModel.Sequential.Function import Function
 from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
+from pyVHDLParser.Functions                         import Console
 
 # Type alias for type hinting
 ParserState = BlockToModelParser.BlockParserState
 
 
-class PackageBody(PackageBodyModel):
-	def __init__(self, packageBodyName):
+class Function(FunctionModel):
+	def __init__(self, functionName):
 		super().__init__()
-		self._name = packageBodyName
+		self._name = functionName
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
-		cls.stateParsePackageBodyName(parserState)
+		assert isinstance(parserState.CurrentBlock, FunctionBlock.NameBlock)
+		cls.stateParseFunctionName(parserState)
 
 		for block in parserState.BlockIterator:
 			if isinstance(block, GenericListBlocks.OpenBlock):
 				parserState.PushState = cls.stateParseGenericList
-				parserState.ReIssue()
-			elif isinstance(block, PortListBlocks.OpenBlock):
-				parserState.PushState = cls.stateParsePortList
 				parserState.ReIssue()
 			elif isinstance(block, ConstantBlock):
 				parserState.PushState = Constant.stateParse
@@ -70,10 +66,10 @@ class PackageBody(PackageBodyModel):
 			elif isinstance(block, Function.BeginBlock):
 				parserState.PushState = Function.stateParse
 				parserState.ReIssue()
-			elif isinstance(block, PackageBodyBlock.EndBlock):
+			elif isinstance(block, FunctionBlock.EndBlock):
 				break
 			else:
-				raise TokenParserException("Block '{0!r}' not supported in a package body.".format(block), block)
+				raise TokenParserException("Block '{0!r}' not supported in a function.".format(block), block)
 		else:
 			raise TokenParserException("", None)
 
@@ -81,23 +77,22 @@ class PackageBody(PackageBodyModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageBodyName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
+	def stateParseFunctionName(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, FunctionBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
-
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
-				packageName = token.Value
+				functionName = token.Value
 				break
 		else:
 			raise TokenParserException("", None)
 
 		oldNode = parserState.CurrentNode
-		packageBody = cls(packageName)
+		function = cls(functionName)
 
-		parserState.CurrentNode.AddPackageBody(packageBody)
-		parserState.CurrentNode = packageBody
+		parserState.CurrentNode.AddFunction(function)
+		parserState.CurrentNode = function
 		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
 		parserState.CurrentNode.AddUses(oldNode.Uses)
 
@@ -123,7 +118,6 @@ class PackageBody(PackageBodyModel):
 		assert isinstance(parserState.CurrentBlock, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
-
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				genericName = token.Value
@@ -133,61 +127,41 @@ class PackageBody(PackageBodyModel):
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
-	@classmethod
-	def stateParsePortList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.OpenBlock)
-
-		for block in parserState.BlockIterator:
-			if isinstance(block, PortListBlocks.ItemBlock):
-				cls.stateParsePort(parserState)
-			elif isinstance(block, PortListBlocks.CloseBlock):
-				break
-		else:
-			raise TokenParserException("", None)
-
-		parserState.Pop()
-
-	@classmethod
-	def stateParsePort(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.ItemBlock)
-
-		tokenIterator = iter(parserState)
-
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				portName = token.Value
-				break
-		else:
-			raise TokenParserException("", None)
-
-		parserState.CurrentNode.AddPort(portName)
-
 	def AddLibraries(self, libraries : List[Library]):
-		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to function {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraries.append(library._library)
 
 	def AddUses(self, uses : List[Use]):
-		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to function {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
 			self._uses.append(use)
 
+	def AddGeneric(self, generic):
+		if DEBUG: print("{DARK_CYAN}Adding generic to function {GREEN}{0}{NOCOLOR}:\n  {YELLOW}{1}{NOCOLOR} : {2}".format(self._name, generic, "", **Console.Foreground))
+		self._genericItems.append(generic)
+
 	def AddConstant(self, constant):
-		if DEBUG: print("{DARK_CYAN}Adding constant to package body {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, constant, **Console.Foreground))
+		if DEBUG: print("{DARK_CYAN}Adding constant to function {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, constant, **Console.Foreground))
 		self._declaredItems.append(constant)
 
 	def Print(self, indent=0):
 		indentation = "  "*indent
 		for lib in self._libraries:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
-		for lib, pack, obj in self._uses:
-			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
+		for use in self._uses:
+			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{item}{NOCOLOR};".format(indent=indentation, lib=use._library, pack=use._function, item=use._item, **Console.Foreground))
 		print()
-		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
+		print("{indent}{DARK_CYAN}FUNCTION{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
+		if (len(self._genericItems) > 0):
+			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
+			for generic in self._genericItems:
+				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
+			print("{indent}  );".format(indent=indentation))
 		if (len(self._declaredItems) > 0):
 			for item in self._declaredItems:
 				item.Print(indent+1)
-		print("{indent}{DARK_CYAN}END PACKAGE BODY{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
+		print("{indent}{DARK_CYAN}END FUNCTION{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 

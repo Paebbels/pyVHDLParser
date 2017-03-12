@@ -96,7 +96,7 @@ class TokenToBlockParser:
 		def GetGenerator(self, iterator):
 			from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 			from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
-			from pyVHDLParser.Blocks.Exception  import BlockParserException
+			from pyVHDLParser.Blocks import TokenParserException
 			from pyVHDLParser.Token.Tokens      import EndOfDocumentToken
 
 			for token in iterator:
@@ -137,4 +137,4 @@ class TokenToBlockParser:
 				if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
 					yield self.NewBlock
 				else:
-					raise BlockParserException("Unexpected end of document.", self.Token)
+					raise TokenParserException("Unexpected end of document.", self.Token)

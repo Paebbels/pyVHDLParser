@@ -28,10 +28,12 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.ObjectDeclaration import Constant
+from pyVHDLParser.Blocks.ObjectDeclaration import Variable
+from pyVHDLParser.Blocks.Sequential import Procedure
 from pyVHDLParser.Token.Keywords          import *
 from pyVHDLParser.Token.Parser            import *
-from pyVHDLParser.Blocks                  import Block
-from pyVHDLParser.Blocks.Exception        import BlockParserException
+from pyVHDLParser.Blocks                  import TokenParserException, Block
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment          import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic          import EndBlock as EndBlockBase
@@ -77,7 +79,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -116,7 +118,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateFunctionName(cls, parserState: ParserState):
@@ -158,7 +160,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -211,7 +213,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 
 class NameBlock2(Block):
@@ -247,7 +249,7 @@ class NameBlock2(Block):
 				parserState.NextState =   cls.stateReturnKeyword
 				return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -290,7 +292,7 @@ class NameBlock2(Block):
 				parserState.NextState =   cls.stateReturnKeyword
 				return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateReturnKeyword(cls, parserState: ParserState):
@@ -324,7 +326,7 @@ class NameBlock2(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -363,7 +365,7 @@ class NameBlock2(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateReturnType(cls, parserState: ParserState):
@@ -401,7 +403,7 @@ class NameBlock2(Block):
 			parserState.NextState =     cls.stateWhitespace3
 			return
 		
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -446,7 +448,7 @@ class NameBlock2(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -475,22 +477,40 @@ class NameBlock2(Block):
 			if (keyword == "generic"):
 				newToken =                GenericKeyword(token)
 				parserState.PushState =   GenericList.OpenBlock.stateGenericKeyword
-			elif (keyword == "end"):
-				newToken =                EndKeyword(token)
-				parserState.NextState =   EndBlock.stateEndKeyword
+			elif (keyword == "constant"):
+				newToken =                ConstantKeyword(token)
+				parserState.PushState =   Constant.ConstantBlock.stateConstantKeyword
+			elif (keyword == "variable"):
+				newToken =                VariableKeyword(token)
+				parserState.PushState =   Variable.VariableBlock.stateVariableKeyword
+			elif (keyword == "procedure"):
+				newToken =                ProcessKeyword(token)
+				parserState.PushState =   Procedure.NameBlock.stateProcesdureKeyword
+			elif (keyword == "function"):
+				newToken =                FunctionKeyword(token)
+				parserState.PushState =   NameBlock.stateFunctionKeyword
+			elif (keyword == "pure"):
+				newToken =                PureKeyword(token)
+				parserState.PushState =   NameBlock.statePureKeyword
+			elif (keyword == "impure"):
+				newToken =                ImpureKeyword(token)
+				parserState.PushState =   NameBlock.stateImpureKeyword
 			elif (keyword == "begin"):
 				parserState.NewToken =    BeginKeyword(token)
 				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState =   BeginBlock.stateBeginKeyword
 				return
+			elif (keyword == "end"):
+				newToken =                EndKeyword(token)
+				parserState.NextState =   EndBlock.stateEndKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 class BeginBlock(Block):
 	@classmethod
@@ -539,13 +559,13 @@ class BeginBlock(Block):
 				newToken = EndKeyword(token)
 				parserState.NextState =   EndBlock.stateEndKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken = newToken
 			parserState.TokenMarker = newToken
 			return
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 
 class EndBlock(EndBlockBase):

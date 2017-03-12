@@ -34,8 +34,7 @@ from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, Us
 from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword, ConfigurationKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks.Exception     import BlockParserException
-from pyVHDLParser.Blocks import Block
+from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
@@ -106,7 +105,7 @@ class StartOfDocumentBlock(Block):
 				newToken = PackageKeyword(token)
 				parserState.PushState =   Package.NameBlock.statePackageKeyword
 			else:
-				raise BlockParserException(errorMessage, token)
+				raise TokenParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
@@ -115,7 +114,7 @@ class StartOfDocumentBlock(Block):
 			parserState.NewBlock =      EndOfDocumentBlock(token)
 			return
 		else:  # tokenType
-			raise BlockParserException(errorMessage, token)
+			raise TokenParserException(errorMessage, token)
 
 
 class EndOfDocumentBlock(Block):

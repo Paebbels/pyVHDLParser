@@ -30,8 +30,7 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords            import BoundaryToken, LinebreakToken, IdentifierToken, EndToken, LabelToken
 from pyVHDLParser.Token.Parser              import CharacterToken, SpaceToken, StringToken
-from pyVHDLParser.Blocks                    import Block
-from pyVHDLParser.Blocks.Exception          import BlockParserException
+from pyVHDLParser.Blocks                    import TokenParserException, Block
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
@@ -82,7 +81,7 @@ class EndBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise BlockParserException("Expected ';' or whitespace.", token)
+		raise TokenParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -145,7 +144,7 @@ class EndBlock(Block):
 			else:
 				errorMessage = "Expected {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateKeyword1(cls, parserState: ParserState):
@@ -185,7 +184,7 @@ class EndBlock(Block):
 			parserState.NextState =     nextState
 			return
 
-		raise BlockParserException("Expected ';' or whitespace.", token)
+		raise TokenParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -241,7 +240,7 @@ class EndBlock(Block):
 			else:
 				errorMessage = "Expected {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 
-		raise BlockParserException(errorMessage, token)
+		raise TokenParserException(errorMessage, token)
 
 	@classmethod
 	def stateKeyword2(cls, parserState: ParserState):
@@ -279,7 +278,7 @@ class EndBlock(Block):
 			parserState.NextState =     cls.stateWhitespace3
 			return
 
-		raise BlockParserException("Expected ';' or whitespace.", token)
+		raise TokenParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -322,7 +321,7 @@ class EndBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected ';' or {0} name.".format(cls.EXPECTED_NAME), token)
+		raise TokenParserException("Expected ';' or {0} name.".format(cls.EXPECTED_NAME), token)
 
 	@classmethod
 	def stateSimpleName(cls, parserState: ParserState):
@@ -359,7 +358,7 @@ class EndBlock(Block):
 			parserState.NextState =     cls.stateWhitespace4
 			return
 
-		raise BlockParserException("Expected ';' or whitespace.", token)
+		raise TokenParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -398,4 +397,4 @@ class EndBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected ';'.", token)
+		raise TokenParserException("Expected ';'.", token)

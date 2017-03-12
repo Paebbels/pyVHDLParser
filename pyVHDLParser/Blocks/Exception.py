@@ -28,9 +28,5 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Base import ParserException
 
-class BlockParserException(ParserException):
-	def __init__(self, message, token):
-		super().__init__(message)
-		self._token = token
+
