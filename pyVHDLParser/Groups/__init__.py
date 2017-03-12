@@ -27,3 +27,90 @@
 # limitations under the License.
 # ==============================================================================
 #
+from types                          import FunctionType
+
+from pyVHDLParser.Base              import ParserException
+
+
+class BlockParserException(ParserException):
+	def __init__(self, message, token):
+		super().__init__(message)
+		self._token = token
+
+
+class MetaGroup(type):
+	"""Register all state*** methods in an array called '__STATES__'"""
+	def __new__(cls, className, baseClasses, classMembers : dict):
+		states = []
+		for memberName, memberObject in classMembers.items():
+			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
+				states.append(memberObject)
+
+		classMembers['__STATES__'] = states
+		return super().__new__(cls, className, baseClasses, classMembers)
+
+
+class Group(metaclass=MetaGroup):
+	__STATES__ = None
+
+	def __init__(self, previousGroup, startToken, endToken=None, multiPart=False):
+		previousGroup.NextGroup = self
+		self._previousGroup =     previousGroup
+		self.NextGroup =          None
+		self.StartToken =         startToken
+		self.EndToken =           startToken if (endToken is None) else endToken
+		self.MultiPart =          multiPart
+
+	def __len__(self):
+		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1
+
+	def __iter__(self):
+		token = self.StartToken
+		# print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
+		while (token is not self.EndToken):
+			yield token
+			if (token.NextToken is None):
+				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
+			token = token.NextToken
+
+		yield self.EndToken
+
+	def __repr__(self):
+		buffer = ""
+		for token in self:
+			if isinstance(token, CharacterToken):
+				buffer += repr(token)
+			else:
+				buffer += token.Value
+
+		buffer = buffer.replace("\t", "\\t")
+		buffer = buffer.replace("\n", "\\n")
+		return buffer
+
+	def __str__(self):
+		return "[{groupName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
+			groupName="{module}.{classname}{multiparted}".format(
+				module=self.__module__.rpartition(".")[2],
+				classname=self.__class__.__name__,
+				multiparted=("*" if self.MultiPart else "")
+			),
+			stream="'" + repr(self) + "'",
+			start=self.StartToken.Start,
+			end=self.EndToken.End
+		)
+
+	@property
+	def PreviousGroup(self):
+		return self._previousGroup
+	@PreviousGroup.setter
+	def PreviousGroup(self, value):
+		self._previousGroup = value
+		value.NextGroup = self
+
+	@property
+	def Length(self):
+		return len(self)
+
+	@property
+	def States(self):
+		return self.__STATES__
