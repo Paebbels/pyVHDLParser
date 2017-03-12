@@ -56,14 +56,15 @@ class Function(FunctionModel):
 		assert isinstance(parserState.CurrentBlock, FunctionBlock.NameBlock)
 		cls.stateParseFunctionName(parserState)
 
+		# if isinstance(block, GenericListBlocks.OpenBlock):
+		# 	parserState.PushState = cls.stateParseGenericList
+		# 	parserState.ReIssue()
+		# el
 		for block in parserState.BlockIterator:
-			if isinstance(block, GenericListBlocks.OpenBlock):
-				parserState.PushState = cls.stateParseGenericList
-				parserState.ReIssue()
-			elif isinstance(block, ConstantBlock):
+			if isinstance(block, ConstantBlock):
 				parserState.PushState = Constant.stateParse
 				parserState.ReIssue()
-			elif isinstance(block, Function.BeginBlock):
+			elif isinstance(block, FunctionBlock.NameBlock):
 				parserState.PushState = Function.stateParse
 				parserState.ReIssue()
 			elif isinstance(block, FunctionBlock.EndBlock):
@@ -74,7 +75,6 @@ class Function(FunctionModel):
 			raise TokenParserException("", None)
 
 		parserState.Pop()
-		# parserState.CurrentBlock = None
 
 	@classmethod
 	def stateParseFunctionName(cls, parserState: ParserState):
@@ -88,16 +88,9 @@ class Function(FunctionModel):
 		else:
 			raise TokenParserException("", None)
 
-		oldNode = parserState.CurrentNode
 		function = cls(functionName)
-
 		parserState.CurrentNode.AddFunction(function)
 		parserState.CurrentNode = function
-		parserState.CurrentNode.AddLibraries(oldNode.Libraries)
-		parserState.CurrentNode.AddUses(oldNode.Uses)
-
-		oldNode.Libraries.clear()
-		oldNode.Uses.clear()
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState):

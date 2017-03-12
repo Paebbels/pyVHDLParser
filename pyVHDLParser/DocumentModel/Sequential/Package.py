@@ -30,16 +30,16 @@
 # load dependencies
 from typing                                         import List
 
-from pyVHDLParser.Blocks.Sequential import Function
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks import TokenParserException
 from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
-from pyVHDLParser.Blocks.Sequential                 import Package as PackageBlock
+from pyVHDLParser.Blocks.Sequential                 import Package as PackageBlock, Function as FunctionBlock
 from pyVHDLParser.DocumentModel                     import DEBUG
 from pyVHDLParser.DocumentModel.VHDLModel           import Package as PackageModel
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
+from pyVHDLParser.DocumentModel.Sequential.Function import Function
 from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
 from pyVHDLParser.Functions                         import Console
 
@@ -64,7 +64,7 @@ class Package(PackageModel):
 			elif isinstance(block, ConstantBlock):
 				parserState.PushState = Constant.stateParse
 				parserState.ReIssue()
-			elif isinstance(block, Function.BeginBlock):
+			elif isinstance(block, FunctionBlock.NameBlock):
 				parserState.PushState = Function.stateParse
 				parserState.ReIssue()
 			elif isinstance(block, PackageBlock.EndBlock):
@@ -147,6 +147,14 @@ class Package(PackageModel):
 	def AddConstant(self, constant):
 		if DEBUG: print("{DARK_CYAN}Adding constant to package {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, constant, **Console.Foreground))
 		self._declaredItems.append(constant)
+
+	def AddFunction(self, function):
+		if DEBUG: print("{DARK_CYAN}Adding function to package {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, function, **Console.Foreground))
+		self._declaredItems.append(function)
+
+	def AddProcedure(self, procedure):
+		if DEBUG: print("{DARK_CYAN}Adding procedure to package {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, procedure, **Console.Foreground))
+		self._declaredItems.append(procedure)
 
 	def Print(self, indent=0):
 		indentation = "  "*indent
