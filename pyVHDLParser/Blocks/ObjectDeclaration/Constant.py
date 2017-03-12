@@ -280,6 +280,11 @@ class ConstantBlock(Block):
 				parserState.NewToken =    BoundaryToken(token)
 				parserState.NextState =   cls.statePossibleVariableAssignment
 				return
+			elif (token == ";"):
+				parserState.NewToken =    EndToken(token)
+				parserState.NextState =   cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+				parserState.Pop()
+				return
 			elif (token == "\n"):
 				parserState.NewBlock =    ConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(token)
@@ -352,7 +357,7 @@ class ConstantBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "=")):
 			parserState.NewToken =      VariableAssignmentKeyword(parserState.TokenMarker)
-			parserState.TokenMarker =   parserState.NewToken
+			#parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateVariableAssignment
 			return
 

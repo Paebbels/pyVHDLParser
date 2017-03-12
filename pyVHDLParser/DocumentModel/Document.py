@@ -28,9 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reference  import Library, Use, Context
-from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component
-from pyVHDLParser.Blocks.Sequential import Package, PackageBody
+from pyVHDLParser.Blocks.Reference          import Library, Use, Context
+from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Component
+from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.DocumentModel.VHDLModel   import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
 from pyVHDLParser.DocumentModel.Sequential  import Package as PackageModel, PackageBody as PackageBodyModel
@@ -51,10 +51,10 @@ class Document(DocumentModel):
 	def stateParse(cls, parserState: ParserState):
 		block = parserState.CurrentBlock
 		if isinstance(block, Library.LibraryBlock):
-			parserState.PushState = LibraryModel.Library.stateParse
+			parserState.PushState = LibraryModel.stateParse
 			parserState.ReIssue()
 		elif isinstance(block, Use.UseBlock):
-			parserState.PushState = UseModel.Use.stateParse
+			parserState.PushState = UseModel.stateParse
 			parserState.ReIssue()
 		elif isinstance(block, Entity.NameBlock):
 			parserState.PushState = EntityModel.Entity.stateParse
@@ -72,11 +72,11 @@ class Document(DocumentModel):
 			pass
 			# parserState.CurrentBlock = next(parserState.BlockIterator)
 
-	def AddLibrary(self, libraryName):
-		self.__libraries.append(libraryName)
+	def AddLibrary(self, library):
+		self.__libraries.append(library)
 
-	def AddUse(self, libraryName, packageName, objectName):
-		self.__uses.append((libraryName, packageName, objectName))
+	def AddUse(self, use):
+		self.__uses.append(use)
 
 	@property
 	def Libraries(self):

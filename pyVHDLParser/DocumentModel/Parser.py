@@ -49,8 +49,9 @@
 # 		return iter(__Generator(currentBlock, blockIterator))
 # 	else:
 # 		return iter(currentBlock)
-from typing import Iterator
+from typing                         import Iterator
 
+from pyVHDLParser                   import DocumentModel
 from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Exception  import BlockParserException
 from pyVHDLParser.Filters.Comment   import FastForward
@@ -75,6 +76,8 @@ class _BlockIterator:
 class BlockToModelParser:
 	@classmethod
 	def Transform(cls, document, blockGenerator, debug=False):
+		DocumentModel.DEBUG = debug
+
 		startState = document.__class__.stateParse
 		parser = cls.BlockParserState(startState, document, blockGenerator, debug=debug)
 		parser.Run()
@@ -93,17 +96,21 @@ class BlockToModelParser:
 					break
 
 	class BlockParserState:
+		class StackItem(tuple):
+			def __repr__(self):
+				return "nxSt={0} / curN={1}".format(self[0].__func__.__qualname__, self[1].__class__.__name__)
+
 		def __init__(self, startState, document, blockGenerator, debug):
 			blockIterator = _BlockIterator(self, blockGenerator)
 			firstBlock = blockIterator.__next__()
 			assert isinstance(firstBlock, StartOfDocumentBlock)
 
-			self._stack = []
-			self.NextState = startState
-			self.BlockIterator = blockIterator
-			self.CurrentBlock = None  # next(blockIterator)
-			self.Document = document
-			self.CurrentNode = document
+			self._stack =         []
+			self.NextState =      startState
+			self.BlockIterator =  blockIterator
+			self.CurrentBlock =   None  # next(blockIterator)
+			self.Document =       document
+			self.CurrentNode =    document
 
 			self.debug = debug
 
@@ -113,10 +120,11 @@ class BlockToModelParser:
 
 		@PushState.setter
 		def PushState(self, value):
-			self._stack.append((
+			stackItem = self.StackItem((
 				self.NextState,
 				self.CurrentNode
 			))
+			self._stack.append(stackItem)
 			self.NextState = value
 
 		def __iter__(self):

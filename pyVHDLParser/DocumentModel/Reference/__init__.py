@@ -27,3 +27,93 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
+from pyVHDLParser.Blocks.Exception          import BlockParserException
+from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock, LibraryBlock
+from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
+from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryReferenceModel, Use as UseModel
+from pyVHDLParser.DocumentModel.Parser      import BlockToModelParser
+
+# Type alias for type hinting
+from pyVHDLParser.Token.Keywords import IdentifierToken, AllKeyword
+
+ParserState = BlockToModelParser.BlockParserState
+
+
+class Library(LibraryReferenceModel):
+	def __init__(self, libraryName):
+		super().__init__()
+		self._library = libraryName
+
+	@classmethod
+	def stateParse(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, LibraryBlock)
+		for block in parserState.BlockIterator:
+			if isinstance(block, LibraryNameBlock):
+				library = cls(block.StartToken.Value)
+				parserState.CurrentNode.AddLibrary(library)
+			elif isinstance(block, LibraryEndBlock):
+				break
+
+		parserState.Pop()
+
+	def __str__(self):
+		return self._library
+
+
+class Use(UseModel):
+	def __init__(self, libraryName, packageName, itemName):
+		super().__init__()
+		self._library = libraryName
+		self._package = packageName
+		self._item =    itemName
+
+	@classmethod
+	def stateParse(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, UseBlock)
+		for block in parserState.BlockIterator:
+			if isinstance(block, UseNameBlock):
+				# parserState.CurrentBlock = block
+				cls.stateParseTokens(parserState)
+			elif isinstance(block, UseEndBlock):
+				break
+		else:
+			raise BlockParserException("", None)
+
+		parserState.Pop()
+
+	@classmethod
+	def stateParseTokens(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, UseNameBlock)
+
+		tokenIterator = iter(parserState)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				libraryName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				packageName = token.Value
+				break
+		else:
+			raise BlockParserException("", None)
+
+		for token in tokenIterator:
+			if isinstance(token, IdentifierToken):
+				itemName = token.Value
+				break
+			elif isinstance(token, AllKeyword):
+				itemName = "ALL"
+				break
+		else:
+			raise BlockParserException("", None)
+
+		use = cls(libraryName, packageName, itemName)
+		parserState.CurrentNode.AddUse(use)
+
+	def __str__(self):
+		return "{0}.{1}".format(self._library, self._package)

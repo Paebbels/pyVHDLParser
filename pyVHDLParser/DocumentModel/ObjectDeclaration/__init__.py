@@ -28,66 +28,51 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Blocks.Exception import BlockParserException
-from pyVHDLParser.Blocks.Reference.Use  import UseBlock, UseNameBlock, UseEndBlock
-from pyVHDLParser.DocumentModel.VHDLModel       import Use as UseModel
-from pyVHDLParser.DocumentModel.Parser          import BlockToModelParser
+from pyVHDLParser.Blocks                            import BlockParserException
+from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
+from pyVHDLParser.DocumentModel.VHDLModel           import Constant as ConstantBase
+from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
 
 # Type alias for type hinting
-from pyVHDLParser.Token.Keywords import IdentifierToken, AllKeyword
-
+from pyVHDLParser.Functions                         import Console
+from pyVHDLParser.Token.Keywords                    import IdentifierToken
 
 ParserState = BlockToModelParser.BlockParserState
 
 
-class Use(UseModel):
-	def __init__(self):
+class Constant(ConstantBase):
+	def __init__(self, constantName):
 		super().__init__()
+		self._name = constantName
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, UseBlock)
-		for block in parserState.BlockIterator:
-			if isinstance(block, UseNameBlock):
-				# parserState.CurrentBlock = block
-				cls.stateParseTokens(parserState)
-			elif isinstance(block, UseEndBlock):
-				break
-		else:
-			raise BlockParserException("", None)
+		assert isinstance(parserState.CurrentBlock, ConstantBlock)
+
+		cls.stateParseConstantName(parserState)
 
 		parserState.Pop()
-		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParseTokens(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, UseNameBlock)
+	def stateParseConstantName(cls, parserState: ParserState):
+		assert isinstance(parserState.CurrentBlock, ConstantBlock)
 
 		tokenIterator = iter(parserState)
-
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
-				libraryName = token.Value
+				constantName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("Constant name (identifier) not found.", None)
 
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				packageName = token.Value
-				break
-		else:
-			raise BlockParserException("", None)
+		constant = cls(constantName)
 
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				objectName = token.Value
-				break
-			elif isinstance(token, AllKeyword):
-				objectName = "ALL"
-				break
-		else:
-			raise BlockParserException("", None)
+		parserState.CurrentNode.AddConstant(constant)
+		parserState.CurrentNode = constant
 
-		parserState.CurrentNode.AddUse(libraryName, packageName, objectName)
+	def __str__(self):
+		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subType, **Console.Foreground)
+
+	def Print(self, indent=0):
+		indentation = "  " * indent
+		print("{indent}{DARK_CYAN}CONSTANT {GREEN}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR} := xxx;".format(indent=indentation, name=self._name, type="", **Console.Foreground))

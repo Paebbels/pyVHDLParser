@@ -282,9 +282,11 @@ class NameBlock2(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, StringToken):
-			if (token <= "return"):
-				parserState.NewToken =    ReturnKeyword(token)
-				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			keyword = ReturnKeyword(token)
+			if (token <= keyword.__KEYWORD__):
+				parserState.NewToken =    keyword
+				#parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   cls.stateReturnKeyword
 				return
 

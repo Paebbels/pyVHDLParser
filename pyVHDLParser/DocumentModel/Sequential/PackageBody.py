@@ -28,14 +28,19 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Exception   import BlockParserException
-from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.ObjectDeclaration import Constant
-from pyVHDLParser.Functions import Console
-from pyVHDLParser.Token.Keywords     import IdentifierToken
-from pyVHDLParser.Blocks.Sequential  import PackageBody as PackageBodyBlock
-from pyVHDLParser.DocumentModel.VHDLModel    import PackageBody as PackageBodyModel
-from pyVHDLParser.DocumentModel.Parser       import BlockToModelParser
+from typing                                         import List
+
+from pyVHDLParser.Functions                         import Console
+from pyVHDLParser.Token.Keywords                    import IdentifierToken
+from pyVHDLParser.Blocks.Exception                  import BlockParserException
+from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
+from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
+from pyVHDLParser.Blocks.Sequential                 import PackageBody as PackageBodyBlock
+from pyVHDLParser.DocumentModel                     import DEBUG
+from pyVHDLParser.DocumentModel.VHDLModel           import PackageBody as PackageBodyModel
+from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
+from pyVHDLParser.DocumentModel.Reference           import Library, Use
+from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
 
 # Type alias for type hinting
 ParserState = BlockToModelParser.BlockParserState
@@ -58,8 +63,9 @@ class PackageBody(PackageBodyModel):
 			elif isinstance(block, PortListBlocks.OpenBlock):
 				parserState.PushState = cls.stateParsePortList
 				parserState.ReIssue()
-			elif isinstance(block, Constant.ConstantBlock):
-				raise NotImplementedError()
+			elif isinstance(block, ConstantBlock):
+				parserState.PushState = Constant.stateParse
+				parserState.ReIssue()
 			elif isinstance(block, PackageBodyBlock.EndBlock):
 				break
 		else:
@@ -150,13 +156,21 @@ class PackageBody(PackageBodyModel):
 
 		parserState.CurrentNode.AddPort(portName)
 
-	def AddLibraries(self, libraries):
+	def AddLibraries(self, libraries : List[Library]):
+		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
-			self._libraries.append(library)
+			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
+			self._libraries.append(library._library)
 
-	def AddUses(self, uses):
+	def AddUses(self, uses : List[Use]):
+		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
+			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
 			self._uses.append(use)
+
+	def AddConstant(self, constant):
+		if DEBUG: print("{DARK_CYAN}Adding constant to package body {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, constant, **Console.Foreground))
+		self._declaredItems.append(constant)
 
 	def Print(self, indent=0):
 		indentation = "  "*indent
@@ -166,5 +180,8 @@ class PackageBody(PackageBodyModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
+		if (len(self._declaredItems) > 0):
+			for item in self._declaredItems:
+				item.Print(indent+1)
 		print("{indent}{DARK_CYAN}END PACKAGE BODY{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 

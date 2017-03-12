@@ -103,22 +103,55 @@ class Entity(ModelEntity):
 		self._bodyItems =       []
 
 
-class GenericItem(ModelEntity):
+class InterfaceItem(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._name = None
-		self._subType = None
-		self._init = None
+
+class GenericInterfaceItem(InterfaceItem):   pass
+class PortInterfaceItem(InterfaceItem):      pass
+class ParameterInterfaceItem(InterfaceItem): pass
 
 
-class PortItem(ModelEntity):
+class ConstantInterfaceItem(GenericInterfaceItem):
 	def __init__(self):
 		super().__init__()
-		self._name =        None
-		self._subType =     None
-		self._init =        None
-		self._mode =        None
-		self._class =       None
+		self._subType = None
+		self._init =    None
+
+
+class PortSignalInterfaceItem(PortInterfaceItem):
+	def __init__(self):
+		super().__init__()
+		self._subType = None
+		self._mode =    None
+		self._init =    None
+
+
+class ParameterVariableInterfaceItem(ParameterInterfaceItem):
+	def __init__(self):
+		super().__init__()
+		self._subType = None
+		self._mode =    None
+		self._init =    None
+
+
+# class GenericItem(ModelEntity):
+# 	def __init__(self):
+# 		super().__init__()
+# 		self._name = None
+# 		self._subType = None
+# 		self._init = None
+#
+#
+# class PortItem(ModelEntity):
+# 	def __init__(self):
+# 		super().__init__()
+# 		self._name =        None
+# 		self._subType =     None
+# 		self._init =        None
+# 		self._mode =        None
+# 		self._class =       None
 
 
 class Modes(Enum):
@@ -127,13 +160,17 @@ class Modes(Enum):
 	Out =     2
 	InOut =   3
 	Buffer =  4
+	Linkage = 5
 
 
 class Class(Enum):
-	Default =  0
-	Constant = 1
-	Variable = 2
-	Signal =   3
+	Default =    0
+	Constant =   1
+	Variable =   2
+	Signal =     3
+	File =       4
+	Type =       5
+	Subprogram = 6
 
 
 class Package(ModelEntity):
@@ -155,18 +192,18 @@ class PackageBody(ModelEntity):
 		self._declaredItems =   []
 
 
+class LibraryReference(ModelEntity):
+	def __init__(self):
+		super().__init__()
+		self._library = None
+
+
 class Use(ModelEntity):
 	def __init__(self):
 		super().__init__()
 		self._library = None
 		self._package = None
 		self._item =    None
-
-
-class LibraryReference(ModelEntity):
-	def __init__(self):
-		super().__init__()
-		self._library = None
 
 
 class Constant(ModelEntity):
