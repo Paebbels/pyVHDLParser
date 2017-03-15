@@ -28,19 +28,18 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords       import IndentationToken, SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks import Block
+from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken
+from pyVHDLParser.Blocks               import Block
 from pyVHDLParser.Blocks.Common        import IndentationBlock
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 
 # Type alias for type hinting
 ParserState = TokenToBlockParser.TokenParserState
 
 
-class CommentBlock(Block):
-	pass
+class CommentBlock(Block):  pass
+
 
 class SingleLineCommentBlock(CommentBlock):
 	@classmethod

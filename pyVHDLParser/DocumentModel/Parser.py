@@ -27,88 +27,88 @@
 # limitations under the License.
 # ==============================================================================
 #
-# from pyVHDLParser.Blocks.Common import LinebreakBlock, EmptyLineBlock
-# from pyVHDLParser.Blocks.Document      import StartOfDocumentBlock
+# from pyVHDLParser.Groups.Common import LinebreakGroup, EmptyLineGroup
+# from pyVHDLParser.Groups.Document      import StartOfDocumentGroup
 # from pyVHDLParser.DocumentModel import Document
 # from pyVHDLParser.DocumentModel.Structural import Entity
 
-# def MultiPartIterator(currentBlock, blockIterator):
-# 	def __Generator(currentBlock, blockIterator):
-# 		blockType = type(currentBlock)
+# def MultiPartIterator(currentGroup, groupIterator):
+# 	def __Generator(currentGroup, groupIterator):
+# 		groupType = type(currentGroup)
 #
-# 		for token in currentBlock:
+# 		for token in currentGroup:
 # 			yield token
-# 		for block in blockIterator:
-# 			if isinstance(block, blockType):
-# 				for token in block:
+# 		for group in groupIterator:
+# 			if isinstance(group, groupType):
+# 				for token in group:
 # 					yield token
-# 				if (not block.MultiPart):
+# 				if (not group.MultiPart):
 # 					break
 #
-# 	if currentBlock.MultiPart:
-# 		return iter(__Generator(currentBlock, blockIterator))
+# 	if currentGroup.MultiPart:
+# 		return iter(__Generator(currentGroup, groupIterator))
 # 	else:
-# 		return iter(currentBlock)
+# 		return iter(currentGroup)
 from typing                         import Iterator
 
 from pyVHDLParser                   import DocumentModel
-from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks import TokenParserException
+from pyVHDLParser.Groups.Document   import StartOfDocumentGroup, EndOfDocumentGroup
+from pyVHDLParser.Groups            import BlockParserException
 from pyVHDLParser.Filters.Comment   import FastForward
 
 
-# __ALL__ = [BlockToModelParser]
+# __ALL__ = [GroupToModelParser]
 
 
-class _BlockIterator:
-	def __init__(self, parserState, blockGenerator: Iterator):
+class _GroupIterator:
+	def __init__(self, parserState, groupGenerator: Iterator):
 		self._parserState =     parserState
-		self._blockIterator =   iter(FastForward(blockGenerator))
+		self._groupIterator =   iter(FastForward(groupGenerator))
 
 	def __iter__(self):
 		return self
 
 	def __next__(self):
-		nextBlock = self._blockIterator.__next__()
-		self._parserState.CurrentBlock = nextBlock
-		return nextBlock
+		nextGroup = self._groupIterator.__next__()
+		self._parserState.CurrentGroup = nextGroup
+		return nextGroup
 
-class BlockToModelParser:
+class GroupToModelParser:
 	@classmethod
-	def Transform(cls, document, blockGenerator, debug=False):
+	def Transform(cls, document, groupGenerator, debug=False):
 		DocumentModel.DEBUG = debug
 
 		startState = document.__class__.stateParse
-		parser = cls.BlockParserState(startState, document, blockGenerator, debug=debug)
+		parser = cls.GroupParserState(startState, document, groupGenerator, debug=debug)
 		parser.Run()
 
 	@staticmethod
-	def _TokenGenerator(currentBlock, blockIterator):
-		blockType = type(currentBlock)
+	def _TokenGenerator(currentGroup, groupIterator):
+		groupType = type(currentGroup)
 
-		for token in currentBlock:
+		for token in currentGroup:
 			yield token
-		for block in blockIterator:
-			if isinstance(block, blockType):
-				for token in block:
+		for group in groupIterator:
+			if isinstance(group, groupType):
+				for token in group:
 					yield token
-				if (not block.MultiPart):
+				if (not group.MultiPart):
 					break
 
-	class BlockParserState:
+	class GroupParserState:
 		class StackItem(tuple):
 			def __repr__(self):
 				return "nxSt={0} / curN={1}".format(self[0].__func__.__qualname__, self[1].__class__.__name__)
 
-		def __init__(self, startState, document, blockGenerator, debug):
-			blockIterator = _BlockIterator(self, blockGenerator)
-			firstBlock = blockIterator.__next__()
-			assert isinstance(firstBlock, StartOfDocumentBlock)
+		def __init__(self, startState, document, groupGenerator, debug):
+			groupIterator = _GroupIterator(self, groupGenerator)
+			firstGroup = groupIterator.__next__()
+			assert isinstance(firstGroup, StartOfDocumentGroup)
 
 			self._stack =         []
 			self.NextState =      startState
-			self.BlockIterator =  blockIterator
-			self.CurrentBlock =   None  # next(blockIterator)
+			self.GroupIterator =  groupIterator
+			self.CurrentGroup =   None  # next(groupIterator)
 			self.Document =       document
 			self.CurrentNode =    document
 
@@ -128,10 +128,10 @@ class BlockToModelParser:
 			self.NextState = value
 
 		def __iter__(self):
-			if self.CurrentBlock.MultiPart:
-				return iter(BlockToModelParser._TokenGenerator(self.CurrentBlock, self.BlockIterator))
+			if self.CurrentGroup.MultiPart:
+				return iter(GroupToModelParser._TokenGenerator(self.CurrentGroup, self.GroupIterator))
 			else:
-				return iter(self.CurrentBlock)
+				return iter(self.CurrentGroup)
 
 		def __str__(self):
 			return self.NextState.__func__.__qualname__
@@ -147,13 +147,13 @@ class BlockToModelParser:
 			self.NextState(self)
 
 		def Run(self):
-			for block in self.BlockIterator:
-				# self.CurrentBlock = block
-				# if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=block))
+			for group in self.GroupIterator:
+				# self.CurrentGroup = group
+				# if self.debug: print("  state={state!s: <50}  group={group!s: <40}   ".format(state=self, group=group))
 
-				if isinstance(block, EndOfDocumentBlock):
+				if isinstance(group, EndOfDocumentGroup):
 					break
 
 				self.NextState(self)
 			else:
-				raise TokenParserException("", None)
+				raise BlockParserException("", None)

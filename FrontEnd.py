@@ -36,7 +36,8 @@ from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Filters.Comment     import StripAndFuse
 from pyVHDLParser.Functions          import Console, Exit
 from pyVHDLParser.DocumentModel.Document import Document
-from pyVHDLParser.DocumentModel.Parser import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
+from pyVHDLParser.Groups.Parser import BlockToGroupParser
 from pyVHDLParser.Token.Tokens       import EndOfDocumentToken, DelimiterToken, StringToken, SpaceToken, CharacterToken
 from pyVHDLParser.Token.Keywords     import IndentationToken, LinebreakToken, BoundaryToken, EndToken, KeywordToken
 from pyVHDLParser.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
@@ -227,8 +228,9 @@ if (mode & 32 == 32):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=alphaCharacters, numberCharacters="")
 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
 	document = Document()
-	BlockToModelParser.Transform(document, vhdlBlockStream, debug=True)
+	GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
 
 	document.Print(0)

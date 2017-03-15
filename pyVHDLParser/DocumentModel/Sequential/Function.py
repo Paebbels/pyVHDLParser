@@ -39,11 +39,11 @@ from pyVHDLParser.DocumentModel                     import DEBUG
 from pyVHDLParser.DocumentModel.VHDLModel           import Function as FunctionModel
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
-from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 from pyVHDLParser.Functions                         import Console
 
 # Type alias for type hinting
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Function(FunctionModel):
@@ -53,14 +53,14 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, FunctionBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, FunctionBlock.NameBlock)
 		cls.stateParseFunctionName(parserState)
 
 		# if isinstance(block, GenericListBlocks.OpenBlock):
 		# 	parserState.PushState = cls.stateParseGenericList
 		# 	parserState.ReIssue()
 		# el
-		for block in parserState.BlockIterator:
+		for block in parserState.CurrentGroup:
 			if isinstance(block, ConstantBlock):
 				parserState.PushState = Constant.stateParse
 				parserState.ReIssue()
@@ -78,7 +78,7 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParseFunctionName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, FunctionBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, FunctionBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:
@@ -94,9 +94,9 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.OpenBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, GenericListBlocks.ItemBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
@@ -108,7 +108,7 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParseGeneric(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:

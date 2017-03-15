@@ -41,10 +41,10 @@ from pyVHDLParser.DocumentModel.VHDLModel           import PackageBody as Packag
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
 from pyVHDLParser.DocumentModel.Sequential.Function import Function
-from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class PackageBody(PackageBodyModel):
@@ -54,10 +54,10 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 		cls.stateParsePackageBodyName(parserState)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, GenericListBlocks.OpenBlock):
 				parserState.PushState = cls.stateParseGenericList
 				parserState.ReIssue()
@@ -82,7 +82,7 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParsePackageBodyName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PackageBodyBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -106,9 +106,9 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.OpenBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, GenericListBlocks.ItemBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
@@ -120,7 +120,7 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParseGeneric(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -135,9 +135,9 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParsePortList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.OpenBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, PortListBlocks.ItemBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
@@ -149,7 +149,7 @@ class PackageBody(PackageBodyModel):
 
 	@classmethod
 	def stateParsePort(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
 

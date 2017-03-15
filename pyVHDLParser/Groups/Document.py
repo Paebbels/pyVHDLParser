@@ -28,29 +28,31 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Comment import CommentBlock
+from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
+from pyVHDLParser.Blocks.Reference.Library import LibraryBlock
+from pyVHDLParser.Blocks.Reference.Use import UseBlock
+from pyVHDLParser.Functions import Console
+from pyVHDLParser.Groups.Comment import CommentGroup, LibraryGroup, UseGroup
 from pyVHDLParser.Token.Tokens         import EndOfDocumentToken
-from pyVHDLParser.Token.Keywords       import LinebreakToken, IndentationToken
-from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword
-from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword, ConfigurationKeyword
 from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
 from pyVHDLParser.Groups.Parser        import BlockToGroupParser
 from pyVHDLParser.Groups               import BlockParserException, Group
-
 
 # Type alias for type hinting
 ParserState = BlockToGroupParser.BlockParserState
 
 
 class StartOfDocumentGroup(Group):
-	def __init__(self, startToken):
+	def __init__(self, startBlock):
 		self._previousGroup =     None
 		self.NextGroup =          None
-		self.StartToken =         startToken
-		self.EndToken =           startToken
+		self.StartBlock =         startBlock
+		self.EndToken =           startBlock
 		self.MultiPart =          False
 
 	def __iter__(self):
-		yield self.StartToken
+		yield self.StartBlock
 
 	def __len__(self):
 		return 0
@@ -60,73 +62,34 @@ class StartOfDocumentGroup(Group):
 
 	@classmethod
 	def stateDocument(cls, parserState: ParserState):
-		token = parserState.Block
+		block = parserState.Block
+
+		print("{YELLOW}{0!s}{NOCOLOR}".format(block, **Console.Foreground))
 
 		errorMessage = "Expected keywords: architecture, context, entity, library, package, use."
-		if isinstance(parserState.Block, CharacterToken):
-			pass
-			# if (token == "\n"):
-			# 	parserState.NewBlock =    LinebreakToken(token)
-			# 	parserState.NewGroup =    LinebreakGroup(parserState.LastGroup, parserState.NewBlock)
-			# 	parserState.TokenMarker = parserState.NewBlock
-			# 	return
-			# elif (token == "-"):
-			# 	parserState.PushState =   SingleLineCommentGroup.statePossibleCommentStart
-			# 	parserState.TokenMarker = token
-			# 	return
-			# elif (token == "/"):
-			# 	parserState.PushState =   MultiLineCommentGroup.statePossibleCommentStart
-			# 	parserState.TokenMarker = token
-			# 	return
-		elif isinstance(token, SpaceToken):
-			pass
-			# parserState.NewBlock =      IndentationToken(token)
-			# parserState.NewGroup =      IndentationGroup(parserState.LastGroup, parserState.NewBlock)
-			# return
-		elif isinstance(token, StringToken):
-			pass
-			# keyword = token.Value.lower()
-			# if (keyword == "library"):
-			# 	newToken = LibraryKeyword(token)
-			# 	parserState.PushState =   Library.LibraryGroup.stateLibraryKeyword
-			# elif (keyword == "use"):
-			# 	newToken = UseKeyword(token)
-			# 	parserState.PushState =   Use.UseGroup.stateUseKeyword
-			# elif (keyword == "context"):
-			# 	newToken = ContextKeyword(token)
-			# 	parserState.PushState =   Context.NameGroup.stateContextKeyword
-			# elif (keyword == "entity"):
-			# 	newToken = EntityKeyword(token)
-			# 	parserState.PushState =   Entity.NameGroup.stateEntityKeyword
-			# elif (keyword == "architecture"):
-			# 	newToken = ArchitectureKeyword(token)
-			# 	parserState.PushState =   Architecture.NameGroup.stateArchitectureKeyword
-			# elif (keyword == "package"):
-			# 	newToken = PackageKeyword(token)
-			# 	parserState.PushState =   Package.NameGroup.statePackageKeyword
-			# else:
-			# 	raise TokenParserException(errorMessage, token)
-			#
-			# parserState.NewBlock =      newToken
-			# parserState.TokenMarker =   newToken
-			# return
-		elif isinstance(token, EndOfDocumentToken):
-			parserState.NewGroup =      EndOfDocumentGroup(token)
+		if isinstance(parserState.Block, CommentBlock):
+			parserState.NewGroup =    CommentGroup(parserState.LastGroup, parserState.NewBlock)
+		elif isinstance(parserState.Block, LibraryBlock):
+			parserState.NewGroup = LibraryGroup(parserState.LastGroup, parserState.NewBlock)
+		elif isinstance(parserState.Block, UseBlock):
+			parserState.NewGroup = UseGroup(parserState.LastGroup, parserState.NewBlock)
+		elif isinstance(block, EndOfDocumentBlock):
+			parserState.NewGroup =      EndOfDocumentGroup(block)
 			return
 		else:  # tokenType
-			raise BlockParserException(errorMessage, token)
+			raise BlockParserException(errorMessage, block)
 
 
 class EndOfDocumentGroup(Group):
-	def __init__(self, endToken):
+	def __init__(self, endBlock):
 		self._previousGroup =     None
 		self.NextGroup =          None
-		self.StartToken =         endToken
-		self.EndToken =           endToken
+		self.StartBlock =         endBlock
+		self.EndToken =           endBlock
 		self.MultiPart =          False
 
 	def __iter__(self):
-		yield self.StartToken
+		yield self.StartBlock
 
 	def __len__(self):
 		return 0

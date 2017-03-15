@@ -28,16 +28,16 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import TokenParserException
-from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock, LibraryBlock
+from pyVHDLParser.Blocks                    import TokenParserException
+from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
 from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel.Parser      import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
+from pyVHDLParser.Groups.Comment            import LibraryGroup
+from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 
 # Type alias for type hinting
-from pyVHDLParser.Token.Keywords import IdentifierToken, AllKeyword
-
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Library(LibraryReferenceModel):
@@ -47,8 +47,8 @@ class Library(LibraryReferenceModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, LibraryBlock)
-		for block in parserState.BlockIterator:
+		assert isinstance(parserState.CurrentGroup, LibraryGroup)
+		for block in parserState.GroupIterator:
 			if isinstance(block, LibraryNameBlock):
 				library = cls(block.StartToken.Value)
 				parserState.CurrentNode.AddLibrary(library)

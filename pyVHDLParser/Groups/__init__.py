@@ -53,27 +53,26 @@ class MetaGroup(type):
 class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
-	def __init__(self, previousGroup, startToken, endToken=None, multiPart=False):
+	def __init__(self, previousGroup, startBlock, endBlock=None):
 		previousGroup.NextGroup = self
 		self._previousGroup =     previousGroup
 		self.NextGroup =          None
-		self.StartToken =         startToken
-		self.EndToken =           startToken if (endToken is None) else endToken
-		self.MultiPart =          multiPart
+		self.StartBlock =         startBlock
+		self.EndBlock =           startBlock if (endBlock is None) else endBlock
 
 	def __len__(self):
-		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1
+		return self.EndBlock.End.Absolute - self.StartBlock.Start.Absolute + 1
 
 	def __iter__(self):
-		token = self.StartToken
+		token = self.StartBlock
 		# print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
-		while (token is not self.EndToken):
+		while (token is not self.EndBlock):
 			yield token
 			if (token.NextToken is None):
 				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
 			token = token.NextToken
 
-		yield self.EndToken
+		yield self.EndBlock
 
 	def __repr__(self):
 		buffer = ""
@@ -95,8 +94,8 @@ class Group(metaclass=MetaGroup):
 				multiparted=("*" if self.MultiPart else "")
 			),
 			stream="'" + repr(self) + "'",
-			start=self.StartToken.Start,
-			end=self.EndToken.End
+			start=self.StartBlock.Start,
+			end=self.EndBlock.End
 		)
 
 	@property

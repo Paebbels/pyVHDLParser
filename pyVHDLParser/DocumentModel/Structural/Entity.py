@@ -36,10 +36,10 @@ from pyVHDLParser.Functions import Console
 from pyVHDLParser.Token.Keywords     import EntityKeyword, IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Entity as EntityBlock
 from pyVHDLParser.DocumentModel.VHDLModel    import Entity as EntityModel
-from pyVHDLParser.DocumentModel.Parser       import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser       import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Entity(EntityModel):
@@ -49,10 +49,10 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, EntityBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, EntityBlock.NameBlock)
 		cls.stateParseEntityName(parserState)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, GenericListBlocks.OpenBlock):
 				parserState.PushState = cls.stateParseGenericList
 				parserState.ReIssue()
@@ -73,7 +73,7 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParseEntityName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, EntityBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, EntityBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -97,9 +97,9 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.OpenBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, GenericListBlocks.ItemBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
@@ -111,7 +111,7 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParseGeneric(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -126,9 +126,9 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParsePortList(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.OpenBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, PortListBlocks.ItemBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
@@ -140,7 +140,7 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParsePort(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, PortListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
 

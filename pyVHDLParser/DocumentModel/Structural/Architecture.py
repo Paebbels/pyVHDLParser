@@ -28,18 +28,16 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Blocks import TokenParserException
-from pyVHDLParser.Blocks.List        import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration import Constant
 from pyVHDLParser.Functions import Console
-from pyVHDLParser.Token.Keywords     import ArchitectureKeyword, IdentifierToken
+from pyVHDLParser.Token.Keywords     import IdentifierToken
 from pyVHDLParser.Blocks.Structural  import Architecture as ArchitectureBlock
 from pyVHDLParser.DocumentModel.VHDLModel    import Architecture as ArchitectureModel
-from pyVHDLParser.DocumentModel.Parser       import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser       import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Architecture(ArchitectureModel):
@@ -50,10 +48,10 @@ class Architecture(ArchitectureModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, ArchitectureBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, ArchitectureBlock.NameBlock)
 		cls.stateParseArchitectureName(parserState)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GroupIterator:
 			if isinstance(block, Constant.ConstantBlock):
 				raise NotImplementedError()
 			# elif isinstance(block, ArchitectureBlock.BeginBlock):
@@ -68,7 +66,7 @@ class Architecture(ArchitectureModel):
 
 	@classmethod
 	def stateParseArchitectureName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, ArchitectureBlock.NameBlock)
+		assert isinstance(parserState.CurrentGroup, ArchitectureBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
 

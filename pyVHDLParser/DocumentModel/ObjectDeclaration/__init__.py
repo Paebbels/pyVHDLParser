@@ -31,13 +31,13 @@
 from pyVHDLParser.Blocks                            import TokenParserException
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.DocumentModel.VHDLModel           import Constant as ConstantBase
-from pyVHDLParser.DocumentModel.Parser              import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting
 from pyVHDLParser.Functions                         import Console
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Constant(ConstantBase):
@@ -47,7 +47,7 @@ class Constant(ConstantBase):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, ConstantBlock)
+		assert isinstance(parserState.CurrentGroup, ConstantBlock)
 
 		cls.stateParseConstantName(parserState)
 
@@ -55,7 +55,7 @@ class Constant(ConstantBase):
 
 	@classmethod
 	def stateParseConstantName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, ConstantBlock)
+		assert isinstance(parserState.CurrentGroup, ConstantBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:

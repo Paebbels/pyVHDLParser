@@ -35,10 +35,10 @@ from pyVHDLParser.DocumentModel.VHDLModel   import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
 from pyVHDLParser.DocumentModel.Sequential  import Package as PackageModel, PackageBody as PackageBodyModel
 from pyVHDLParser.DocumentModel.Structural  import Entity as EntityModel, Architecture as ArchitectureModel
-from pyVHDLParser.DocumentModel.Parser      import BlockToModelParser
+from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = BlockToModelParser.BlockParserState
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Document(DocumentModel):
@@ -49,7 +49,7 @@ class Document(DocumentModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.CurrentBlock
+		block = parserState.CurrentGroup
 		if isinstance(block, Library.LibraryBlock):
 			parserState.PushState = LibraryModel.stateParse
 			parserState.ReIssue()
