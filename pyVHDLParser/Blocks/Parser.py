@@ -50,7 +50,6 @@ class TokenToBlockParser:
 			self._stack =             []
 			self._tokenMarker :       Token = None
 			self.NextState =          startState
-			self.Counter =            0
 			self.Token : Token =      startBlock.StartToken
 			self.NewToken : Token =   None
 			self.NewBlock : Block =   startBlock
@@ -65,8 +64,7 @@ class TokenToBlockParser:
 		def PushState(self, value):
 			self._stack.append((
 				self.NextState,
-				self._tokenMarker,
-				self.Counter
+				self._tokenMarker
 			))
 			self.NextState =    value
 			self._tokenMarker =  None
@@ -93,13 +91,12 @@ class TokenToBlockParser:
 				top = self._stack.pop()
 			self.NextState =    top[0]
 			self._tokenMarker = top[1]
-			self.Counter =      top[2]
 
 		def GetGenerator(self, iterator):
+			from pyVHDLParser.Token             import EndOfDocumentToken
+			from pyVHDLParser.Blocks            import TokenParserException
 			from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 			from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
-			from pyVHDLParser.Blocks import TokenParserException
-			from pyVHDLParser.Token import EndOfDocumentToken
 
 			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one
@@ -107,7 +104,7 @@ class TokenToBlockParser:
 					# print("{GREEN}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 					# update topmost TokenMarker
 					if (self._tokenMarker is token.PreviousToken):
-						if self.debug: print("  update marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
+						if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
 						self._tokenMarker = self.NewToken
 
 					token.PreviousToken = self.NewToken
@@ -116,7 +113,7 @@ class TokenToBlockParser:
 				self.Token = token
 				# an empty marker means: fill on next yield run
 				if (self._tokenMarker is None):
-					if self.debug: print("  new marker: None -> {0!s}".format(token))
+					if self.debug: print("  new token marker: None -> {0!s}".format(token))
 					self._tokenMarker = token
 
 				# a new block is assembled

@@ -1,5 +1,5 @@
-library IEEE;
-use     IEEE.std_logic_1164.all;
+library IEEE, PoC;
+use     IEEE.std_logic_1164.all, PoC.ocram.all;
 
 context OSVVM is
 	use OSVVM.Scoreboard.all;

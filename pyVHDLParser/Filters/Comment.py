@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks           import TokenParserException
+from pyVHDLParser.Blocks           import TokenParserException, CommentBlock
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.Document  import CommentBlock
 

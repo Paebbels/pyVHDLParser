@@ -49,19 +49,3 @@ class CommentGroup(Group):
 			return
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
-
-
-class LibraryGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
-
-
-class UseGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-
-		raise NotImplementedError("State=Parse: {0!r}".format(block))

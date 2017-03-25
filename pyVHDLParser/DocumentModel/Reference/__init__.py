@@ -33,7 +33,7 @@ from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndB
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
 from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryReferenceModel, Use as UseModel
 from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
-from pyVHDLParser.Groups.Comment            import LibraryGroup
+from pyVHDLParser.Groups.Reference          import LibraryGroup
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 
 # Type alias for type hinting

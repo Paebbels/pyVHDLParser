@@ -64,39 +64,39 @@ class Group(metaclass=MetaGroup):
 		return self.EndBlock.End.Absolute - self.StartBlock.Start.Absolute + 1
 
 	def __iter__(self):
-		token = self.StartBlock
+		block = self.StartBlock
 		# print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
-		while (token is not self.EndBlock):
-			yield token
-			if (token.NextToken is None):
-				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
-			token = token.NextToken
+		while (block is not self.EndBlock):
+			yield block
+			if (block.NextBlock is None):
+				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
+			block = block.NextBlock
 
 		yield self.EndBlock
 
 	def __repr__(self):
-		buffer = ""
-		for token in self:
-			if isinstance(token, CharacterToken):
-				buffer += repr(token)
-			else:
-				buffer += token.Value
+		buffer = "undefined block content"
+		# for block in self:
+		# 	if isinstance(block, CharacterToken):
+		# 		buffer += repr(block)
+		# 	else:
+		# 		buffer += block.Value
 
 		buffer = buffer.replace("\t", "\\t")
 		buffer = buffer.replace("\n", "\\n")
 		return buffer
 
 	def __str__(self):
-		return "[{groupName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
-			groupName="{module}.{classname}{multiparted}".format(
-				module=self.__module__.rpartition(".")[2],
-				classname=self.__class__.__name__,
-				multiparted=("*" if self.MultiPart else "")
-			),
-			stream="'" + repr(self) + "'",
-			start=self.StartBlock.Start,
-			end=self.EndBlock.End
-		)
+		return "group ...."
+		# return "[{groupName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
+		# 	groupName="{module}.{classname}".format(
+		# 		module=self.__module__.rpartition(".")[2],
+		# 		classname=self.__class__.__name__
+		# 	),
+		# 	stream="'" + repr(self) + "'",
+		# 	start=self.StartBlock.StartToken.Start,
+		# 	end=self.EndBlock.EndToken.End
+		# )
 
 	@property
 	def PreviousGroup(self):

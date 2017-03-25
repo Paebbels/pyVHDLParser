@@ -28,33 +28,69 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Functions         import Console
+from typing                       import Iterator
+
+from pyVHDLParser.Blocks          import Block
+from pyVHDLParser.Groups          import Group
+from pyVHDLParser.Filters.Comment import FastForward
+from pyVHDLParser.Functions       import Console
+
+
+class _BlockIterator:
+	def __init__(self, parserState, groupGenerator: Iterator):
+		self._parserState =     parserState
+		self._blockIterator =   iter(FastForward(groupGenerator))
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		nextGroup = self._blockIterator.__next__()
+		self._parserState.CurrentGroup = nextGroup
+		return nextGroup
 
 
 class BlockToGroupParser:
 	@classmethod
-	def Transform(cls, rawTokenGenerator, debug=False):
+	def Transform(cls, blockGenerator, debug=False):
 		from pyVHDLParser.Groups.Document import StartOfDocumentGroup
 
-		iterator =    iter(rawTokenGenerator)
+		iterator =    iter(blockGenerator)
 		firstBlock =  next(iterator)
 		firstGroup =  StartOfDocumentGroup(firstBlock)
 		startState =  StartOfDocumentGroup.stateDocument
-		return cls.BlockParserState(startState, firstGroup, debug=debug).GetGenerator(iterator)
+		return cls.BlockParserState(startState, firstGroup, blockGenerator, debug=debug).GetGenerator(iterator)
 
+	@staticmethod
+	def _TokenGenerator(currentGroup, groupIterator):
+		groupType = type(currentGroup)
+
+		for token in currentGroup:
+			yield token
+		for group in groupIterator:
+			if isinstance(group, groupType):
+				for token in group:
+					yield token
+				if (not group.MultiPart):
+					break
 
 	class BlockParserState:
-		def __init__(self, startState, startGroup, debug):
-			self._stack =       []
-			self._tokenMarker = None
-			self.NextState =    startState
-			self.Counter =      0
-			self.Block =        startGroup.StartBlock
-			self.NewBlock =     None
-			self.NewGroup =     startGroup
-			self.LastGroup =    None
+		def __init__(self, startState, startGroup, blockGenerator, debug):
+			from pyVHDLParser.Groups.Document import StartOfDocumentGroup
+			groupIterator = _BlockIterator(self, blockGenerator)
+			assert isinstance(startGroup, StartOfDocumentGroup)
 
-			self.debug =        debug
+			self._stack =               []
+			self._blockMarker : Block = None
+			self.NextState =            startState
+			self.GroupIterator =        groupIterator
+			self.CurrentGroup =         None  # next(groupIterator)
+			self.Block : Block =        startGroup.StartBlock
+			self.NewBlock : Block =     None
+			self.NewGroup : Group =     startGroup
+			self.LastGroup : Group =    None
+
+			self.debug =                debug
 
 		@property
 		def PushState(self):
@@ -63,21 +99,26 @@ class BlockToGroupParser:
 		def PushState(self, value):
 			self._stack.append((
 				self.NextState,
-				self._tokenMarker,
-				self.Counter
+				self._blockMarker
 			))
 			self.NextState =    value
-			self._tokenMarker =  None
+			self._blockMarker =  None
+
+		def __iter__(self):
+			if self.CurrentGroup.MultiPart:
+				return iter(BlockToGroupParser._TokenGenerator(self.CurrentGroup, self.GroupIterator))
+			else:
+				return iter(self.CurrentGroup)
 
 		@property
-		def TokenMarker(self):
-			if ((self.NewBlock is not None) and (self._tokenMarker is self.Block)):
-				if self.debug: print("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewBlock, **Console.Foreground))
-				self._tokenMarker = self.NewBlock
-			return self._tokenMarker
-		@TokenMarker.setter
-		def TokenMarker(self, value):
-			self._tokenMarker = value
+		def BlockMarker(self):
+			if ((self.NewBlock is not None) and (self._blockMarker is self.Block)):
+				if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
+				self._blockMarker = self.NewBlock
+			return self._blockMarker
+		@BlockMarker.setter
+		def BlockMarker(self, value):
+			self._blockMarker = value
 
 		def __eq__(self, other):
 			return self.NextState == other
@@ -90,45 +131,43 @@ class BlockToGroupParser:
 			for i in range(n):
 				top = self._stack.pop()
 			self.NextState =    top[0]
-			self._tokenMarker = top[1]
-			self.Counter =      top[2]
+			self._blockMarker = top[1]
+
+		def ReIssue(self):
+			self.NextState(self)
 
 		def GetGenerator(self, iterator):
-			from pyVHDLParser.Groups.Document   import EndOfDocumentGroup
-			from pyVHDLParser.Groups            import BlockParserException
 			from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
+			from pyVHDLParser.Groups            import BlockParserException
+			from pyVHDLParser.Groups.Document   import EndOfDocumentGroup
 
-			for token in iterator:
-				# overwrite an existing token and connect the next token with the new one
+			for block in iterator:
+				# overwrite an existing block and connect the next block with the new one
 				if (self.NewBlock is not None):
-					# print("{GREEN}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
+					print("{GREEN}NewBlock: {block}{NOCOLOR}".format(block=self.NewBlock, **Console.Foreground))
 					# update topmost TokenMarker
-					if (self._tokenMarker is token.PreviousToken):
-						if self.debug: print("  update marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewBlock))
-						self._tokenMarker = self.NewBlock
+					if (self._blockMarker is block.PreviousToken):
+						if self.debug: print("  update block marker: {0!s} -> {1!s}".format(self._blockMarker, self.NewBlock))
+						self._blockMarker = self.NewBlock
 
-					token.PreviousToken = self.NewBlock
+					block.PreviousToken = self.NewBlock
 					self.NewBlock =       None
 
-				self.Block = token
+				self.Block = block
 				# an empty marker means: fill on next yield run
-				if (self._tokenMarker is None):
-					if self.debug: print("  new marker: None -> {0!s}".format(token))
-					self._tokenMarker = token
+				if (self._blockMarker is None):
+					# if self.debug: print("  new block marker: None -> {0!s}".format(block))
+					self._blockMarker = block
 
 				# a new group is assembled
 				while (self.NewGroup is not None):
-					# if (isinstance(self.NewGroup, LinebreakGroup) and isinstance(self.LastGroup, (LinebreakGroup, EmptyLineGroup))):
-					# 	self.LastGroup = EmptyLineGroup(self.LastGroup, self.NewGroup.StartToken)
-					# 	self.LastGroup.NextGroup = self.NewGroup.NextGroup
-					# else:
 					self.LastGroup = self.NewGroup
 
 					self.NewGroup =  self.NewGroup.NextGroup
 					yield self.LastGroup
 
 				# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-				if self.debug: print("  state={state!s: <50}  token={token!s: <40}   ".format(state=self, token=token))
+				if self.debug: print("  state={state!s: <50}  block={block!s: <40}   ".format(state=self, block=block))
 				# execute a state
 				self.NextState(self)
 
