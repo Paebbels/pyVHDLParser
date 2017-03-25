@@ -28,10 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import *
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks import Block
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
+from pyVHDLParser.Token import SpaceToken, IndentationToken
 
 
 # Type alias for type hinting

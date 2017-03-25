@@ -28,16 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Comment import CommentBlock
-from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference.Library import LibraryBlock
-from pyVHDLParser.Blocks.Reference.Use import UseBlock
-from pyVHDLParser.Functions import Console
-from pyVHDLParser.Groups.Comment import CommentGroup, LibraryGroup, UseGroup
-from pyVHDLParser.Token.Tokens         import EndOfDocumentToken
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
-from pyVHDLParser.Groups.Parser        import BlockToGroupParser
-from pyVHDLParser.Groups               import BlockParserException, Group
+from pyVHDLParser.Blocks                    import CommentBlock
+from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
+from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
+from pyVHDLParser.Blocks.Reference.Use      import UseBlock
+from pyVHDLParser.Groups                    import BlockParserException, Group
+from pyVHDLParser.Groups.Comment            import CommentGroup, LibraryGroup, UseGroup
+from pyVHDLParser.Groups.Parser             import BlockToGroupParser
+from pyVHDLParser.Functions                 import Console
 
 # Type alias for type hinting
 ParserState = BlockToGroupParser.BlockParserState

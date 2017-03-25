@@ -30,7 +30,8 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords            import BoundaryToken, LinebreakToken, IdentifierToken, IndentationToken, EndToken, BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Token.Parser              import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
+from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks                    import Block, TokenParserException
 from pyVHDLParser.Blocks.Exception          import TokenParserException
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock

@@ -28,9 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import TokenParserException
+from pyVHDLParser.Blocks           import TokenParserException
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment   import CommentBlock
+# from pyVHDLParser.Blocks.Document  import CommentBlock
 
 
 def StripAndFuse(generator):

@@ -33,8 +33,8 @@ from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBl
 from pyVHDLParser.Blocks.Parser     import TokenToBlockParser
 from pyVHDLParser.Filters.Comment   import StripAndFuse
 from pyVHDLParser.Functions         import Console
-from pyVHDLParser.Token.Parser      import Tokenizer, StartOfDocumentToken
-from pyVHDLParser.Token.Tokens      import EndOfDocumentToken
+from pyVHDLParser.Token             import StartOfDocumentToken, EndOfDocumentToken
+from pyVHDLParser.Token.Parser      import Tokenizer
 from .                              import EntityTest, GenericListTest, ArchitectureTest, ProcessTest
 from .                              import LibraryTest, UseTest, PackageTest, PackageBodyTest
 from .                              import PortListTest

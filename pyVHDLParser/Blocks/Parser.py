@@ -28,7 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks import Block
 from pyVHDLParser.Functions         import Console
+from pyVHDLParser.Token import Token
 
 
 class TokenToBlockParser:
@@ -45,16 +47,16 @@ class TokenToBlockParser:
 
 	class TokenParserState:
 		def __init__(self, startState, startBlock, debug):
-			self._stack =       []
-			self._tokenMarker = None
-			self.NextState =    startState
-			self.Counter =      0
-			self.Token =        startBlock.StartToken
-			self.NewToken =     None
-			self.NewBlock =     startBlock
-			self.LastBlock =    None
+			self._stack =             []
+			self._tokenMarker :       Token = None
+			self.NextState =          startState
+			self.Counter =            0
+			self.Token : Token =      startBlock.StartToken
+			self.NewToken : Token =   None
+			self.NewBlock : Block =   startBlock
+			self.LastBlock : Block =  None
 
-			self.debug =        debug
+			self.debug : bool =       debug
 
 		@property
 		def PushState(self):
@@ -97,7 +99,7 @@ class TokenToBlockParser:
 			from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 			from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
 			from pyVHDLParser.Blocks import TokenParserException
-			from pyVHDLParser.Token.Tokens      import EndOfDocumentToken
+			from pyVHDLParser.Token import EndOfDocumentToken
 
 			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one

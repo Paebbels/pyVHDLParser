@@ -33,14 +33,14 @@ from typing                                         import List
 from pyVHDLParser.Functions                         import Console
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
-from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
+# from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, PortList as PortListBlocks
+# from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Sequential                 import PackageBody as PackageBodyBlock
 from pyVHDLParser.DocumentModel                     import DEBUG
 from pyVHDLParser.DocumentModel.VHDLModel           import PackageBody as PackageBodyModel
-from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
+# from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
-from pyVHDLParser.DocumentModel.Sequential.Function import Function
+# from pyVHDLParser.DocumentModel.Sequential.Function import Function
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting

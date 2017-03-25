@@ -30,7 +30,7 @@
 from types                          import FunctionType
 
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token.Tokens      import CharacterToken
+from pyVHDLParser.Token import CharacterToken
 
 
 class TokenParserException(ParserException):
@@ -115,3 +115,7 @@ class Block(metaclass=MetaBlock):
 	@property
 	def States(self):
 		return self.__STATES__
+
+
+class CommentBlock(Block):
+	pass

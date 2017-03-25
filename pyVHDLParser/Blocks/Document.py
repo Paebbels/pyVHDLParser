@@ -28,18 +28,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Tokens         import EndOfDocumentToken
-from pyVHDLParser.Token.Keywords       import LinebreakToken, IndentationToken
+from pyVHDLParser.Token                import EndOfDocumentToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword
 from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword
-from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword, ConfigurationKeyword
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks               import TokenParserException, Block
+from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
+from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential    import Package
-from pyVHDLParser.Blocks.Structural    import Entity, Architecture, Configuration
+# from pyVHDLParser.Blocks.Structural    import Entity, Architecture
+
 
 # Type alias for type hinting
 ParserState = TokenToBlockParser.TokenParserState
@@ -64,57 +63,51 @@ class StartOfDocumentBlock(Block):
 
 	@classmethod
 	def stateDocument(cls, parserState: ParserState):
+		keywords = {
+			# Keyword             Transition
+			LibraryKeyword :      Library.LibraryBlock.stateLibraryKeyword,
+			UseKeyword :          Use.UseBlock.stateUseKeyword,
+		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
+		  # EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
+		  # ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
+		  PackageKeyword :      Package.NameBlock.statePackageKeyword
+		}
+
 		token = parserState.Token
-		errorMessage = "Expected keywords: architecture, context, entity, library, package, use."
-		if isinstance(parserState.Token, CharacterToken):
-			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.TokenMarker = parserState.NewToken
-				return
-			elif (token == "-"):
-				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
-				return
-			elif (token == "/"):
-				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
-				return
-		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
+		if isinstance(token, IndentationToken):
+			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, LinebreakToken):
+			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, StringToken):
-			keyword = token.Value.lower()
-			if (keyword == "library"):
-				newToken = LibraryKeyword(token)
-				parserState.PushState =   Library.LibraryBlock.stateLibraryKeyword
-			elif (keyword == "use"):
-				newToken = UseKeyword(token)
-				parserState.PushState =   Use.UseBlock.stateUseKeyword
-			elif (keyword == "context"):
-				newToken = ContextKeyword(token)
-				parserState.PushState =   Context.NameBlock.stateContextKeyword
-			elif (keyword == "entity"):
-				newToken = EntityKeyword(token)
-				parserState.PushState =   Entity.NameBlock.stateEntityKeyword
-			elif (keyword == "architecture"):
-				newToken = ArchitectureKeyword(token)
-				parserState.PushState =   Architecture.NameBlock.stateArchitectureKeyword
-			elif (keyword == "package"):
-				newToken = PackageKeyword(token)
-				parserState.PushState =   Package.NameBlock.statePackageKeyword
-			else:
-				raise TokenParserException(errorMessage, token)
+			tokenValue = token.Value.lower()
 
-			parserState.NewToken =      newToken
-			parserState.TokenMarker =   newToken
-			return
+			for keyword in keywords:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.PushState =   keywords[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
 		elif isinstance(token, EndOfDocumentToken):
 			parserState.NewBlock =      EndOfDocumentBlock(token)
 			return
 		else:  # tokenType
-			raise TokenParserException(errorMessage, token)
+			raise TokenParserException(
+				"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
+					keywords=", ".join(
+						[kw.__KEYWORD__.upper() for kw in keywords]
+					),
+					tokenValue=token.Value
+				), token)
 
 
 class EndOfDocumentBlock(Block):

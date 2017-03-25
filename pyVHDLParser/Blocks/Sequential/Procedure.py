@@ -28,17 +28,17 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks                  import Block
+from pyVHDLParser.Blocks.Comment          import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop, Return
+from pyVHDLParser.Blocks.Generic          import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.List             import GenericList, PortList
+from pyVHDLParser.Blocks.Parser           import TokenToBlockParser
+from pyVHDLParser.Blocks.Reporting        import Report
 from pyVHDLParser.Token.Keywords          import *
 from pyVHDLParser.Token.Parser            import *
-from pyVHDLParser.Blocks                  import TokenParserException, Block
-from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment          import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Generic          import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.ControlStructure import If, Case, ForLoop, WhileLoop, Return
-from pyVHDLParser.Blocks.List             import GenericList, PortList
-from pyVHDLParser.Blocks.Reporting        import Report
-from pyVHDLParser.Blocks.Sequential       import Process
-from pyVHDLParser.Blocks.Parser           import TokenToBlockParser
+
 
 # Type alias for type hinting
 ParserState = TokenToBlockParser.TokenParserState

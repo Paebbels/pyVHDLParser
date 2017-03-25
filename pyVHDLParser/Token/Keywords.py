@@ -28,21 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import TokenParserException
-from pyVHDLParser.Token.Parser import ParserException, StringToken
-from pyVHDLParser.Token.Tokens import ValuedToken
+from pyVHDLParser.Blocks      import TokenParserException
+from pyVHDLParser.Token       import StringToken, VHDLToken
 
-
-class VHDLToken(ValuedToken):
-	pass
-
-
-class IndentationToken(VHDLToken):
-	def __init__(self, spaceToken):
-		super().__init__(spaceToken.PreviousToken, spaceToken.Value, spaceToken.Start, spaceToken.End)
-
-	def __str__(self):
-		return "<IndentationToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class BoundaryToken(VHDLToken):
 	def __init__(self, spaceToken):
@@ -91,13 +79,6 @@ class DivideOperatorToken(OperatorToken): pass
 class PowerOperatorToken(OperatorToken): pass
 class ConcatOperatorToken(OperatorToken): pass
 
-
-class LinebreakToken(VHDLToken):
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
-
-	def __str__(self):
-		return "<LinebreakToken '\\n' at {pos!r}>".format(pos=self.Start)
 
 class DelimiterToken(VHDLToken):
 	def __init__(self, characterToken):

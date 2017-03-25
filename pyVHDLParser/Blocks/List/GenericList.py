@@ -28,13 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, \
-	ClosingRoundBracketToken
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token.Keywords       import BoundaryToken, IndentationToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
+from pyVHDLParser.Token.Keywords       import IdentifierToken
+from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
 # Type alias for type hinting
 ParserState = TokenToBlockParser.TokenParserState

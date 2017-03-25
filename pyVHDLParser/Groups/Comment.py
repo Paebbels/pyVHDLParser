@@ -31,7 +31,7 @@
 from pyVHDLParser.Groups               import Group
 from pyVHDLParser.Groups.Parser        import BlockToGroupParser
 from pyVHDLParser.Token.Keywords       import SingleLineCommentKeyword
-from pyVHDLParser.Token.Parser         import CharacterToken
+from pyVHDLParser.Token import CharacterToken
 
 
 # Type alias for type hinting

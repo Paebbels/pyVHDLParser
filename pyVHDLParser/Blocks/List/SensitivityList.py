@@ -28,9 +28,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken, AllKeyword, \
-	OpeningRoundBracketToken, ClosingRoundBracketToken
-from pyVHDLParser.Token.Parser         import CharacterToken, SpaceToken, StringToken
+from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token.Keywords       import BoundaryToken, IndentationToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
+from pyVHDLParser.Token.Keywords       import IdentifierToken, AllKeyword
+from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -329,7 +330,7 @@ class CloseBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NextState = cls.stateWhitespace2
+			parserState.NextState =     cls.stateWhitespace2
 			return
 		else:
 			parserState.Pop()
