@@ -69,7 +69,7 @@ class Group(metaclass=MetaGroup):
 		while (block is not self.EndBlock):
 			yield block
 			if (block.NextBlock is None):
-				raise BlockParserException("Token after {0} <- {1} <- {2} is None.".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
+				raise BlockParserException("Token after {0!r} <- {1!r} <- {2!r} is None.".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
 			block = block.NextBlock
 
 		yield self.EndBlock

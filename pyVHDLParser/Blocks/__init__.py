@@ -71,7 +71,7 @@ class Block(metaclass=MetaBlock):
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):
-				raise TokenParserException("Token after {0} <- {1} <- {2} is None.".format(token, token.PreviousToken, token.PreviousToken.PreviousToken), token)
+				raise TokenParserException("Token after {0!r} ==> {1!r} ==> {2!r} is None.".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
 			token = token.NextToken
 
 		yield self.EndToken

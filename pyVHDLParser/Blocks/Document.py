@@ -37,7 +37,7 @@ from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, 
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential    import Package
-from pyVHDLParser.Blocks.Structural    import Entity#, Architecture
+from pyVHDLParser.Blocks.Structural    import Entity, Architecture
 
 
 # Type alias for type hinting
@@ -69,7 +69,7 @@ class StartOfDocumentBlock(Block):
 			UseKeyword :          Use.UseBlock.stateUseKeyword,
 		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
 		  EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
-		  # ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
+		  ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
 		  PackageKeyword :      Package.NameBlock.statePackageKeyword
 		}
 
@@ -101,14 +101,14 @@ class StartOfDocumentBlock(Block):
 		elif isinstance(token, EndOfDocumentToken):
 			parserState.NewBlock =    EndOfDocumentBlock(token)
 			return
-		else:  # tokenType
-			raise TokenParserException(
-				"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
-					keywords=", ".join(
-						[kw.__KEYWORD__.upper() for kw in keywords]
-					),
-					tokenValue=token.Value
-				), token)
+
+		raise TokenParserException(
+			"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
+				keywords=", ".join(
+					[kw.__KEYWORD__.upper() for kw in keywords]
+				),
+				tokenValue=token.Value
+			), token)
 
 
 class EndOfDocumentBlock(Block):

@@ -11,12 +11,20 @@ use lib4.pkg4.const4;
 use lib5 . pkg5 . const5;
 
 use
-lib6
+lib61
 .
-pkg6
+pkg61
 .
-const6
+const61
 ;
+
+use
+	lib62
+		.
+			pkg62
+				.
+					const62
+						;
 
 use lib7.pkg7.const71,lib7.pkg7.const72;
 

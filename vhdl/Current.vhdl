@@ -1,16 +1,10 @@
 library IEEE, PoC;
 use     IEEE.std_logic_1164.all, PoC.ocram.all;
 
-context OSVVM is
-	use OSVVM.Scoreboard.all;
+architecture myArchitecture of myEntity is
+	constant const0 : integer := 5;
+begin
 end context;
-
-entity myEntity is
-	port (
-		foo : in string := "my name";
-		bar : out negative
-	);
-end entity;
 
 /*
 package pkg0 is

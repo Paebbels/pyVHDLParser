@@ -28,11 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken
+from pyVHDLParser.Blocks import Reporting
+from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
+from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, \
+	SingleLineCommentToken
+from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword
 from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document           import CommentBlock
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
@@ -107,6 +110,8 @@ class EndBlock(Block):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
@@ -184,6 +189,8 @@ class EndBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
@@ -255,6 +262,8 @@ class EndBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
@@ -311,6 +320,8 @@ class EndBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
@@ -318,3 +329,52 @@ class EndBlock(Block):
 			return
 
 		raise TokenParserException("Expected ';'.", token)
+
+
+class BeginBlock(Block):
+	END_BLOCK : EndBlock = None
+
+	@classmethod
+	def stateConcurrentRegion(cls, parserState: ParserState):
+		keywords = {
+			# Keyword     Transition
+			AssertKeyword:      AssertBlock.stateAssertKeyword,
+			# ProcessKeyword:     Process.NameBlock.stateProcesdureKeyword,
+		}
+
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
+			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			return
+		elif isinstance(token, LinebreakToken):
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			for keyword in keywords:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken = keyword(token)
+					parserState.PushState = keywords[keyword]
+					parserState.NewToken = newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "end"):
+				parserState.NewToken =  EndKeyword(token)
+				parserState.NextState = cls.END_BLOCK.stateEndKeyword
+				return
+
+		raise TokenParserException(
+			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
+				keywords=", ".join(
+					[kw.__KEYWORD__.upper() for kw in keywords]
+				),
+				tokenValue=token.Value
+			), token)

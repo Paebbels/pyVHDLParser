@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken
+from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock
@@ -77,8 +77,10 @@ class LibraryBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
@@ -150,6 +152,8 @@ class LibraryNameBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
@@ -179,6 +183,7 @@ class LibraryDelimiterBlock(Block):
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =      BoundaryToken(token)
+			# parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateWhitespace1
 			return
@@ -200,6 +205,8 @@ class LibraryDelimiterBlock(Block):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)

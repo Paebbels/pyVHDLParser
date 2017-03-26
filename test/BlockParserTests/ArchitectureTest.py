@@ -29,7 +29,6 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Structural           import Architecture
 from test.TestCase                            import TestCase as TestCaseBase
@@ -50,8 +49,6 @@ class TestCase(TestCaseBase):
 		counter.AddType(LinebreakBlock, 78)
 		counter.AddType(IndentationBlock, 43)
 		counter.AddType(WhitespaceBlock, 5)
-		counter.AddType(SingleLineCommentBlock, 16)
-		counter.AddType(MultiLineCommentBlock, 32)
 		return counter
 
 	@classmethod

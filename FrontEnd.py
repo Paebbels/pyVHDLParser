@@ -36,13 +36,12 @@ from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Functions          import Console, Exit
 from pyVHDLParser.Token              import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords     import BoundaryToken, EndToken, KeywordToken, DelimiterToken
-from pyVHDLParser.Token.Keywords     import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from pyVHDLParser.Token.Parser       import Tokenizer
 from pyVHDLParser.Blocks             import CommentBlock
 from pyVHDLParser.Blocks.Common      import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
-# from pyVHDLParser.Blocks.Structural  import Entity
-# from pyVHDLParser.Blocks.List        import GenericList, PortList
+from pyVHDLParser.Blocks.Structural  import Entity
+from pyVHDLParser.Blocks.List        import GenericList, PortList
 from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
 from pyVHDLParser.Groups.Parser      import BlockToGroupParser
 from pyVHDLParser.Filters.Comment    import StripAndFuse
@@ -169,14 +168,14 @@ if (mode & 4 == 4):
 				print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			elif isinstance(vhdlBlock, CommentBlock):
 				print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			# elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.BeginBlock, Entity.EndBlock)):
-			# 	print("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			# elif isinstance(vhdlBlock, (GenericList.OpenBlock, GenericList.DelimiterBlock, GenericList.CloseBlock)):
-			# 	print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			# elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
-			# 	print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			# elif isinstance(vhdlBlock, (GenericList.ItemBlock, PortList.ItemBlock)):
-			# 	print("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+			elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.NameBlock, Entity.EndBlock)):
+				print("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+			elif isinstance(vhdlBlock, (GenericList.OpenBlock, GenericList.DelimiterBlock, GenericList.CloseBlock)):
+				print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+			elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
+				print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+			elif isinstance(vhdlBlock, (GenericList.ItemBlock, PortList.ItemBlock)):
+				print("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			else:
 				print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 
@@ -250,31 +249,31 @@ if (mode & 4 == 4):
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
-# ==============================================================================
-if (mode & 4 == 4):
-	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetWordTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
-
-	try:
-		for vhdlBlock in vhdlBlockStream:
-			print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			for token in vhdlBlock:
-				if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
-					print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-				elif isinstance(token, (CommentToken)):
-					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-				elif isinstance(token, KeywordToken):
-					print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-				elif isinstance(token, (StringToken, SpaceToken, CharacterToken)):
-					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-				else:
-					print("{YELLOW}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-
-	except ParserException as ex:
-		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-	except NotImplementedError as ex:
-		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+# # ==============================================================================
+# if (mode & 4 == 4):
+# 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+# 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
+# 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+#
+# 	try:
+# 		for vhdlBlock in vhdlBlockStream:
+# 			print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+# 			for token in vhdlBlock:
+# 				if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
+# 					print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+# 				elif isinstance(token, (CommentToken)):
+# 					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+# 				elif isinstance(token, KeywordToken):
+# 					print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+# 				elif isinstance(token, (StringToken, SpaceToken, CharacterToken)):
+# 					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+# 				else:
+# 					print("{YELLOW}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+#
+# 	except ParserException as ex:
+# 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+# 	except NotImplementedError as ex:
+# 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 
 # ==============================================================================

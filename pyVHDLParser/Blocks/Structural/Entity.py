@@ -28,17 +28,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
+from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword
+from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword#, VariableKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import ConstantKeyword#, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic            import BeginBlock as BeginBlockBase, EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, Variable, SharedVariable
+from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, SharedVariable
 # from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
@@ -87,6 +87,8 @@ class NameBlock(Block):
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
@@ -140,6 +142,8 @@ class NameBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
@@ -156,7 +160,6 @@ class NameBlock(Block):
 			GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 			PortKeyword:      PortList.OpenBlock.statePortKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			# VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
 			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
 			# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
@@ -188,7 +191,11 @@ class NameBlock(Block):
 					parserState.TokenMarker = newToken
 					return
 
-			if (tokenValue == "end"):
+			if (tokenValue == "begin"):
+				parserState.NewToken =  BeginKeyword(token)
+				parserState.NextState = BeginBlock.stateBeginKeyword
+				return
+			elif (tokenValue == "end"):
 				parserState.NewToken =  EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 				return
@@ -206,3 +213,7 @@ class EndBlock(EndBlockBase):
 	KEYWORD =             EntityKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
+
+
+class BeginBlock(BeginBlockBase):
+	END_BLOCK = EndBlock

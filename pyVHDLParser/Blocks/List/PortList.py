@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken
+from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
 from pyVHDLParser.Token.Keywords       import IdentifierToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
@@ -90,6 +90,8 @@ class OpenBlock(Block):
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =      BoundaryToken(token)
@@ -234,6 +236,8 @@ class CloseBlock(Block):
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = token
+			return
+		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =    BoundaryToken(token)
