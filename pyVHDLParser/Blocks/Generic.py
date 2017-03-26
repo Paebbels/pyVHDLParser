@@ -385,7 +385,7 @@ class SequentialBeginBlock(Block):
 	END_BLOCK : EndBlock = None
 
 	@classmethod
-	def stateConcurrentRegion(cls, parserState: ParserState):
+	def stateSequentialRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
 			AssertKeyword:      AssertBlock.stateAssertKeyword,

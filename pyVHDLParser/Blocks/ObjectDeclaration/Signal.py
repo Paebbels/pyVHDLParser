@@ -45,8 +45,6 @@ class SignalBlock(Block):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, LinebreakToken):

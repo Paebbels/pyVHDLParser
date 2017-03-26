@@ -211,7 +211,7 @@ class OpenBlock2(Block):
 
 			if (tokenValue == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
-				parserState.NextState = BeginBlock.stateConcurrentRegion
+				parserState.NextState = BeginBlock.stateSequentialRegion
 				return
 
 		raise TokenParserException(

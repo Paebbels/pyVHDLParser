@@ -28,8 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Sequential import Function
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword
+from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword, FunctionKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword#, VariableKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
@@ -152,10 +153,9 @@ class NameBlock(Block):
 			# Keyword     Transition
 			# GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			# VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
 			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
-			# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
 			# PureKeyword:      Function.NameBlock.statePureKeyword,
 			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
 		}
