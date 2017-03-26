@@ -28,8 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Groups               import Group
-from pyVHDLParser.Groups.Parser        import BlockToGroupParser
+from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
+from pyVHDLParser.Blocks.Sequential import Function
+from pyVHDLParser.Blocks.Sequential import Package
+from pyVHDLParser.Blocks.Sequential import PackageBody
+from pyVHDLParser.Blocks.Sequential import Procedure
+from pyVHDLParser.Groups            import Group, BlockParserException
+from pyVHDLParser.Groups.Parser     import BlockToGroupParser
+from pyVHDLParser.Groups.Sequential import FunctionGroup, ProcedureGroup
 
 # Type alias for type hinting
 ParserState = BlockToGroupParser.BlockParserState
@@ -78,14 +84,72 @@ class ConfigurationGroup(Group):
 class PackageGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		assert isinstance(parserState.Block, Package.NameBlock)
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		simpleBlocks = {
+			# ConstantBlock:         ConstantGroup,
+		}
+
+		compoundBlocks = {
+			Function.NameBlock:    FunctionGroup,
+			Procedure.NameBlock:   ProcedureGroup
+		}
+
+		for block in parserState.GroupIterator:
+			for blk in simpleBlocks:
+				if isinstance(block, blk):
+					group = simpleBlocks[blk]
+					parserState.PushState = group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+			for blk in compoundBlocks:
+				if isinstance(block, blk):
+					group = compoundBlocks[blk]
+					parserState.NewGroup = group(parserState.LastGroup, parserState.BlockMarker, block)
+					parserState.PushState = group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+			if isinstance(block, Package.EndBlock):
+
+				return
+
+		raise BlockParserException("End of package not found.", block)
 
 
 class PackageBodyGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		assert isinstance(parserState.Block, PackageBody.NameBlock)
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		simpleBlocks = {
+			# ConstantBlock:         ConstantGroup,
+		}
+
+		compoundBlocks = {
+			Function.NameBlock:    FunctionGroup,
+			Procedure.NameBlock:   ProcedureGroup
+		}
+
+		for block in parserState.GroupIterator:
+			for blk in simpleBlocks:
+				if isinstance(block, blk):
+					group = simpleBlocks[blk]
+					parserState.PushState = group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+			for blk in compoundBlocks:
+				if isinstance(block, blk):
+					group = compoundBlocks[blk]
+					parserState.NewGroup = group(parserState.LastGroup, parserState.BlockMarker, block)
+					parserState.PushState = group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+			if isinstance(block, Package.EndBlock):
+
+				return
+
+		raise BlockParserException("End of package body not found.", block)

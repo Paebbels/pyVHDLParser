@@ -32,13 +32,13 @@ from pyVHDLParser.Blocks.Sequential import Function
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword, FunctionKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword#, VariableKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, Variable, SharedVariable
-# from pyVHDLParser.Blocks.Sequential         import Procedure, Function
+from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, SharedVariable
+from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
 # Type alias for type hinting
@@ -151,10 +151,9 @@ class NameBlock(Block):
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			# GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
-			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
 			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
 			# PureKeyword:      Function.NameBlock.statePureKeyword,
 			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword,

@@ -29,11 +29,15 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks                    import CommentBlock
-from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference import Context
+from pyVHDLParser.Blocks.Reference          import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
+from pyVHDLParser.Blocks.Sequential import Package
+from pyVHDLParser.Blocks.Sequential import PackageBody
+from pyVHDLParser.Blocks.Structural import Architecture
+from pyVHDLParser.Blocks.Structural import Entity
 from pyVHDLParser.Groups                    import BlockParserException, Group
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup, ContextGroup
 from pyVHDLParser.Groups.Comment            import CommentGroup
@@ -41,6 +45,9 @@ from pyVHDLParser.Groups.Parser             import BlockToGroupParser
 from pyVHDLParser.Functions                 import Console
 
 # Type alias for type hinting
+from pyVHDLParser.Groups.Structural import EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup
+
+
 ParserState = BlockToGroupParser.BlockParserState
 
 
@@ -65,20 +72,21 @@ class StartOfDocumentGroup(Group):
 	def stateDocument(cls, parserState: ParserState):
 		block = parserState.Block
 
+		simpleBlocks = {
+			LibraryBlock:             LibraryGroup,
+			UseBlock:                 UseGroup,
+			Context.NameBlock:        ContextGroup
+		}
+
+		compoundBlocks = {
+			Entity.NameBlock:         EntityGroup,
+			Architecture.NameBlock:   ArchitectureGroup,
+			Package.NameBlock:        PackageGroup,
+			PackageBody.NameBlock:    PackageBodyGroup
+		}
+
 		if isinstance(parserState.Block, CommentBlock):
 			parserState.NewGroup =    CommentGroup(parserState.LastGroup, parserState.NewBlock)
-		elif isinstance(parserState.Block, LibraryBlock):
-			parserState.PushState =   LibraryGroup.stateParse
-			parserState.BlockMarker = block
-			parserState.ReIssue()
-		elif isinstance(parserState.Block, UseBlock):
-			parserState.PushState =   UseGroup.stateParse
-			parserState.BlockMarker = block
-			parserState.ReIssue()
-		elif isinstance(parserState.Block, Context.NameBlock):
-			parserState.PushState =   ContextGroup.stateParse
-			parserState.BlockMarker = block
-			parserState.ReIssue()
 		elif isinstance(parserState.Block, (LinebreakBlock, IndentationBlock)):
 			# for blk in parserState.GroupIterator:
 			# 	if (not isinstance(blk, (LinebreakBlock, IndentationBlock))):
@@ -86,11 +94,28 @@ class StartOfDocumentGroup(Group):
 			# 		break
 			# 		# parserState.NewGroup = WhiteSpaceGroup(parserState.LastGroup, block, blk)
 			print(parserState.Block)
-		elif isinstance(block, EndOfDocumentBlock):
+		else:
+			for blk in simpleBlocks:
+				if isinstance(block, blk):
+					group =                   simpleBlocks[blk]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+			for blk in compoundBlocks:
+				if isinstance(block, blk):
+					group =                   compoundBlocks[blk]
+					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, block)
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = block
+					parserState.ReIssue()
+
+
+		if isinstance(block, EndOfDocumentBlock):
 			parserState.NewGroup =    EndOfDocumentGroup(block)
 			return
-		else:  # tokenType
-			raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
+
+		raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
 				block=block.__class__.__qualname__
 			), block)
 
