@@ -4,6 +4,11 @@ use     IEEE.std_logic_1164.all, PoC.ocram.all;
 architecture myArchitecture of myEntity is
 	constant const0 : integer := 5;
 begin
+	assert False report sdfjcsdfcsdj severity note;
+
+	process(foo, clock)
+	begin
+	end process;
 end context;
 
 /*

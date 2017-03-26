@@ -35,7 +35,7 @@ from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToke
 from pyVHDLParser.Token.Keywords            import ConstantKeyword#, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import BeginBlock as BeginBlockBase, EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, SharedVariable
@@ -215,5 +215,5 @@ class EndBlock(EndBlockBase):
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
-class BeginBlock(BeginBlockBase):
+class BeginBlock(ConcurrentBeginBlock):
 	END_BLOCK = EndBlock

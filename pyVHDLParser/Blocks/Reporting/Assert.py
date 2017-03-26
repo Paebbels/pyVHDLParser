@@ -150,20 +150,20 @@ class AssertBlock(Block):
 	def stateReportKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken = BoundaryToken(token)
-			parserState.NextState = cls.stateWhitespace3
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ = LinebreakBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState = cls.stateWhitespace3
+			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ = CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState = cls.stateWhitespace3
+			parserState.NextState =   cls.stateWhitespace3
 			return
 
 		raise TokenParserException("Expected whitespace after keyword ARCHITECTURE.", token)

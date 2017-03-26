@@ -28,15 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import Reporting
-from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
-from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, \
-	SingleLineCommentToken
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword
+from pyVHDLParser.Token                     import CharacterToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
+from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword, ProcessKeyword
 from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
+from pyVHDLParser.Blocks                    import TokenParserException, Block
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document           import CommentBlock
+from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock
+# from pyVHDLParser.Blocks.Sequential         import Process
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
 # Type alias for type hinting
@@ -331,7 +330,58 @@ class EndBlock(Block):
 		raise TokenParserException("Expected ';'.", token)
 
 
-class BeginBlock(Block):
+class ConcurrentBeginBlock(Block):
+	END_BLOCK : EndBlock = None
+
+	@classmethod
+	def stateConcurrentRegion(cls, parserState: ParserState):
+		from pyVHDLParser.Blocks.Sequential import Process
+
+		keywords = {
+			# Keyword     Transition
+			AssertKeyword:      AssertBlock.stateAssertKeyword,
+			ProcessKeyword:     Process.NameBlock.stateProcesdureKeyword,
+		}
+
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
+			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			return
+		elif isinstance(token, LinebreakToken):
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			for keyword in keywords:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken = keyword(token)
+					parserState.PushState = keywords[keyword]
+					parserState.NewToken = newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "end"):
+				parserState.NewToken =  EndKeyword(token)
+				parserState.NextState = cls.END_BLOCK.stateEndKeyword
+				return
+
+		raise TokenParserException(
+			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
+				keywords=", ".join(
+					[kw.__KEYWORD__.upper() for kw in keywords]
+				),
+				tokenValue=token.Value
+			), token)
+
+
+class SequentialBeginBlock(Block):
 	END_BLOCK : EndBlock = None
 
 	@classmethod

@@ -54,7 +54,7 @@ class Architecture(ArchitectureModel):
 		for block in parserState.GroupIterator:
 			if isinstance(block, Constant.ConstantBlock):
 				raise NotImplementedError()
-			# elif isinstance(block, ArchitectureBlock.BeginBlock):
+			# elif isinstance(block, ArchitectureBlock.ConcurrentBeginBlock):
 			# 	raise NotImplementedError()
 			elif isinstance(block, ArchitectureBlock.EndBlock):
 				break

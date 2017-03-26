@@ -316,7 +316,7 @@ if (mode & 8 == 8):
 # 				print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 # 			elif isinstance(vhdlBlock, CommentBlock):
 # 				print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-# 			elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.BeginBlock, Entity.EndBlock)):
+# 			elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.ConcurrentBeginBlock, Entity.EndBlock)):
 # 				print("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 # 			elif isinstance(vhdlBlock, (GenericList.OpenBlock, GenericList.DelimiterBlock, GenericList.CloseBlock)):
 # 				print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
