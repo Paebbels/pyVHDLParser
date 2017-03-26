@@ -6,7 +6,7 @@ architecture myArchitecture of myEntity is
 begin
 	assert False report sdfjcsdfcsdj severity note;
 
-	process(foo, clock)
+	process(foo, clock)is
 	begin
 	end process;
 end context;

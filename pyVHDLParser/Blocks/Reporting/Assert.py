@@ -119,9 +119,7 @@ class AssertBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, StringToken) and (token <= "report")):
 			parserState.NewToken =      ReportKeyword(token)
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateMessage
+			parserState.NextState =     cls.stateReportKeyword
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
@@ -201,7 +199,12 @@ class AssertBlock(Block):
 	@classmethod
 	def stateMessage(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if (isinstance(token, CharacterToken)and (token == ";")):
+			parserState.NewToken =    EndToken(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace4
 			return
@@ -223,7 +226,12 @@ class AssertBlock(Block):
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "severity")):
+		if (isinstance(token, CharacterToken)and (token == ";")):
+			parserState.NewToken =    EndToken(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		elif (isinstance(token, StringToken) and (token <= "severity")):
 			parserState.NewToken =    SeverityKeyword(token)
 			parserState.NextState =   cls.stateSeverityKeyword
 			return
@@ -248,7 +256,7 @@ class AssertBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected keyword SEVERITY after assertion.", token)
+		raise TokenParserException("Expected keyword SEVERITY after message.", token)
 
 	@classmethod
 	def stateSeverityKeyword(cls, parserState: ParserState):
@@ -270,7 +278,7 @@ class AssertBlock(Block):
 			parserState.NextState =   cls.stateWhitespace5
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ARCHITECTURE.", token)
+		raise TokenParserException("Expected whitespace after keyword SEVERITY.", token)
 
 	@classmethod
 	def stateWhitespace5(cls, parserState: ParserState):
@@ -305,34 +313,38 @@ class AssertBlock(Block):
 	@classmethod
 	def stateSeverityLevel(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if (isinstance(token, CharacterToken) and (token == ";")):
+			parserState.NewToken =    EndToken(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
-			parserState.NextState =   cls.stateWhitespace4
+			parserState.NextState =   cls.stateWhitespace6
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       LinebreakBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace4
+			parserState.NextState =   cls.stateWhitespace6
 			return
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace4
+			parserState.NextState =   cls.stateWhitespace6
 			return
 
-		raise TokenParserException("Expected whitespace after assertion.", token)
+		raise TokenParserException("Expected ';' or whitespace after severity level.", token)
 
 	@classmethod
 	def stateWhitespace6(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, CharacterToken):
-			if (token == ";"):
-				parserState.NewToken =    EndToken(token)
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-				parserState.Pop()
-				return
+		if (isinstance(token, CharacterToken)and (token == ";")):
+			parserState.NewToken =      EndToken(token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)

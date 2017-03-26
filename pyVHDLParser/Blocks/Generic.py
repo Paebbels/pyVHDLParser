@@ -340,7 +340,7 @@ class ConcurrentBeginBlock(Block):
 		keywords = {
 			# Keyword     Transition
 			AssertKeyword:      AssertBlock.stateAssertKeyword,
-			ProcessKeyword:     Process.NameBlock.stateProcesdureKeyword,
+			ProcessKeyword:     Process.OpenBlock.stateProcessKeyword,
 		}
 
 		token = parserState.Token
