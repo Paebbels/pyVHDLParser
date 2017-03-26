@@ -83,7 +83,7 @@ class SignalAssignmentBlock(Block):
 			if (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
 					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)
@@ -165,7 +165,7 @@ class SignalAssignmentBlock(Block):
 			elif (token == "\n"):
 				parserState.NewToken =    LinebreakToken(token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
 					parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, parserState.NewToken)

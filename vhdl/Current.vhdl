@@ -5,6 +5,14 @@ context OSVVM is
 	use OSVVM.Scoreboard.all;
 end context;
 
+entity myEntity is
+	port (
+		foo : in string := "my name";
+		bar : out negative
+	);
+end entity;
+
+/*
 package pkg0 is
 	generic (
 		foo : string;
@@ -29,5 +37,6 @@ package body pkg0 is
 		end function func0;*//*
 	begin
 	end function func0;
-	*/
+	*//*
 end package body;
+*/

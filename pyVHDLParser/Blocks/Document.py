@@ -28,16 +28,16 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import EndOfDocumentToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token                import EndOfDocumentToken, LinebreakToken, CommentToken, IndentationToken, SpaceToken
 from pyVHDLParser.Token.Keywords       import ArchitectureKeyword, EntityKeyword, PackageKeyword
 from pyVHDLParser.Token.Keywords       import ContextKeyword, LibraryKeyword, UseKeyword
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
+from pyVHDLParser.Token.Parser         import StringToken
 from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Reference     import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential    import Package
-# from pyVHDLParser.Blocks.Structural    import Entity, Architecture
+from pyVHDLParser.Blocks.Structural    import Entity#, Architecture
 
 
 # Type alias for type hinting
@@ -68,23 +68,24 @@ class StartOfDocumentBlock(Block):
 			LibraryKeyword :      Library.LibraryBlock.stateLibraryKeyword,
 			UseKeyword :          Use.UseBlock.stateUseKeyword,
 		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
-		  # EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
+		  EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
 		  # ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
 		  PackageKeyword :      Package.NameBlock.statePackageKeyword
 		}
 
 		token = parserState.Token
-		if isinstance(token, IndentationToken):
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
+		if isinstance(token, SpaceToken):
+			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
+			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
@@ -98,7 +99,7 @@ class StartOfDocumentBlock(Block):
 					return
 
 		elif isinstance(token, EndOfDocumentToken):
-			parserState.NewBlock =      EndOfDocumentBlock(token)
+			parserState.NewBlock =    EndOfDocumentBlock(token)
 			return
 		else:  # tokenType
 			raise TokenParserException(
