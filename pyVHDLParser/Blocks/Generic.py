@@ -28,8 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Token                     import CharacterToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword, ProcessKeyword
+from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword
 from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock, IndentationBlock
@@ -388,7 +389,7 @@ class SequentialBeginBlock(Block):
 	def stateSequentialRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			AssertKeyword:      AssertBlock.stateAssertKeyword,
+			ReportKeyword:      ReportBlock.stateReportKeyword,
 			# ProcessKeyword:     Process.NameBlock.stateProcesdureKeyword,
 		}
 

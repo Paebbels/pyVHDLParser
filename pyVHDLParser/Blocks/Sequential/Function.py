@@ -29,9 +29,10 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks.Reference import Use
+from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Token import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword, \
-	UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword
+	UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
 from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
@@ -39,7 +40,7 @@ from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase, Seq
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
 from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable
 from pyVHDLParser.Blocks.Reporting          import Report
-# from pyVHDLParser.Blocks.Sequential         import Procedure
+from pyVHDLParser.Blocks.Sequential         import Procedure
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
 
@@ -359,8 +360,9 @@ class NameBlock2(Block):
 			UseKeyword:       Use.UseBlock.stateUseKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
-			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
 			FunctionKeyword:  NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+			ReportKeyword:    ReportBlock.stateReportKeyword,
 			# PureKeyword:      Function.NameBlock.statePureKeyword,
 			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
 		}
@@ -391,6 +393,7 @@ class NameBlock2(Block):
 
 			if (tokenValue == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
+				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = BeginBlock.stateSequentialRegion
 				return
 			elif (tokenValue == "end"):
