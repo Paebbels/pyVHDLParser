@@ -50,6 +50,7 @@ class TokenToBlockParser:
 			self._stack =             []
 			self._tokenMarker :       Token = None
 			self.NextState =          startState
+			self.Counter =            0
 			self.Token : Token =      startBlock.StartToken
 			self.NewToken : Token =   None
 			self.NewBlock : Block =   startBlock
@@ -64,7 +65,8 @@ class TokenToBlockParser:
 		def PushState(self, value):
 			self._stack.append((
 				self.NextState,
-				self._tokenMarker
+				self._tokenMarker,
+				self.Counter
 			))
 			self.NextState =    value
 			self._tokenMarker =  None
@@ -91,6 +93,7 @@ class TokenToBlockParser:
 				top = self._stack.pop()
 			self.NextState =    top[0]
 			self._tokenMarker = top[1]
+			self.Counter =      top[2]
 
 		def GetGenerator(self, iterator):
 			from pyVHDLParser.Token             import EndOfDocumentToken

@@ -37,7 +37,7 @@ from pyVHDLParser.Token.Keywords            import ConstantKeyword#, VariableKey
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-# from pyVHDLParser.Blocks.List               import GenericList
+from pyVHDLParser.Blocks.List               import GenericList
 from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, Variable, SharedVariable
 from pyVHDLParser.Blocks.Sequential         import PackageBody#, Procedure, Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
@@ -83,7 +83,7 @@ class NameBlock(Block):
 				return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
 				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
@@ -121,20 +121,20 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ", token)
+		raise TokenParserException("Expected whitespace after package name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, StringToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
-			parserState.NewBlock =      NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.TokenMarker =   None
 			parserState.NextState =     cls.stateDeclarativeRegion
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
 				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
@@ -158,7 +158,7 @@ class NameBlock(Block):
 		keywords = {
 			# Keyword     Transition
 			UseKeyword:       Use.UseBlock.stateUseKeyword,
-			# GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
+			GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			# VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,

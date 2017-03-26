@@ -58,7 +58,7 @@ class ClosingSquareBracketToken(SquareBracketToken): pass
 class CurlyBracketToken(BracketToken): pass
 class OpeningCurlyBracketToken(CurlyBracketToken): pass
 class ClosingCurlyBracketToken(CurlyBracketToken): pass
-# Angle bracket / arrow brcket / <>
+# Angle bracket / arrow bracket / <>
 class AngleBracketToken(BracketToken): pass
 class OpeningAngleBracketToken(AngleBracketToken): pass
 class ClosingAngleBracketToken(AngleBracketToken): pass
@@ -132,7 +132,7 @@ class TwoCharKeyword(VHDLToken):
 	__KEYWORD__ = None
 
 	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.NextToken.End)
+		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.End)
 
 	def __str__(self):
 		return "<{className} '{value}' at {pos!r}>".format(

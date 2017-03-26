@@ -104,7 +104,6 @@ class EndOfDocumentToken(Token):
 
 class CharacterToken(ValuedToken):
 	def __init__(self, previousToken, value, start):
-		if (len(value) != 1):    raise ValueError()
 		super().__init__(previousToken, value, start=start, end=start)
 
 	def __len__(self):
@@ -131,16 +130,26 @@ class CharacterToken(ValuedToken):
 			return self.Value
 
 
+class FusedCharacterToken(CharacterToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value, start=start)
+		self.End = end
+
+	def __len__(self):
+		return len(self.Value)
+
+	def __str__(self):
+		return "<FusedCharToken {char:.<40} at {pos!r}>".format(
+						char="'" + self.__repr__() + "'  ", pos=self.Start)
+
+	def __repr__(self):
+		return self.Value
+
+
 class SpaceToken(ValuedToken):
 	def __str__(self):
 		return "<SpaceToken     {value:.<40} at {pos!r}>".format(
 						value="'" + self.Value + "'  ", pos=self.Start)
-
-
-# class DelimiterToken(ValuedToken):
-# 	def __str__(self):
-# 		return "<DelimiterToken {value:.<40} at {pos!r}>".format(
-# 						value="'" + self.Value + "'  ", pos=self.Start)
 
 
 class StringToken(ValuedToken):

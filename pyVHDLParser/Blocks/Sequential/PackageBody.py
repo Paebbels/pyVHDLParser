@@ -114,7 +114,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ", token)
+		raise TokenParserException("Expected whitespace after package name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):

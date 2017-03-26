@@ -33,7 +33,7 @@ from enum                     import Enum
 
 from pyVHDLParser             import SourceCodePosition
 from pyVHDLParser.Base        import ParserException
-from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken
+from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken
 from pyVHDLParser.Token       import CharacterToken, SpaceToken, StringToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
 
 
@@ -53,12 +53,12 @@ class Tokenizer:
 		NumberChars =                     2
 		DelimiterChars =                  3
 		PossibleSingleLineCommentStart =  4
-		PossibleMultiLineCommentStart =   5
-		PossibleLinebreak =               6
-		SingleLineComment =               7
-		MultiLineComment =                8
-		Linebreak =                       9
-		Directive =                      10
+		PossibleLinebreak =               5
+		SingleLineComment =               6
+		MultiLineComment =                7
+		Linebreak =                       8
+		Directive =                       9
+		FuseableCharacter =              10
 		OtherChars =                     11
 
 
@@ -74,6 +74,7 @@ class Tokenizer:
 
 		__ALPHA_CHARACTERS__ =      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789"
 		__WHITESPACE_CHARACTERS__ = " \t"
+		__FUSEABLE_CHARS__ =        "=<:/*>?"
 
 		yield previousToken
 
@@ -97,7 +98,6 @@ class Tokenizer:
 					buffer =  char
 					if (char in __ALPHA_CHARACTERS__):    tokenKind = cls.TokenKind.AlphaChars
 					elif (char == "-"):                   tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
-					elif (char == "/"):                   tokenKind = cls.TokenKind.PossibleMultiLineCommentStart
 					elif (char == "\r"):                  tokenKind = cls.TokenKind.PossibleLinebreak
 					elif (char == "\n"):
 						tokenKind = cls.TokenKind.OtherChars
@@ -105,6 +105,9 @@ class Tokenizer:
 						yield previousToken
 					elif ((char == "`")and isinstance(previousToken, (SpaceToken, LinebreakToken))):
 						tokenKind =     cls.TokenKind.Directive
+					elif (char in __FUSEABLE_CHARS__):
+						buffer =        char
+						tokenKind =     cls.TokenKind.FuseableCharacter
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
 						yield previousToken
@@ -122,7 +125,6 @@ class Tokenizer:
 					buffer =  char
 					if (char in __WHITESPACE_CHARACTERS__): tokenKind = cls.TokenKind.SpaceChars
 					elif (char == "-"):                     tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
-					elif (char == "/"):                     tokenKind = cls.TokenKind.PossibleMultiLineCommentStart
 					elif (char == "\r"):                    tokenKind = cls.TokenKind.PossibleLinebreak
 					elif (char == "\n"):
 						tokenKind = cls.TokenKind.OtherChars
@@ -130,6 +132,9 @@ class Tokenizer:
 						yield previousToken
 					elif ((char == "`")and isinstance(previousToken, (SpaceToken, LinebreakToken))):
 						tokenKind =     cls.TokenKind.Directive
+					elif (char in __FUSEABLE_CHARS__):
+						buffer =        char
+						tokenKind =     cls.TokenKind.FuseableCharacter
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
 						yield previousToken
@@ -142,28 +147,10 @@ class Tokenizer:
 					buffer =    "--"
 					tokenKind = cls.TokenKind.SingleLineComment
 				else:
-					buffer =        char
 					previousToken = CharacterToken(previousToken, "-", start)
 					yield previousToken
 
-					if (char in __WHITESPACE_CHARACTERS__): tokenKind = cls.TokenKind.SpaceChars
-					elif (char in __ALPHA_CHARACTERS__):    tokenKind = cls.TokenKind.AlphaChars
-					else:
-						previousToken = CharacterToken(previousToken, char, start)
-						yield previousToken
-
-						tokenKind = cls.TokenKind.OtherChars
-
-			# State: PossibleMultiLineCommentStart
-			elif (tokenKind is cls.TokenKind.PossibleMultiLineCommentStart):
-				if (char == "*"):
-					tokenKind = cls.TokenKind.MultiLineComment
-					buffer =    "/*"
-				else:
 					buffer =        char
-					previousToken = CharacterToken(previousToken, "/", start)
-					yield previousToken
-
 					if (char in __WHITESPACE_CHARACTERS__): tokenKind = cls.TokenKind.SpaceChars
 					elif (char in __ALPHA_CHARACTERS__):    tokenKind = cls.TokenKind.AlphaChars
 					else:
@@ -217,22 +204,61 @@ class Tokenizer:
 
 					tokenKind =     cls.TokenKind.OtherChars
 
+			# State: FuseableCharacter
+			elif (tokenKind is cls.TokenKind.FuseableCharacter):
+				fused = buffer + char
+				if (fused in ("=>", "**", ":=", "/=", "<=", ">=", "<>", "??", "?=", "<<", ">>", "?/=", "?<=", "?>=")):
+					previousToken = FusedCharacterToken(previousToken, fused, start, SourceCodePosition(row, column, absolute))
+					yield previousToken
+					tokenKind = cls.TokenKind.OtherChars
+				elif (fused in ("?/", "?<", "?>")):
+					buffer =    fused
+				elif (fused == "/*"):
+					buffer =    fused
+					tokenKind = cls.TokenKind.MultiLineComment
+				else:
+					previousToken = CharacterToken(previousToken, buffer[0], start)
+					yield previousToken
+					if (len(buffer) == 2):
+						previousToken = CharacterToken(previousToken, buffer[1], start)
+						yield previousToken
+
+					buffer = char
+					if (char in __WHITESPACE_CHARACTERS__): tokenKind = cls.TokenKind.SpaceChars
+					elif (char in __ALPHA_CHARACTERS__):    tokenKind = cls.TokenKind.AlphaChars
+					elif (char == "-"):                     tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
+					elif (char == "\r"):                    tokenKind = cls.TokenKind.PossibleLinebreak
+					elif (char == "\n"):
+						tokenKind = cls.TokenKind.OtherChars
+						previousToken = LinebreakToken(previousToken, char, start, start)
+						yield previousToken
+					elif (char == "`"):
+						if isinstance(previousToken, (SpaceToken, LinebreakToken)):
+							tokenKind = cls.TokenKind.Directive
+					elif (char in __FUSEABLE_CHARS__):
+						pass
+					else:
+						previousToken = CharacterToken(previousToken, char, start)
+						yield previousToken
+
 			# State: OtherChars
 			elif (tokenKind is cls.TokenKind.OtherChars):
 				start =     SourceCodePosition(row, column, absolute)
 				buffer =    char
-				if (char in __WHITESPACE_CHARACTERS__):  tokenKind =   cls.TokenKind.SpaceChars
-				elif (char in __ALPHA_CHARACTERS__):     tokenKind =   cls.TokenKind.AlphaChars
-				elif (char == "-"):                 tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
-				elif (char == "/"):                 tokenKind = cls.TokenKind.PossibleMultiLineCommentStart
-				elif (char == "`"):
-					if isinstance(previousToken, (SpaceToken, LinebreakToken)):
-						tokenKind = cls.TokenKind.Directive
-				elif (char == "\r"):                tokenKind = cls.TokenKind.PossibleLinebreak
+				if (char in __WHITESPACE_CHARACTERS__): tokenKind = cls.TokenKind.SpaceChars
+				elif (char in __ALPHA_CHARACTERS__):    tokenKind = cls.TokenKind.AlphaChars
+				elif (char == "-"):                     tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
+				elif (char == "\r"):                    tokenKind = cls.TokenKind.PossibleLinebreak
 				elif (char == "\n"):
 					tokenKind = cls.TokenKind.OtherChars
 					previousToken = LinebreakToken(previousToken, char, start, start)
 					yield previousToken
+				elif (char == "`"):
+					if isinstance(previousToken, (SpaceToken, LinebreakToken)):
+						tokenKind = cls.TokenKind.Directive
+				elif (char in __FUSEABLE_CHARS__):
+					buffer =        char
+					tokenKind =     cls.TokenKind.FuseableCharacter
 				else:
 					tokenKind = cls.TokenKind.OtherChars
 					previousToken = CharacterToken(previousToken, char, start)

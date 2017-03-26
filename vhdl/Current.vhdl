@@ -6,6 +6,11 @@ context OSVVM is
 end context;
 
 package pkg0 is
+	generic (
+		foo : string;
+		bar : negative
+	);
+
 	use PoC.ocram.all;
 	constant const0 : integer := 5;
 	constant const1 : integer;
