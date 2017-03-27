@@ -73,7 +73,7 @@ with file.open('r') as fileHandle:
 
 
 # ==============================================================================
-if (mode & 2 == 2):
+if (mode & 6 == 2):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 
@@ -157,7 +157,7 @@ if (mode & 2 == 2):
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 # ==============================================================================
-if (mode & 4 == 4):
+if (mode & 6 == 4):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
@@ -184,8 +184,7 @@ if (mode & 4 == 4):
 	except NotImplementedError as ex:
 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
-
-	if (mode & 3 == 3):
+if (mode & 6 == 6):
 		print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 		wordTokenStream = Tokenizer.GetWordTokenizer(content)
 		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
@@ -249,31 +248,30 @@ if (mode & 4 == 4):
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
-# # ==============================================================================
-# if (mode & 4 == 4):
-# 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-# 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
-# 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
-#
-# 	try:
-# 		for vhdlBlock in vhdlBlockStream:
-# 			print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-# 			for token in vhdlBlock:
-# 				if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
-# 					print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-# 				elif isinstance(token, (CommentToken)):
-# 					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-# 				elif isinstance(token, KeywordToken):
-# 					print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-# 				elif isinstance(token, (StringToken, SpaceToken, CharacterToken)):
-# 					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-# 				else:
-# 					print("{YELLOW}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-#
-# 	except ParserException as ex:
-# 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-# 	except NotImplementedError as ex:
-# 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	# ==============================================================================
+		print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+		wordTokenStream = Tokenizer.GetWordTokenizer(content)
+		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+
+		try:
+			for vhdlBlock in vhdlBlockStream:
+				print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+				for token in vhdlBlock:
+					if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
+						print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+					elif isinstance(token, (CommentToken)):
+						print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+					elif isinstance(token, KeywordToken):
+						print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+					elif isinstance(token, (StringToken, SpaceToken, CharacterToken)):
+						print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+					else:
+						print("{YELLOW}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+
+		except ParserException as ex:
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+		except NotImplementedError as ex:
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 
 # ==============================================================================
