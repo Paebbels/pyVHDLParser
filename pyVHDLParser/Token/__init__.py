@@ -167,6 +167,42 @@ class VHDLToken(ValuedToken):   pass
 class CommentToken(VHDLToken):  pass
 
 
+class LiteralToken(VHDLToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value[1:-1], start=start, end=end)
+
+	def __eq__(self, other):  return self.Value == other
+	def __ne__(self, other):  return self.Value != other
+
+	def __str__(self):
+		return "<LiteralToken   {value:.<40} at {pos!r}>".format(
+						value="'" + self.Value + "'  ", pos=self.Start)
+
+
+class StringLiteralToken(VHDLToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value[1:-1], start=start, end=end)
+
+	def __eq__(self, other):  return self.Value == other
+	def __ne__(self, other):  return self.Value != other
+
+	def __str__(self):
+		return "<StrLitToken    {value:.<40} at {pos!r}>".format(
+			value="\"" + self.Value + "\"  ", pos=self.Start)
+
+
+class ExtendedIdentifier(VHDLToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value, start=start, end=end)
+
+	def __eq__(self, other):  return self.Value == other
+	def __ne__(self, other):  return self.Value != other
+
+	def __str__(self):
+		return "<ExtIdentifier  {value:.<40} at {pos!r}>".format(
+			value="'" + self.Value + "'  ", pos=self.Start)
+
+
 class SingleLineCommentToken(CommentToken):
 	def __str__(self):
 		value = self.Value
