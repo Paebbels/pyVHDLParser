@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken
+from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
 from pyVHDLParser.Token.Keywords       import IdentifierToken, AllKeyword
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
@@ -59,9 +59,9 @@ class OpenBlock(Block):
 				parserState.NewToken =    IdentifierToken(token)
 				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   ItemBlock.stateItemRemainder
-
-			# if (parserState.TokenMarker != token):
-			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token)
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   ItemBlock.stateItemRemainder
 			return
 		elif isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -119,6 +119,9 @@ class DelimiterBlock(Block):
 		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.TokenMarker = parserState.NewToken
+			parserState.NextState =   ItemBlock.stateItemRemainder
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   ItemBlock.stateItemRemainder
 			return
 		elif isinstance(token, SpaceToken):

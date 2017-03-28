@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
+from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import ArchitectureKeyword, IsKeyword, GenericKeyword, PortKeyword, UseKeyword, OfKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
@@ -74,6 +74,9 @@ class NameBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     cls.stateArchitectureName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     cls.stateArchitectureName
 			return
 		elif isinstance(token, LinebreakToken):
@@ -178,6 +181,9 @@ class NameBlock(Block):
 		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateEntityName
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =     cls.stateEntityName
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):

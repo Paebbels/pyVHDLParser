@@ -28,7 +28,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
+from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, \
+	ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, DelimiterToken, EndToken, AllKeyword
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
@@ -70,6 +71,9 @@ class UseBlock(Block):
 		if isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
+			parserState.NextState =     UseNameBlock.stateLibraryName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     UseNameBlock.stateLibraryName
 			return
 		elif isinstance(token, LinebreakToken):
@@ -129,6 +133,9 @@ class UseNameBlock(Block):
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateDot1
 			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =     cls.stateDot1
+			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
 			parserState.TokenMarker =   None
@@ -152,8 +159,11 @@ class UseNameBlock(Block):
 	def stateDot1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			parserState.NewToken =      IdentifierToken(token)
-			parserState.NextState =     cls.statePackageName
+			parserState.NewToken =    IdentifierToken(token)
+			parserState.NextState =   cls.statePackageName
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   cls.statePackageName
 			return
 		elif (isinstance(token, CharacterToken) and (token == ".")):
 			parserState.NewToken =    DelimiterToken(token)
@@ -183,6 +193,9 @@ class UseNameBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     cls.statePackageName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     cls.statePackageName
 			return
 		elif (isinstance(token, CharacterToken) and (token == ".")):
@@ -251,6 +264,9 @@ class UseNameBlock(Block):
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateDot2
 			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =     cls.stateDot2
+			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
 			parserState.TokenMarker =   None
@@ -275,11 +291,13 @@ class UseNameBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			if (token <= "all"):
-				parserState.NewToken =    AllKeyword(token)
+				parserState.NewToken =  AllKeyword(token)
 			else:
-				parserState.NewToken =    IdentifierToken(token)
-			# parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =     cls.stateObjectName
+				parserState.NewToken =  IdentifierToken(token)
+			parserState.NextState =   cls.stateObjectName
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   cls.stateObjectName
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -312,7 +330,9 @@ class UseNameBlock(Block):
 				parserState.NewToken =    AllKeyword(token)
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-			# parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NextState =     cls.stateObjectName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     cls.stateObjectName
 			return
 		elif isinstance(token, LinebreakToken):
@@ -408,9 +428,12 @@ class UseDelimiterBlock(Block):
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			parserState.NewToken =        IdentifierToken(token)
-			parserState.NextState =       UseNameBlock.stateLibraryName
-			parserState.TokenMarker =     parserState.NewToken
+			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     UseNameBlock.stateLibraryName
+			parserState.TokenMarker =   parserState.NewToken
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =     UseNameBlock.stateLibraryName
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
@@ -434,6 +457,9 @@ class UseDelimiterBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     UseNameBlock.stateLibraryName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     UseNameBlock.stateLibraryName
 			return
 		elif isinstance(token, LinebreakToken):

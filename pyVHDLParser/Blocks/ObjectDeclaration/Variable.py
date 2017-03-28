@@ -28,7 +28,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken
+from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken, LiteralToken, \
+	StringLiteralToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import EndToken, BoundaryToken, IdentifierToken, VariableAssignmentKeyword
 from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
@@ -67,6 +68,9 @@ class VariableBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
+			parserState.NextState =   cls.stateVariableName
+			return
+		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   cls.stateVariableName
 			return
 		elif isinstance(token, LinebreakToken):
@@ -265,6 +269,9 @@ class VariableBlock(Block):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateExpression
 			return
+		elif isinstance(token, (LiteralToken, StringLiteralToken)):
+			parserState.NextState =   cls.stateExpression
+			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace5
@@ -289,6 +296,9 @@ class VariableBlock(Block):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
+			parserState.NextState =   cls.stateExpression
+			return
+		elif isinstance(token, (LiteralToken, StringLiteralToken)):
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, LinebreakToken):
