@@ -38,16 +38,16 @@ from pyVHDLParser.Functions       import Console
 
 class _BlockIterator:
 	def __init__(self, parserState, groupGenerator: Iterator):
-		self._parserState =     parserState
+		self._parserState : BlockToGroupParser.BlockParserState = parserState
 		self._blockIterator =   iter(FastForward(groupGenerator))
 
 	def __iter__(self):
 		return self
 
 	def __next__(self):
-		nextGroup = self._blockIterator.__next__()
-		self._parserState.CurrentGroup = nextGroup
-		return nextGroup
+		nextBlock = self._blockIterator.__next__()
+		self._parserState.CurrentBlock = nextBlock
+		return nextBlock
 
 
 class BlockToGroupParser:
@@ -83,8 +83,8 @@ class BlockToGroupParser:
 			self._stack =               []
 			self._blockMarker : Block = None
 			self.NextState =            startState
-			self.GroupIterator =        groupIterator
-			self.CurrentGroup =         None  # next(groupIterator)
+			self.BlockIterator =        groupIterator
+			self.CurrentBlock =         None  # next(groupIterator)
 			self.Block : Block =        startGroup.StartBlock
 			self.NewBlock : Block =     None
 			self.NewGroup : Group =     startGroup
@@ -105,10 +105,10 @@ class BlockToGroupParser:
 			self._blockMarker =  None
 
 		def __iter__(self):
-			if self.CurrentGroup.MultiPart:
-				return iter(BlockToGroupParser._TokenGenerator(self.CurrentGroup, self.GroupIterator))
+			if self.CurrentBlock.MultiPart:
+				return iter(BlockToGroupParser._TokenGenerator(self.CurrentBlock, self.BlockIterator))
 			else:
-				return iter(self.CurrentGroup)
+				return iter(self.CurrentBlock)
 
 		@property
 		def BlockMarker(self):

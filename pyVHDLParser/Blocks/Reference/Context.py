@@ -28,8 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Reference.Library import LibraryBlock
 from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords       import StringToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
 from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
@@ -153,7 +154,8 @@ class NameBlock(Block):
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			UseKeyword:   UseBlock.stateUseKeyword
+			UseKeyword:     UseBlock.stateUseKeyword,
+			LibraryKeyword: LibraryBlock.stateLibraryKeyword
 		}
 
 		token = parserState.Token

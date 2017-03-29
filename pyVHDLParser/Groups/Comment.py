@@ -49,3 +49,16 @@ class CommentGroup(Group):
 			return
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
+
+
+class WhitespaceGroup(Group):
+	@classmethod
+	def stateParse(cls, parserState: ParserState):
+		block = parserState.Block
+		if (isinstance(block, CharacterToken) and (block == "-")):
+			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
+			parserState.TokenMarker = parserState.NewToken
+			parserState.NextState =   cls.stateConsumeComment
+			return
+
+		raise NotImplementedError("State=Parse: {0!r}".format(block))

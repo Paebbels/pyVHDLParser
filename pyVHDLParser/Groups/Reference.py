@@ -28,16 +28,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import CommentBlock
-from pyVHDLParser.Blocks.Reference import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryEndBlock, LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseEndBlock, UseBlock
-from pyVHDLParser.Blocks.Reference.Context  import EndBlock as ContextEndBlock
 from pyVHDLParser.Groups                    import Group, BlockParserException
-from pyVHDLParser.Groups.Comment import CommentGroup
 from pyVHDLParser.Groups.Parser             import BlockToGroupParser
-from pyVHDLParser.Functions import Console
-
 
 # Type alias for type hinting
 ParserState = BlockToGroupParser.BlockParserState
@@ -48,7 +42,7 @@ class LibraryGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		assert isinstance(parserState.Block, LibraryBlock)
 
-		for block in parserState.GroupIterator:
+		for block in parserState.BlockIterator:
 			if isinstance(block, LibraryEndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
@@ -62,36 +56,10 @@ class UseGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		assert isinstance(parserState.Block, UseBlock)
 
-		for block in parserState.GroupIterator:
+		for block in parserState.BlockIterator:
 			if isinstance(block, UseEndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				return
 
 		raise BlockParserException("End of library clause not found.", block)
-
-
-class ContextGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block, Context.NameBlock)
-
-		for block in parserState.GroupIterator:
-			if isinstance(block, CommentBlock):
-				parserState.NewGroup =    CommentGroup(parserState.LastGroup, parserState.NewBlock)
-			elif isinstance(block, LibraryBlock):
-				parserState.PushState =   LibraryGroup.stateParse
-				parserState.Block =       block
-				parserState.BlockMarker = block
-				parserState.ReIssue()
-			elif isinstance(block, UseBlock):
-				parserState.PushState =   UseGroup.stateParse
-				parserState.Block =       block
-				parserState.BlockMarker = block
-				parserState.ReIssue()
-			elif isinstance(block, ContextEndBlock):
-				parserState.NewGroup =    cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
-
-		raise BlockParserException("End of context declaration not found.", block)

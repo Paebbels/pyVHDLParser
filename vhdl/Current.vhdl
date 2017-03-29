@@ -1,3 +1,10 @@
+library IEEE;
+use     IEEE.std_logic_vector.all;
+
+-- This is the first package
+package pkg0 is
+end package;
+
 package body pkg0 is
 	function func0 return integer is
 		constant const3 : std_logic := '0';
@@ -11,3 +18,9 @@ package body pkg0 is
 		report Patrick severity failure;
 	end function func0;
 end package body;
+
+
+context ctx is
+	library OSVVM;
+	use     OSVVM.Scoreborad.all;
+end context;

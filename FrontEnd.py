@@ -277,8 +277,8 @@ if (mode & 6 == 6):
 # ==============================================================================
 if (mode & 8 == 8):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetWordTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
+	wordTokenStream = [token for token in Tokenizer.GetWordTokenizer(content)]
+	vhdlBlockStream = [block for block in TokenToBlockParser.Transform(wordTokenStream)]
 	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
 	try:

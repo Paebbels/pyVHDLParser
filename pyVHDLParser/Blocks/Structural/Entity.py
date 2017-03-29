@@ -155,20 +155,21 @@ class NameBlock(Block):
 
 		raise TokenParserException("Expected keyword IS after entity name.", token)
 
+	__KEYWORDS__ = {
+		# Keyword     Transition
+		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
+		PortKeyword:      PortList.OpenBlock.statePortKeyword,
+		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
+		# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
+		# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
+		# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+		# PureKeyword:      Function.NameBlock.statePureKeyword,
+		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+	}
+
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-		keywords = {
-			# Keyword     Transition
-			UseKeyword:       Use.UseBlock.stateUseKeyword,
-			GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
-			PortKeyword:      PortList.OpenBlock.statePortKeyword,
-			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
-			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
-			# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-			# PureKeyword:      Function.NameBlock.statePureKeyword,
-			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
-		}
 
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
@@ -186,10 +187,10 @@ class NameBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in keywords:
+			for keyword in cls.__KEYWORDS__:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   keywords[keyword]
+					parserState.PushState =   cls.__KEYWORDS__[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -206,7 +207,7 @@ class NameBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in keywords]
+					[kw.__KEYWORD__.upper() for kw in cls.__KEYWORDS__]
 				),
 				tokenValue=token.Value
 			), token)
