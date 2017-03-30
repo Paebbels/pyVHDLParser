@@ -97,6 +97,7 @@ class StartOfDocumentGroup(Group):
 				raise BlockParserException("End of document found.", block)
 
 			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.BlockMarker = block
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -109,8 +110,9 @@ class StartOfDocumentGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.ReIssue =   True
+			parserState.NewGroup =    CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.BlockMarker = block
+			parserState.ReIssue =     True
 			return
 		else:
 			for block in cls.__SIMPLE_BLOCKS__:
@@ -124,7 +126,6 @@ class StartOfDocumentGroup(Group):
 			for block in cls.__COMPOUND_BLOCKS__:
 				if isinstance(currentBlock, block):
 					group =                   cls.__COMPOUND_BLOCKS__[block]
-					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True

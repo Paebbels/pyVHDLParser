@@ -117,7 +117,7 @@ class BlockParserState:
 		return self._blockMarker
 	@BlockMarker.setter
 	def BlockMarker(self, value):
-		if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} ~> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
+		if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} --> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, value, **Console.Foreground))
 		self._blockMarker = value
 
 	def __eq__(self, other):
@@ -146,29 +146,10 @@ class BlockParserState:
 		yield self.LastGroup
 
 		for block in self._iterator:
-			# overwrite an existing block and connect the next block with the new one
-			# if (self.NewBlock is not None):
-			# 	print("{GREEN}NewBlock: {block}{NOCOLOR}".format(block=self.NewBlock, **Console.Foreground))
-			# 	# update topmost TokenMarker
-			# 	if (self._blockMarker is block.PreviousToken):
-			# 		if self.debug: print("  update block marker: {0!s} -> {1!s}".format(self._blockMarker, self.NewBlock))
-			# 		self._blockMarker = self.NewBlock
-			#
-			# 	block.PreviousToken = self.NewBlock
-			# 	self.NewBlock =       None
-
-			# self.Block = block
 			# an empty marker means: set on next yield run
 			if (self._blockMarker is None):
 				# if self.debug: print("  new block marker: None -> {0!s}".format(block))
 				self._blockMarker = block
-
-			# a new group is assembled
-			# while (self.NewGroup is not None):
-			# 	self.LastGroup = self.NewGroup
-			#
-			# 	self.NewGroup =  self.NewGroup.NextGroup
-			# 	yield self.LastGroup
 
 			if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			# execute a state and reissue execution if needed
@@ -178,14 +159,14 @@ class BlockParserState:
 				print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **Console.Foreground))
 				self.NextState(self)
 
-
-
 				# yield a new group
-				self.LastGroup = self.NewGroup
-				yield self.LastGroup
+				if (self.NewGroup is not None):
+					yield self.NewGroup
+					self.LastGroup = self.NewGroup
+					self.NewGroup = None
+
+					if (isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.LastGroup, EndOfDocumentGroup)):
+						return
 
 		else:
-			if (isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.NewGroup, EndOfDocumentGroup)):
-				yield self.NewGroup
-			else:
-				raise BlockParserException("Unexpected end of document.", self.Block)
+			raise BlockParserException("Unexpected end of document.", self.Block)
