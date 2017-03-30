@@ -115,27 +115,27 @@ class StartOfDocumentGroup(Group):
 			parserState.ReIssue =     True
 			return
 		else:
-			for block in cls.__SIMPLE_BLOCKS__:
-				if isinstance(currentBlock, block):
-					group =                   cls.__SIMPLE_BLOCKS__[block]
+			for blk in cls.__SIMPLE_BLOCKS__:
+				if isinstance(currentBlock, blk):
+					group =                   cls.__SIMPLE_BLOCKS__[blk]
 					parserState.PushState =   group.stateParse
-					parserState.NextGroup =   group(parserState.LastGroup, block)
+					parserState.NextGroup =   group(parserState.LastGroup, currentBlock)
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-			for block in cls.__COMPOUND_BLOCKS__:
-				if isinstance(currentBlock, block):
-					group =                   cls.__COMPOUND_BLOCKS__[block]
+			for blk in cls.__COMPOUND_BLOCKS__:
+				if isinstance(currentBlock, blk):
+					group =                   cls.__COMPOUND_BLOCKS__[blk]
 					parserState.PushState =   group.stateParse
-					parserState.NextGroup =   group(parserState.LastGroup, block)
+					parserState.NextGroup =   group(parserState.LastGroup, currentBlock)
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-		if isinstance(currentBlock, EndOfDocumentBlock):
-			parserState.NextGroup =    EndOfDocumentGroup(currentBlock)
-			return
+			if isinstance(currentBlock, EndOfDocumentBlock):
+				parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+				return
 
 		raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
 			block=currentBlock.__class__.__qualname__

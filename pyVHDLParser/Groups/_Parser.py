@@ -158,7 +158,7 @@ class BlockParserState:
 			self.ReIssue = True
 			while self.ReIssue:
 				self.ReIssue = False
-				print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **Console.Foreground))
+				if self.debug: print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **Console.Foreground))
 				self.NextState(self)
 
 				# yield a new group
