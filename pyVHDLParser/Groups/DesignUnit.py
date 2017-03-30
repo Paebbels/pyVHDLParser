@@ -29,57 +29,83 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks                    import CommentBlock
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Reference          import Context
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, EmptyLineBlock
+from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
+from pyVHDLParser.Blocks.Reference import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
-from pyVHDLParser.Blocks.Reference.Context  import EndBlock as ContextEndBlock
-from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
+from pyVHDLParser.Blocks.Sequential import Package, PackageBody, Function, Procedure
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture
-from pyVHDLParser.Groups                    import Group, BlockParserException
-from pyVHDLParser.Groups.Comment            import CommentGroup
-from pyVHDLParser.Groups.Parser             import BlockToGroupParser
+from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
+from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
 from pyVHDLParser.Functions                 import Console
 
-
 # Type alias for type hinting
-from pyVHDLParser.Groups.Reference import LibraryGroup, UseGroup
-from pyVHDLParser.TypeSystem import Package
+from pyVHDLParser.Groups.Sequential import ProcedureGroup, FunctionGroup
 
 
-ParserState = BlockToGroupParser.BlockParserState
+ParserState = BlockParserState
 
 
 class ContextGroup(Group):
+	__SIMPLE_BLOCKS__ = {
+		LibraryBlock:             LibraryGroup,
+		UseBlock:                 UseGroup
+	}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block.PreviousBlock, Context.NameBlock)
+		currentBlock = parserState.Block
 
-		for block in parserState.BlockIterator:
-			if isinstance(parserState.Block, CommentBlock):
-				parserState.NewGroup =    CommentGroup(parserState.LastGroup, parserState.NewBlock)
-				return
-			elif isinstance(parserState.Block, (LinebreakBlock, IndentationBlock)):
-				print(parserState.Block)
-				return
-			elif isinstance(block, LibraryBlock):
-				parserState.PushState =   LibraryGroup.stateParse
-				parserState.Block =       block
-				parserState.BlockMarker = block
-				parserState.ReIssue()
-				return
-			elif isinstance(block, UseBlock):
-				parserState.PushState =   UseGroup.stateParse
-				parserState.Block =       block
-				parserState.BlockMarker = block
-				parserState.ReIssue()
-				return
-			elif isinstance(block, ContextEndBlock):
-				parserState.NewGroup =    cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
+		if isinstance(currentBlock, Context.NameBlock):
+			return
+		elif isinstance(currentBlock, Context.EndBlock):
+			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
 
-		raise BlockParserException("End of context declaration not found.", block)
+			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, CommentBlock)):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
+
+			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		else:
+			for block in cls.__SIMPLE_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group = cls.__SIMPLE_BLOCKS__[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of context declaration not found.".format(
+			block=currentBlock.__class__.__qualname__
+		), currentBlock)
 
 
 class EntityGroup(Group):
@@ -87,7 +113,7 @@ class EntityGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		assert isinstance(parserState.Block.PreviousBlock, Entity.NameBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GetBlockIterator:
 			if isinstance(block, Entity.EndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
@@ -101,7 +127,7 @@ class ArchitectureGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		assert isinstance(parserState.Block.PreviousBlock, Architecture.NameBlock)
 
-		for block in parserState.BlockIterator:
+		for block in parserState.GetBlockIterator:
 			if isinstance(block, Architecture.EndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
@@ -111,31 +137,149 @@ class ArchitectureGroup(Group):
 
 
 class PackageGroup(Group):
+	__SIMPLE_BLOCKS__ = {
+		LibraryBlock:             LibraryGroup,
+		UseBlock:                 UseGroup
+	}
+	__COMPOUND_BLOCKS__ = {
+		Function.NameBlock:       FunctionGroup,
+		Procedure.NameBlock:      ProcedureGroup
+	}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block.PreviousBlock, Package.NameBlock)
+		currentBlock = parserState.Block
 
-		for block in parserState.BlockIterator:
-			if isinstance(block, Package.EndBlock):
-				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
+		if isinstance(currentBlock, Package.NameBlock):
+			return
+		elif isinstance(currentBlock, Package.EndBlock):
+			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
 
-		raise BlockParserException("End of context declaration not found.", block)
+			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, CommentBlock)):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
+
+			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		else:
+			for block in cls.__SIMPLE_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group = cls.__SIMPLE_BLOCKS__[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+			for block in cls.__COMPOUND_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group =                   cls.__COMPOUND_BLOCKS__[block]
+					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of context declaration not found.".format(
+			block=currentBlock.__class__.__qualname__
+		), currentBlock)
 
 
 class PackageBodyGroup(Group):
+	__SIMPLE_BLOCKS__ = {
+		LibraryBlock:             LibraryGroup,
+		UseBlock:                 UseGroup
+	}
+	__COMPOUND_BLOCKS__ = {
+		Function.NameBlock:       FunctionGroup,
+		Procedure.NameBlock:      ProcedureGroup
+	}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block.PreviousBlock, PackageBody.NameBlock)
+		currentBlock = parserState.Block
 
-		for block in parserState.BlockIterator:
-			if isinstance(block, PackageBody.EndBlock):
-				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
+		if isinstance(currentBlock, Package.NameBlock):
+			return
+		elif isinstance(currentBlock, Package.EndBlock):
+			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
 
-		raise BlockParserException("End of context declaration not found.", block)
+			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, CommentBlock)):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
+
+			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
+			return
+		else:
+			for block in cls.__SIMPLE_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group = cls.__SIMPLE_BLOCKS__[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+			for block in cls.__COMPOUND_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group =                   cls.__COMPOUND_BLOCKS__[block]
+					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of context declaration not found.".format(
+			block=currentBlock.__class__.__qualname__
+		), currentBlock)
 
 
 class ComponentGroup(Group):

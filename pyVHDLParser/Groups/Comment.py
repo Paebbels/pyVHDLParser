@@ -28,14 +28,12 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Groups               import Group
-from pyVHDLParser.Groups.Parser        import BlockToGroupParser
-from pyVHDLParser.Token.Keywords       import SingleLineCommentKeyword
-from pyVHDLParser.Token import CharacterToken
-
+from pyVHDLParser.Groups                import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Token.Keywords        import SingleLineCommentKeyword
+from pyVHDLParser.Token                 import CharacterToken
 
 # Type alias for type hinting
-ParserState = BlockToGroupParser.BlockParserState
+ParserState = BlockParserState
 
 
 class CommentGroup(Group):

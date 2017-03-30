@@ -29,22 +29,21 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks                    import CommentBlock
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, EmptyLineBlock
 from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
 from pyVHDLParser.Blocks.Reference          import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
-from pyVHDLParser.Blocks.Structural import Entity, Architecture, Configuration
+from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
-from pyVHDLParser.Groups                    import BlockParserException, Group
-from pyVHDLParser.Groups.Comment import CommentGroup, WhitespaceGroup
+from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
-from pyVHDLParser.Groups.DesignUnit import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
-from pyVHDLParser.Groups.Parser             import BlockToGroupParser
+from pyVHDLParser.Groups.DesignUnit         import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
 from pyVHDLParser.Functions                 import Console
 
 # Type alias for type hinting
-ParserState = BlockToGroupParser.BlockParserState
+ParserState = BlockParserState
 
 
 class StartOfDocumentGroup(Group):
@@ -68,7 +67,6 @@ class StartOfDocumentGroup(Group):
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup
 	}
-
 	__COMPOUND_BLOCKS__ = {
 		Context.NameBlock:        ContextGroup,
 		Entity.NameBlock:         EntityGroup,
@@ -80,45 +78,59 @@ class StartOfDocumentGroup(Group):
 
 	@classmethod
 	def stateDocument(cls, parserState: ParserState):
-		block = parserState.Block
+		currentBlock = parserState.Block
 
-		if isinstance(parserState.Block, CommentBlock):
-			parserState.NewGroup =    CommentGroup(parserState.LastGroup, parserState.NewBlock)
+		if isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
+
+			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
 			return
-		elif isinstance(parserState.Block, (LinebreakBlock, IndentationBlock)):
-			parserState.NewGroup =    WhitespaceGroup(parserState.LastGroup, parserState.NewBlock)
-			# for blk in parserState.GroupIterator:
-			# 	if (not isinstance(blk, (LinebreakBlock, IndentationBlock))):
-			# 		print("skip white space")
-			# 		break
-			# 		# parserState.NewGroup = WhiteSpaceGroup(parserState.LastGroup, block, blk)
-			print(parserState.Block)
+		elif isinstance(currentBlock, CommentBlock):
+			# print("consuming {0!s}".format(currentBlock))
+			for block in parserState.GetBlockIterator:
+				if (not isinstance(block, CommentBlock)):
+					break
+				# else:
+				# 	print("consuming {0!s}".format(block))
+			else:
+				raise BlockParserException("End of document found.", block)
+
+			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.ReIssue =   True
 			return
 		else:
-			for blk in cls.__SIMPLE_BLOCKS__:
-				if isinstance(block, blk):
-					group =                   cls.__SIMPLE_BLOCKS__[blk]
+			for block in cls.__SIMPLE_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group =                   cls.__SIMPLE_BLOCKS__[block]
 					parserState.PushState =   group.stateParse
-					parserState.BlockMarker = block
-					parserState.ReIssue()
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
 					return
 
-			for blk in cls.__COMPOUND_BLOCKS__:
-				if isinstance(block, blk):
-					group =                   cls.__COMPOUND_BLOCKS__[blk]
-					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, block)
+			for block in cls.__COMPOUND_BLOCKS__:
+				if isinstance(currentBlock, block):
+					group =                   cls.__COMPOUND_BLOCKS__[block]
+					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.PushState =   group.stateParse
-					parserState.BlockMarker = block
-					parserState.ReIssue()
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
 					return
 
-		if isinstance(block, EndOfDocumentBlock):
-			parserState.NewGroup =    EndOfDocumentGroup(block)
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			parserState.NewGroup =    EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
-			block=block.__class__.__qualname__
-		), block)
+			block=currentBlock.__class__.__qualname__
+		), currentBlock)
 
 
 class EndOfDocumentGroup(Group):

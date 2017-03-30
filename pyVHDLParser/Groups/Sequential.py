@@ -28,11 +28,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Groups               import Group
-from pyVHDLParser.Groups.Parser        import BlockToGroupParser
+from pyVHDLParser.Groups               import BlockParserState, Group
 
 # Type alias for type hinting
-ParserState = BlockToGroupParser.BlockParserState
+ParserState = BlockParserState
 
 
 class FunctionGroup(Group):

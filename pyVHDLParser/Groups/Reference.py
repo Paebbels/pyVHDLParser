@@ -30,19 +30,16 @@
 # load dependencies
 from pyVHDLParser.Blocks.Reference.Library  import LibraryEndBlock, LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseEndBlock, UseBlock
-from pyVHDLParser.Groups                    import Group, BlockParserException
-from pyVHDLParser.Groups.Parser             import BlockToGroupParser
+from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
 
 # Type alias for type hinting
-ParserState = BlockToGroupParser.BlockParserState
+ParserState = BlockParserState
 
 
 class LibraryGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block, LibraryBlock)
-
-		for block in parserState.BlockIterator:
+		for block in parserState.GetBlockIterator:
 			if isinstance(block, LibraryEndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
@@ -54,9 +51,7 @@ class LibraryGroup(Group):
 class UseGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.Block, UseBlock)
-
-		for block in parserState.BlockIterator:
+		for block in parserState.GetBlockIterator:
 			if isinstance(block, UseEndBlock):
 				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()

@@ -27,15 +27,15 @@
 # limitations under the License.
 # ==============================================================================
 #
-from types                          import FunctionType
+from types                        import FunctionType
 
-from pyVHDLParser.Base              import ParserException
+from pyVHDLParser.Base            import ParserException
 
 
 class BlockParserException(ParserException):
-	def __init__(self, message, token):
+	def __init__(self, message, block):
 		super().__init__(message)
-		self._token = token
+		self._token = block
 
 
 class MetaGroup(type):
@@ -113,3 +113,11 @@ class Group(metaclass=MetaGroup):
 	@property
 	def States(self):
 		return self.__STATES__
+
+
+from pyVHDLParser.Groups._Parser import BlockParserState
+
+class BlockToGroupParser:
+	@staticmethod
+	def Transform(blockGenerator, debug=False):
+		return BlockParserState(blockGenerator, debug=debug).GetGenerator()
