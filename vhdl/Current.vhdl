@@ -2,7 +2,9 @@ library IEEE;
 use     IEEE.std_logic_vector.all;
 
 -- This is the first package
+-- described in two comment lines
 package pkg0 is
+	function func0 return integer;
 end package;
 
 package body pkg0 is

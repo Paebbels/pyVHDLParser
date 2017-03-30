@@ -229,12 +229,12 @@ class PackageBodyGroup(Group):
 			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			# print("consuming {0!s}".format(currentBlock))
+			print("consuming {0!s}".format(currentBlock))
 			for block in parserState.GetBlockIterator:
 				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
 					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
+				else:
+					print("consuming {0!s}".format(block))
 			else:
 				raise BlockParserException("End of document found.", block)
 
@@ -242,12 +242,12 @@ class PackageBodyGroup(Group):
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			# print("consuming {0!s}".format(currentBlock))
+			print("consuming {0!s}".format(currentBlock))
 			for block in parserState.GetBlockIterator:
 				if (not isinstance(block, CommentBlock)):
 					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
+				else:
+					print("consuming {0!s}".format(block))
 			else:
 				raise BlockParserException("End of document found.", block)
 

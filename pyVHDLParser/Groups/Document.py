@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks                    import CommentBlock
+from pyVHDLParser.Blocks import CommentBlock, Block
 from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, EmptyLineBlock
 from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
 from pyVHDLParser.Blocks.Reference          import Context
@@ -61,7 +61,13 @@ class StartOfDocumentGroup(Group):
 		return 0
 
 	def __str__(self):
-		return "[StartOfDocumentGroup]"
+		return "{{{groupName:.<156s}  at {start!s}}}".format(
+			groupName="{module}.{classname}  ".format(
+				module=self.__module__.rpartition(".")[2],
+				classname=self.__class__.__name__
+			),
+			start=self.StartBlock.StartToken.Start
+		)
 
 	__SIMPLE_BLOCKS__ = {
 		LibraryBlock:             LibraryGroup,
@@ -137,9 +143,9 @@ class EndOfDocumentGroup(Group):
 	def __init__(self, endBlock):
 		self._previousGroup =     None
 		self.NextGroup =          None
-		self.StartBlock =         endBlock
-		self.EndToken =           endBlock
-		self.MultiPart =          False
+		self.StartBlock : Block = endBlock
+		self.EndBlock   : Block = endBlock
+		self.MultiPart  =         False
 
 	def __iter__(self):
 		yield self.StartBlock
@@ -148,4 +154,10 @@ class EndOfDocumentGroup(Group):
 		return 0
 
 	def __str__(self):
-		return "[EndOfDocumentGroup]"
+		return "{{{groupName:.<156s}  at                      .. {end!s}}}".format(
+			groupName="{module}.{classname}  ".format(
+				module=self.__module__.rpartition(".")[2],
+				classname=self.__class__.__name__
+			),
+			end=self.EndBlock.StartToken.Start
+		)

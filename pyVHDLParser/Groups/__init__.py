@@ -87,16 +87,14 @@ class Group(metaclass=MetaGroup):
 		return buffer
 
 	def __str__(self):
-		return "group ...."
-		# return "[{groupName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
-		# 	groupName="{module}.{classname}".format(
-		# 		module=self.__module__.rpartition(".")[2],
-		# 		classname=self.__class__.__name__
-		# 	),
-		# 	stream="'" + repr(self) + "'",
-		# 	start=self.StartBlock.StartToken.Start,
-		# 	end=self.EndBlock.EndToken.End
-		# )
+		return "{{{groupName:.<156s}  at {start!s} .. {end!s}}}".format(
+			groupName="{module}.{classname}  ".format(
+				module=self.__module__.rpartition(".")[2],
+				classname=self.__class__.__name__
+			),
+			start=self.StartBlock.StartToken.Start,
+			end=self.EndBlock.EndToken.End
+		)
 
 	@property
 	def PreviousGroup(self):

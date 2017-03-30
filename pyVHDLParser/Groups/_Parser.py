@@ -117,10 +117,11 @@ class BlockParserState:
 		return self._blockMarker
 	@BlockMarker.setter
 	def BlockMarker(self, value):
+		if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} ~> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
 		self._blockMarker = value
 
 	def __eq__(self, other):
-		return self.NextState == other
+		return self.NextState is other
 
 	def __str__(self):
 		return self.NextState.__func__.__qualname__
@@ -140,17 +141,21 @@ class BlockParserState:
 		from pyVHDLParser.Groups            import BlockParserException
 		from pyVHDLParser.Groups.Document   import EndOfDocumentGroup
 
+		# yield StartOfDocumentGroup
+		self.LastGroup = self.NewGroup
+		yield self.LastGroup
+
 		for block in self._iterator:
 			# overwrite an existing block and connect the next block with the new one
-			if (self.NewBlock is not None):
-				print("{GREEN}NewBlock: {block}{NOCOLOR}".format(block=self.NewBlock, **Console.Foreground))
-				# update topmost TokenMarker
-				if (self._blockMarker is block.PreviousToken):
-					if self.debug: print("  update block marker: {0!s} -> {1!s}".format(self._blockMarker, self.NewBlock))
-					self._blockMarker = self.NewBlock
-
-				block.PreviousToken = self.NewBlock
-				self.NewBlock =       None
+			# if (self.NewBlock is not None):
+			# 	print("{GREEN}NewBlock: {block}{NOCOLOR}".format(block=self.NewBlock, **Console.Foreground))
+			# 	# update topmost TokenMarker
+			# 	if (self._blockMarker is block.PreviousToken):
+			# 		if self.debug: print("  update block marker: {0!s} -> {1!s}".format(self._blockMarker, self.NewBlock))
+			# 		self._blockMarker = self.NewBlock
+			#
+			# 	block.PreviousToken = self.NewBlock
+			# 	self.NewBlock =       None
 
 			# self.Block = block
 			# an empty marker means: set on next yield run
@@ -159,19 +164,25 @@ class BlockParserState:
 				self._blockMarker = block
 
 			# a new group is assembled
-			while (self.NewGroup is not None):
-				self.LastGroup = self.NewGroup
+			# while (self.NewGroup is not None):
+			# 	self.LastGroup = self.NewGroup
+			#
+			# 	self.NewGroup =  self.NewGroup.NextGroup
+			# 	yield self.LastGroup
 
-				self.NewGroup =  self.NewGroup.NextGroup
-				yield self.LastGroup
-
-			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
+			if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			# execute a state and reissue execution if needed
 			self.ReIssue = True
 			while self.ReIssue:
 				self.ReIssue = False
 				print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **Console.Foreground))
 				self.NextState(self)
+
+
+
+				# yield a new group
+				self.LastGroup = self.NewGroup
+				yield self.LastGroup
 
 		else:
 			if (isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.NewGroup, EndOfDocumentGroup)):

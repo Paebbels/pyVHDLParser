@@ -283,7 +283,7 @@ if (mode & 8 == 8):
 
 	try:
 		for vhdlGroup in vhdlGroupStream:
-			print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlGroup, **Console.Foreground))
+			print("{CYAN}{block}{NOCOLOR}".format(block=vhdlGroup, **Console.Foreground))
 			for block in vhdlGroup:
 				if isinstance(block, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
 					print("{DARK_GRAY}  {block}{NOCOLOR}".format(block=block, **Console.Foreground))

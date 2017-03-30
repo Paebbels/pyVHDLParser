@@ -82,7 +82,7 @@ class TokenToBlockParser:
 			self._tokenMarker = value
 
 		def __eq__(self, other):
-			return self.NextState == other
+			return self.NextState is other
 
 		def __str__(self):
 			return self.NextState.__func__.__qualname__
