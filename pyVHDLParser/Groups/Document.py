@@ -96,7 +96,7 @@ class StartOfDocumentGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.BlockMarker = block
 			parserState.ReIssue =   True
 			return
@@ -110,7 +110,7 @@ class StartOfDocumentGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =    CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =    CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.BlockMarker = block
 			parserState.ReIssue =     True
 			return
@@ -119,6 +119,7 @@ class StartOfDocumentGroup(Group):
 				if isinstance(currentBlock, block):
 					group =                   cls.__SIMPLE_BLOCKS__[block]
 					parserState.PushState =   group.stateParse
+					parserState.NextGroup =   group(parserState.LastGroup, block)
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
@@ -127,12 +128,13 @@ class StartOfDocumentGroup(Group):
 				if isinstance(currentBlock, block):
 					group =                   cls.__COMPOUND_BLOCKS__[block]
 					parserState.PushState =   group.stateParse
+					parserState.NextGroup =   group(parserState.LastGroup, block)
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			parserState.NewGroup =    EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup =    EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(

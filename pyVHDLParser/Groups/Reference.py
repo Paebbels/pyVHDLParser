@@ -41,7 +41,7 @@ class LibraryGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, LibraryEndBlock):
-				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				return
 
@@ -53,7 +53,7 @@ class UseGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, UseEndBlock):
-				parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				return
 

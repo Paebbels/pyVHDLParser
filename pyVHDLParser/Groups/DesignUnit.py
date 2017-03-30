@@ -65,7 +65,7 @@ class ContextGroup(Group):
 		if isinstance(currentBlock, Context.NameBlock):
 			return
 		elif isinstance(currentBlock, Context.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -79,7 +79,7 @@ class ContextGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -92,7 +92,7 @@ class ContextGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -106,7 +106,7 @@ class ContextGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -131,7 +131,7 @@ class EntityGroup(Group):
 		if isinstance(currentBlock, Entity.NameBlock):
 			return
 		elif isinstance(currentBlock, Entity.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -145,7 +145,7 @@ class EntityGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -158,7 +158,7 @@ class EntityGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -180,7 +180,7 @@ class EntityGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -208,7 +208,7 @@ class ArchitectureGroup(Group):
 		if isinstance(currentBlock, Architecture.NameBlock):
 			return
 		elif isinstance(currentBlock, Architecture.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -222,7 +222,7 @@ class ArchitectureGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -235,7 +235,7 @@ class ArchitectureGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -257,7 +257,7 @@ class ArchitectureGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -285,7 +285,7 @@ class PackageGroup(Group):
 		if isinstance(currentBlock, Package.NameBlock):
 			return
 		elif isinstance(currentBlock, Package.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -299,7 +299,7 @@ class PackageGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -312,7 +312,7 @@ class PackageGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -334,7 +334,7 @@ class PackageGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -362,7 +362,7 @@ class PackageBodyGroup(Group):
 		if isinstance(currentBlock, PackageBody.NameBlock):
 			return
 		elif isinstance(currentBlock, PackageBody.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -376,7 +376,7 @@ class PackageBodyGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -389,7 +389,7 @@ class PackageBodyGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -404,7 +404,7 @@ class PackageBodyGroup(Group):
 			for block in cls.__COMPOUND_BLOCKS__:
 				if isinstance(currentBlock, block):
 					group =                   cls.__COMPOUND_BLOCKS__[block]
-					parserState.NewGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
+					parserState.NextGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
@@ -412,7 +412,7 @@ class PackageBodyGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -437,7 +437,7 @@ class ComponentGroup(Group):
 		if isinstance(currentBlock, Component.NameBlock):
 			return
 		elif isinstance(currentBlock, Component.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -451,7 +451,7 @@ class ComponentGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -464,7 +464,7 @@ class ComponentGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue =   True
 			return
 		else:
@@ -486,7 +486,7 @@ class ComponentGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(
@@ -510,7 +510,7 @@ class ConfigurationGroup(Group):
 		if isinstance(currentBlock, Configuration.NameBlock):
 			return
 		elif isinstance(currentBlock, Configuration.EndBlock):
-			parserState.NewGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
@@ -524,7 +524,7 @@ class ConfigurationGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup = WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue = True
 			return
 		elif isinstance(currentBlock, CommentBlock):
@@ -537,7 +537,7 @@ class ConfigurationGroup(Group):
 			else:
 				raise BlockParserException("End of document found.", block)
 
-			parserState.NewGroup = CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
+			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
 			parserState.ReIssue = True
 			return
 		else:
@@ -559,7 +559,7 @@ class ConfigurationGroup(Group):
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NewGroup = EndOfDocumentGroup(currentBlock)
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
 		raise BlockParserException("End of context declaration not found.".format(

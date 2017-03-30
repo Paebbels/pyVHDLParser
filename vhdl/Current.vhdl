@@ -1,6 +1,10 @@
 library IEEE;
 use     IEEE.std_logic_vector.all;
 
+package pkg0 is
+	function func0 return integer;
+end package;
+
 -- This is the first package
 -- described in two comment lines
 entity system is
@@ -10,23 +14,20 @@ architecture rtl of system is
 begin
 end architecture;
 
-package pkg0 is
---	function func0 return integer;
-end package;
 
 package body pkg0 is
 	constant const3 : std_logic := '0';
---	function func0 return integer is
---		constant const3 : std_logic := '0';
---
+	function func0 return integer is
+		constant const3 : std_logic := '0';
+
 --		procedure proc1 is
 --			variable var5 : integer := 20;
 --			variable \var6\ : string := "20";
 --		begin
 --		end procedure proc1;
---	begin
+	begin
 --		report Patrick severity failure;
---	end function func0;
+	end function func0;
 end package body;
 
 

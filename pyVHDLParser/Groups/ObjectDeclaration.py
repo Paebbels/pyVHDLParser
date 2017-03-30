@@ -53,7 +53,7 @@ class ConstantGroup(Group):
 		else:
 			marker2 = marker
 
-		parserState.NewGroup = cls(parserState.LastGroup, marker, marker2)
+		parserState.NextGroup = cls(parserState.LastGroup, marker, marker2)
 		parserState.Pop()
 		return
 
@@ -72,7 +72,7 @@ class VariableGroup(Group):
 		else:
 			marker2 = marker
 
-		parserState.NewGroup = cls(parserState.LastGroup, marker, marker2)
+		parserState.NextGroup = cls(parserState.LastGroup, marker, marker2)
 		parserState.Pop()
 		return
 
@@ -91,6 +91,6 @@ class SignalGroup(Group):
 		else:
 			marker2 = marker
 
-		parserState.NewGroup = cls(parserState.LastGroup, marker, marker2)
+		parserState.NextGroup = cls(parserState.LastGroup, marker, marker2)
 		parserState.Pop()
 		return

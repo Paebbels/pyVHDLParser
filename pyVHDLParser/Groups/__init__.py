@@ -59,6 +59,7 @@ class Group(metaclass=MetaGroup):
 		self.NextGroup =          None
 		self.StartBlock =         startBlock
 		self.EndBlock =           startBlock if (endBlock is None) else endBlock
+		self._subGroups =         {}
 
 	def __len__(self):
 		return self.EndBlock.End.Absolute - self.StartBlock.Start.Absolute + 1
@@ -76,14 +77,8 @@ class Group(metaclass=MetaGroup):
 
 	def __repr__(self):
 		buffer = "undefined block content"
-		# for block in self:
-		# 	if isinstance(block, CharacterToken):
-		# 		buffer += repr(block)
-		# 	else:
-		# 		buffer += block.Value
-
-		buffer = buffer.replace("\t", "\\t")
-		buffer = buffer.replace("\n", "\\n")
+		# buffer = buffer.replace("\t", "\\t")
+		# buffer = buffer.replace("\n", "\\n")
 		return buffer
 
 	def __str__(self):

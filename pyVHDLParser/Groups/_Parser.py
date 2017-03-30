@@ -77,12 +77,13 @@ class BlockParserState:
 		self._stack =               []
 		self._iterator =            iter(_BlockIterator(self, blockGenerator))
 		self._blockMarker : Block = None
-		self.NewGroup     : Group = StartOfDocumentGroup(next(self._iterator))
+		self.NextGroup    : Group = StartOfDocumentGroup(next(self._iterator))
+		self.NewGroup     : Group = None
 
 		self.debug =                debug
 
-		if (not isinstance(self.NewGroup.StartBlock, StartOfDocumentBlock)):
-			raise BlockParserException("First block is not a StartOfDocumentBlock.", self.NewGroup.StartBlock)
+		if (not isinstance(self.NextGroup.StartBlock, StartOfDocumentBlock)):
+			raise BlockParserException("First block is not a StartOfDocumentBlock.", self.NextGroup.StartBlock)
 
 	@property
 	def PushState(self):
@@ -91,10 +92,12 @@ class BlockParserState:
 	def PushState(self, value):
 		self._stack.append((
 			self.NextState,
-			self._blockMarker
+			self._blockMarker,
+			self.NextGroup
 		))
 		self.NextState =    value
-		self._blockMarker =  None
+		self._blockMarker = None
+		self.NextGroup =    None
 
 	@property
 	def GetBlockIterator(self):
@@ -127,14 +130,13 @@ class BlockParserState:
 		return self.NextState.__func__.__qualname__
 
 	def Pop(self, n=1):
+		self.NewGroup =     self.NextGroup
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
 		self.NextState =    top[0]
 		self._blockMarker = top[1]
-
-	# def ReIssue(self):
-	# 	self.NextState(self)
+		self.NextGroup =    top[2]
 
 	def GetGenerator(self):
 		from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
@@ -142,7 +144,7 @@ class BlockParserState:
 		from pyVHDLParser.Groups.Document   import EndOfDocumentGroup
 
 		# yield StartOfDocumentGroup
-		self.LastGroup = self.NewGroup
+		self.LastGroup = self.NextGroup
 		yield self.LastGroup
 
 		for block in self._iterator:
@@ -151,7 +153,7 @@ class BlockParserState:
 				# if self.debug: print("  new block marker: None -> {0!s}".format(block))
 				self._blockMarker = block
 
-			if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
+			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			# execute a state and reissue execution if needed
 			self.ReIssue = True
 			while self.ReIssue:
