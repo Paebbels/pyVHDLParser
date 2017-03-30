@@ -59,6 +59,17 @@ class FunctionGroup(Group):
 	# 	Procedure.NameBlock:      ProcedureGroup
 	# }
 
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:       [],
+			WhitespaceGroup:    [],
+			UseGroup:           [],
+			FunctionGroup:      [],
+			ProcedureGroup:     []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
@@ -84,30 +95,16 @@ class FunctionGroup(Group):
 			parserState.Pop()
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.ReIssue =   True
+			parserState.PushState = WhitespaceGroup.stateParse
+			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue = True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, CommentBlock)):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.ReIssue =   True
+			parserState.PushState = CommentGroup.stateParse
+			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue = True
 			return
 		else:
 			for block in cls.__SIMPLE_BLOCKS__:
@@ -147,6 +144,17 @@ class ProcedureGroup(Group):
 		# Procedure.NameBlock:      ProcedureGroup
 	}
 
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:       [],
+			WhitespaceGroup:    [],
+			UseGroup:           [],
+			FunctionGroup:      [],
+			ProcedureGroup:     []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
@@ -157,30 +165,16 @@ class ProcedureGroup(Group):
 			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.ReIssue =   True
+			parserState.PushState = WhitespaceGroup.stateParse
+			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue = True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, CommentBlock)):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =  CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.ReIssue =   True
+			parserState.PushState = CommentGroup.stateParse
+			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue = True
 			return
 		else:
 			for block in cls.__SIMPLE_BLOCKS__:

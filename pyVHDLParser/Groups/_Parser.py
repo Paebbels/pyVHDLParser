@@ -131,12 +131,15 @@ class BlockParserState:
 
 	def Pop(self, n=1):
 		self.NewGroup =     self.NextGroup
+
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
 		self.NextState =    top[0]
 		self._blockMarker = top[1]
 		self.NextGroup =    top[2]
+		print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
+		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
 	def GetGenerator(self):
 		from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock

@@ -28,9 +28,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Groups                import BlockParserState, BlockParserException, Group
-from pyVHDLParser.Token.Keywords        import SingleLineCommentKeyword
-from pyVHDLParser.Token                 import CharacterToken
+from pyVHDLParser.Blocks          import CommentBlock
+from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Groups          import BlockParserState, BlockParserException, Group
 
 # Type alias for type hinting
 ParserState = BlockParserState
@@ -39,24 +39,24 @@ ParserState = BlockParserState
 class CommentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-		if (isinstance(block, CharacterToken) and (block == "-")):
-			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
-			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   cls.stateConsumeComment
-			return
+		for block in parserState.GetBlockIterator:
+			if (not isinstance(block, CommentBlock)):
+				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.Pop()
+				parserState.ReIssue =   True
+				return
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		raise BlockParserException("End of library clause not found.", block)
 
 
 class WhitespaceGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-		if (isinstance(block, CharacterToken) and (block == "-")):
-			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
-			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   cls.stateConsumeComment
-			return
+		for block in parserState.GetBlockIterator:
+			if (not isinstance(block, (WhitespaceBlock, LinebreakBlock, IndentationBlock))):
+				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.Pop()
+				parserState.ReIssue =   True
+				return
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		raise BlockParserException("End of library clause not found.", block)

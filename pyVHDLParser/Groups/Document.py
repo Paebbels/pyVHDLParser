@@ -54,6 +54,19 @@ class StartOfDocumentGroup(Group):
 		self.EndBlock =           startBlock
 		self.MultiPart =          False
 
+		self._subGroups = {
+			CommentGroup:       [],
+			WhitespaceGroup:    [],
+			LibraryGroup:       [],
+			UseGroup:           [],
+			ContextGroup:       [],
+			EntityGroup:        [],
+			ArchitectureGroup:  [],
+			PackageGroup:       [],
+			PackageBodyGroup:   [],
+			ConfigurationGroup: []
+		}
+
 	def __iter__(self):
 		yield self.StartBlock
 
@@ -87,31 +100,15 @@ class StartOfDocumentGroup(Group):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, (LinebreakBlock, EmptyLineBlock, IndentationBlock))):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =  WhitespaceGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.BlockMarker = block
-			parserState.ReIssue =   True
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			# print("consuming {0!s}".format(currentBlock))
-			for block in parserState.GetBlockIterator:
-				if (not isinstance(block, CommentBlock)):
-					break
-				# else:
-				# 	print("consuming {0!s}".format(block))
-			else:
-				raise BlockParserException("End of document found.", block)
-
-			parserState.NextGroup =    CommentGroup(parserState.LastGroup, currentBlock, parserState.Block.PreviousBlock)
-			parserState.BlockMarker = block
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
 			return
 		else:
