@@ -21,6 +21,11 @@ Use cases:
 Long time goals:
  * A Sphinx language plugin for VHDL 
 
+## Basic Concept
+
+[![][concept]][concept]
+
+[concept]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/images/Linking_TokenBlockGroup.png
 
 ## Example 1
 
