@@ -36,15 +36,11 @@ class BoundaryToken(VHDLToken):
 	def __init__(self, spaceToken):
 		super().__init__(spaceToken.PreviousToken, spaceToken.Value, spaceToken.Start, spaceToken.End)
 
-	def __str__(self):
-		return "<BoundaryToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class BracketToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
-	def __str__(self):
-		return "<{name} '{value}' at {pos!r}>".format(name=self.__class__.__name__, value=self.Value, pos=self.Start)
 
 # Round bracket / parenthesis / ()
 class RoundBracketToken(BracketToken): pass
@@ -68,9 +64,6 @@ class OperatorToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
-	def __str__(self):
-		return "<{name} '{value}' at {pos!r}>".format(name=self.__class__.__name__, value=self.Value, pos=self.Start)
-
 
 class PlusOperatorToken(OperatorToken): pass
 class MinusOperatorToken(OperatorToken): pass
@@ -84,48 +77,33 @@ class DelimiterToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
-	def __str__(self):
-		return "<DelimiterToken '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class EndToken(VHDLToken):
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
-
-	def __str__(self):
-		return "<EndToken ';' at {pos!r}>".format(pos=self.Start)
 
 
 class IdentifierToken(VHDLToken):
 	def __init__(self, stringToken):
 		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
 
-	def __str__(self):
-		return "<Identifier '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
 
 class RepeatedIdentifierToken(IdentifierToken):
-	def __str__(self):
-		return "<RepeatedIdentifier '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+	pass
 
 
 class SimpleNameToken(VHDLToken):
 	def __init__(self, stringToken):
 		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
 
-	def __str__(self):
-		return "<SimpleName '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
-
 
 class LabelToken(VHDLToken):
 	def __init__(self, stringToken):
 		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
 
-	def __str__(self):
-		return "<Label '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
-
 
 class RepeatedLabelToken(LabelToken):
-	def __str__(self):
-		return "<RepeatedLabel '{value}' at {pos!r}>".format(value=self.Value, pos=self.Start)
+	pass
 
 
 class TwoCharKeyword(VHDLToken):
@@ -135,8 +113,8 @@ class TwoCharKeyword(VHDLToken):
 		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.End)
 
 	def __str__(self):
-		return "<{className} '{value}' at {pos!r}>".format(
-			className=self.__class__.__name__[:-7],
+		return "<{name: <30} '{value}' at {pos!r}>".format(
+			name=self.__class__.__name__[:-7],
 			value=self.__KEYWORD__,
 			pos=self.Start
 		)
@@ -176,7 +154,12 @@ class KeywordToken(VHDLToken):
 		super().__init__(stringToken.PreviousToken, self.__KEYWORD__, stringToken.Start, stringToken.End)
 
 	def __str__(self):
-		return "<Keyword: {0}>".format(self.__KEYWORD__.upper())
+		return "<{content: <91} at {pos!r}>".format(
+			content="{name: <30} '{value}'".format(
+				name=self.__class__.__name__,
+				value=self.Value
+			),
+			pos=self.Start)
 
 class DirectionKeyword(KeywordToken): pass
 

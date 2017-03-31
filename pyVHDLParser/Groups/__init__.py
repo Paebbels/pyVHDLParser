@@ -30,6 +30,7 @@
 from types                        import FunctionType
 
 from pyVHDLParser.Base            import ParserException
+from pyVHDLParser.Blocks import Block
 
 
 class BlockParserException(ParserException):
@@ -54,15 +55,18 @@ class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
 	def __init__(self, previousGroup, startBlock, endBlock=None):
-		previousGroup.NextGroup = self
-		self._previousGroup =     previousGroup
-		self.NextGroup =          None
-		self.StartBlock =         startBlock
-		self.EndBlock =           startBlock if (endBlock is None) else endBlock
-		self._subGroups =         {}
+		previousGroup.NextGroup =               self
+		self._previousGroup =                   previousGroup
+		self.NextGroup  : Group =               None
+		self.InnerGroup : Group =               None
+		self._subGroups : {MetaGroup: Group} =  {}
+
+		self.StartBlock : Block =               startBlock
+		self.EndBlock   : Block =               startBlock if (endBlock is None) else endBlock
+		self.MultiPart =                        False
 
 	def __len__(self):
-		return self.EndBlock.End.Absolute - self.StartBlock.Start.Absolute + 1
+		return self.EndBlock.EndToken.End.Absolute - self.StartBlock.StartToken.Start.Absolute + 1
 
 	def __iter__(self):
 		block = self.StartBlock

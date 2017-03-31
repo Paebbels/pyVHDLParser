@@ -139,6 +139,8 @@ class BlockParserState:
 		self._blockMarker = top[1]
 		self.NextGroup =    top[2]
 		print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
+		if (self.NextGroup.InnerGroup is None):
+			self.NextGroup.InnerGroup = self.NewGroup
 		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
 	def GetGenerator(self):

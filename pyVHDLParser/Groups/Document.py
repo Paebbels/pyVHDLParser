@@ -36,7 +36,7 @@ from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
-from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Groups import BlockParserState, BlockParserException, Group, MetaGroup
 from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
 from pyVHDLParser.Groups.DesignUnit         import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
@@ -48,11 +48,14 @@ ParserState = BlockParserState
 
 class StartOfDocumentGroup(Group):
 	def __init__(self, startBlock):
-		self._previousGroup =     None
-		self.NextGroup =          None
-		self.StartBlock =         startBlock
-		self.EndBlock =           startBlock
-		self.MultiPart =          False
+		self._previousGroup =                   None
+		self.NextGroup  : Group =               None
+		self.InnerGroup : Group =               None
+		self._subGroups : {MetaGroup: Group} =  {}
+
+		self.StartBlock : Block =               startBlock
+		self.EndBlock   : Block =               startBlock
+		self.MultiPart =                        False
 
 		self._subGroups = {
 			CommentGroup:       [],

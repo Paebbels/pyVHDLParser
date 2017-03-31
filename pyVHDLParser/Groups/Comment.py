@@ -54,7 +54,7 @@ class WhitespaceGroup(Group):
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
 			if (not isinstance(block, (WhitespaceBlock, LinebreakBlock, IndentationBlock))):
-				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block.PreviousBlock)
 				parserState.Pop()
 				parserState.ReIssue =   True
 				return

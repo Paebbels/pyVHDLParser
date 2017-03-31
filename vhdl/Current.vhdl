@@ -17,7 +17,7 @@ end architecture;
 
 package body pkg0 is
 	constant const3 : std_logic := '0';
-	function func0 return integer is
+	function func1 return integer is
 		constant const3 : std_logic := '0';
 
 --		procedure proc1 is

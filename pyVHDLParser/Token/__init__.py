@@ -62,6 +62,14 @@ class ValuedToken(Token):
 		super().__init__(previousToken, start, end)
 		self.Value =  value
 
+	def __str__(self):
+		return "<{content: <91} at {pos!r}>".format(
+			content="{name: <30} '{value}'".format(
+				name=self.__class__.__name__,
+				value=self.Value
+			),
+			pos=self.Start)
+
 
 class SuperToken(Token):
 	def __init__(self, startToken, endToken=None):
@@ -164,7 +172,18 @@ class StringToken(ValuedToken):
 
 
 class VHDLToken(ValuedToken):   pass
-class CommentToken(VHDLToken):  pass
+class CommentToken(VHDLToken):
+	def __str__(self):
+		value = self.Value
+		value = value.replace("\n", "\\n")
+		value = value.replace("\r", "\\r")
+		value = value.replace("\t", "\\t")
+		return "<{content: <40} at {pos!r}>".format(
+			content="{name} '{value}'".format(
+				name=self.__class__.__name__,
+				value=value
+			),
+			pos=self.Start)
 
 
 class LiteralToken(VHDLToken):
@@ -203,35 +222,22 @@ class ExtendedIdentifier(VHDLToken):
 			value="'" + self.Value + "'  ", pos=self.Start)
 
 
-class SingleLineCommentToken(CommentToken):
-	def __str__(self):
-		value = self.Value
-		value = value.replace("\n", "\\n")
-		value = value.replace("\r", "\\r")
-		return "<SLCommentToken {value:.<40} at {pos!r}>".format(
-						value="'" + value + "'  ", pos=self.Start)
-
-
-class MultiLineCommentToken(CommentToken):
-	def __str__(self):
-		return "<MLCommentToken {value:.<40} at {pos!r}>".format(
-						value="'" + self.Value + "'  ", pos=self.Start)
-
-
-class DirectiveToken(VHDLToken):
-	def __str__(self):
-		return "<DirectiveToken {value:.<40} at {pos!r}>".format(
-						value="'" + self.Value + "'  ", pos=self.Start)
+class SingleLineCommentToken(CommentToken): pass
+class MultiLineCommentToken(CommentToken):  pass
+class DirectiveToken(CommentToken):         pass
 
 
 class LinebreakToken(VHDLToken):
 	def __str__(self):
-		return "<LinebreakToken ---------------------------------------- at {pos!r}>".format(pos=self.Start)
+		return "<LinebreakToken ---------------------------------------------------------------------------- at {pos!r}>".format(pos=self.Start)
 
 
 class IndentationToken(SpaceToken):
 	def __str__(self):
 		value = self.Value
 		value = value.replace("\t", "\\t")
-		return "<IndentToken    {value:.<40} at {pos!r}>".format(
-						value="'" + value + "'  ", pos=self.Start)
+		return "<{content: <40} at {pos!r}>".format(
+			content="IndentToken '{value}'".format(
+				value=value
+			),
+			pos=self.Start)
