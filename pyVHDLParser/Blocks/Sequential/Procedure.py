@@ -186,26 +186,31 @@ class NameBlock2(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if (isinstance(token, CharacterToken) and (token == ";")):
+			parserState.NewToken =    EndToken(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		elif isinstance(token, StringToken):
 			if (token <= "is"):
-				parserState.NewToken =    IsKeyword(token)
-				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
-				parserState.NextState =   cls.stateDeclarativeRegion
+				parserState.NewToken =  IsKeyword(token)
+				parserState.NewBlock =  NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.NextState = cls.stateDeclarativeRegion
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      BoundaryToken(token)
-			parserState.NextState =     cls.stateWhitespace1
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateWhitespace1
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                         CommentBlock(parserState.NewBlock, token)
-			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateWhitespace1
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                       CommentBlock(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace1
 			return
 
 		raise TokenParserException("Expected keyword RETURN.", token)

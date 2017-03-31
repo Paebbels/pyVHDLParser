@@ -276,7 +276,6 @@ class NameBlock(Block):
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -303,6 +302,7 @@ class NameBlock(Block):
 
 			if (tokenValue == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
+				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = BeginBlock.stateConcurrentRegion
 				return
 

@@ -219,10 +219,10 @@ if (mode & 6 == 6):
 						token22 = token.PreviousToken
 						token31 = "--------" if (lastToken.NextToken is None) else lastToken.NextToken.NextToken
 						token32 = token
-						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-						print("{RED}  \ Last:   {token1}{NOCOLOR}  =?=  {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **Console.Foreground))
-						print("{RED}   \   Next: {token1}{NOCOLOR}  =?=  {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **Console.Foreground))
-						print("{DARK_RED}   V  Next: {token1}{NOCOLOR}  =?=  {RED}Curr: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
+						print("{RED} Block: {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+						print("{RED} | Last:  {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **Console.Foreground))
+						print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **Console.Foreground))
+						print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
 					elif (token.PreviousToken is not lastToken):
 						print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
 						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))

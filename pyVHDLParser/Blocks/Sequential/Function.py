@@ -188,7 +188,7 @@ class NameBlock2(Block):
 		if isinstance(token, StringToken):
 			if (token <= "return"):
 				parserState.NewToken =    ReturnKeyword(token)
-				parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				# parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
 				parserState.NextState =   cls.stateReturnKeyword
 				return
 		elif isinstance(token, SpaceToken):
@@ -241,8 +241,8 @@ class NameBlock2(Block):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword RETURN."
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =      BoundaryToken(token)
-			parserState.NextState =     cls.stateWhitespace2
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -299,24 +299,24 @@ class NameBlock2(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, SpaceToken):
-			parserState.NextState =   cls.stateWhitespace3
-			return
+		# elif isinstance(token, SpaceToken):
+		# 	parserState.NextState =   cls.stateWhitespace3
+		# 	return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
-			parserState.NextState =   cls.stateWhitespace2
+			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       LinebreakBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace2
+			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace2
+			parserState.NextState =   cls.stateWhitespace3
 			return
 		
 		raise TokenParserException(errorMessage, token)
@@ -335,20 +335,20 @@ class NameBlock2(Block):
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				_ =                       LinebreakBlock(parserState.NewBlock, token)
+				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				_ =                     LinebreakBlock(parserState.NewBlock, token)
 			else:
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
+				parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
-			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker =   None
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker = None
 			return
 
 		raise TokenParserException("Expected function name (designator).", token)

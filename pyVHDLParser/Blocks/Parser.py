@@ -104,7 +104,7 @@ class TokenToBlockParser:
 			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one
 				if (self.NewToken is not None):
-					# print("{GREEN}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
+					# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 					# update topmost TokenMarker
 					if (self._tokenMarker is token.PreviousToken):
 						if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
@@ -131,7 +131,7 @@ class TokenToBlockParser:
 					yield self.LastBlock
 
 				# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-				if self.debug: print("  state={state!s: <50}  token={token!s: <40}   ".format(state=self, token=token))
+				if self.debug: print("  {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **Console.Foreground))
 				# execute a state
 				self.NextState(self)
 

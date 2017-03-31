@@ -145,7 +145,6 @@ class ItemBlock(Block):
 			if (token == "("):
 				parserState.Counter += 1
 			elif (token == ")"):
-				parserState.NewToken =      OpeningRoundBracketToken(token)
 				parserState.Counter -= 1
 				if (parserState.Counter == 0):
 					parserState.NewToken =    BoundaryToken(token)
