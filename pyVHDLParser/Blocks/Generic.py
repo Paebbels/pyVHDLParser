@@ -170,12 +170,10 @@ class EndBlock(Block):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-		elif isinstance(token, StringToken):
-			print(cls.KEYWORD[1])
-			if (token <= cls.KEYWORD[1].__KEYWORD__):
-				parserState.NewToken =    cls.KEYWORD[1](token)
-				parserState.NextState =   cls.stateKeyword2
-				return
+		elif (isinstance(token, StringToken) and (token <= cls.KEYWORD[1].__KEYWORD__)):
+			parserState.NewToken =    cls.KEYWORD[1](token)
+			parserState.NextState =   cls.stateKeyword2
+			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)

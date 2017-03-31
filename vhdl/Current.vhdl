@@ -1,6 +1,7 @@
 library IEEE;
 use     IEEE.std_logic_vector.all;
 
+/*uuu*/
 package pkg0 is
 	function func0 return integer;
 end package;
@@ -8,6 +9,13 @@ end package;
 -- This is the first package
 -- described in two comment lines
 entity system is
+	generic (
+		WIDTH : natural := 0
+	);
+	port (
+		Clock : bit;
+		Reset : std_logic
+	);
 end entity;
 
 architecture rtl of system is

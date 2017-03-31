@@ -135,6 +135,8 @@ class EntityGroup(Group):
 
 		if isinstance(currentBlock, Entity.NameBlock):
 			return
+		elif isinstance(currentBlock, Entity.BeginBlock):
+			return
 		elif isinstance(currentBlock, Entity.EndBlock):
 			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
@@ -174,7 +176,7 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of entity declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -208,6 +210,8 @@ class ArchitectureGroup(Group):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Architecture.NameBlock):
+			return
+		elif isinstance(currentBlock, Architecture.BeginBlock):
 			return
 		elif isinstance(currentBlock, Architecture.EndBlock):
 			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
@@ -248,7 +252,7 @@ class ArchitectureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of architecture declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -324,7 +328,7 @@ class PackageGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of package declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -401,7 +405,7 @@ class PackageBodyGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of package body declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -469,7 +473,7 @@ class ComponentGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of component declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -536,6 +540,6 @@ class ConfigurationGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise BlockParserException("End of configuration declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)

@@ -281,7 +281,7 @@ class Tokenizer:
 			# State: MultiLineComment
 			elif (tokenKind is cls.TokenKind.MultiLineComment):
 				buffer += char
-				if ((char == "\\") and (buffer[-2:-1] == "*")):
+				if (buffer[-2:] == "*/"):
 					previousToken = MultiLineCommentToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
 					yield previousToken
 
