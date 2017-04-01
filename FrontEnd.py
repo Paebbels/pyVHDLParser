@@ -196,12 +196,13 @@ if (mode & 6 == 6):
 		elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)):
 			print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
 
-		lastBlock = firstBlock
-		lastToken = firstBlock.StartToken
+		lastBlock : Block = firstBlock
+		endBlock  : Block = None
+		lastToken : Token = firstBlock.StartToken
 
 		for vhdlBlock in blockIterator:
 			if isinstance(vhdlBlock, EndOfDocumentBlock):
-				lastBlock = vhdlBlock
+				endBlock = vhdlBlock
 				break
 			tokenIterator = iter(vhdlBlock)
 
@@ -236,10 +237,10 @@ if (mode & 6 == 6):
 		else:
 			print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
 
-		if (not isinstance(lastBlock, EndOfDocumentBlock)):
-			print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
-		elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)):
-			print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
+		if (not isinstance(endBlock, EndOfDocumentBlock)):
+			print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=endBlock, **Console.Foreground))
+		elif (not isinstance(endBlock.StartToken, EndOfDocumentToken)):
+			print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=endBlock.StartToken, **Console.Foreground))
 
 	except ParserException as ex:
 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))

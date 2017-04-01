@@ -217,6 +217,7 @@ class StringLiteralToken(VHDLToken):
 
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
+	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
 		return "<StrLitToken    {value:.<40} at {pos!r}>".format(
@@ -231,6 +232,7 @@ class ExtendedIdentifier(VHDLToken):
 
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
+	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
 		return "<ExtIdentifier  {value:.<40} at {pos!r}>".format(
