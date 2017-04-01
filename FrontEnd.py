@@ -34,10 +34,11 @@ import sys
 
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Functions          import Console, Exit
-from pyVHDLParser.Token              import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, \
+	LinebreakToken, CommentToken, IndentationToken, Token
 from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, KeywordToken, DelimiterToken, IdentifierToken
 from pyVHDLParser.Token.Parser       import Tokenizer
-from pyVHDLParser.Blocks             import CommentBlock
+from pyVHDLParser.Blocks import CommentBlock, Block
 from pyVHDLParser.Blocks.Common      import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Structural  import Entity
@@ -206,23 +207,28 @@ if (mode & 6 == 6):
 				break
 			tokenIterator = iter(vhdlBlock)
 
+			relTokenPosition = 0
 			for token in tokenIterator:
+				relTokenPosition += 1
 				if (token.NextToken is None):
-					print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
+					print("{RED}Token({pos}) has an open end.{NOCOLOR}".format(pos=relTokenPosition, **Console.Foreground))
 					print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 					print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
 				elif (lastToken.NextToken is not token):
-					print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
+					print("{RED}Last token is not connected to the current ({pos}) one.{NOCOLOR}".format(pos=relTokenPosition, **Console.Foreground))
 					token11 = lastToken
-					token12 = "--------" if (token.PreviousToken is None) else token.PreviousToken.PreviousToken
 					token21 = lastToken.NextToken
-					token22 = token.PreviousToken
 					token31 = "--------" if (lastToken.NextToken is None) else lastToken.NextToken.NextToken
-					token32 = token
+					token41 = "--------" if (lastToken.NextToken.NextToken is None) else lastToken.NextToken.NextToken.NextToken
+					token12 = "--------" if (token.PreviousToken.PreviousToken is None) else token.PreviousToken.PreviousToken.PreviousToken
+					token22 = "--------" if (token.PreviousToken is None) else token.PreviousToken.PreviousToken
+					token32 = token.PreviousToken
+					token42 = token
 					print("{RED} Block: {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 					print("{RED} | Last:  {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **Console.Foreground))
 					print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **Console.Foreground))
-					print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
+					print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
+					print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token41, token2=token42, **Console.Foreground))
 				elif (token.PreviousToken is not lastToken):
 					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
 					print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))

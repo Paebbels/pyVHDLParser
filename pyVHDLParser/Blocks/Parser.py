@@ -104,7 +104,7 @@ class TokenToBlockParser:
 			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one
 				if (self.NewToken is not None):
-					# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
+					print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 					# update topmost TokenMarker
 					if (self._tokenMarker is token.PreviousToken):
 						if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))

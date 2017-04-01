@@ -299,9 +299,6 @@ class NameBlock2(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		# elif isinstance(token, SpaceToken):
-		# 	parserState.NextState =   cls.stateWhitespace3
-		# 	return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace3
@@ -331,6 +328,7 @@ class NameBlock2(Block):
 			return
 		elif (isinstance(token, StringToken) and (token <= "is")):
 			parserState.NewToken =    IsKeyword(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   cls.stateDeclarativeRegion
 			return
 		elif isinstance(token, LinebreakToken):
@@ -392,13 +390,14 @@ class NameBlock2(Block):
 					return
 
 			if (tokenValue == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
-				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.NextState = BeginBlock.stateSequentialRegion
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
 			elif (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
-				parserState.NextState = EndBlock.stateEndKeyword
+				parserState.NewToken =    EndKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   EndBlock.stateEndKeyword
 				return
 
 		raise TokenParserException(
