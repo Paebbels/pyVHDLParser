@@ -32,11 +32,11 @@ from typing                                         import List
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
-from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks, ParameterList as ParameterListBlocks
+from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Sequential                 import Function as FunctionBlock
+from pyVHDLParser.VHDLModel                         import Function as FunctionModel
 from pyVHDLParser.DocumentModel                     import DEBUG
-from pyVHDLParser.DocumentModel.VHDLModel           import Function as FunctionModel
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser

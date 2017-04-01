@@ -28,13 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
-from pyVHDLParser.DocumentModel.VHDLModel   import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
 from pyVHDLParser.Groups.Reference          import LibraryGroup
-from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
+from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
+from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
 
 # Type alias for type hinting
 ParserState = GroupToModelParser.GroupParserState

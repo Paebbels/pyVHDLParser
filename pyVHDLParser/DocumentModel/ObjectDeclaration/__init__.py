@@ -28,15 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
-from pyVHDLParser.DocumentModel.VHDLModel           import Constant as ConstantBase
+from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
+from pyVHDLParser.Functions                         import Console
 
 # Type alias for type hinting
-from pyVHDLParser.Functions                         import Console
-from pyVHDLParser.Token.Keywords                    import IdentifierToken
-
 ParserState = GroupToModelParser.GroupParserState
 
 

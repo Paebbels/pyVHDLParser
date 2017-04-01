@@ -28,20 +28,20 @@
 # ==============================================================================
 #
 # load dependencies
-from typing                                         import List
+from typing                                 import List
 
-from pyVHDLParser.Token.Keywords                    import IdentifierToken
-from pyVHDLParser.Blocks                            import TokenParserException
+from pyVHDLParser.Token.Keywords            import IdentifierToken
+from pyVHDLParser.Blocks                    import TokenParserException
 # from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks
 # from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
-from pyVHDLParser.Blocks.Sequential                 import Package as PackageBlock#, Function as FunctionBlock
-from pyVHDLParser.DocumentModel                     import DEBUG
-from pyVHDLParser.DocumentModel.VHDLModel           import Package as PackageModel
-# from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
-from pyVHDLParser.DocumentModel.Reference           import Library, Use
+from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock  # , Function as FunctionBlock
+from pyVHDLParser.VHDLModel                 import Package as PackageModel
+from pyVHDLParser.DocumentModel             import DEBUG
 # from pyVHDLParser.DocumentModel.Sequential.Function import Function
-from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
-from pyVHDLParser.Functions                         import Console
+# from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
+from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
+from pyVHDLParser.Functions                 import Console
 
 # Type alias for type hinting
 ParserState = GroupToModelParser.GroupParserState

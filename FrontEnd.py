@@ -44,7 +44,6 @@ from pyVHDLParser.Blocks.Structural  import Entity
 from pyVHDLParser.Blocks.List        import GenericList, PortList
 from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
 from pyVHDLParser.Groups             import BlockToGroupParser
-from pyVHDLParser.Filters.Comment    import StripAndFuse
 from pyVHDLParser.DocumentModel.Document import Document
 from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
 

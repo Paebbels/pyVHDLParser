@@ -28,13 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reference          import Library, Use, Context
+from pyVHDLParser.Blocks.Reference          import Library, Use
 # from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Component
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
-from pyVHDLParser.DocumentModel.VHDLModel   import Document as DocumentModel
+from pyVHDLParser.VHDLModel                 import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
-from pyVHDLParser.DocumentModel.Sequential  import Package as PackageModel, PackageBody as PackageBodyModel
 # from pyVHDLParser.DocumentModel.Structural  import Entity as EntityModel, Architecture as ArchitectureModel
+from pyVHDLParser.DocumentModel.Sequential  import Package as PackageModel, PackageBody as PackageBodyModel
 from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
 
 # Type alias for type hinting
