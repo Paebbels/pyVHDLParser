@@ -33,10 +33,10 @@ from pyVHDLParser import SourceCodePosition
 class Token:
 	def __init__(self, previousToken, start, end=None):
 		previousToken.NextToken = self
-		self._previousToken =     previousToken
-		self.NextToken =          None
-		self.Start =              start
-		self.End =                end
+		self._previousToken : Token =               previousToken
+		self.NextToken      : Token =               None
+		self.Start          : SourceCodePosition =  start
+		self.End            : SourceCodePosition =  end
 
 	def __len__(self):
 		return self.End.Absolute - self.Start.Absolute + 1
@@ -119,6 +119,7 @@ class CharacterToken(ValuedToken):
 
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
+	def __hash__(self):       return super().__hash__()
 
 	__CHARACTER_TRANSLATION__ = {
 		"\r":    "\\r",
@@ -129,7 +130,9 @@ class CharacterToken(ValuedToken):
 
 	def __str__(self):
 		return "<CharacterToken {char:.<40} at {pos!r}>".format(
-						char="'" + self.__repr__() + "'  ", pos=self.Start)
+			char="'" + self.__repr__() + "'  ",
+			pos=self.Start
+		)
 
 	def __repr__(self):
 		if (self.Value in self.__CHARACTER_TRANSLATION__):
@@ -148,7 +151,9 @@ class FusedCharacterToken(CharacterToken):
 
 	def __str__(self):
 		return "<FusedCharToken {char:.<40} at {pos!r}>".format(
-						char="'" + self.__repr__() + "'  ", pos=self.Start)
+			char="'" + self.__repr__() + "'  ",
+			pos=self.Start
+		)
 
 	def __repr__(self):
 		return self.Value
@@ -157,7 +162,9 @@ class FusedCharacterToken(CharacterToken):
 class SpaceToken(ValuedToken):
 	def __str__(self):
 		return "<SpaceToken     {value:.<40} at {pos!r}>".format(
-						value="'" + self.Value + "'  ", pos=self.Start)
+			value="'" + self.Value + "'  ",
+			pos=self.Start
+		)
 
 
 class StringToken(ValuedToken):
@@ -165,10 +172,13 @@ class StringToken(ValuedToken):
 	def __ne__(self, other):  return self.Value != other
 	def __le__(self, other):  return self.Value.lower() == other
 	def __ge__(self, other):  return self.Value.upper() == other
+	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
 		return "<StringToken    {value:.<40} at {pos!r}>".format(
-						value="'" + self.Value + "'  ", pos=self.Start)
+			value="'" + self.Value + "'  ",
+			pos=self.Start
+		)
 
 
 class VHDLToken(ValuedToken):   pass
@@ -192,10 +202,13 @@ class LiteralToken(VHDLToken):
 
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
+	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
 		return "<LiteralToken   {value:.<40} at {pos!r}>".format(
-						value="'" + self.Value + "'  ", pos=self.Start)
+			value="'" + self.Value + "'  ",
+			pos=self.Start
+		)
 
 
 class StringLiteralToken(VHDLToken):
@@ -207,7 +220,9 @@ class StringLiteralToken(VHDLToken):
 
 	def __str__(self):
 		return "<StrLitToken    {value:.<40} at {pos!r}>".format(
-			value="\"" + self.Value + "\"  ", pos=self.Start)
+			value="\"" + self.Value + "\"  ",
+			pos=self.Start
+		)
 
 
 class ExtendedIdentifier(VHDLToken):
@@ -219,7 +234,9 @@ class ExtendedIdentifier(VHDLToken):
 
 	def __str__(self):
 		return "<ExtIdentifier  {value:.<40} at {pos!r}>".format(
-			value="'" + self.Value + "'  ", pos=self.Start)
+			value="'" + self.Value + "'  ",
+			pos=self.Start
+		)
 
 
 class SingleLineCommentToken(CommentToken): pass
@@ -237,7 +254,6 @@ class IndentationToken(SpaceToken):
 		value = self.Value
 		value = value.replace("\t", "\\t")
 		return "<{content: <40} at {pos!r}>".format(
-			content="IndentToken '{value}'".format(
-				value=value
-			),
-			pos=self.Start)
+			content="IndentToken '{value}'".format(value=value),
+			pos=self.Start
+		)

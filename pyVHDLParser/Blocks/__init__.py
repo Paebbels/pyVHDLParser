@@ -27,10 +27,10 @@
 # limitations under the License.
 # ==============================================================================
 #
-from types                          import FunctionType
+from types                      import FunctionType
 
-from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token import CharacterToken
+from pyVHDLParser.Base          import ParserException
+from pyVHDLParser.Token         import CharacterToken, Token
 
 
 class TokenParserException(ParserException):
@@ -55,12 +55,12 @@ class Block(metaclass=MetaBlock):
 	__STATES__ = None
 
 	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
-		previousBlock.NextBlock = self
-		self._previousBlock =     previousBlock
-		self.NextBlock =          None
-		self.StartToken =         startToken
-		self.EndToken =           startToken if (endToken is None) else endToken
-		self.MultiPart =          multiPart
+		previousBlock.NextBlock =     self
+		self._previousBlock : Block = previousBlock
+		self.NextBlock      : Block = None
+		self.StartToken     : Token = startToken
+		self.EndToken       : Token = startToken if (endToken is None) else endToken
+		self.MultiPart =              multiPart
 
 	def __len__(self):
 		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1

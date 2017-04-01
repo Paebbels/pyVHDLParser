@@ -1,11 +1,9 @@
 library IEEE;
 use     IEEE.std_logic_vector.all;
 
-`if (VHDL == 2008) then
 package pkg0 is
 	function func0 return integer;
 end package;
-`end if
 
 -- This is the first package
 -- described in two comment lines

@@ -184,92 +184,94 @@ if (mode & 6 == 4):
 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 if (mode & 6 == 6):
-		print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-		wordTokenStream = Tokenizer.GetWordTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+	wordTokenStream = Tokenizer.GetWordTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 
-		try:
-			blockIterator = iter(vhdlBlockStream)
-			firstBlock = next(blockIterator)
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):
-				print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
-			elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)):
-				print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
+	try:
+		blockIterator = iter(vhdlBlockStream)
+		firstBlock = next(blockIterator)
+		if (not isinstance(firstBlock, StartOfDocumentBlock)):
+			print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
+		elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)):
+			print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
 
-			lastBlock = None
-			lastToken = firstBlock.StartToken
+		lastBlock = firstBlock
+		lastToken = firstBlock.StartToken
 
-			for vhdlBlock in blockIterator:
-				if isinstance(vhdlBlock, EndOfDocumentBlock):
-					lastBlock = vhdlBlock
-					break
-				tokenIterator = iter(vhdlBlock)
+		for vhdlBlock in blockIterator:
+			if isinstance(vhdlBlock, EndOfDocumentBlock):
+				lastBlock = vhdlBlock
+				break
+			tokenIterator = iter(vhdlBlock)
 
-				for token in tokenIterator:
-					if (token.NextToken is None):
-						print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
-						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-						print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					elif (lastToken.NextToken is not token):
-						print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
-						token11 = lastToken
-						token12 = "--------" if (token.PreviousToken is None) else token.PreviousToken.PreviousToken
-						token21 = lastToken.NextToken
-						token22 = token.PreviousToken
-						token31 = "--------" if (lastToken.NextToken is None) else lastToken.NextToken.NextToken
-						token32 = token
-						print("{RED} Block: {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-						print("{RED} | Last:  {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **Console.Foreground))
-						print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **Console.Foreground))
-						print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
-					elif (token.PreviousToken is not lastToken):
-						print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
-						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-						print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **Console.Foreground))
-						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **Console.Foreground))
-						print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-						print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **Console.Foreground))
+			for token in tokenIterator:
+				if (token.NextToken is None):
+					print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
+					print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+					print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				elif (lastToken.NextToken is not token):
+					print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
+					token11 = lastToken
+					token12 = "--------" if (token.PreviousToken is None) else token.PreviousToken.PreviousToken
+					token21 = lastToken.NextToken
+					token22 = token.PreviousToken
+					token31 = "--------" if (lastToken.NextToken is None) else lastToken.NextToken.NextToken
+					token32 = token
+					print("{RED} Block: {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+					print("{RED} | Last:  {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **Console.Foreground))
+					print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **Console.Foreground))
+					print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **Console.Foreground))
+				elif (token.PreviousToken is not lastToken):
+					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
+					print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **Console.Foreground))
+					print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **Console.Foreground))
+					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+					print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **Console.Foreground))
 
-					lastToken = token
-			else:
-				print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
+				lastToken = token
 
-			if (not isinstance(lastBlock, EndOfDocumentBlock)):
-				print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
-			elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)):
-				print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
+			lastBlock = vhdlBlock
+		else:
+			print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
 
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+		if (not isinstance(lastBlock, EndOfDocumentBlock)):
+			print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
+		elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)):
+			print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
 
-	# ==============================================================================
-		print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-		wordTokenStream = Tokenizer.GetWordTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	except ParserException as ex:
+		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	except NotImplementedError as ex:
+		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
-		try:
-			for vhdlBlock in vhdlBlockStream:
-				print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-				for token in vhdlBlock:
-					if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
-						print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					elif isinstance(token, (CommentToken)):
-						print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					elif isinstance(token, KeywordToken):
-						print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					elif isinstance(token, (StringToken, CharacterToken)):
-						print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					elif isinstance(token, (IdentifierToken)):
-						print("{GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
-					else:
-						print("{RED}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+# ==============================================================================
+	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+	wordTokenStream = Tokenizer.GetWordTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	try:
+		for vhdlBlock in vhdlBlockStream:
+			print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
+			for token in vhdlBlock:
+				if isinstance(token, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
+					print("{DARK_GRAY}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				elif isinstance(token, (CommentToken)):
+					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				elif isinstance(token, KeywordToken):
+					print("{DARK_CYAN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				elif isinstance(token, (StringToken, CharacterToken)):
+					print("{DARK_GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				elif isinstance(token, (IdentifierToken)):
+					print("{GREEN}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+				else:
+					print("{RED}  {token}{NOCOLOR}".format(token=token, **Console.Foreground))
+
+	except ParserException as ex:
+		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	except NotImplementedError as ex:
+		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 
 # ==============================================================================
