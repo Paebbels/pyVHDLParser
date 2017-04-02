@@ -1,6 +1,6 @@
+# Python cache and object files
 __pycache__/
 *.py[cod]
 
 # IntelliJ project files
-.idea
-*.iml
+/.idea/workspace.xml
