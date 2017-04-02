@@ -368,6 +368,7 @@ class NameBlock2(Block):
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
@@ -391,6 +392,7 @@ class NameBlock2(Block):
 			if (tokenValue == "begin"):
 				parserState.NewToken =    BeginKeyword(token)
 				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
 				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
 			elif (tokenValue == "end"):

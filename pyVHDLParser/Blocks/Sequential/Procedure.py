@@ -28,18 +28,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reference import Use
-from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
-from pyVHDLParser.Token import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, ReturnKeyword, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, \
-	UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
-from pyVHDLParser.Blocks import Block, TokenParserException, CommentBlock
-from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
+from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword
+from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
+from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
-from pyVHDLParser.Blocks.Generic import EndBlock as EndBlockBase, SequentialBeginBlock
-from pyVHDLParser.Blocks.List import GenericList, ParameterList
-from pyVHDLParser.Blocks.ObjectDeclaration import Constant, Variable
-from pyVHDLParser.Blocks.Reporting import Report
+from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase, SequentialBeginBlock
+from pyVHDLParser.Blocks.List               import GenericList, ParameterList
+from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable
+from pyVHDLParser.Blocks.Reference          import Use
+from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Sequential         import Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
@@ -281,13 +280,15 @@ class NameBlock2(Block):
 					return
 
 			if (tokenValue == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
-				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.NextState = BeginBlock.stateSequentialRegion
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
 			elif (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
-				parserState.NextState = EndBlock.stateEndKeyword
+				parserState.NewToken =    EndKeyword(token)
+				parserState.NextState =   EndBlock.stateEndKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 
 		raise TokenParserException(

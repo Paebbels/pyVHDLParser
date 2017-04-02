@@ -188,8 +188,8 @@ class CommentToken(VHDLToken):
 		value = value.replace("\n", "\\n")
 		value = value.replace("\r", "\\r")
 		value = value.replace("\t", "\\t")
-		return "<{content: <40} at {pos!r}>".format(
-			content="{name} '{value}'".format(
+		return "<{content: <91} at {pos!r}>".format(
+			content="{name: <30} '{value}'".format(
 				name=self.__class__.__name__,
 				value=value
 			),
@@ -255,7 +255,9 @@ class IndentationToken(SpaceToken):
 	def __str__(self):
 		value = self.Value
 		value = value.replace("\t", "\\t")
-		return "<{content: <40} at {pos!r}>".format(
-			content="IndentToken '{value}'".format(value=value),
-			pos=self.Start
-		)
+		return "<{content: <91} at {pos!r}>".format(
+			content="{name: <30} '{value}'".format(
+				name=self.__class__.__name__,
+				value=value
+			),
+			pos=self.Start)

@@ -182,8 +182,9 @@ class NameBlock(Block):
 					return
 
 			if (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
-				parserState.NextState = EndBlock.stateEndKeyword
+				parserState.NewToken =    EndKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   EndBlock.stateEndKeyword
 				return
 
 		raise TokenParserException(

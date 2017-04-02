@@ -28,17 +28,19 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reference import Use
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, VariableKeyword, ProcessKeyword, BeginKeyword
+from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword
+from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Blocks                    import Block, CommentBlock, TokenParserException
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import SensitivityList
 from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable
-from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
+from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting          import Report
+from pyVHDLParser.Blocks.Sequential         import Procedure, Function
+from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
 
 # Type alias for type hinting
@@ -46,6 +48,17 @@ ParserState = TokenToBlockParser.TokenParserState
 
 
 class OpenBlock(Block):
+	KEYWORDS = {
+		# Keyword     Transition
+		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
+		VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
+		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+		# PureKeyword:      Function.NameBlock.statePureKeyword,
+		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+	}
+
 	@classmethod
 	def stateProcessKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -103,6 +116,26 @@ class OpenBlock(Block):
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
+		elif isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+
+			for keyword in cls.KEYWORDS:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken = keyword(token)
+					parserState.NextState =   OpenBlock2.stateDeclarativeRegion
+					parserState.PushState =   cls.KEYWORDS[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "begin"):
+				parserState.NewToken =    BeginKeyword(token)
+				_ =                       BeginBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   BeginBlock.stateSequentialRegion
+				return
 
 		raise TokenParserException("Expected '(' after keyword PROCESS.", token)
 
@@ -112,13 +145,28 @@ class OpenBlock2(Block):
 	def stateAfterSensitivityList(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			if (token <= "is"):
-				parserState.NewToken = IsKeyword(token)
-				parserState.NewBlock = OpenBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			tokenValue = token.Value.lower()
+
+			for keyword in OpenBlock.KEYWORDS:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.NextState =   cls.stateDeclarativeRegion
+					parserState.PushState =   OpenBlock.KEYWORDS[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "begin"):
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
-			else:
-				parserState.NextState = cls.stateDeclarativeRegion
-				parserState.NextState(parserState)
+			elif (tokenValue == "is"):
+				parserState.NewToken =    IsKeyword(token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   OpenBlock2.stateDeclarativeRegion
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -143,12 +191,30 @@ class OpenBlock2(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "is")):
-			parserState.NewToken =      IsKeyword(token)
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateDeclarativeRegion
-			return
+		if isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			for keyword in OpenBlock.KEYWORDS:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.NextState =   cls.stateDeclarativeRegion
+					parserState.PushState =   OpenBlock.KEYWORDS[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "begin"):
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   BeginBlock.stateSequentialRegion
+				return
+			elif (tokenValue == "is"):
+				parserState.NewToken =    IsKeyword(token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   cls.stateDeclarativeRegion
+				return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
@@ -179,8 +245,8 @@ class OpenBlock2(Block):
 			UseKeyword:       Use.UseBlock.stateUseKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
-			# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
-			# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
 			# PureKeyword:      Function.NameBlock.statePureKeyword,
 			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
 		}
@@ -189,6 +255,7 @@ class OpenBlock2(Block):
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
@@ -210,8 +277,10 @@ class OpenBlock2(Block):
 					return
 
 			if (tokenValue == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
-				parserState.NextState = BeginBlock.stateSequentialRegion
+				parserState.NewToken =    BeginKeyword(token)
+				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
 
 		raise TokenParserException(

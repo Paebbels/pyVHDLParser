@@ -65,7 +65,6 @@ class TokenToBlockParser:
 		def PushState(self, value):
 			self._stack.append((
 				self.NextState,
-				self._tokenMarker,
 				self.Counter
 			))
 			self.NextState =    value
@@ -92,8 +91,8 @@ class TokenToBlockParser:
 			for i in range(n):
 				top = self._stack.pop()
 			self.NextState =    top[0]
-			self._tokenMarker = top[1]
-			self.Counter =      top[2]
+			self.Counter =      top[1]
+			self._tokenMarker = None
 
 		def GetGenerator(self, iterator):
 			from pyVHDLParser.Token             import EndOfDocumentToken
@@ -104,7 +103,7 @@ class TokenToBlockParser:
 			for token in iterator:
 				# overwrite an existing token and connect the next token with the new one
 				if (self.NewToken is not None):
-					print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
+					# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 					# update topmost TokenMarker
 					if (self._tokenMarker is token.PreviousToken):
 						if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))

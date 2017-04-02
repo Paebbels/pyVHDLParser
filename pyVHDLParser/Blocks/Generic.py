@@ -349,6 +349,7 @@ class ConcurrentBeginBlock(Block):
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
@@ -398,6 +399,7 @@ class SequentialBeginBlock(Block):
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			parserState.TokenMarker = None
 			return
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
