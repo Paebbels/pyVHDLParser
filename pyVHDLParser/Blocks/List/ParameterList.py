@@ -103,11 +103,7 @@ class OpenBlock(Block):
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ")")):
-			parserState.Pop()
-			parserState.TokenMarker = token
-			return
-		elif isinstance(token, StringToken):
+		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   ItemBlock.stateItemRemainder

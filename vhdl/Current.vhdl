@@ -1,6 +1,6 @@
 architecture rtl of system is
 begin
-	process
+	process(all)
 		variable halt : bit;
 	begin
 	end process;

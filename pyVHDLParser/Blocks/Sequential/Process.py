@@ -174,14 +174,12 @@ class OpenBlock2(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       LinebreakBlock(parserState.NewBlock, token)
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
