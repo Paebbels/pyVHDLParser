@@ -34,6 +34,8 @@ from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
 from pyVHDLParser.Blocks.Object.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Object.Variable import VariableBlock
 from pyVHDLParser.Blocks.Reference.Use import UseBlock
+from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
+from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential import Function, Procedure
 from pyVHDLParser.Groups import BlockParserState, Group, BlockParserException
 
@@ -51,9 +53,39 @@ ParserState = BlockParserState
 class AssertGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		marker = parserState.Block
+		if parserState.Block.MultiPart:
+			for block in parserState.GetBlockIterator:
+				if (isinstance(block, AssertBlock) and not block.MultiPart):
+					marker2 = block
+					break
+			else:
+				raise BlockParserException("End of multi parted constant declaration not found.", block)
+		else:
+			marker2 = marker
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		parserState.NextGroup = cls(parserState.LastGroup, marker, marker2)
+		parserState.Pop()
+		return
+
+
+class ReportGroup(Group):
+	@classmethod
+	def stateParse(cls, parserState: ParserState):
+		marker = parserState.Block
+		if parserState.Block.MultiPart:
+			for block in parserState.GetBlockIterator:
+				if (isinstance(block, ReportBlock) and not block.MultiPart):
+					marker2 = block
+					break
+			else:
+				raise BlockParserException("End of multi parted constant declaration not found.", block)
+		else:
+			marker2 = marker
+
+		parserState.NextGroup = cls(parserState.LastGroup, marker, marker2)
+		parserState.Pop()
+		return
 
 
 class SignalAssignmentGroup(Group):

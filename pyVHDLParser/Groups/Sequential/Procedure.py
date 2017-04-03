@@ -106,12 +106,14 @@ class ProcedureGroup(Group):
 			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, ParameterList.OpenBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   ParameterListGroup.stateParse
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
@@ -130,7 +132,7 @@ class ProcedureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of procedure declarative region not found.", currentBlock)
+		raise BlockParserException("End of generic clause not found.", currentBlock)
 
 
 	@classmethod
@@ -143,6 +145,7 @@ class ProcedureGroup(Group):
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
@@ -161,7 +164,7 @@ class ProcedureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of procedure declarative region not found.", currentBlock)
+		raise BlockParserException("End of parameters not found.", currentBlock)
 
 	@classmethod
 	def stateParseDeclarations(cls, parserState: ParserState):

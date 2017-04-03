@@ -42,12 +42,15 @@ from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Function
 from pyVHDLParser.Groups                  import BlockParserState, Group, BlockParserException
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
+from pyVHDLParser.Groups.Concurrent import ReportGroup
 from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
 from pyVHDLParser.Groups.Reference        import UseGroup
 
 
 # Type alias for type hinting
+from pyVHDLParser.Token.Keywords import EndToken
+
 ParserState = BlockParserState
 
 
@@ -58,11 +61,11 @@ class FunctionGroup(Group):
 		VariableBlock: VariableGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
-		# Function.NameBlock:       FunctionGroup,
-		# Procedure.NameBlock:      ProcedureGroup
+		# Function.NameBlock:       FunctionGroup,  # FIXME: unresolvable reference
+		# Procedure.NameBlock:      ProcedureGroup  # FIXME: unresolvable reference
 	}
 	STATEMENT_SIMPLE_BLOCKS = {
-		# ReportBlock:              ReportGroup
+		ReportBlock:              ReportGroup
 	}
 	STATEMENT_COMPOUND_BLOCKS = {
 		# If.OpenBlock:        IfGroup
@@ -106,12 +109,23 @@ class FunctionGroup(Group):
 			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, ParameterList.OpenBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   ParameterListGroup.stateParse
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, Function.NameBlock2):
+			if isinstance(currentBlock.EndToken, EndToken):
+				parserState.Pop()
+			else:
+				parserState.NextState =   cls.stateParseDeclarations
+				# FIXME: this creates a hole in the chain of groups
+				# parserState.NextGroup =   FunctionGroup(parserState.LastGroup, currentBlock)
+				# parserState.BlockMarker = currentBlock
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
@@ -130,18 +144,19 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of function declarative region not found.", currentBlock)
+		raise BlockParserException("End of generic clause not found.", currentBlock)
 
 	@classmethod
 	def stateParseParameters(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
-			parserState.NextState =   cls.stateParseDeclarations
+			parserState.NextState =   cls.stateParse2
 			parserState.PushState =   ParameterListGroup.stateParse
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
@@ -160,7 +175,20 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of function declarative region not found.", currentBlock)
+		raise BlockParserException("End of parameters not found.", currentBlock)
+
+	@classmethod
+	def stateParse2(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		# consume OpenBlock
+		if isinstance(currentBlock, Function.NameBlock2):
+			parserState.NextGroup =   cls(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.NextState =   cls.stateParseDeclarations
+			return
+		else:
+			raise BlockParserException("Begin of function expected.", currentBlock)
 
 	@classmethod
 	def stateParseDeclarations(cls, parserState: ParserState):
@@ -254,38 +282,3 @@ class FunctionGroup(Group):
 			return
 
 		raise BlockParserException("End of function declaration not found.", currentBlock)
-
-
-
-
-class ConcurrentCompoundGroup(Group):
-	DECLARATION_SIMPLE_BLOCKS = {
-		UseBlock:                 UseGroup,
-		ConstantBlock:            ConstantGroup,
-		VariableBlock:            VariableGroup
-	}
-	DECLARATION_COMPOUND_BLOCKS = {
-		# Function.NameBlock:       FunctionGroup,
-		# Procedure.NameBlock:      ProcedureGroup
-	}
-	STATEMENT_SIMPLE_BLOCKS = {
-		# ReportBlock:              ReportGroup
-	}
-	STATEMENT_COMPOUND_BLOCKS = {
-		# If.OpenBlock:        IfGroup
-	}
-
-	def __init__(self, previousGroup, startBlock, endBlock=None):
-		super().__init__(previousGroup, startBlock, endBlock)
-
-		self._subGroups = dict(ChainMap(
-			{v:[] for v in chain(
-				self.DECLARATION_SIMPLE_BLOCKS.values(),
-				self.DECLARATION_COMPOUND_BLOCKS.values(),
-				self.STATEMENT_SIMPLE_BLOCKS.values(),
-				self.STATEMENT_COMPOUND_BLOCKS.values()
-			)},
-			{ CommentGroup:     [],
-				WhitespaceGroup:  []
-			}
-		))
