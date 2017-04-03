@@ -284,8 +284,14 @@ if (mode & 6 == 6):
 # ==============================================================================
 if (mode & 8 == 8):
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = [token for token in Tokenizer.GetWordTokenizer(content)]
-	vhdlBlockStream = [block for block in TokenToBlockParser.Transform(wordTokenStream)]
+	try:
+		wordTokenStream = [token for token in Tokenizer.GetWordTokenizer(content)]
+		vhdlBlockStream = [block for block in TokenToBlockParser.Transform(wordTokenStream)]
+	except ParserException as ex:
+		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	except NotImplementedError as ex:
+		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+
 	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
 	try:

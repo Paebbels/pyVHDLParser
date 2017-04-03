@@ -90,6 +90,7 @@ class BlockParserState:
 		return self.NextState
 	@PushState.setter
 	def PushState(self, value):
+		assert (self.NextGroup is not None)
 		self._stack.append((
 			self.NextState,
 			self._blockMarker,
@@ -141,6 +142,12 @@ class BlockParserState:
 		print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
 		if (self.NextGroup.InnerGroup is None):
 			self.NextGroup.InnerGroup = self.NewGroup
+		if (self.NewGroup.__class__ not in self.NextGroup._subGroups):
+			raise BlockParserException("Group '{group1}' not supported in {group2}.".format(
+				group1=self.NewGroup.__class__,
+				group2=self.NextGroup.__class__.__qualname__
+			), self.Block)
+
 		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
 	def GetGenerator(self):

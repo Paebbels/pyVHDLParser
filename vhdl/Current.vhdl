@@ -1,12 +1,11 @@
 architecture rtl of system is
 begin
-	process(all)
+	process(Clock, Reset)
 		variable halt : bit;
 	begin
 	end process;
-	process begin end process;
 end architecture;
-x
+
 context ctx is
 	library OSVVM;
 	use     OSVVM.Scoreborad.all;

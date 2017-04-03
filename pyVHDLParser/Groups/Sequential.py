@@ -28,13 +28,18 @@
 # ==============================================================================
 #
 # load dependencies
+from collections import ChainMap
+from itertools import chain
+
 from pyVHDLParser.Blocks import CommentBlock
-from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, EmptyLineBlock
+from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
+from pyVHDLParser.Blocks.List import SensitivityList
 from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.Blocks.ObjectDeclaration.Variable import VariableBlock
 from pyVHDLParser.Blocks.Reference.Use import UseBlock
-from pyVHDLParser.Blocks.Sequential import Function, Procedure
+from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
+from pyVHDLParser.Blocks.Sequential import Function, Procedure, Process
 from pyVHDLParser.Groups import BlockParserState, Group, BlockParserException
 
 
@@ -48,147 +53,94 @@ from pyVHDLParser.Token.Keywords import EndToken
 ParserState = BlockParserState
 
 
-class FunctionGroup(Group):
-	__SIMPLE_BLOCKS__ = {
+class CompoundGroup(Group):
+	DECLARATION_SIMPLE_BLOCKS   : dict = None
+	DECLARATION_COMPOUND_BLOCKS : dict = None
+	STATEMENT_SIMPLE_BLOCKS     : dict = None
+	STATEMENT_COMPOUND_BLOCKS   : dict = None
+
+
+class SequentialCompoundGroup(CompoundGroup):
+	DECLARATION_SIMPLE_BLOCKS = {
 		UseBlock:                 UseGroup,
 		ConstantBlock:            ConstantGroup,
 		VariableBlock:            VariableGroup
 	}
-	# __COMPOUND_BLOCKS__ = {
-	# 	# Function.NameBlock:       FunctionGroup,
-	# 	Procedure.NameBlock:      ProcedureGroup
-	# }
-
-	def __init__(self, previousGroup, startBlock, endBlock=None):
-		super().__init__(previousGroup, startBlock, endBlock)
-
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           [],
-			FunctionGroup:      [],
-			ProcedureGroup:     []
-		}
-
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		currentBlock = parserState.Block
-
-		__COMPOUND_BLOCKS__ = {
-			Function.NameBlock:       FunctionGroup,
-			Procedure.NameBlock: ProcedureGroup
-		}
-
-		if isinstance(currentBlock, Function.NameBlock):
-			return
-		elif isinstance(currentBlock, Function.NameBlock2):
-			if isinstance(currentBlock.EndToken, EndToken):
-				print("semicolon found -> function prototype")
-				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
-				parserState.Pop()
-
-			return
-		elif isinstance(currentBlock, Function.BeginBlock):
-			return
-		elif isinstance(currentBlock, Function.EndBlock):
-			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
-			parserState.Pop()
-			return
-		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			parserState.PushState = WhitespaceGroup.stateParse
-			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
-			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
-		elif isinstance(currentBlock, CommentBlock):
-			parserState.PushState = CommentGroup.stateParse
-			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
-			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
-		else:
-			for block in cls.__SIMPLE_BLOCKS__:
-				if isinstance(currentBlock, block):
-					group = cls.__SIMPLE_BLOCKS__[block]
-					parserState.PushState =   group.stateParse
-					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
-
-			for block in __COMPOUND_BLOCKS__:
-				if isinstance(currentBlock, block):
-					group =                   __COMPOUND_BLOCKS__[block]
-					parserState.PushState =   group.stateParse
-					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
-
-		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
-			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
-			return
-
-		raise BlockParserException("End of context declaration not found.".format(
-			block=currentBlock.__class__.__qualname__
-		), currentBlock)
-
-
-class ProcedureGroup(Group):
-	__SIMPLE_BLOCKS__ = {
-		UseBlock:                 UseGroup,
-		ConstantBlock:            ConstantGroup,
-		VariableBlock:            VariableGroup
-	}
-	__COMPOUND_BLOCKS__ = {
-		Function.NameBlock:       FunctionGroup,
+	DECLARATION_COMPOUND_BLOCKS = {
+		# Function.NameBlock:       FunctionGroup,
 		# Procedure.NameBlock:      ProcedureGroup
 	}
+	STATEMENT_SIMPLE_BLOCKS = {
+		# ReportBlock:              ReportGroup
+	}
+	STATEMENT_COMPOUND_BLOCKS = {
+		# If.OpenBlock:        IfGroup
+	}
+	COMPOUND_NAME = ""
 
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
 
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           [],
-			FunctionGroup:      [],
-			ProcedureGroup:     []
-		}
+		self._subGroups = dict(ChainMap(
+			{v:[] for v in chain(
+				self.DECLARATION_SIMPLE_BLOCKS.values(),
+				self.DECLARATION_COMPOUND_BLOCKS.values(),
+				self.STATEMENT_SIMPLE_BLOCKS.values(),
+				self.STATEMENT_COMPOUND_BLOCKS.values()
+			)},
+			{ CommentGroup:     [],
+				WhitespaceGroup:  []
+			}
+		))
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
-		if isinstance(currentBlock, Procedure.NameBlock):
-			return
-		elif isinstance(currentBlock, Procedure.EndBlock):
-			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
-			return
-		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			parserState.PushState = WhitespaceGroup.stateParse
-			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
+		# consume OpenBlock
+		if isinstance(currentBlock, Process.OpenBlock):
+			parserState.NextGroup =   cls(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
-		elif isinstance(currentBlock, CommentBlock):
-			parserState.PushState = CommentGroup.stateParse
-			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
-			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
+			parserState.NextState =   cls.stateParseDeclarations
 			return
 		else:
-			for block in cls.__SIMPLE_BLOCKS__:
+			raise BlockParserException("Begin of {name} expected.".format(
+					name=cls.COMPOUND_NAME
+				), currentBlock)
+
+	@classmethod
+	def stateParseDeclarations(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, Process.BeginBlock):
+			parserState.NextState =   cls.stateParseStatements
+			return
+		elif isinstance(currentBlock, (SensitivityList.OpenBlock, SensitivityList.ItemBlock, SensitivityList.DelimiterBlock, SensitivityList.CloseBlock)):
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		else:
+			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
-					group = cls.__SIMPLE_BLOCKS__[block]
+					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-			for block in cls.__COMPOUND_BLOCKS__:
+			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
-					group =                   cls.__COMPOUND_BLOCKS__[block]
-					parserState.NextGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
+					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
@@ -199,9 +151,68 @@ class ProcedureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
-			block=currentBlock.__class__.__qualname__
-		), currentBlock)
+		raise BlockParserException("End of {name} declarative region not found.".format(
+				name=cls.COMPOUND_NAME
+			), currentBlock)
+
+	@classmethod
+	def stateParseStatements(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, Process.EndBlock):
+			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.Pop()
+			parserState.BlockMarker = None
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		else:
+			for block in cls.STATEMENT_SIMPLE_BLOCKS:
+				if isinstance(currentBlock, block):
+					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+			for block in cls.STATEMENT_COMPOUND_BLOCKS:
+				if isinstance(currentBlock, block):
+					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of {name} declaration not found.".format(
+				name=cls.COMPOUND_NAME
+			), currentBlock)
+
+
+class FunctionGroup(SequentialCompoundGroup):
+	COMPOUND_NAME = "function"
+
+
+class ProcedureGroup(SequentialCompoundGroup):
+	COMPOUND_NAME = "procedure"
+
+
+class ProcessGroup(SequentialCompoundGroup):
+	COMPOUND_NAME = "process"
 
 
 class IfGroup(Group):
