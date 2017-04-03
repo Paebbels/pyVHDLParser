@@ -1,6 +1,19 @@
+entity system is
+	generic (
+		WIDTH : natural := 0
+	);
+	port (
+		Clock : bit;
+		Reset : std_logic
+	);
+end entity;
+
+
+-- This is the first package
+-- described in two comment lines
 architecture rtl of system is
 begin
-	process(Clock, Reset)
+	process (Clock, Reset)
 		variable halt : bit;
 	begin
 	end process;
@@ -32,15 +45,4 @@ package body pkg0 is
 	end function func0;
 end package body;
 
--- This is the first package
--- described in two comment lines
-entity system is
-	generic (
-		WIDTH : natural := 0
-	);
-	port (
-		Clock : bit;
-		Reset : std_logic
-	);
-end entity;
 

@@ -28,12 +28,15 @@
 # ==============================================================================
 #
 # load dependencies
+from collections import ChainMap
+from itertools import chain
+
 from pyVHDLParser.Blocks                    import CommentBlock
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, EmptyLineBlock
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
+from pyVHDLParser.Blocks.List import GenericList, ParameterList, PortList
 from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
 from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
-from pyVHDLParser.Blocks.Object.Variable    import VariableBlock
 from pyVHDLParser.Blocks.Reference          import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
@@ -43,7 +46,8 @@ from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Compone
 from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
 from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Concurrent         import AssertGroup
-from pyVHDLParser.Groups.Object             import ConstantGroup, VariableGroup, SignalGroup
+from pyVHDLParser.Groups.List import GenericListGroup, ParameterListGroup, PortListGroup
+from pyVHDLParser.Groups.Object             import ConstantGroup, SignalGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
 from pyVHDLParser.Functions                 import Console
 
@@ -114,61 +118,153 @@ class ContextGroup(Group):
 
 
 class EntityGroup(Group):
-	__SIMPLE_BLOCKS__ = {
-		LibraryBlock:             LibraryGroup,
-		UseBlock:                 UseGroup
+	DECLARATION_SIMPLE_BLOCKS = {
+		GenericList.OpenBlock:  GenericListGroup,
+		PortList.OpenBlock:     PortListGroup,
+		UseBlock:               UseGroup,
+		ConstantBlock:          ConstantGroup
 	}
-	__COMPOUND_BLOCKS__ = {
-		Function.NameBlock:       FunctionGroup,
-		Procedure.NameBlock:      ProcedureGroup
+	DECLARATION_COMPOUND_BLOCKS = {}
+	STATEMENT_SIMPLE_BLOCKS = {
+		AssertBlock:             AssertGroup
+	}
+	STATEMENT_COMPOUND_BLOCKS = {
+		Process.OpenBlock:       ProcessGroup,
 	}
 
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
 
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           []
-		}
+		self._subGroups = dict(ChainMap(
+			{v: [] for v in chain(
+				self.DECLARATION_SIMPLE_BLOCKS.values(),
+				self.DECLARATION_COMPOUND_BLOCKS.values(),
+				self.STATEMENT_SIMPLE_BLOCKS.values(),
+				self.STATEMENT_COMPOUND_BLOCKS.values()
+			)},
+			{CommentGroup: [],
+			 WhitespaceGroup: []
+			 }
+		))
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
+		# consume OpenBlock
 		if isinstance(currentBlock, Entity.NameBlock):
+			parserState.NextGroup =   cls(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.NextState =   cls.stateParseGenerics
 			return
-		elif isinstance(currentBlock, Entity.BeginBlock):
+		else:
+			raise BlockParserException("Begin of entity expected.", currentBlock)
+
+	@classmethod
+	def stateParseGenerics(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, GenericList.OpenBlock):
+			parserState.NextState =   cls.stateParsePorts
+			parserState.PushState =   GenericListGroup.stateParse
+			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, PortList.OpenBlock):
+			parserState.NextState =   cls.stateParseDeclarations
+			parserState.PushState =   PortListGroup.stateParse
+			parserState.NextGroup =   PortListGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of generic clause not found.", currentBlock)
+
+	@classmethod
+	def stateParsePorts(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, PortList.OpenBlock):
+			parserState.NextState =   cls.stateParseDeclarations
+			parserState.PushState =   PortListGroup.stateParse
+			parserState.NextGroup =   PortListGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of port clause not found.", currentBlock)
+
+	@classmethod
+	def stateParseDeclarations(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, Entity.BeginBlock):
+			parserState.NextState =   cls.stateParseStatements
 			return
 		elif isinstance(currentBlock, Entity.EndBlock):
-			parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
 			parserState.BlockMarker = None
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			parserState.PushState = WhitespaceGroup.stateParse
-			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
+			parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			parserState.PushState = CommentGroup.stateParse
-			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
+			parserState.ReIssue =     True
 			return
 		else:
-			for block in cls.__SIMPLE_BLOCKS__:
+			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
-					group = cls.__SIMPLE_BLOCKS__[block]
+					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-			for block in cls.__COMPOUND_BLOCKS__:
+			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
-					group =                   cls.__COMPOUND_BLOCKS__[block]
+					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
@@ -179,9 +275,52 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of entity declaration not found.".format(
-			block=currentBlock.__class__.__qualname__
-		), currentBlock)
+		raise BlockParserException("End of entity declarative region not found.", currentBlock)
+
+	@classmethod
+	def stateParseStatements(cls, parserState: ParserState):
+		currentBlock = parserState.Block
+
+		if isinstance(currentBlock, Entity.EndBlock):
+			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			parserState.Pop()
+			parserState.BlockMarker = None
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		else:
+			for block in cls.STATEMENT_SIMPLE_BLOCKS:
+				if isinstance(currentBlock, block):
+					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+			for block in cls.STATEMENT_COMPOUND_BLOCKS:
+				if isinstance(currentBlock, block):
+					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
+					parserState.PushState =   group.stateParse
+					parserState.BlockMarker = currentBlock
+					parserState.ReIssue =     True
+					return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of entity declaration not found.", currentBlock)
 
 
 class ArchitectureGroup(Group):

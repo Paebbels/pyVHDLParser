@@ -41,14 +41,23 @@ ParserState = BlockParserState
 
 
 class GenericListGroup(Group):
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:         [],
+			WhitespaceGroup:      [],
+			GenericListItemGroup: []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
-			pass
-		elif isinstance(currentBlock, GenericList.ItemBlock):
-			pass
+			return
+		elif isinstance(currentBlock, (GenericList.ItemBlock, GenericList.DelimiterBlock)):
+			return
 		elif isinstance(currentBlock, GenericList.CloseBlock):
 			parserState.Pop()
 			return
@@ -98,14 +107,23 @@ class GenericMapItemGroup(Group):
 
 
 class PortListGroup(Group):
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:       [],
+			WhitespaceGroup:    [],
+			PortListItemGroup:  []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, PortList.OpenBlock):
-			pass
-		elif isinstance(currentBlock, PortList.ItemBlock):
-			pass
+			return
+		elif isinstance(currentBlock, (PortList.ItemBlock, PortList.DelimiterBlock)):
+			return
 		elif isinstance(currentBlock, PortList.CloseBlock):
 			parserState.Pop()
 			return
@@ -155,14 +173,23 @@ class PortMapItemGroup(Group):
 
 
 class ParameterListGroup(Group):
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:           [],
+			WhitespaceGroup:        [],
+			ParameterListItemGroup: []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, ParameterList.OpenBlock):
-			pass
-		elif isinstance(currentBlock, ParameterList.ItemBlock):
-			pass
+			return
+		elif isinstance(currentBlock, (ParameterList.ItemBlock, ParameterList.DelimiterBlock)):
+			return
 		elif isinstance(currentBlock, ParameterList.CloseBlock):
 			parserState.Pop()
 			return
@@ -212,14 +239,23 @@ class ParameterMapItemGroup(Group):
 
 
 class SensitivityListGroup(Group):
+	def __init__(self, previousGroup, startBlock, endBlock=None):
+		super().__init__(previousGroup, startBlock, endBlock)
+
+		self._subGroups = {
+			CommentGroup:             [],
+			WhitespaceGroup:          [],
+			SensitivityListItemGroup: []
+		}
+
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, SensitivityList.OpenBlock):
-			pass
-		elif isinstance(currentBlock, SensitivityList.ItemBlock):
-			pass
+			return
+		elif isinstance(currentBlock, (SensitivityList.ItemBlock, SensitivityList.DelimiterBlock)):
+			return
 		elif isinstance(currentBlock, SensitivityList.CloseBlock):
 			parserState.Pop()
 			return

@@ -42,7 +42,7 @@ from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Process
 from pyVHDLParser.Groups                  import BlockParserState, Group, BlockParserException
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
-from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup
+from pyVHDLParser.Groups.List import GenericListGroup, ParameterListGroup, SensitivityListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
 from pyVHDLParser.Groups.Reference        import UseGroup
 
@@ -102,10 +102,11 @@ class ProcessGroup(Group):
 
 		if isinstance(currentBlock, SensitivityList.OpenBlock):
 			parserState.NextState =   cls.stateParseDeclarations
-			parserState.PushState =   GenericListGroup.stateParse
-			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
+			parserState.PushState =   SensitivityListGroup.stateParse
+			parserState.NextGroup =   SensitivityListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
@@ -124,7 +125,7 @@ class ProcessGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of process declarative region not found.", currentBlock)
+		raise BlockParserException("End of process sensitivity list not found.", currentBlock)
 
 	@classmethod
 	def stateParseDeclarations(cls, parserState: ParserState):

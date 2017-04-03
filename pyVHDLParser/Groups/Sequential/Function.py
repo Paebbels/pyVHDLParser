@@ -132,7 +132,6 @@ class FunctionGroup(Group):
 
 		raise BlockParserException("End of function declarative region not found.", currentBlock)
 
-
 	@classmethod
 	def stateParseParameters(cls, parserState: ParserState):
 		currentBlock = parserState.Block
