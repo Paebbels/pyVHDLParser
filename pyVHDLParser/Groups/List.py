@@ -28,18 +28,49 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Blocks            import CommentBlock
+from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Document   import EndOfDocumentBlock
+from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
+from pyVHDLParser.Groups            import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Groups.Comment    import WhitespaceGroup, CommentGroup
 
 # Type alias for type hinting
+
 ParserState = BlockParserState
 
 
 class GenericListGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		currentBlock = parserState.Block
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		if isinstance(currentBlock, GenericList.OpenBlock):
+			pass
+		elif isinstance(currentBlock, GenericList.ItemBlock):
+			pass
+		elif isinstance(currentBlock, GenericList.CloseBlock):
+			parserState.Pop()
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
 class GenericListItemGroup(Group):
@@ -69,9 +100,34 @@ class GenericMapItemGroup(Group):
 class PortListGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		currentBlock = parserState.Block
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		if isinstance(currentBlock, PortList.OpenBlock):
+			pass
+		elif isinstance(currentBlock, PortList.ItemBlock):
+			pass
+		elif isinstance(currentBlock, PortList.CloseBlock):
+			parserState.Pop()
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
 class PortListItemGroup(Group):
@@ -101,9 +157,34 @@ class PortMapItemGroup(Group):
 class ParameterListGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		currentBlock = parserState.Block
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		if isinstance(currentBlock, ParameterList.OpenBlock):
+			pass
+		elif isinstance(currentBlock, ParameterList.ItemBlock):
+			pass
+		elif isinstance(currentBlock, ParameterList.CloseBlock):
+			parserState.Pop()
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
 class ParameterListItemGroup(Group):
@@ -133,9 +214,34 @@ class ParameterMapItemGroup(Group):
 class SensitivityListGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		currentBlock = parserState.Block
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		if isinstance(currentBlock, SensitivityList.OpenBlock):
+			pass
+		elif isinstance(currentBlock, SensitivityList.ItemBlock):
+			pass
+		elif isinstance(currentBlock, SensitivityList.CloseBlock):
+			parserState.Pop()
+			return
+		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+		elif isinstance(currentBlock, CommentBlock):
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
+			return
+
+		if isinstance(currentBlock, EndOfDocumentBlock):
+			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
+			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
+			return
+
+		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
 class SensitivityListItemGroup(Group):

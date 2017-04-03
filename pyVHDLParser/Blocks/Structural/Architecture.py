@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, SharedVariable
+from pyVHDLParser.Blocks.Object  import Constant#, SharedVariable
 # from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 

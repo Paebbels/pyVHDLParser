@@ -37,7 +37,7 @@ from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant#, SharedVariable
+from pyVHDLParser.Blocks.Object  import Constant#, SharedVariable
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 

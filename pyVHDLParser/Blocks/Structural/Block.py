@@ -41,7 +41,7 @@ from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List              import PortList
 from pyVHDLParser.Blocks.Reporting         import Assert
 from pyVHDLParser.Blocks.Sequential        import Process
-from pyVHDLParser.Blocks.ObjectDeclaration import Constant, Signal, Variable, SharedVariable
+from pyVHDLParser.Blocks.Object import Constant, Signal, Variable, SharedVariable
 from pyVHDLParser.Blocks.Parser            import TokenToBlockParser
 
 # Type alias for type hinting

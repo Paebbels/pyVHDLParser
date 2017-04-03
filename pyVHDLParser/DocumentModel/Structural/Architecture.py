@@ -30,7 +30,7 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant
+from pyVHDLParser.Blocks.Object  import Constant
 from pyVHDLParser.Blocks.Structural         import Architecture as ArchitectureBlock
 from pyVHDLParser.VHDLModel                 import Architecture as ArchitectureModel
 from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser

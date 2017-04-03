@@ -28,37 +28,3 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import CommentBlock
-from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, EmptyLineBlock
-from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
-from pyVHDLParser.Blocks.Object.Constant import ConstantBlock
-from pyVHDLParser.Blocks.Object.Variable import VariableBlock
-from pyVHDLParser.Blocks.Reference.Use import UseBlock
-from pyVHDLParser.Blocks.Sequential import Function, Procedure
-from pyVHDLParser.Groups import BlockParserState, Group, BlockParserException
-
-
-# Type alias for type hinting
-from pyVHDLParser.Groups.Comment import WhitespaceGroup, CommentGroup
-from pyVHDLParser.Groups.Object import ConstantGroup, VariableGroup
-from pyVHDLParser.Groups.Reference import UseGroup
-from pyVHDLParser.Token.Keywords import EndToken
-
-
-ParserState = BlockParserState
-
-
-class AssertGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
-
-
-class SignalAssignmentGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
-
-		raise NotImplementedError("State=Parse: {0!r}".format(block))

@@ -31,7 +31,7 @@
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant
+from pyVHDLParser.Blocks.Object  import Constant
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlock
 from pyVHDLParser.VHDLModel                 import Entity as EntityModel
 from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser

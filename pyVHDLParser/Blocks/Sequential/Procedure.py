@@ -36,7 +36,7 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase, SequentialBeginBlock
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
-from pyVHDLParser.Blocks.ObjectDeclaration  import Constant, Variable
+from pyVHDLParser.Blocks.Object  import Constant, Variable
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Sequential         import Function

@@ -31,24 +31,26 @@
 from pyVHDLParser.Blocks                    import CommentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, EmptyLineBlock
 from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
-from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
-from pyVHDLParser.Blocks.ObjectDeclaration.Signal import SignalBlock
-from pyVHDLParser.Blocks.ObjectDeclaration.Variable import VariableBlock
-from pyVHDLParser.Blocks.Reference import Context
+from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
+from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
+from pyVHDLParser.Blocks.Object.Variable    import VariableBlock
+from pyVHDLParser.Blocks.Reference          import Context
 from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseBlock
-from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
-from pyVHDLParser.Blocks.Sequential import Package, PackageBody, Function, Procedure, Process
-from pyVHDLParser.Blocks.Structural import Entity, Architecture, Component, Configuration
+from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock
+from pyVHDLParser.Blocks.Sequential         import Package, PackageBody, Function, Procedure, Process
+from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Component, Configuration
 from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
 from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
-from pyVHDLParser.Groups.Concurrent import AssertGroup
-from pyVHDLParser.Groups.ObjectDeclaration import ConstantGroup, VariableGroup, SignalGroup
+from pyVHDLParser.Groups.Concurrent         import AssertGroup
+from pyVHDLParser.Groups.Object             import ConstantGroup, VariableGroup, SignalGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
 from pyVHDLParser.Functions                 import Console
 
 # Type alias for type hinting
-from pyVHDLParser.Groups.Sequential import ProcedureGroup, FunctionGroup, ProcessGroup
+from pyVHDLParser.Groups.Sequential.Function import FunctionGroup
+from pyVHDLParser.Groups.Sequential.Procedure import ProcedureGroup
+from pyVHDLParser.Groups.Sequential.Process import ProcessGroup
 
 ParserState = BlockParserState
 

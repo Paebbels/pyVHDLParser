@@ -51,7 +51,7 @@ setup(
 		"pyVHDLParser.Block.Generate",
 		"pyVHDLParser.Block.Instantiation",
 		"pyVHDLParser.Block.List",
-		"pyVHDLParser.Block.ObjectDeclaration",
+		"pyVHDLParser.Block.Object",
 		"pyVHDLParser.Block.Reference",
 		"pyVHDLParser.Block.Reporting",
 		"pyVHDLParser.Block.Sequential",
