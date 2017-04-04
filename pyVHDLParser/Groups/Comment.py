@@ -30,11 +30,7 @@
 # load dependencies
 from pyVHDLParser.Blocks          import CommentBlock
 from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
-from pyVHDLParser.Groups          import BlockParserState, BlockParserException, Group
-
-# Type alias for type hinting
-ParserState = BlockParserState
-
+from pyVHDLParser.Groups          import ParserState, BlockParserException, Group
 
 class CommentGroup(Group):
 	@classmethod

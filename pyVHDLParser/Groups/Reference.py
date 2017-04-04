@@ -30,11 +30,7 @@
 # load dependencies
 from pyVHDLParser.Blocks.Reference.Library  import LibraryEndBlock, LibraryBlock
 from pyVHDLParser.Blocks.Reference.Use      import UseEndBlock, UseBlock
-from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
-
-# Type alias for type hinting
-ParserState = BlockParserState
-
+from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
 
 class LibraryGroup(Group):
 	@classmethod

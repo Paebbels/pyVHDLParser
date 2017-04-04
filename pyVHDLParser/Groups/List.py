@@ -28,15 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import CommentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
-from pyVHDLParser.Groups import BlockParserState, BlockParserException, Group, EndOfDocumentGroup
+from pyVHDLParser.Groups            import ParserState, BlockParserException, Group, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment    import WhitespaceGroup, CommentGroup
-
-# Type alias for type hinting
-
-ParserState = BlockParserState
 
 
 class GenericListGroup(Group):

@@ -51,7 +51,7 @@ class BlockParserException(ParserException):
 class BlockToGroupParser:
 	@staticmethod
 	def Transform(blockGenerator, debug=False):
-		return BlockParserState(blockGenerator, debug=debug).GetGenerator()
+		return ParserState(blockGenerator, debug=debug).GetGenerator()
 
 
 # @staticmethod
@@ -69,9 +69,9 @@ class BlockToGroupParser:
 
 class _BlockIterator:
 	def __init__(self, parserState, blockGenerator: Iterator):
-		self._parserState : BlockParserState  = parserState
-		#self._blockIterator                   = iter(FastForward(groupGenerator))
-		self._blockIterator                   = iter(blockGenerator)
+		self._parserState : ParserState = parserState
+		#self._blockIterator             = iter(FastForward(groupGenerator))
+		self._blockIterator             = iter(blockGenerator)
 
 	def __iter__(self):
 		return self
@@ -82,7 +82,7 @@ class _BlockIterator:
 		return nextBlock
 
 
-class BlockParserState:
+class ParserState:
 	def __init__(self, blockGenerator, debug):
 		self.NextState =            StartOfDocumentGroup.stateDocument
 		self.ReIssue =              False
@@ -346,7 +346,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		}
 
 	@classmethod
-	def stateDocument(cls, parserState : BlockParserState):
+	def stateDocument(cls, parserState : ParserState):
 		from pyVHDLParser.Groups.DesignUnit     import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
 		from pyVHDLParser.Groups.Reference      import LibraryGroup, UseGroup
 		from pyVHDLParser.Groups.Comment import CommentGroup, WhitespaceGroup

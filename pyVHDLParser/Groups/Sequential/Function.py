@@ -31,7 +31,8 @@
 from collections                          import ChainMap
 from itertools                            import chain
 
-from pyVHDLParser.Blocks import CommentBlock, EndOfDocumentBlock
+from pyVHDLParser.Token.Keywords          import EndToken
+from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
 from pyVHDLParser.Blocks.Object.Constant  import ConstantBlock
@@ -39,18 +40,12 @@ from pyVHDLParser.Blocks.Object.Variable  import VariableBlock
 from pyVHDLParser.Blocks.Reference.Use    import UseBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Function
-from pyVHDLParser.Groups import BlockParserState, Group, BlockParserException, EndOfDocumentGroup
+from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
-from pyVHDLParser.Groups.Concurrent import ReportGroup
+from pyVHDLParser.Groups.Concurrent       import ReportGroup
 from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
 from pyVHDLParser.Groups.Reference        import UseGroup
-
-
-# Type alias for type hinting
-from pyVHDLParser.Token.Keywords import EndToken
-
-ParserState = BlockParserState
 
 
 class FunctionGroup(Group):

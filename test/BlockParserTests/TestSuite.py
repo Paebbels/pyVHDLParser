@@ -90,7 +90,7 @@ class TestSuite:
 	def _RunExpectedBlocks(self, testCase, content):
 		# History check
 		counter =         testCase.GetExpectedBlocks()
-		wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
+		wordTokenStream = Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
 		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
 
 		try:
@@ -110,7 +110,7 @@ class TestSuite:
 		# History check
 		
 		counter =             testCase.GetExpectedBlocksAfterStrip()
-		wordTokenStream =     Tokenizer.GetWordTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
+		wordTokenStream =     Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
 		vhdlBlockStream =     TokenToBlockParser.Transform(wordTokenStream)
 		strippedBlockStream = StripAndFuse(vhdlBlockStream)
 
@@ -130,7 +130,7 @@ class TestSuite:
 		
 	def _RunConnectivityCheck(self, testCase, content):
 		# Connectivity check
-		wordTokenStream = Tokenizer.GetWordTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
+		wordTokenStream = Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
 		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
 
 		try:

@@ -54,9 +54,9 @@ class Tokenizer:
 		DelimiterChars =                  3
 		PossibleSingleLineCommentStart =  4
 		PossibleLinebreak =               5
-		PossibleLiteral =            6
+		PossibleLiteral =                 6
 		PossibleStringLiteralStart =      7
-		PossibleExtendedIdentifierStart =       8
+		PossibleExtendedIdentifierStart = 8
 		SingleLineComment =               9
 		MultiLineComment =               10
 		Linebreak =                      11
@@ -66,7 +66,7 @@ class Tokenizer:
 
 
 	@classmethod
-	def GetWordTokenizer(cls, iterable):
+	def GetVHDLTokenizer(cls, iterable):
 		previousToken = StartOfDocumentToken()
 		tokenKind =     cls.TokenKind.OtherChars
 		start =         SourceCodePosition(1, 1, 1)
