@@ -51,7 +51,11 @@ class GenericListGroup(Group):
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
 			return
-		elif isinstance(currentBlock, (GenericList.ItemBlock, GenericList.DelimiterBlock)):
+		elif isinstance(currentBlock, GenericList.ItemBlock):
+			parserState.PushState =   GenericListItemGroup.stateParse
+			parserState.NextGroup =   GenericListItemGroup(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, GenericList.CloseBlock):
 			parserState.Pop()
@@ -79,9 +83,17 @@ class GenericListGroup(Group):
 class GenericListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		for block in parserState.GetBlockIterator:
+			if isinstance(block, GenericList.DelimiterBlock):
+				parserState.Pop()
+				return
+			elif isinstance(block, GenericList.CloseBlock):
+				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.Pop()
+				parserState.ReIssue = True
+				return
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		raise BlockParserException("End of generic not found.", block)
 
 
 class GenericMapGroup(Group):
@@ -145,9 +157,17 @@ class PortListGroup(Group):
 class PortListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		for block in parserState.GetBlockIterator:
+			if isinstance(block, PortList.DelimiterBlock):
+				parserState.Pop()
+				return
+			elif isinstance(block, PortList.CloseBlock):
+				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.Pop()
+				parserState.ReIssue = True
+				return
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		raise BlockParserException("End of port not found.", block)
 
 
 class PortMapGroup(Group):
@@ -211,9 +231,17 @@ class ParameterListGroup(Group):
 class ParameterListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		block = parserState.Block
+		for block in parserState.GetBlockIterator:
+			if isinstance(block, ParameterList.DelimiterBlock):
+				parserState.Pop()
+				return
+			elif isinstance(block, ParameterList.CloseBlock):
+				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
+				parserState.Pop()
+				parserState.ReIssue = True
+				return
 
-		raise NotImplementedError("State=Parse: {0!r}".format(block))
+		raise BlockParserException("End of parameter not found.", block)
 
 
 class ParameterMapGroup(Group):

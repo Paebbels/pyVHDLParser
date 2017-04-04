@@ -338,14 +338,17 @@ class ArchitectureGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
 
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           [],
-			FunctionGroup:      [],
-			ProcedureGroup:     [],
-			ProcessGroup:       []
-		}
+		self._subGroups = dict(ChainMap(
+			{v: [] for v in chain(
+				self.DECLARATION_SIMPLE_BLOCKS.values(),
+				self.DECLARATION_COMPOUND_BLOCKS.values(),
+				self.STATEMENT_SIMPLE_BLOCKS.values(),
+				self.STATEMENT_COMPOUND_BLOCKS.values()
+			)},
+			{CommentGroup: [],
+			 WhitespaceGroup: []
+			 }
+		))
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -469,14 +472,14 @@ class ArchitectureGroup(Group):
 
 
 class PackageGroup(Group):
-	SIMPLE_BLOCKS = {
+	DECLARATION_SIMPLE_BLOCKS = {
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup,
 		ConstantBlock:            ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
 		SignalBlock:              SignalGroup
 	}
-	COMPOUND_BLOCKS = {
+	DECLARATION_COMPOUND_BLOCKS = {
 		Function.NameBlock:       FunctionGroup,
 		Procedure.NameBlock:      ProcedureGroup
 	}
@@ -484,15 +487,15 @@ class PackageGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
 
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           [],
-			FunctionGroup:      [],
-			ProcedureGroup:     [],
-			ConstantGroup:      [],
-			SignalGroup:        []
-		}
+		self._subGroups = dict(ChainMap(
+			{v: [] for v in chain(
+				self.DECLARATION_SIMPLE_BLOCKS.values(),
+				self.DECLARATION_COMPOUND_BLOCKS.values()
+			)},
+			{CommentGroup: [],
+			 WhitespaceGroup: []
+			 }
+		))
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -518,17 +521,17 @@ class PackageGroup(Group):
 			parserState.ReIssue = True
 			return
 		else:
-			for block in cls.SIMPLE_BLOCKS:
+			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
-					group = cls.SIMPLE_BLOCKS[block]
+					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-			for block in cls.COMPOUND_BLOCKS:
+			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
-					group =                   cls.COMPOUND_BLOCKS[block]
+					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
@@ -545,14 +548,14 @@ class PackageGroup(Group):
 
 
 class PackageBodyGroup(Group):
-	SIMPLE_BLOCKS = {
+	DECLARATION_SIMPLE_BLOCKS = {
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup,
 		ConstantBlock:            ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
 		SignalBlock:              SignalGroup
 	}
-	COMPOUND_BLOCKS = {
+	DECLARATION_COMPOUND_BLOCKS = {
 		Function.NameBlock:       FunctionGroup,
 		Procedure.NameBlock:      ProcedureGroup
 	}
@@ -560,15 +563,15 @@ class PackageBodyGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
 
-		self._subGroups = {
-			CommentGroup:       [],
-			WhitespaceGroup:    [],
-			UseGroup:           [],
-			FunctionGroup:      [],
-			ProcedureGroup:     [],
-			ConstantGroup:      [],
-			SignalGroup:        []
-		}
+		self._subGroups = dict(ChainMap(
+			{v: [] for v in chain(
+				self.DECLARATION_SIMPLE_BLOCKS.values(),
+				self.DECLARATION_COMPOUND_BLOCKS.values()
+			)},
+			{CommentGroup: [],
+			 WhitespaceGroup: []
+			 }
+		))
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -594,17 +597,17 @@ class PackageBodyGroup(Group):
 			parserState.ReIssue = True
 			return
 		else:
-			for block in cls.SIMPLE_BLOCKS:
+			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
-					group = cls.SIMPLE_BLOCKS[block]
+					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
-			for block in cls.COMPOUND_BLOCKS:
+			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
-					group =                   cls.COMPOUND_BLOCKS[block]
+					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.NextGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock

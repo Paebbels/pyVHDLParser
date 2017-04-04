@@ -132,12 +132,12 @@ class ParserState:
 	@property
 	def BlockMarker(self):
 		if ((self.NewBlock is not None) and (self._blockMarker is self.Block)):
-			if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
+			# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
 			self._blockMarker = self.NewBlock
 		return self._blockMarker
 	@BlockMarker.setter
 	def BlockMarker(self, value):
-		if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} --> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, value, **Console.Foreground))
+		# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} --> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, value, **Console.Foreground))
 		self._blockMarker = value
 
 	def __eq__(self, other):

@@ -1,4 +1,7 @@
-entity system is
+library IEEE;
+use     IEEE.std_logic_1164.all;
+
+entity entity1 is
 	generic (
 		WIDTH : natural := 0
 	);
@@ -8,15 +11,18 @@ entity system is
 	);
 end entity;
 
+library IEEE;
+use     IEEE.numeric_std.all;
 
--- This is the first package
--- described in two comment lines
-architecture rtl of system is
-begin
-	/*process (Clock, Reset)
-		variable halt : bit;
+architecture arch1 of entity1 is
+	constant const1 : std_logic := '1';
+	function func1 return integer is
+		constant const2 : positive := 2;
 	begin
-	end process;*/
+		-- this function is empty
+	end function;
+begin
+	-- this architecture is empty
 end architecture;
 
 context ctx is
@@ -24,25 +30,24 @@ context ctx is
 	use     OSVVM.Scoreborad.all;
 end context;
 
-library IEEE;
-use     IEEE.std_logic_vector.all;
 
-package pkg0 is
-	function func0 return integer;
+package pkg1 is
+	constant const3 : natural;
+	constant const4 : negative := 4;
 end package;
 
-package body pkg0 is
-	constant const3 : std_logic := '0';
-	function func1 return integer is
-		constant const3 : std_logic := '0';
-		/*procedure proc1 is
-			variable var5 : integer := 20;
-			variable \var6\ : string := "20";
-		begin
-		end procedure proc1;*/
+package body pkg1 is
+	constant const3 : natural := 3;
+
+	function func2 return string is
 	begin
 		report Patrick severity failure;
 	end function func0;
+
+	procedure proc1 is
+		variable var1 : string := "1";
+		variable \var2\ : char := '2';
+	begin
+		-- this procedure is empty
+	end procedure proc1;
 end package body;
-
-

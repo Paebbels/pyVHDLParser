@@ -75,8 +75,9 @@ class FunctionGroup(Group):
 				self.STATEMENT_SIMPLE_BLOCKS.values(),
 				self.STATEMENT_COMPOUND_BLOCKS.values()
 			)},
-			{CommentGroup: [],
-			 WhitespaceGroup: []
+			{CommentGroup:    [],
+			 WhitespaceGroup: [],
+			 FunctionGroup2:  []
 			 }
 		))
 
@@ -115,10 +116,8 @@ class FunctionGroup(Group):
 			if isinstance(currentBlock.EndToken, EndToken):
 				parserState.Pop()
 			else:
-				parserState.NextState =   cls.stateParseDeclarations
-				# FIXME: this creates a hole in the chain of groups
-				# parserState.NextGroup =   FunctionGroup(parserState.LastGroup, currentBlock)
-				# parserState.BlockMarker = currentBlock
+				parserState.NextState =   cls.stateParse2
+				parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
@@ -170,18 +169,22 @@ class FunctionGroup(Group):
 
 		raise BlockParserException("End of parameters not found.", currentBlock)
 
+	# FIXME move to FunctionGroup2 as stateParse
 	@classmethod
 	def stateParse2(cls, parserState: ParserState):
 		currentBlock = parserState.Block
 
 		# consume OpenBlock
 		if isinstance(currentBlock, Function.NameBlock2):
-			parserState.NextGroup =   cls(parserState.LastGroup, currentBlock)
-			parserState.BlockMarker = currentBlock
 			parserState.NextState =   cls.stateParseDeclarations
+			parserState.PushState =   cls.stateParse2
+			parserState.NextGroup =   FunctionGroup2(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
 			return
 		else:
-			raise BlockParserException("Begin of function expected.", currentBlock)
+			parserState.Pop()
+			parserState.ReIssue = True
+			return
 
 	@classmethod
 	def stateParseDeclarations(cls, parserState: ParserState):
@@ -236,9 +239,8 @@ class FunctionGroup(Group):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Function.EndBlock):
-			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			# parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
 			parserState.Pop()
-			parserState.BlockMarker = None
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
@@ -275,3 +277,6 @@ class FunctionGroup(Group):
 			return
 
 		raise BlockParserException("End of function declaration not found.", currentBlock)
+
+class FunctionGroup2(Group):
+	pass
