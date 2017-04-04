@@ -29,15 +29,11 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks               import Block
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
 
 
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class AttributeDeclarationBlock(Block):

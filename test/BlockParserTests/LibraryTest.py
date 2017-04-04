@@ -30,7 +30,7 @@
 # load dependencies
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock
-from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Reference.Library    import LibraryBlock, LibraryNameBlock, LibraryDelimiterBlock, LibraryEndBlock
 from test.TestCase                            import TestCase as TestCaseBase
 from test.Counter                             import Counter

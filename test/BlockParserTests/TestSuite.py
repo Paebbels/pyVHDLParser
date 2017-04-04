@@ -29,8 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Blocks.Document   import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Parser     import TokenToBlockParser
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, ParserState
 from pyVHDLParser.Filters.Comment   import StripAndFuse
 from pyVHDLParser.Functions         import Console
 from pyVHDLParser.Token             import StartOfDocumentToken, EndOfDocumentToken

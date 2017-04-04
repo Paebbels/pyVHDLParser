@@ -28,9 +28,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import CommentBlock
+from pyVHDLParser.Blocks import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock, EmptyLineBlock
-from pyVHDLParser.Blocks.Document import EndOfDocumentBlock
 from pyVHDLParser.Blocks.Object.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Object.Variable import VariableBlock
 from pyVHDLParser.Blocks.Reference.Use import UseBlock

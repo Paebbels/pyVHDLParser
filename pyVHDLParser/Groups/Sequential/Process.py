@@ -31,16 +31,15 @@
 from collections                          import ChainMap
 from itertools                            import chain
 
-from pyVHDLParser.Blocks                  import CommentBlock
+from pyVHDLParser.Blocks import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Document         import EndOfDocumentBlock
 from pyVHDLParser.Blocks.List             import SensitivityList, GenericList, ParameterList
 from pyVHDLParser.Blocks.Object.Constant  import ConstantBlock
 from pyVHDLParser.Blocks.Object.Variable  import VariableBlock
 from pyVHDLParser.Blocks.Reference.Use    import UseBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Process
-from pyVHDLParser.Groups                  import BlockParserState, Group, BlockParserException
+from pyVHDLParser.Groups import BlockParserState, Group, BlockParserException, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
 from pyVHDLParser.Groups.List import GenericListGroup, ParameterListGroup, SensitivityListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
@@ -121,7 +120,6 @@ class ProcessGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 

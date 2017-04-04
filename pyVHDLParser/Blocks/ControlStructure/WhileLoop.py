@@ -28,19 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, IndentationToken, LoopKeyword
+from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords       import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks               import TokenParserException, Block
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List          import GenericList, PortList
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class ConditionBlock(Block):

@@ -31,7 +31,7 @@
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
-from pyVHDLParser.Blocks                    import Block, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, EndBlock as EndBlockBase
@@ -40,11 +40,7 @@ from pyVHDLParser.Blocks.Object  import Constant, Variable
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting          import Report
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
-from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class OpenBlock(Block):

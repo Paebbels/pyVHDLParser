@@ -28,13 +28,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks import Block
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Token import SpaceToken, IndentationToken
-
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
+from pyVHDLParser.Token               import SpaceToken, IndentationToken
+from pyVHDLParser.Blocks              import Block, ParserState
 
 
 class WhitespaceBlock(Block):

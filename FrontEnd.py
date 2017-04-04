@@ -33,20 +33,17 @@ from pathlib import Path
 import sys
 
 from pyVHDLParser.Base               import ParserException
-from pyVHDLParser.Functions          import Console, Exit
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, \
-	LinebreakToken, CommentToken, IndentationToken, Token
-from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, KeywordToken, DelimiterToken, IdentifierToken
-from pyVHDLParser.Token.Parser       import Tokenizer
-from pyVHDLParser.Blocks import CommentBlock, Block
+from pyVHDLParser.Token              import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, Token
+from pyVHDLParser.Token.Keywords     import BoundaryToken, EndToken, KeywordToken, DelimiterToken, IdentifierToken
+# from pyVHDLParser.Token.Parser       import Tokenizer
+from pyVHDLParser.Blocks import CommentBlock, Block, StartOfDocumentBlock, EndOfDocumentBlock, ParserState
 from pyVHDLParser.Blocks.Common      import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Document    import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Structural  import Entity
 from pyVHDLParser.Blocks.List        import GenericList, PortList
-from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
-from pyVHDLParser.Groups             import BlockToGroupParser
-from pyVHDLParser.DocumentModel.Document import Document
-from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
+# from pyVHDLParser.Blocks.Parser      import TokenToBlockParser
+# from pyVHDLParser.Groups             import BlockToGroupParser
+# from pyVHDLParser.DocumentModel.Document import Document
+from pyVHDLParser.Functions          import Console, Exit
 
 
 Console.init()
@@ -74,6 +71,8 @@ with file.open('r') as fileHandle:
 
 # ==============================================================================
 if (mode & 6 == 2):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 
@@ -158,6 +157,9 @@ if (mode & 6 == 2):
 
 # ==============================================================================
 if (mode & 6 == 4):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+	from pyVHDLParser.Blocks import TokenToBlockParser
+
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
@@ -185,6 +187,9 @@ if (mode & 6 == 4):
 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 if (mode & 6 == 6):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+	from pyVHDLParser.Blocks import TokenToBlockParser
+
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
@@ -283,6 +288,10 @@ if (mode & 6 == 6):
 
 # ==============================================================================
 if (mode & 8 == 8):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+	from pyVHDLParser.Blocks import TokenToBlockParser
+	from pyVHDLParser.Groups        import BlockToGroupParser
+
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	try:
 		wordTokenStream = [token for token in Tokenizer.GetWordTokenizer(content)]
@@ -345,12 +354,16 @@ if (mode & 8 == 8):
 
 
 if (mode & 32 == 32):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+	from pyVHDLParser.Blocks        import TokenToBlockParser
+	from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
+
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
-	document = Document()
-	GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
+	# document = Document()
+	# GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
 
-	document.Print(0)
+	# document.Print(0)

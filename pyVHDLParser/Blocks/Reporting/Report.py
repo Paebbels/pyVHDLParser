@@ -28,16 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks               import Block, CommentBlock
+from pyVHDLParser.Blocks               import Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Token import CommentToken
+from pyVHDLParser.Token                import CommentToken
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
-
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class ReportBlock(Block):

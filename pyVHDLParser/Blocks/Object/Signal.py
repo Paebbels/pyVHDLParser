@@ -31,13 +31,9 @@
 from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken, LiteralToken, \
 	StringLiteralToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import EndToken, BoundaryToken, IdentifierToken, VariableAssignmentKeyword
-from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class SignalBlock(Block):

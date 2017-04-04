@@ -30,16 +30,11 @@
 # load dependencies
 from pyVHDLParser.Blocks.Reference.Library import LibraryBlock
 from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
-from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException
+from pyVHDLParser.Token.Keywords       import StringToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
+from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
 from pyVHDLParser.Blocks.Reference.Use import UseBlock
-
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class NameBlock(Block):

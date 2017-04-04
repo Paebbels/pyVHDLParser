@@ -30,7 +30,7 @@
 # load dependencies
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Document             import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Structural           import Architecture
 from pyVHDLParser.Blocks.List                 import SensitivityList
 from pyVHDLParser.Blocks.Sequential           import Process

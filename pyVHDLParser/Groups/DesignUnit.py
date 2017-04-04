@@ -31,9 +31,8 @@
 from collections import ChainMap
 from itertools import chain
 
-from pyVHDLParser.Blocks                    import CommentBlock
+from pyVHDLParser.Blocks import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Document           import EndOfDocumentBlock
 from pyVHDLParser.Blocks.List import GenericList, ParameterList, PortList
 from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
 from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
@@ -43,24 +42,23 @@ from pyVHDLParser.Blocks.Reference.Use      import UseBlock
 from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody, Function, Procedure, Process
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Component, Configuration
-from pyVHDLParser.Groups                    import BlockParserState, BlockParserException, Group
+from pyVHDLParser.Groups                    import BlockParserException, Group, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment            import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Concurrent         import AssertGroup
-from pyVHDLParser.Groups.List import GenericListGroup, ParameterListGroup, PortListGroup
+from pyVHDLParser.Groups.List               import GenericListGroup, ParameterListGroup, PortListGroup
 from pyVHDLParser.Groups.Object             import ConstantGroup, SignalGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
-from pyVHDLParser.Functions                 import Console
-
-# Type alias for type hinting
 from pyVHDLParser.Groups.Sequential.Function import FunctionGroup
 from pyVHDLParser.Groups.Sequential.Procedure import ProcedureGroup
 from pyVHDLParser.Groups.Sequential.Process import ProcessGroup
-
-ParserState = BlockParserState
+from pyVHDLParser.Functions                 import Console
 
 
 class ContextGroup(Group):
-	__SIMPLE_BLOCKS__ = {
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
+	SIMPLE_BLOCKS = {
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup
 	}
@@ -99,16 +97,15 @@ class ContextGroup(Group):
 			parserState.ReIssue = True
 			return
 		else:
-			for block in cls.__SIMPLE_BLOCKS__:
+			for block in cls.SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
-					group = cls.__SIMPLE_BLOCKS__[block]
+					group = cls.SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -118,6 +115,9 @@ class ContextGroup(Group):
 
 
 class EntityGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	DECLARATION_SIMPLE_BLOCKS = {
 		GenericList.OpenBlock:  GenericListGroup,
 		PortList.OpenBlock:     PortListGroup,
@@ -324,6 +324,9 @@ class EntityGroup(Group):
 
 
 class ArchitectureGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	DECLARATION_SIMPLE_BLOCKS = {
 		UseBlock:                 UseGroup,
 		ConstantBlock:            ConstantGroup,
@@ -475,6 +478,9 @@ class ArchitectureGroup(Group):
 
 
 class PackageGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	__SIMPLE_BLOCKS__ = {
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup,
@@ -551,6 +557,9 @@ class PackageGroup(Group):
 
 
 class PackageBodyGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	__SIMPLE_BLOCKS__ = {
 		LibraryBlock:             LibraryGroup,
 		UseBlock:                 UseGroup,
@@ -628,6 +637,9 @@ class PackageBodyGroup(Group):
 
 
 class ComponentGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	__SIMPLE_BLOCKS__ = {
 		# LibraryBlock:             LibraryGroup,
 		# UseBlock:                 UseGroup
@@ -695,6 +707,9 @@ class ComponentGroup(Group):
 		), currentBlock)
 
 class ConfigurationGroup(Group):
+	from pyVHDLParser.Groups import BlockParserState
+	ParserState = BlockParserState
+
 	__SIMPLE_BLOCKS__ = {
 		# LibraryBlock: LibraryGroup,
 		# UseBlock: UseGroup

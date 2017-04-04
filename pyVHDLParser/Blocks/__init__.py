@@ -27,16 +27,121 @@
 # limitations under the License.
 # ==============================================================================
 #
-from types                      import FunctionType
+from types                          import FunctionType
 
-from pyVHDLParser.Base          import ParserException
-from pyVHDLParser.Token         import CharacterToken, Token
+from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
+from pyVHDLParser.Base              import ParserException
+from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, StringToken, EndOfDocumentToken
+from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
+from pyVHDLParser.Functions         import Console
 
 
 class TokenParserException(ParserException):
 	def __init__(self, message, token):
 		super().__init__(message)
 		self._token = token
+
+
+class TokenToBlockParser:
+	@staticmethod
+	def Transform(tokenGenerator, debug=False):
+		return ParserState(tokenGenerator, debug=debug).GetGenerator()
+
+
+class ParserState:
+	def __init__(self, tokenGenerator, debug):
+		self._stack =               []
+		self._iterator =            iter(tokenGenerator)
+		self._tokenMarker : Token = None
+		self.NextState =            StartOfDocumentBlock.stateDocument
+		self.LastBlock    : Block = None
+		self.NewBlock     : Block = StartOfDocumentBlock(next(self._iterator))
+		self.Token        : Token = self.NewBlock.StartToken
+		self.NewToken     : Token = None
+		self.Counter =              0
+
+		self.debug        : bool =  debug
+
+	@property
+	def PushState(self):
+		return self.NextState
+	@PushState.setter
+	def PushState(self, value):
+		self._stack.append((
+			self.NextState,
+			self.Counter
+		))
+		self.NextState =    value
+		self._tokenMarker =  None
+
+	@property
+	def TokenMarker(self):
+		if ((self.NewToken is not None) and (self._tokenMarker is self.Token)):
+			if self.debug: print("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **Console.Foreground))
+			self._tokenMarker = self.NewToken
+		return self._tokenMarker
+	@TokenMarker.setter
+	def TokenMarker(self, value):
+		self._tokenMarker = value
+
+	def __eq__(self, other):
+		return self.NextState is other
+
+	def __str__(self):
+		return self.NextState.__func__.__qualname__
+
+	def Pop(self, n=1):
+		top = None
+		for i in range(n):
+			top = self._stack.pop()
+		self.NextState =    top[0]
+		self.Counter =      top[1]
+		self._tokenMarker = None
+
+	def GetGenerator(self):
+		from pyVHDLParser.Token             import EndOfDocumentToken
+		from pyVHDLParser.Blocks            import TokenParserException, EndOfDocumentBlock
+		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
+
+		for token in self._iterator:
+			# overwrite an existing token and connect the next token with the new one
+			if (self.NewToken is not None):
+				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
+				# update topmost TokenMarker
+				if (self._tokenMarker is token.PreviousToken):
+					if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
+					self._tokenMarker = self.NewToken
+
+				token.PreviousToken = self.NewToken
+				self.NewToken =       None
+
+			self.Token = token
+			# an empty marker means: fill on next yield run
+			if (self._tokenMarker is None):
+				if self.debug: print("  new token marker: None -> {0!s}".format(token))
+				self._tokenMarker = token
+
+			# a new block is assembled
+			while (self.NewBlock is not None):
+				if (isinstance(self.NewBlock, LinebreakBlock) and isinstance(self.LastBlock, (LinebreakBlock, EmptyLineBlock))):
+					self.LastBlock = EmptyLineBlock(self.LastBlock, self.NewBlock.StartToken)
+					self.LastBlock.NextBlock = self.NewBlock.NextBlock
+				else:
+					self.LastBlock = self.NewBlock
+
+				self.NewBlock =  self.NewBlock.NextBlock
+				yield self.LastBlock
+
+			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
+			if self.debug: print("  {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **Console.Foreground))
+			# execute a state
+			self.NextState(self)
+
+		else:
+			if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
+				yield self.NewBlock
+			else:
+				raise TokenParserException("Unexpected end of document.", self.Token)
 
 
 class MetaBlock(type):
@@ -119,3 +224,100 @@ class Block(metaclass=MetaBlock):
 
 class CommentBlock(Block):
 	pass
+
+
+class StartOfBlock(Block):
+	def __init__(self, startToken):
+		self._previousBlock =     None
+		self.NextBlock =          None
+		self.StartToken =         startToken
+		self.EndToken =           None
+		self.MultiPart =          False
+
+	def __iter__(self):
+		yield self.StartToken
+
+	def __len__(self):
+		return 0
+
+	def __str__(self):
+		return "[{0}]".format(self.__class__.__name__)
+
+
+class EndOfBlock(Block):
+	def __init__(self, endToken):
+		self._previousBlock =     None
+		self.NextBlock =          None
+		self.StartToken =         None
+		self.EndToken =           endToken
+		self.MultiPart =          False
+
+	def __iter__(self):
+		yield self.EndToken
+
+	def __len__(self):
+		return 0
+
+	def __str__(self):
+		return "[{0}]".format(self.__class__.__name__)
+
+
+class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
+	@classmethod
+	def stateDocument(cls, parserState: ParserState):
+		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
+		from pyVHDLParser.Blocks.Reference  import Library, Use, Context
+		from pyVHDLParser.Blocks.Sequential import Package
+		from pyVHDLParser.Blocks.Structural import Entity, Architecture
+
+		keywords = {
+			# Keyword             Transition
+			LibraryKeyword :      Library.LibraryBlock.stateLibraryKeyword,
+			UseKeyword :          Use.UseBlock.stateUseKeyword,
+		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
+		  EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
+		  ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
+		  PackageKeyword :      Package.NameBlock.statePackageKeyword
+		}
+
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
+			parserState.NewBlock =    blockType(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, LinebreakToken):
+			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			for keyword in keywords:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.PushState =   keywords[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+		elif isinstance(token, EndOfDocumentToken):
+			parserState.NewBlock =    EndOfDocumentBlock(token)
+			return
+
+		raise TokenParserException(
+			"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
+				keywords=", ".join(
+					[kw.__KEYWORD__.upper() for kw in keywords]
+				),
+				tokenValue=token.Value
+			), token)
+
+
+class EndOfDocumentBlock(EndOfBlock, EndOfDocument):        pass
+class StartOfSnippetBlock(StartOfBlock, StartOfSnippet):    pass
+class EndOfSnippetBlock(EndOfBlock, EndOfSnippet):          pass

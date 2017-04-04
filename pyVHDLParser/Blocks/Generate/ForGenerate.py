@@ -28,22 +28,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords            import BoundaryToken, LinebreakToken, IdentifierToken, IndentationToken, EndToken, BeginKeyword, ProcessKeyword, AssertKeyword
+from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
-from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks                    import Block, TokenParserException
+from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Blocks                    import Block, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Exception          import TokenParserException
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generate           import EndGenerateBlock as EndGenerateBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock, GenerateKeyword
 from pyVHDLParser.Blocks.Sequential         import Process
-from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
 
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class RangeBlock(Block):

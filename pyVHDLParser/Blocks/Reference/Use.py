@@ -28,16 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, \
-	ExtendedIdentifier
+from pyVHDLParser.Token                import CharacterToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, DelimiterToken, EndToken, AllKeyword
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock
+from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class UseBlock(Block):

@@ -28,19 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Token                     import CharacterToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword
 from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
-from pyVHDLParser.Blocks                    import TokenParserException, Block
+from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Document           import CommentBlock
+from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock
-# from pyVHDLParser.Blocks.Sequential         import Process
-from pyVHDLParser.Blocks.Parser             import TokenToBlockParser
-
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class EndBlock(Block):

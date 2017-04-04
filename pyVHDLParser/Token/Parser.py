@@ -33,8 +33,7 @@ from enum                     import Enum
 
 from pyVHDLParser             import SourceCodePosition
 from pyVHDLParser.Base        import ParserException
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken, \
-	LiteralToken, StringLiteralToken, ExtendedIdentifier, DirectiveToken
+from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken, LiteralToken, StringLiteralToken, ExtendedIdentifier, DirectiveToken
 from pyVHDLParser.Token       import CharacterToken, SpaceToken, StringToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
 
 

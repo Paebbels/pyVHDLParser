@@ -28,8 +28,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks      import TokenParserException
-from pyVHDLParser.Token       import StringToken, VHDLToken
+from pyVHDLParser.Token         import StringToken, VHDLToken
+from pyVHDLParser.Token.Parser  import TokenizerException
 
 
 class BoundaryToken(VHDLToken):
@@ -150,7 +150,7 @@ class KeywordToken(VHDLToken):
 
 	def __init__(self, stringToken):
 		if (not (isinstance(stringToken, StringToken) and (stringToken <= self.__KEYWORD__))):
-			raise TokenParserException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), stringToken)
+			raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), stringToken)
 		super().__init__(stringToken.PreviousToken, self.__KEYWORD__, stringToken.Start, stringToken.End)
 
 	def __str__(self):

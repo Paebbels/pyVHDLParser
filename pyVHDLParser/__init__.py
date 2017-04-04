@@ -38,3 +38,12 @@ class SourceCodePosition:
 
 	def __str__(self):
 		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
+
+
+class StartOf:                  pass
+class StartOfDocument(StartOf): pass
+class StartOfSnippet(StartOf):  pass
+
+class EndOf:                    pass
+class EndOfDocument(EndOf):     pass
+class EndOfSnippet(EndOf):      pass

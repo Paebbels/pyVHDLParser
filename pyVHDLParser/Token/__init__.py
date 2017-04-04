@@ -27,7 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser import SourceCodePosition
+from pyVHDLParser import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 
 
 class Token:
@@ -85,7 +85,7 @@ class SuperToken(Token):
 		yield self.EndToken
 
 
-class StartOfDocumentToken(Token):
+class StartOfToken(Token):
 	def __init__(self):
 		self._previousToken =     None
 		self._nextToken =         None
@@ -96,18 +96,27 @@ class StartOfDocumentToken(Token):
 		return 0
 
 	def __str__(self):
-		return "<StartOfDocumentToken>"
+		return "<{0}>".format(self.__class__.__name__)
 
-
-class EndOfDocumentToken(Token):
+class EndOfToken(Token):
 	def __init__(self, previousToken, end):
-		super().__init__(previousToken, start=end)
+		previousToken.NextToken =     self
+		self._previousToken : Token = previousToken
+		self._nextToken =             None
+		self.Start =                  None
+		self.End =                    end
 
 	def __len__(self):
 		return 0
 
 	def __str__(self):
-		return "<EndOfDocumentToken>"
+		return "<{0}>".format(self.__class__.__name__)
+
+
+class StartOfDocumentToken(StartOfToken, StartOfDocument):  pass
+class EndOfDocumentToken(EndOfToken, EndOfDocument):        pass
+class StartOfSnippetToken(StartOfToken, StartOfSnippet):    pass
+class EndOfSnippetToken(EndOfToken, EndOfSnippet):          pass
 
 
 class CharacterToken(ValuedToken):

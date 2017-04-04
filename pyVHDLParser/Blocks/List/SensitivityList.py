@@ -33,12 +33,9 @@ from pyVHDLParser.Token                import MultiLineCommentToken, SingleLineC
 from pyVHDLParser.Token.Keywords       import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
 from pyVHDLParser.Token.Keywords       import IdentifierToken, AllKeyword
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock
+from pyVHDLParser.Blocks import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class OpenBlock(Block):

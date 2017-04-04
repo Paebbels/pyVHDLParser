@@ -33,7 +33,7 @@ from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
 from pyVHDLParser.Token.Parser             import SpaceToken, StringToken
 from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks                   import Block, TokenParserException
+from pyVHDLParser.Blocks import Block, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Exception         import TokenParserException
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
@@ -42,10 +42,7 @@ from pyVHDLParser.Blocks.List              import PortList
 from pyVHDLParser.Blocks.Reporting         import Assert
 from pyVHDLParser.Blocks.Sequential        import Process
 from pyVHDLParser.Blocks.Object import Constant, Signal, Variable, SharedVariable
-from pyVHDLParser.Blocks.Parser            import TokenToBlockParser
 
-# Type alias for type hinting
-ParserState = TokenToBlockParser.TokenParserState
 
 
 class NameBlock(Block):
