@@ -4,24 +4,13 @@
 
    \part{Introduction}
 
-
-.. only:: html
-
-   .. image:: /_static/logos/tu-dresden.jpg
-      :scale: 10
-      :alt: Technische Universität Dresden
-
-.. only:: latex
-
-   .. image:: /_static/logos/tu-dresden.jpg
-      :scale: 80
-      :alt: Technische Universität Dresden
-
 --------------------------------------------------------------------------------
 
 .. only:: html
 
    |SHIELD:svg:GH-Logo|
+
+.. #
    |SHIELD:svg:Travis-CI|
    |SHIELD:svg:AppVeyor|
    |SHIELD:svg:Landscape|

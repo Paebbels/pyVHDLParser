@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# The PoC-Library documentation build configuration file, created by
+# pyVHDLParser documentation build configuration file, created by
 # sphinx-quickstart on Fri May  6 11:28:20 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -23,7 +23,7 @@ from textwrap   import dedent
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('../py'))
+sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('_extensions'))
 sys.path.insert(0, os.path.abspath('_themes/sphinx_rtd_theme'))
 
@@ -53,7 +53,6 @@ extensions = [
 # SphinxContrib extensions
 	# 'sphinxcontrib.actdiag',
 	# 'sphinxcontrib.seqdiag',
-	'sphinxcontrib.wavedrom',
 	# 'sphinxcontrib.textstyle',
 	# 'sphinxcontrib.spelling',
 	# 'changelog',
@@ -61,8 +60,7 @@ extensions = [
 	'autoapi.sphinx',
 	'autoprogram',               #'sphinxcontrib.autoprogram',
 # local extensions
-	'DocumentMember',
-	'poc'
+#	'DocumentMember'
 ]
 
 for tag in tags:
@@ -113,9 +111,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'The PoC-Library'
-copyright = '2007-2016 Technische Universitaet Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture'
-author = 'Patrick Lehmann, Thomas B. Preusser, Martin Zabel'
+project = 'pyVHDLParser'
+copyright = 'Copyright 2007-2017 Patrick Lehmann - Dresden, Germany'
+author = 'Patrick Lehmann'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -216,7 +214,7 @@ print(sphinx_rtd_theme.get_html_theme_path())
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
-#html_title = 'The PoC-Library v1.0.0'
+#html_title = 'pyVHDLParser v1.0.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -492,3 +490,10 @@ changelog_render_changeset = "http://bitbucket.org/myusername/myproject/changese
 # ==============================================================================
 def setup(app):
 	app.add_stylesheet('css/custom.css')
+
+	if tags.has('PoCInternal'):
+		app.add_config_value('visibility', 'PoCInternal', True)
+		print("="* 40)
+	else:
+		app.add_config_value('visibility', 'PoCExternal', True)
+		print("-"* 40)
