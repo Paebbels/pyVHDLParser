@@ -50,6 +50,7 @@ class Library(LibraryReferenceModel):
 			elif isinstance(block, LibraryBlocks.LibraryNameBlock):
 				libraryName = block.StartToken.Value
 				library = cls(libraryName)
+				print("Found library '{0}'. Adding to current node '{1!s}'.".format(libraryName, parserState.CurrentNode))
 				parserState.CurrentNode.AddLibrary(library)
 			elif isinstance(block, LibraryBlocks.EndBlock):
 				parserState.Pop()

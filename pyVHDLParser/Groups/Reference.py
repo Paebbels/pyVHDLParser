@@ -28,15 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
-from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
+from pyVHDLParser.Blocks.Reference          import Library, Use
 from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
 
 class LibraryGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
-			if isinstance(block, EndBlock):
+			if isinstance(block, Library.EndBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				return
@@ -48,7 +47,7 @@ class UseGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
-			if isinstance(block, EndBlock):
+			if isinstance(block, Use.EndBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				return

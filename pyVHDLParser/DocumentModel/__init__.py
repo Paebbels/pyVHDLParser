@@ -123,6 +123,7 @@ class ParserState:
 		return self.NextState.__func__.__qualname__
 
 	def Pop(self, n=1):
+		print("Leaving {0!s}.".format(self.NextState))
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
@@ -133,7 +134,7 @@ class ParserState:
 		for group in self._iterator:
 			# if self.debug: print("  state={state!s: <50}  group={group!s: <40}   ".format(state=self, group=group))
 
-			if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
+			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			# execute a state and reissue execution if needed
 			self.ReIssue = True
 			while self.ReIssue:
@@ -229,3 +230,40 @@ class Document(DocumentModel):
 		print()
 		for packageBody in self._packageBodies:
 			packageBody.Print()
+
+#
+# class _GroupIterator:
+# 	def __init__(self, parserState, groupGenerator: Iterator):
+# 		self._parserState =     parserState
+# 		self._groupIterator =   iter(FastForward(groupGenerator))
+#
+# 	def __iter__(self):
+# 		return self
+#
+# 	def __next__(self):
+# 		nextGroup = self._groupIterator.__next__()
+# 		self._parserState.CurrentGroup = nextGroup
+# 		return nextGroup
+#
+# class GroupToModelParser:
+#
+#
+# 	@staticmethod
+# 	def _TokenGenerator(currentGroup, groupIterator):
+# 		groupType = type(currentGroup)
+#
+# 		for token in currentGroup:
+# 			yield token
+# 		for group in groupIterator:
+# 			if isinstance(group, groupType):
+# 				for token in group:
+# 					yield token
+# 				if (not group.MultiPart):
+# 					break
+#
+# 		def __iter__(self):
+# 			if self.CurrentGroup.MultiPart:
+# 				return iter(GroupToModelParser._TokenGenerator(self.CurrentGroup, self.GroupIterator))
+# 			else:
+# 				return iter(self.CurrentGroup)
+
