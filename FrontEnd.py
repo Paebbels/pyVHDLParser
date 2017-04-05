@@ -70,10 +70,10 @@ if (mode & 6 == 2):
 	from pyVHDLParser.Token.Parser  import Tokenizer
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 
 	try:
-		for vhdlToken in wordTokenStream:
+		for vhdlToken in vhdlTokenStream:
 			if isinstance(vhdlToken, (LinebreakToken, SpaceToken, IndentationToken)):
 				print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlToken, **Console.Foreground))
 			elif isinstance(vhdlToken, CommentToken):
@@ -93,10 +93,10 @@ if (mode & 6 == 2):
 
 	if (mode & 1 == 1):
 		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **Console.Foreground))
-		wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
+		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 
 		try:
-			tokenIterator = iter(wordTokenStream)
+			tokenIterator = iter(vhdlTokenStream)
 			firstToken = next(tokenIterator)
 			if (not isinstance(firstToken, StartOfDocumentToken)):
 				print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **Console.Foreground))
@@ -157,8 +157,8 @@ if (mode & 6 == 4):
 	from pyVHDLParser.Blocks import TokenToBlockParser
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -187,8 +187,8 @@ if (mode & 6 == 6):
 	from pyVHDLParser.Blocks import TokenToBlockParser
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		blockIterator = iter(vhdlBlockStream)
@@ -256,8 +256,8 @@ if (mode & 6 == 6):
 
 # ==============================================================================
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=(mode & 1 == 1))
 
 	try:
 		for vhdlBlock in vhdlBlockStream:
@@ -290,8 +290,8 @@ if (mode & 8 == 8):
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	try:
-		wordTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
-		vhdlBlockStream = [block for block in TokenToBlockParser.Transform(wordTokenStream)]
+		vhdlTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
+		vhdlBlockStream = [block for block in TokenToBlockParser.Transform(vhdlTokenStream)]
 	except ParserException as ex:
 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 	except NotImplementedError as ex:
@@ -355,8 +355,8 @@ if (mode & 32 == 32):
 	from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	wordTokenStream = Tokenizer.GetVHDLTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=(mode & 1 == 1))
 	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
 	# document = Document()

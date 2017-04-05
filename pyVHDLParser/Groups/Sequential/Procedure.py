@@ -109,6 +109,9 @@ class ProcedureGroup(Group):
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
 			return
+		elif isinstance(currentBlock, Procedure.VoidBlock):
+			parserState.NextState =   cls.stateParseDeclarations
+			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)

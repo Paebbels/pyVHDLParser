@@ -77,7 +77,7 @@ class FunctionGroup(Group):
 			)},
 			{CommentGroup:    [],
 			 WhitespaceGroup: [],
-			 FunctionGroup2:  []
+			 ReturnTypeGroup:  []
 			 }
 		))
 
@@ -177,7 +177,7 @@ class FunctionGroup(Group):
 		if isinstance(currentBlock, Function.ReturnTypeBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   cls.stateParse2
-			parserState.NextGroup =   FunctionGroup2(parserState.LastGroup, currentBlock)
+			parserState.NextGroup =   ReturnTypeGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
 			return
 		else:
@@ -275,5 +275,5 @@ class FunctionGroup(Group):
 
 		raise BlockParserException("End of function declaration not found.", currentBlock)
 
-class FunctionGroup2(Group):
+class ReturnTypeGroup(Group):
 	pass

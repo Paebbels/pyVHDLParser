@@ -598,8 +598,8 @@ class PackageBodyGroup(Group):
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
-					parserState.NextGroup =    group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.PushState =   group.stateParse
+					parserState.NextGroup =   group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.BlockMarker = currentBlock
 					parserState.ReIssue =     True
 					return
