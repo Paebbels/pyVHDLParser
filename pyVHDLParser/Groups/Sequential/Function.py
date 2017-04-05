@@ -37,7 +37,7 @@ from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBloc
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
 from pyVHDLParser.Blocks.Object.Constant  import ConstantBlock
 from pyVHDLParser.Blocks.Object.Variable  import VariableBlock
-from pyVHDLParser.Blocks.Reference.Use    import UseBlock
+from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Function
 from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException, EndOfDocumentGroup
@@ -50,9 +50,9 @@ from pyVHDLParser.Groups.Reference        import UseGroup
 
 class FunctionGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		UseBlock: UseGroup,
-		ConstantBlock: ConstantGroup,
-		VariableBlock: VariableGroup
+		Use.StartBlock:  UseGroup,
+		ConstantBlock:   ConstantGroup,
+		VariableBlock:   VariableGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		# Function.NameBlock:       FunctionGroup,  # FIXME: unresolvable reference
@@ -112,7 +112,7 @@ class FunctionGroup(Group):
 			parserState.BlockMarker = currentBlock
 			parserState.ReIssue =     True
 			return
-		elif isinstance(currentBlock, Function.NameBlock2):
+		elif isinstance(currentBlock, Function.ReturnTypeBlock):
 			if isinstance(currentBlock.EndToken, EndToken):
 				parserState.Pop()
 			else:
@@ -163,7 +163,6 @@ class FunctionGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -175,7 +174,7 @@ class FunctionGroup(Group):
 		currentBlock = parserState.Block
 
 		# consume OpenBlock
-		if isinstance(currentBlock, Function.NameBlock2):
+		if isinstance(currentBlock, Function.ReturnTypeBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   cls.stateParse2
 			parserState.NextGroup =   FunctionGroup2(parserState.LastGroup, currentBlock)
@@ -228,7 +227,6 @@ class FunctionGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -272,7 +270,6 @@ class FunctionGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 

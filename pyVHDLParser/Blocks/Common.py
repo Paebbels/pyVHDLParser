@@ -28,11 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token               import SpaceToken, IndentationToken
-from pyVHDLParser.Blocks              import Block, ParserState
+from pyVHDLParser.Token     import SpaceToken, IndentationToken
+from pyVHDLParser.Blocks    import ParserState, SkipableBlock
 
 
-class WhitespaceBlock(Block):
+class WhitespaceBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
 

@@ -36,9 +36,7 @@ from pyVHDLParser.Blocks.Common               import LinebreakBlock, Indentation
 from pyVHDLParser.Blocks.List                 import GenericList, ParameterList, PortList
 from pyVHDLParser.Blocks.Object.Constant      import ConstantBlock
 from pyVHDLParser.Blocks.Object.Signal        import SignalBlock
-from pyVHDLParser.Blocks.Reference            import Context
-from pyVHDLParser.Blocks.Reference.Library    import LibraryBlock
-from pyVHDLParser.Blocks.Reference.Use        import UseBlock
+from pyVHDLParser.Blocks.Reference            import Context, Library, Use
 from pyVHDLParser.Blocks.Reporting.Assert     import AssertBlock
 from pyVHDLParser.Blocks.Sequential           import Package, PackageBody, Function, Procedure, Process
 from pyVHDLParser.Blocks.Structural           import Entity, Architecture, Component, Configuration
@@ -56,8 +54,8 @@ from pyVHDLParser.Functions                   import Console
 
 class ContextGroup(Group):
 	SIMPLE_BLOCKS = {
-		LibraryBlock:             LibraryGroup,
-		UseBlock:                 UseGroup
+		Library.StartBlock:    LibraryGroup,
+		Use.StartBlock:        UseGroup
 	}
 
 	def __init__(self, previousGroup, startBlock, endBlock=None):
@@ -115,7 +113,7 @@ class EntityGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		GenericList.OpenBlock:  GenericListGroup,
 		PortList.OpenBlock:     PortListGroup,
-		UseBlock:               UseGroup,
+		Use.StartBlock:         UseGroup,
 		ConstantBlock:          ConstantGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {}
@@ -186,7 +184,6 @@ class EntityGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -217,7 +214,6 @@ class EntityGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -265,7 +261,6 @@ class EntityGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -310,7 +305,6 @@ class EntityGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -319,7 +313,7 @@ class EntityGroup(Group):
 
 class ArchitectureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		UseBlock:                 UseGroup,
+		Use.StartBlock:           UseGroup,
 		ConstantBlock:            ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
 		SignalBlock:              SignalGroup
@@ -370,7 +364,6 @@ class ArchitectureGroup(Group):
 			parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup =   EndOfDocumentGroup(currentBlock)
 			return
 
@@ -415,7 +408,6 @@ class ArchitectureGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -462,7 +454,6 @@ class ArchitectureGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -473,8 +464,8 @@ class ArchitectureGroup(Group):
 
 class PackageGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		LibraryBlock:             LibraryGroup,
-		UseBlock:                 UseGroup,
+		Library.StartBlock:       LibraryGroup,
+		Use.StartBlock:           UseGroup,
 		ConstantBlock:            ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
 		SignalBlock:              SignalGroup
@@ -538,7 +529,6 @@ class PackageGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -549,8 +539,8 @@ class PackageGroup(Group):
 
 class PackageBodyGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		LibraryBlock:             LibraryGroup,
-		UseBlock:                 UseGroup,
+		Library.StartBlock:       LibraryGroup,
+		Use.StartBlock:           UseGroup,
 		ConstantBlock:            ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
 		SignalBlock:              SignalGroup
@@ -615,7 +605,6 @@ class PackageBodyGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -683,7 +672,6 @@ class ComponentGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -750,7 +738,6 @@ class ConfigurationGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 

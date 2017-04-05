@@ -30,8 +30,8 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import TokenParserException
-from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, LibraryEndBlock
-from pyVHDLParser.Blocks.Reference.Use      import UseBlock, UseNameBlock, UseEndBlock
+from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, EndBlock
+from pyVHDLParser.Blocks.Reference.Use      import StartBlock, ReferenceNameBlock, EndBlock
 from pyVHDLParser.Groups.Reference          import LibraryGroup
 from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
 from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
@@ -52,7 +52,7 @@ class Library(LibraryReferenceModel):
 			if isinstance(block, LibraryNameBlock):
 				library = cls(block.StartToken.Value)
 				parserState.CurrentNode.AddLibrary(library)
-			elif isinstance(block, LibraryEndBlock):
+			elif isinstance(block, EndBlock):
 				break
 
 		parserState.Pop()
@@ -70,12 +70,12 @@ class Use(UseModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, UseBlock)
+		assert isinstance(parserState.CurrentBlock, StartBlock)
 		for block in parserState.BlockIterator:
-			if isinstance(block, UseNameBlock):
+			if isinstance(block, ReferenceNameBlock):
 				# parserState.CurrentBlock = block
 				cls.stateParseTokens(parserState)
-			elif isinstance(block, UseEndBlock):
+			elif isinstance(block, EndBlock):
 				break
 		else:
 			raise TokenParserException("", None)
@@ -84,7 +84,7 @@ class Use(UseModel):
 
 	@classmethod
 	def stateParseTokens(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, UseNameBlock)
+		assert isinstance(parserState.CurrentBlock, ReferenceNameBlock)
 
 		tokenIterator = iter(parserState)
 

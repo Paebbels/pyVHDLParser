@@ -147,7 +147,6 @@ class PortListGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -221,7 +220,6 @@ class ParameterListGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -295,7 +293,6 @@ class SensitivityListGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 

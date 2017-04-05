@@ -50,10 +50,10 @@ class Document(DocumentModel):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		block = parserState.CurrentGroup
-		if isinstance(block, Library.LibraryBlock):
+		if isinstance(block, Library.StartBlock):
 			parserState.PushState = LibraryModel.stateParse
 			parserState.ReIssue()
-		elif isinstance(block, Use.UseBlock):
+		elif isinstance(block, Use.StartBlock):
 			parserState.PushState = UseModel.stateParse
 			parserState.ReIssue()
 		elif isinstance(block, Entity.NameBlock):

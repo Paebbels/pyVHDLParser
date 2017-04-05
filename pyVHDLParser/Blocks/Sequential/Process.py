@@ -46,7 +46,7 @@ from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 class OpenBlock(Block):
 	KEYWORDS = {
 		# Keyword     Transition
-		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 		VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
@@ -135,7 +135,7 @@ class OpenBlock(Block):
 
 		raise TokenParserException("Expected '(' after keyword PROCESS.", token)
 
-
+# TODO: Find a better name
 class OpenBlock2(Block):
 	@classmethod
 	def stateAfterSensitivityList(cls, parserState: ParserState):
@@ -236,7 +236,7 @@ class OpenBlock2(Block):
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			UseKeyword:       Use.UseBlock.stateUseKeyword,
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,

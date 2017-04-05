@@ -151,7 +151,7 @@ class NameBlock(Block):
 
 	__KEYWORD__ = {
 		# Keyword     Transition
-		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 		PortKeyword:      PortList.OpenBlock.statePortKeyword,
 	}

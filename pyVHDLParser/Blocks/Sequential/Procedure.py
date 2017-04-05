@@ -101,7 +101,7 @@ class NameBlock(Block):
 			parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ = ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 			parserState.TokenMarker = None
-			parserState.NextState = NameBlock2.stateAfterParameterList
+			parserState.NextState = VoidBlock.stateAfterParameterList
 			parserState.PushState = ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter = 1
 			return
@@ -132,7 +132,7 @@ class NameBlock(Block):
 			parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ = ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 			parserState.TokenMarker = None
-			parserState.NextState = NameBlock2.stateAfterParameterList
+			parserState.NextState = VoidBlock.stateAfterParameterList
 			parserState.PushState = ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter = 1
 			return
@@ -141,9 +141,9 @@ class NameBlock(Block):
 			if (keyword == "is"):
 				parserState.NewToken =    IsKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-				_ =                       NameBlock2(parserState.NewBlock, parserState.NewToken)
+				_ =                       VoidBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
-				parserState.NextState =   NameBlock2.stateDeclarativeRegion
+				parserState.NextState =   VoidBlock.stateDeclarativeRegion
 				return
 			elif (keyword == "generic"):
 				parserState.NewToken = GenericKeyword(token)
@@ -177,7 +177,7 @@ class NameBlock(Block):
 		raise TokenParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after procedure name.", token)
 
 
-class NameBlock2(Block):
+class VoidBlock(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
@@ -189,7 +189,7 @@ class NameBlock2(Block):
 		elif isinstance(token, StringToken):
 			if (token <= "is"):
 				parserState.NewToken =  IsKeyword(token)
-				parserState.NewBlock =  NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+				parserState.NewBlock =  VoidBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
 				parserState.NextState = cls.stateDeclarativeRegion
 				return
 		elif isinstance(token, SpaceToken):
@@ -241,7 +241,7 @@ class NameBlock2(Block):
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			UseKeyword:       Use.UseBlock.stateUseKeyword,
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,

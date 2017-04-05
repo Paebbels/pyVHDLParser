@@ -102,7 +102,7 @@ class NameBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ =                       ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 			parserState.TokenMarker = None
-			parserState.NextState =   NameBlock2.stateAfterParameterList
+			parserState.NextState =   ReturnTypeBlock.stateAfterParameterList
 			parserState.PushState =   ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter =     1
 			return
@@ -133,7 +133,7 @@ class NameBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ =                       ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)
 			parserState.TokenMarker = None
-			parserState.NextState =   NameBlock2.stateAfterParameterList
+			parserState.NextState =   ReturnTypeBlock.stateAfterParameterList
 			parserState.PushState =   ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter =     1
 			return
@@ -143,7 +143,7 @@ class NameBlock(Block):
 				parserState.NewToken =    ReturnKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.TokenMarker = parserState.NewToken
-				parserState.NextState =   NameBlock2.stateReturnKeyword
+				parserState.NextState =   ReturnTypeBlock.stateReturnKeyword
 				return
 			elif (keyword == "generic"):
 				parserState.NewToken =    GenericKeyword(token)
@@ -177,7 +177,7 @@ class NameBlock(Block):
 		raise TokenParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after function name.", token)
 
 
-class NameBlock2(Block):
+class ReturnTypeBlock(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
@@ -351,7 +351,7 @@ class NameBlock2(Block):
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		keywords = {
 			# Keyword     Transition
-			UseKeyword:       Use.UseBlock.stateUseKeyword,
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
 			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
 			FunctionKeyword:  NameBlock.stateFunctionKeyword,

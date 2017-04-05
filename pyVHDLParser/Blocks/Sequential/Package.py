@@ -152,7 +152,7 @@ class NameBlock(Block):
 
 	__KEYWORDS__ = {
 		# Keyword     Transition
-		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 		# VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,

@@ -30,7 +30,7 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, ParserState
+from pyVHDLParser.Blocks import TokenParserException, Block, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 
 
@@ -188,10 +188,10 @@ class EntityInstantiationBlock(Block):
 
 class GenericMapBeginBlock(Block): pass
 class GenericMapItemBlock(Block): pass
-class GenericMapDelimiterBlock(Block): pass
-class GenericMapEndBlock(Block): pass
+class GenericMapDelimiterBlock(SkipableBlock): pass
+class GenericMapEndBlock(FinalBlock): pass
 class PortMapBeginBlock(Block): pass
 class PortMapItemBlock(Block): pass
-class PortMapDelimiterBlock(Block): pass
-class PortMapEndBlock(Block): pass
-class EndBlock(Block): pass
+class PortMapDelimiterBlock(SkipableBlock): pass
+class PortMapEndBlock(FinalBlock): pass
+class EndBlock(FinalBlock): pass

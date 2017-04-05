@@ -31,7 +31,7 @@
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference.Use        import UseBlock, UseNameBlock, UseDelimiterBlock, UseEndBlock
+from pyVHDLParser.Blocks.Reference.Use        import StartBlock, ReferenceNameBlock, DelimiterBlock, EndBlock
 from test.TestCase                            import TestCase as TestCaseBase
 from test.Counter                             import Counter
 
@@ -57,9 +57,9 @@ class TestCase(TestCaseBase):
 	def GetExpectedBlocksAfterStrip(cls):
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(UseBlock, 10)
-		counter.AddType(UseNameBlock, 17)
-		counter.AddType(UseDelimiterBlock, 3)
-		counter.AddType(UseEndBlock, 10)
+		counter.AddType(StartBlock, 10)
+		counter.AddType(ReferenceNameBlock, 17)
+		counter.AddType(DelimiterBlock, 3)
+		counter.AddType(EndBlock, 10)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

@@ -36,7 +36,7 @@ from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBloc
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
 from pyVHDLParser.Blocks.Object.Constant  import ConstantBlock
 from pyVHDLParser.Blocks.Object.Variable  import VariableBlock
-from pyVHDLParser.Blocks.Reference.Use    import UseBlock
+from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Procedure
 from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException, EndOfDocumentGroup
@@ -48,9 +48,9 @@ from pyVHDLParser.Groups.Reference        import UseGroup
 
 class ProcedureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		UseBlock: UseGroup,
-		ConstantBlock: ConstantGroup,
-		VariableBlock: VariableGroup
+		Use.StartBlock:  UseGroup,
+		ConstantBlock:   ConstantGroup,
+		VariableBlock:   VariableGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		# Procedure.NameBlock:       ProcedureGroup,
@@ -154,7 +154,6 @@ class ProcedureGroup(Group):
 			return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -202,7 +201,6 @@ class ProcedureGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
@@ -247,7 +245,6 @@ class ProcedureGroup(Group):
 					return
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
-			from pyVHDLParser.Groups.Document import EndOfDocumentGroup
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 

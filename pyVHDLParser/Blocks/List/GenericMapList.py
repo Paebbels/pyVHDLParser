@@ -193,7 +193,7 @@ class ItemBlock(Block):
 					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
-class DelimiterBlock(Block):
+class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token

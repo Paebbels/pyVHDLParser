@@ -222,8 +222,9 @@ class Block(metaclass=MetaBlock):
 		return self.__STATES__
 
 
-class CommentBlock(Block):
-	pass
+class SkipableBlock(Block):         pass
+class FinalBlock(Block):            pass
+class CommentBlock(SkipableBlock):  pass
 
 
 class StartOfBlock(Block):
@@ -272,8 +273,8 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 		keywords = {
 			# Keyword             Transition
-			LibraryKeyword :      Library.LibraryBlock.stateLibraryKeyword,
-			UseKeyword :          Use.UseBlock.stateUseKeyword,
+			LibraryKeyword :      Library.StartBlock.stateLibraryKeyword,
+			UseKeyword :          Use.StartBlock.stateUseKeyword,
 		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
 		  EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
 		  ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,

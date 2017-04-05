@@ -153,7 +153,7 @@ class NameBlock(Block):
 
 	__KEYWORDS__ = {
 		# Keyword     Transition
-		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 		PortKeyword:      PortList.OpenBlock.statePortKeyword,
 		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,

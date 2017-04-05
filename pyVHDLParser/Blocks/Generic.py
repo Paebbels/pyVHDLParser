@@ -31,13 +31,13 @@
 from pyVHDLParser.Token                     import CharacterToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, LabelToken, AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword
 from pyVHDLParser.Token.Parser              import SpaceToken, StringToken
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState, FinalBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock
 
 
-class EndBlock(Block):
+class EndBlock(FinalBlock):
 	KEYWORD =             None
 	KEYWORD_IS_OPTIONAL = False
 	EXPECTED_NAME =       ""

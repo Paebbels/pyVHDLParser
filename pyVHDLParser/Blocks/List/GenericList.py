@@ -32,7 +32,7 @@ from pyVHDLParser.Token                import CharacterToken, LinebreakToken, In
 from pyVHDLParser.Token.Keywords       import BoundaryToken, EndToken, DelimiterToken, ClosingRoundBracketToken
 from pyVHDLParser.Token.Keywords       import IdentifierToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 
 
@@ -159,7 +159,7 @@ class ItemBlock(Block):
 					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
-class DelimiterBlock(Block):
+class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
 

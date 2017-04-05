@@ -34,9 +34,9 @@ from pyVHDLParser                           import StartOfDocument, EndOfDocumen
 from pyVHDLParser.Base                      import ParserException
 from pyVHDLParser.Blocks                    import Block, CommentBlock, StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Reference          import Context
-from pyVHDLParser.Blocks.Reference.Library  import LibraryBlock
-from pyVHDLParser.Blocks.Reference.Use      import UseBlock
+from pyVHDLParser.Blocks.Reference import Context, Library, Use
+from pyVHDLParser.Blocks.Reference.Library  import StartBlock
+from pyVHDLParser.Blocks.Reference.Use      import StartBlock
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
 from pyVHDLParser.Functions                 import Console
@@ -352,8 +352,8 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		from pyVHDLParser.Groups.Comment import CommentGroup, WhitespaceGroup
 
 		SIMPLE_BLOCKS = {
-			LibraryBlock:             LibraryGroup,
-			UseBlock:                 UseGroup
+			Library.StartBlock:       LibraryGroup,
+			Use.StartBlock:           UseGroup
 		}
 		COMPOUND_BLOCKS = {
 			Context.NameBlock:        ContextGroup,

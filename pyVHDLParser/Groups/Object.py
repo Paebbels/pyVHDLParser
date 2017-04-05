@@ -31,8 +31,8 @@
 from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
 from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
 from pyVHDLParser.Blocks.Object.Variable    import VariableBlock
-from pyVHDLParser.Blocks.Reference.Library  import LibraryEndBlock, LibraryBlock
-from pyVHDLParser.Blocks.Reference.Use      import UseEndBlock, UseBlock
+from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
+from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
 from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
 
 class ConstantGroup(Group):

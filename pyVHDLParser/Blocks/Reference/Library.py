@@ -31,11 +31,11 @@
 from pyVHDLParser.Token                import CharacterToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 
 
-class LibraryBlock(Block):
+class StartBlock(Block):
 	@classmethod
 	def stateLibraryKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -98,13 +98,13 @@ class LibraryNameBlock(Block):
 			if (token == ","):
 				parserState.NewToken =  DelimiterToken(token)
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-				_ =                     LibraryDelimiterBlock(parserState.NewBlock, parserState.NewToken)
-				parserState.NextState = LibraryDelimiterBlock.stateDelimiter
+				_ =                     DelimiterBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.NextState = DelimiterBlock.stateDelimiter
 				return
 			elif (token == ";"):
 				parserState.NewToken =  EndToken(token)
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-				_ =                     LibraryEndBlock(parserState.NewBlock, parserState.NewToken)
+				_ =                     EndBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 		elif isinstance(token, SpaceToken):
@@ -133,13 +133,13 @@ class LibraryNameBlock(Block):
 			if (token == ","):
 				parserState.NewToken =    DelimiterToken(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-				_ =                       LibraryDelimiterBlock(parserState.NewBlock, parserState.NewToken)
-				parserState.NextState =   LibraryDelimiterBlock.stateDelimiter
+				_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.NextState =   DelimiterBlock.stateDelimiter
 				return
 			elif (token == ";"):
 				parserState.NewToken =    EndToken(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-				_ =                       LibraryEndBlock(parserState.NewBlock, parserState.NewToken)
+				_ =                       EndBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 		elif isinstance(token, LinebreakToken):
@@ -162,7 +162,7 @@ class LibraryNameBlock(Block):
 		raise TokenParserException("Expected ';'.", token)
 
 
-class LibraryDelimiterBlock(Block):
+class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
@@ -218,5 +218,5 @@ class LibraryDelimiterBlock(Block):
 
 		raise TokenParserException("Expected library name (identifier).", token)
 
-class LibraryEndBlock(Block):
+class EndBlock(FinalBlock):
 	pass

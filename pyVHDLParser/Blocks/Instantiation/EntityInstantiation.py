@@ -30,7 +30,7 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, ParserState
+from pyVHDLParser.Blocks import TokenParserException, Block, ParserState, FinalBlock
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 
 
@@ -186,4 +186,4 @@ class EntityInstantiationBlock(Block):
 
 		raise TokenParserException(errorMessage, token)
 
-class EndBlock(Block): pass
+class EndBlock(FinalBlock): pass

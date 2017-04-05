@@ -262,7 +262,7 @@ class NameBlock(Block):
 
 	__KEYWORDS__ = {
 		# Keyword     Transition
-		UseKeyword:       Use.UseBlock.stateUseKeyword,
+		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
 		# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
 		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
