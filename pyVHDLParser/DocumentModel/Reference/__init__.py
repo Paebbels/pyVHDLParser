@@ -30,14 +30,9 @@
 # load dependencies
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import TokenParserException
-from pyVHDLParser.Blocks.Reference.Library  import LibraryNameBlock, EndBlock
-from pyVHDLParser.Blocks.Reference.Use      import StartBlock, ReferenceNameBlock, EndBlock
-from pyVHDLParser.Groups.Reference          import LibraryGroup
+from pyVHDLParser.Blocks.Reference          import Library as LibraryBlocks, Use as UseBlocks
 from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
-
-# Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
+from pyVHDLParser.DocumentModel             import ParserState, GroupParserException
 
 
 class Library(LibraryReferenceModel):
@@ -47,15 +42,22 @@ class Library(LibraryReferenceModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, LibraryGroup)
-		for block in parserState.GroupIterator:
-			if isinstance(block, LibraryNameBlock):
-				library = cls(block.StartToken.Value)
-				parserState.CurrentNode.AddLibrary(library)
-			elif isinstance(block, EndBlock):
-				break
+		group = parserState.Group
 
-		parserState.Pop()
+		for block in group:
+			if isinstance(block, LibraryBlocks.StartBlock):
+				pass
+			elif isinstance(block, LibraryBlocks.LibraryNameBlock):
+				libraryName = block.StartToken.Value
+				library = cls(libraryName)
+				parserState.CurrentNode.AddLibrary(library)
+			elif isinstance(block, LibraryBlocks.EndBlock):
+				parserState.Pop()
+				return
+			else:
+				raise GroupParserException("Unexpected block type in LibraryGroup.")
+
+		raise GroupParserException("End of use clause not found.")
 
 	def __str__(self):
 		return self._library
@@ -70,50 +72,47 @@ class Use(UseModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, StartBlock)
-		for block in parserState.BlockIterator:
-			if isinstance(block, ReferenceNameBlock):
-				# parserState.CurrentBlock = block
-				cls.stateParseTokens(parserState)
-			elif isinstance(block, EndBlock):
-				break
-		else:
-			raise TokenParserException("", None)
+		group = parserState.Group
 
-		parserState.Pop()
+		for block in group:
+			if isinstance(block, UseBlocks.StartBlock):
+				pass
+			elif isinstance(block, UseBlocks.ReferenceNameBlock):
+				tokenIterator = iter(block)
 
-	@classmethod
-	def stateParseTokens(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentBlock, ReferenceNameBlock)
+				for token in tokenIterator:
+					if isinstance(token, IdentifierToken):
+						libraryName = token.Value
+						break
+				else:
+					raise TokenParserException("", None)
 
-		tokenIterator = iter(parserState)
+				for token in tokenIterator:
+					if isinstance(token, IdentifierToken):
+						packageName = token.Value
+						break
+				else:
+					raise TokenParserException("", None)
 
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				libraryName = token.Value
-				break
-		else:
-			raise TokenParserException("", None)
+				for token in tokenIterator:
+					if isinstance(token, IdentifierToken):
+						objectName = token.Value
+						break
+					elif isinstance(token, AllKeyword):
+						objectName = "ALL"
+						break
+				else:
+					raise TokenParserException("", None)
 
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				packageName = token.Value
-				break
-		else:
-			raise TokenParserException("", None)
+				use = cls(libraryName, packageName, objectName)
+				parserState.CurrentNode.AddUse(use)
+			elif isinstance(block, UseBlocks.EndBlock):
+				parserState.Pop()
+				return
+			else:
+				raise GroupParserException("Unexpected block type in LibraryGroup.")
 
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				itemName = token.Value
-				break
-			elif isinstance(token, AllKeyword):
-				itemName = "ALL"
-				break
-		else:
-			raise TokenParserException("", None)
-
-		use = cls(libraryName, packageName, itemName)
-		parserState.CurrentNode.AddUse(use)
+		raise GroupParserException("End of use clause not found.")
 
 	def __str__(self):
 		return "{0}.{1}".format(self._library, self._package)

@@ -31,14 +31,11 @@
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.Object  import Constant
+from pyVHDLParser.Blocks.Object             import Constant
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlock
 from pyVHDLParser.VHDLModel                 import Entity as EntityModel
-from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
+from pyVHDLParser.DocumentModel             import ParserState
 from pyVHDLParser.Functions                 import Console
-
-# Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
 
 
 class Entity(EntityModel):
@@ -48,24 +45,23 @@ class Entity(EntityModel):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, EntityBlock.NameBlock)
-		cls.stateParseEntityName(parserState)
-
-		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.OpenBlock):
-				parserState.PushState = cls.stateParseGenericList
-				parserState.ReIssue()
-			elif isinstance(block, PortListBlocks.OpenBlock):
-				parserState.PushState = cls.stateParsePortList
-				parserState.ReIssue()
-			elif isinstance(block, Constant.ConstantBlock):
-				raise NotImplementedError()
-			elif isinstance(block, EntityBlock.BeginBlock):
-				raise NotImplementedError()
-			elif isinstance(block, EntityBlock.EndBlock):
-				break
-		else:
-			raise TokenParserException("", None)
+		# cls.stateParseEntityName(parserState)
+		#
+		# for block in parserState.GroupIterator:
+		# 	if isinstance(block, GenericListBlocks.OpenBlock):
+		# 		parserState.PushState = cls.stateParseGenericList
+		# 		parserState.ReIssue()
+		# 	elif isinstance(block, PortListBlocks.OpenBlock):
+		# 		parserState.PushState = cls.stateParsePortList
+		# 		parserState.ReIssue()
+		# 	elif isinstance(block, Constant.ConstantBlock):
+		# 		raise NotImplementedError()
+		# 	elif isinstance(block, EntityBlock.BeginBlock):
+		# 		raise NotImplementedError()
+		# 	elif isinstance(block, EntityBlock.EndBlock):
+		# 		break
+		# else:
+		# 	raise TokenParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None

@@ -36,15 +36,11 @@ from pyVHDLParser.Blocks                    import TokenParserException
 # from pyVHDLParser.Blocks.ObjectDeclaration.Constant import ConstantBlock
 from pyVHDLParser.Blocks.Sequential         import PackageBody as PackageBodyBlock
 from pyVHDLParser.VHDLModel                 import PackageBody as PackageBodyModel
-from pyVHDLParser.DocumentModel             import DEBUG
 # from pyVHDLParser.DocumentModel.Sequential.Function import Function
 # from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
-from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
+from pyVHDLParser.DocumentModel             import ParserState
 from pyVHDLParser.Functions                 import Console
-
-# Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
 
 
 class PackageBody(PackageBodyModel):

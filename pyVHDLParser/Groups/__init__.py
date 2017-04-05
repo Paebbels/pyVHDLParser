@@ -34,9 +34,7 @@ from pyVHDLParser                           import StartOfDocument, EndOfDocumen
 from pyVHDLParser.Base                      import ParserException
 from pyVHDLParser.Blocks                    import Block, CommentBlock, StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Reference import Context, Library, Use
-from pyVHDLParser.Blocks.Reference.Library  import StartBlock
-from pyVHDLParser.Blocks.Reference.Use      import StartBlock
+from pyVHDLParser.Blocks.Reference          import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
 from pyVHDLParser.Functions                 import Console
@@ -45,7 +43,7 @@ from pyVHDLParser.Functions                 import Console
 class BlockParserException(ParserException):
 	def __init__(self, message, block):
 		super().__init__(message)
-		self._token = block
+		self._block = block
 
 
 class BlockToGroupParser:
@@ -155,7 +153,7 @@ class ParserState:
 		self.NextState =    top[0]
 		self._blockMarker = top[1]
 		self.NextGroup =    top[2]
-		print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
+		# print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
 		if (self.NextGroup.InnerGroup is None):
 			self.NextGroup.InnerGroup = self.NewGroup
 		if (self.NewGroup.__class__ not in self.NextGroup._subGroups):
@@ -231,7 +229,7 @@ class Group(metaclass=MetaGroup):
 
 	def __iter__(self):
 		block = self.StartBlock
-		# print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
+		print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartBlock.StartToken, self.EndBlock.EndToken))
 		while (block is not self.EndBlock):
 			yield block
 			if (block.NextBlock is None):

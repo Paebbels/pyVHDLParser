@@ -29,9 +29,8 @@
 #
 # load dependencies
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Reference.Library    import StartBlock, LibraryNameBlock, DelimiterBlock, EndBlock
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
+from pyVHDLParser.Blocks.Reference            import Library
 from test.TestCase                            import TestCase as TestCaseBase
 from test.Counter                             import Counter
 
@@ -51,7 +50,7 @@ class TestCase(TestCaseBase):
 		counter.AddType(LinebreakBlock, 19)
 		counter.AddType(IndentationBlock, 12)
 		counter.AddType(WhitespaceBlock, 2)
-		counter.AddType(SingleLineCommentBlock, 7)
+		counter.AddType(CommentBlock, 7)
 		return counter
 
 	@classmethod
@@ -59,9 +58,9 @@ class TestCase(TestCaseBase):
 		pass
 		counter = Counter()
 		counter.AddType(StartOfDocumentBlock, 1)
-		counter.AddType(StartBlock, 11)
-		counter.AddType(LibraryNameBlock, 14)
-		counter.AddType(DelimiterBlock, 3)
-		counter.AddType(EndBlock, 11)
+		counter.AddType(Library.StartBlock, 11)
+		counter.AddType(Library.LibraryNameBlock, 14)
+		counter.AddType(Library.DelimiterBlock, 3)
+		counter.AddType(Library.EndBlock, 11)
 		counter.AddType(EndOfDocumentBlock, 1)
 		return counter

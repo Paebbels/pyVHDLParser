@@ -285,7 +285,7 @@ if (mode & 6 == 6):
 # ==============================================================================
 if (mode & 8 == 8):
 	from pyVHDLParser.Token.Parser  import Tokenizer
-	from pyVHDLParser.Blocks import TokenToBlockParser
+	from pyVHDLParser.Blocks        import TokenToBlockParser
 	from pyVHDLParser.Groups        import BlockToGroupParser
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
@@ -349,17 +349,33 @@ if (mode & 8 == 8):
 # 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 
-if (mode & 32 == 32):
+if (mode & 16 == 16):
 	from pyVHDLParser.Token.Parser  import Tokenizer
 	from pyVHDLParser.Blocks        import TokenToBlockParser
-	from pyVHDLParser.DocumentModel.Parser import GroupToModelParser
+	from pyVHDLParser.Groups        import BlockToGroupParser
+	from pyVHDLParser.DocumentModel import GroupToModelParser, Document
+
+	print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **Console.Foreground))
+	try:
+		vhdlTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
+		vhdlBlockStream = [block for block in TokenToBlockParser.Transform(vhdlTokenStream)]
+		vhdlGroupStream = [group for group in BlockToGroupParser.Transform(vhdlBlockStream)]
+	except ParserException as ex:
+		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	except NotImplementedError as ex:
+		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
-	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=(mode & 1 == 1))
-	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=(mode & 1 == 1))
 
-	# document = Document()
-	# GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
+	try:
+		document = Document()
+		GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
 
-	# document.Print(0)
+		document.Print(0)
+
+
+
+	except ParserException as ex:
+		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
+	except NotImplementedError as ex:
+		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
