@@ -29,16 +29,13 @@
 #
 from pathlib import Path
 
-from typing                                 import Iterator
-
-from pyVHDLParser.Base                      import ParserException
-from pyVHDLParser.Token.Parser              import Tokenizer
-from pyVHDLParser.Blocks                    import TokenToBlockParser
-from pyVHDLParser.Groups                    import Group, StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser
-from pyVHDLParser.Groups.DesignUnit         import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup, ContextGroup
-from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
-from pyVHDLParser.VHDLModel                 import Document as DocumentModel
-from pyVHDLParser.Functions                 import Console
+from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Token.Parser       import Tokenizer
+from pyVHDLParser.Blocks             import TokenToBlockParser
+from pyVHDLParser.Groups             import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser
+from pyVHDLParser.Groups.DesignUnit  import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
+from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
+from pyVHDLParser.VHDLModel          import Document as DocumentModel
 
 
 class GroupParserException(ParserException):
@@ -49,9 +46,11 @@ class GroupParserException(ParserException):
 
 class Document(DocumentModel):
 	def __init__(self, file):
+		from pyVHDLParser.DocumentModel.Reference import Use, Library
+		
 		super().__init__()
-		self.__libraries = []
-		self.__uses =      []
+		self.__libraries  : list[Library] = []
+		self.__uses       : list[Use] =     []
 
 		if isinstance(file, Path):
 			self._filePath = file
@@ -85,10 +84,10 @@ class Document(DocumentModel):
 
 	@classmethod
 	def stateParse(cls, document, startOfDocumentGroup):
-		from pyVHDLParser.DocumentModel.Reference               import Library as LibraryModel, Use as UseModel
-		from pyVHDLParser.DocumentModel.Structural.Entity       import Entity as EntityModel
-		from pyVHDLParser.DocumentModel.Structural.Architecture import Architecture as ArchitectureModel
-		from pyVHDLParser.DocumentModel.Sequential              import Package as PackageModel, PackageBody as PackageBodyModel
+		from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
+		# from pyVHDLParser.DocumentModel.DesignUnit  import Context as ContextModel
+		from pyVHDLParser.DocumentModel.DesignUnit  import Entity as EntityModel, Architecture as ArchitectureModel
+		from pyVHDLParser.DocumentModel.DesignUnit  import Package as PackageModel, PackageBody as PackageBodyModel
 
 		GROUP_TO_MODEL = {
 			LibraryGroup:       LibraryModel,
@@ -135,12 +134,13 @@ class Document(DocumentModel):
 		self._packageBodies.append(packageBody)
 
 	def Print(self, indent=0):
+		_indent = "  " * indent
 		if (len(self.__libraries) > 0):
-			for lib in self.__libraries:
-				print("{indent}-- unused LIBRARY {lib};".format(indent="  " * indent, lib=lib))
+			for library in self.__libraries:
+				print("{indent}-- unused LIBRARY {lib};".format(indent=_indent, lib=library))
 		if (len(self.__uses) > 0):
-			for lib, pack, obj in self.__uses:
-				print("{indent}-- unused USE {lib}.{pack}.{obj};".format(indent="  " * indent, lib=lib, pack=pack, obj=obj))
+			for use in self.__uses:
+				print("{indent}-- unused USE {lib}.{pack}.{obj};".format(indent=_indent, lib=use.Library, pack=use.Package, obj=use.Item))
 		print()
 		for entity in self._entities:
 			entity.Print()

@@ -355,7 +355,7 @@ if (mode & 16 == 16):
 	try:
 		document = Document(file)
 		document.Parse()
-		# document.Print(0)
+		document.Print(0)
 
 	except ParserException as ex:
 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
