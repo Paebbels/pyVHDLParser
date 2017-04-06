@@ -39,7 +39,6 @@ from pyVHDLParser.VHDLModel                 import Package as PackageModel
 # from pyVHDLParser.DocumentModel.Sequential.Function import Function
 # from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
-from pyVHDLParser.DocumentModel             import ParserState
 from pyVHDLParser.Functions                 import Console
 
 
@@ -49,7 +48,7 @@ class Package(PackageModel):
 		self._name = packageName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBlock.NameBlock)
 		cls.stateParsePackageName(parserState)
 
@@ -74,7 +73,7 @@ class Package(PackageModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageName(cls, parserState: ParserState):
+	def stateParsePackageName(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
@@ -97,7 +96,7 @@ class Package(PackageModel):
 		oldNode.Uses.clear()
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState):
+	def stateParseGenericList(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -111,7 +110,7 @@ class Package(PackageModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState):
+	def stateParseGeneric(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)

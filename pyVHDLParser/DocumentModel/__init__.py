@@ -27,11 +27,15 @@
 # limitations under the License.
 # ==============================================================================
 #
+from pathlib import Path
+
 from typing                                 import Iterator
 
 from pyVHDLParser.Base                      import ParserException
-from pyVHDLParser.Groups                    import Group, StartOfDocumentGroup, EndOfDocumentGroup
-from pyVHDLParser.Groups.DesignUnit         import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
+from pyVHDLParser.Token.Parser              import Tokenizer
+from pyVHDLParser.Blocks                    import TokenToBlockParser
+from pyVHDLParser.Groups                    import Group, StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser
+from pyVHDLParser.Groups.DesignUnit         import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup, ContextGroup
 from pyVHDLParser.Groups.Reference          import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel                 import Document as DocumentModel
 from pyVHDLParser.Functions                 import Console
@@ -43,147 +47,66 @@ class GroupParserException(ParserException):
 		self._group = group
 
 
-class GroupToModelParser:
-	@staticmethod
-	def Transform(document, groupGenerator, debug=False):
-		parser = ParserState(document, groupGenerator, debug=debug)
-		parser.Run()
-
-# @staticmethod
-# def _TokenGenerator(currentModel, modelIterator):
-# 	modelType = type(currentModel)
-#
-# 	for token in currentModel:
-# 		yield token
-# 	for model in modelIterator:
-# 		if isinstance(model, modelType):
-# 			for token in model:
-# 				yield token
-# 			if (not model.MultiPart):
-# 				break
-
-class _GroupIterator:
-	def __init__(self, parserState, groupGenerator: Iterator):
-		self._parserState : ParserState = parserState
-		self._groupIterator             = iter(groupGenerator)
-
-	def __iter__(self):
-		return self
-
-	def __next__(self):
-		nextGroup = self._groupIterator.__next__()
-		self._parserState.Group = nextGroup
-		return nextGroup
-
-
-class ParserState:
-	def __init__(self, document, groupGenerator, debug):
-		self.NextState =            document.stateParse
-		self.CurrentNode =          document
-		self._document  =           document
-		self._stack =               []
-		self._iterator =            iter(_GroupIterator(self, groupGenerator))
-		self.Group        : Group = next(self._iterator)
-		self.ReIssue =              False
-
-		self.debug        : bool =  debug
-
-		if (not isinstance(self.Group, StartOfDocumentGroup)):
-			raise GroupParserException("First group is not a StartOfDocumentGroup.", self.Group)
-
-	@property
-	def PushState(self):
-		return self.NextState
-	@PushState.setter
-	def PushState(self, value):
-		self._stack.append((
-			self.NextState,
-			self.CurrentNode
-		))
-		self.NextState =    value
-
-	@property
-	def GetGroupIterator(self):
-		return self._iterator
-
-	# def __iter__(self):
-	# 	return self._iterator
-
-	# def __iter__(self):
-	# 	if self.Group.MultiPart:
-	# 		return iter(GroupToModelParser._TokenGenerator(self.Group, self.GroupIterator))
-	# 	else:
-	# 		return iter(self.Group)
-
-
-	def __eq__(self, other):
-		return self.NextState is other
-
-	def __str__(self):
-		return self.NextState.__func__.__qualname__
-
-	def Pop(self, n=1):
-		print("Leaving {0!s}.".format(self.NextState))
-		top = None
-		for i in range(n):
-			top = self._stack.pop()
-		self.NextState =    top[0]
-		self.CurrentNode =  top[1]
-
-	def Run(self):
-		for group in self._iterator:
-			# if self.debug: print("  state={state!s: <50}  group={group!s: <40}   ".format(state=self, group=group))
-
-			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-			# execute a state and reissue execution if needed
-			self.ReIssue = True
-			while self.ReIssue:
-				self.ReIssue = False
-				if self.debug: print("{DARK_GRAY}state={state!s: <50}  group={group!s: <40}     {NOCOLOR}".format(state=self, group=self.Group, **Console.Foreground))
-				self.NextState(self)
-
-				if isinstance(self.Group, EndOfDocumentGroup):
-					break
-		else:
-			raise GroupParserException("Unexpected end of document.", self.Group)
-
-
 class Document(DocumentModel):
-	def __init__(self):
+	def __init__(self, file):
 		super().__init__()
 		self.__libraries = []
 		self.__uses =      []
 
+		if isinstance(file, Path):
+			self._filePath = file
+		elif isinstance(file, str):
+			self._filePath = Path(file)
+		else:
+			raise ValueError("Unsoppurted type for parameter type.")
+
+	def Parse(self, content=None):
+		if (content is None):
+			if (not self._filePath.exists()):
+				raise GroupParserException("File '{0!s}' does not exist.".format(self._filePath))
+
+			with self._filePath.open('r') as fileHandle:
+				content = fileHandle.read()
+
+		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
+		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
+		groups =          [group for group in vhdlGroupStream]
+		firstGroup =      groups[0]
+		lastGroup =       groups[-1]
+
+		if (not isinstance(firstGroup, StartOfDocumentGroup)):
+			raise GroupParserException("Expected group is not a StartOfDocumentGroup.", firstGroup)
+		elif (not isinstance(lastGroup, EndOfDocumentGroup)):
+			raise GroupParserException("Expected group is not an EndOfDocumentGroup.", lastGroup)
+
+		# run recursively (node, group)
+		self.stateParse(self, firstGroup)
+
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, document, startOfDocumentGroup):
 		from pyVHDLParser.DocumentModel.Reference               import Library as LibraryModel, Use as UseModel
 		from pyVHDLParser.DocumentModel.Structural.Entity       import Entity as EntityModel
 		from pyVHDLParser.DocumentModel.Structural.Architecture import Architecture as ArchitectureModel
 		from pyVHDLParser.DocumentModel.Sequential              import Package as PackageModel, PackageBody as PackageBodyModel
 
-		group = parserState.Group
+		GROUP_TO_MODEL = {
+			LibraryGroup:       LibraryModel,
+			UseGroup:           UseModel,
+			# ContextGroup:       ContextModel,
+			EntityGroup:        EntityModel,
+			ArchitectureGroup:  ArchitectureModel,
+			PackageGroup:       PackageModel,
+			PackageBodyGroup:   PackageBodyModel,
+			# ConfigurationModel
+		}
 
-		if isinstance(group, LibraryGroup):
-			parserState.PushState = LibraryModel.stateParse
-			parserState.ReIssue =   True
-		elif isinstance(group, UseGroup):
-			parserState.PushState = UseModel.stateParse
-			parserState.ReIssue =   True
-		elif isinstance(group, EntityGroup):
-			parserState.PushState = EntityModel.stateParse
-			parserState.ReIssue =   True
-		elif isinstance(group, ArchitectureGroup):
-			parserState.PushState = ArchitectureModel.stateParse
-			parserState.ReIssue =   True
-		# elif isinstance(group, PackageGroup):
-		# 	parserState.PushState = PackageModel.stateParse
-		# 	parserState.ReIssue =   True
-		# elif isinstance(group, PackageBodyGroup):
-		# 	parserState.PushState = PackageBodyModel.stateParse
-		# 	parserState.ReIssue =   True
-		else:
-			pass
-			# parserState.CurrentBlock = next(parserState.BlockIterator)
+		for subGroup in startOfDocumentGroup.GetSubGroups():
+			for group in GROUP_TO_MODEL:
+				# TODO: compare to a direct dictionar match with exception fallback on whitespace
+				if isinstance(subGroup, group):
+					GROUP_TO_MODEL[group].stateParse(document, subGroup)
+					break
 
 	def AddLibrary(self, library):
 		self.__libraries.append(library)

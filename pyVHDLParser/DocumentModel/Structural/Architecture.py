@@ -33,7 +33,6 @@ from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.Object             import Constant
 from pyVHDLParser.Blocks.Structural         import Architecture as ArchitectureBlock
 from pyVHDLParser.VHDLModel                 import Architecture as ArchitectureModel
-from pyVHDLParser.DocumentModel             import ParserState
 from pyVHDLParser.Functions                 import Console
 
 
@@ -44,7 +43,7 @@ class Architecture(ArchitectureModel):
 		self._entity =  entityName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, document, group):
 		# cls.stateParseArchitectureName(parserState)
 		#
 		# for block in parserState.GroupIterator:
@@ -61,7 +60,7 @@ class Architecture(ArchitectureModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParseArchitectureName(cls, parserState: ParserState):
+	def stateParseArchitectureName(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, ArchitectureBlock.NameBlock)
 
 		tokenIterator = iter(parserState)

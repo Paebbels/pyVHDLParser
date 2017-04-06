@@ -160,12 +160,12 @@ class Block(metaclass=MetaBlock):
 	__STATES__ = None
 
 	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
-		previousBlock.NextBlock =     self
-		self._previousBlock : Block = previousBlock
-		self.NextBlock      : Block = None
-		self.StartToken     : Token = startToken
-		self.EndToken       : Token = startToken if (endToken is None) else endToken
-		self.MultiPart =              multiPart
+		previousBlock.NextBlock =       self
+		self._previousBlock : 'Block' = previousBlock
+		self.NextBlock      : 'Block' = None
+		self.StartToken     : Token =   startToken
+		self.EndToken       : Token =   startToken if (endToken is None) else endToken
+		self.MultiPart =                multiPart
 
 	def __len__(self):
 		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1

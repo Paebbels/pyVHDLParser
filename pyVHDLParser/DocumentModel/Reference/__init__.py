@@ -32,7 +32,7 @@ from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.Reference          import Library as LibraryBlocks, Use as UseBlocks
 from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel             import ParserState, GroupParserException
+from pyVHDLParser.DocumentModel             import GroupParserException
 
 
 class Library(LibraryReferenceModel):
@@ -41,19 +41,16 @@ class Library(LibraryReferenceModel):
 		self._library = libraryName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		group = parserState.Group
-
+	def stateParse(cls, currentNode, group):
 		for block in group:
 			if isinstance(block, LibraryBlocks.StartBlock):
 				pass
 			elif isinstance(block, LibraryBlocks.LibraryNameBlock):
 				libraryName = block.StartToken.Value
 				library = cls(libraryName)
-				print("Found library '{0}'. Adding to current node '{1!s}'.".format(libraryName, parserState.CurrentNode))
-				parserState.CurrentNode.AddLibrary(library)
+				print("Found library '{0}'. Adding to current node '{1!s}'.".format(libraryName, currentNode))
+				currentNode.AddLibrary(library)
 			elif isinstance(block, LibraryBlocks.EndBlock):
-				parserState.Pop()
 				return
 			else:
 				raise GroupParserException("Unexpected block type in LibraryGroup.")
@@ -72,9 +69,7 @@ class Use(UseModel):
 		self._item =    itemName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		group = parserState.Group
-
+	def stateParse(cls, currentNode, group):
 		for block in group:
 			if isinstance(block, UseBlocks.StartBlock):
 				pass
@@ -106,9 +101,8 @@ class Use(UseModel):
 					raise TokenParserException("", None)
 
 				use = cls(libraryName, packageName, objectName)
-				parserState.CurrentNode.AddUse(use)
+				currentNode.AddUse(use)
 			elif isinstance(block, UseBlocks.EndBlock):
-				parserState.Pop()
 				return
 			else:
 				raise GroupParserException("Unexpected block type in LibraryGroup.")

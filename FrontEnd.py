@@ -350,30 +350,12 @@ if (mode & 8 == 8):
 
 
 if (mode & 16 == 16):
-	from pyVHDLParser.Token.Parser  import Tokenizer
-	from pyVHDLParser.Blocks        import TokenToBlockParser
-	from pyVHDLParser.Groups        import BlockToGroupParser
-	from pyVHDLParser.DocumentModel import GroupToModelParser, Document
-
-	print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **Console.Foreground))
-	try:
-		vhdlTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
-		vhdlBlockStream = [block for block in TokenToBlockParser.Transform(vhdlTokenStream)]
-		vhdlGroupStream = [group for group in BlockToGroupParser.Transform(vhdlBlockStream)]
-	except ParserException as ex:
-		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-	except NotImplementedError as ex:
-		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-
-	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+	from pyVHDLParser.DocumentModel import Document
 
 	try:
-		document = Document()
-		GroupToModelParser.Transform(document, vhdlGroupStream, debug=True)
-
-		document.Print(0)
-
-
+		document = Document(file)
+		document.Parse()
+		# document.Print(0)
 
 	except ParserException as ex:
 		print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))

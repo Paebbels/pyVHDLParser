@@ -254,6 +254,12 @@ class Group(metaclass=MetaGroup):
 			end=self.EndBlock.EndToken.End
 		)
 
+	def GetSubGroups(self, groupTypes=None):
+		group = self.InnerGroup
+		while (group is not None):
+			yield group
+			group = group.NextGroup
+
 	@property
 	def PreviousGroup(self):
 		return self._previousGroup

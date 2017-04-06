@@ -34,7 +34,6 @@ from pyVHDLParser.Blocks.List               import GenericList as GenericListBlo
 from pyVHDLParser.Blocks.Object             import Constant
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlock
 from pyVHDLParser.VHDLModel                 import Entity as EntityModel
-from pyVHDLParser.DocumentModel             import ParserState
 from pyVHDLParser.Functions                 import Console
 
 
@@ -44,7 +43,7 @@ class Entity(EntityModel):
 		self._name = entityName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, document, group):
 		# cls.stateParseEntityName(parserState)
 		#
 		# for block in parserState.GroupIterator:
@@ -67,7 +66,7 @@ class Entity(EntityModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParseEntityName(cls, parserState: ParserState):
+	def stateParseEntityName(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, EntityBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
@@ -91,7 +90,7 @@ class Entity(EntityModel):
 		oldNode.Uses.clear()
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState):
+	def stateParseGenericList(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -105,7 +104,7 @@ class Entity(EntityModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState):
+	def stateParseGeneric(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
@@ -120,7 +119,7 @@ class Entity(EntityModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	@classmethod
-	def stateParsePortList(cls, parserState: ParserState):
+	def stateParsePortList(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -134,7 +133,7 @@ class Entity(EntityModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParsePort(cls, parserState: ParserState):
+	def stateParsePort(cls, document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.ItemBlock)
 
 		tokenIterator = iter(parserState)
