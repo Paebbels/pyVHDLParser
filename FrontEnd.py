@@ -286,7 +286,7 @@ if (mode & 6 == 6):
 if (mode & 8 == 8):
 	from pyVHDLParser.Token.Parser  import Tokenizer
 	from pyVHDLParser.Blocks        import TokenToBlockParser
-	from pyVHDLParser.Groups        import BlockToGroupParser
+	from pyVHDLParser.Groups import BlockToGroupParser, StartOfDocumentGroup, EndOfDocumentGroup, Group
 
 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
 	try:
@@ -320,8 +320,52 @@ if (mode & 8 == 8):
 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 # ==============================================================================
-# if (mode & 16 == 16):
-# 	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+if (mode & 16 == 16):
+	from pyVHDLParser.Token.Parser  import Tokenizer
+	from pyVHDLParser.Blocks        import TokenToBlockParser
+	from pyVHDLParser.Groups        import BlockToGroupParser, StartOfDocumentGroup, EndOfDocumentGroup, Group
+
+	print("{RED}{line}{NOCOLOR}".format(line="="*160, **Console.Foreground))
+
+	vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+	vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
+	vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
+	groups =          [group for group in vhdlGroupStream]
+	firstGroup =      groups[0]
+	lastGroup =       groups[-1]
+
+	if (not isinstance(firstGroup, StartOfDocumentGroup)):
+		raise GroupParserException("Expected group is not a StartOfDocumentGroup.", firstGroup)
+	elif (not isinstance(lastGroup, EndOfDocumentGroup)):
+		raise GroupParserException("Expected group is not an EndOfDocumentGroup.", lastGroup)
+
+	# def _CategoryIterator(categories):
+
+
+	def validate(group : Group):
+		innerGroup = group.InnerGroup
+		while innerGroup is not None:
+			validate(innerGroup)
+
+			# if group registered?
+			if innerGroup.__class__ in group._subGroups:
+				if innerGroup not in group._subGroups[innerGroup.__class__]:
+					print("innerGroup '{0}' is not listed in _subGroups of '{1}'.".format(innerGroup, group))
+			else:
+				print("innerGroup '{0}' is not supported in group '{1}'".format(innerGroup, group))
+
+			innerGroup = innerGroup.NextGroup
+
+
+	validate(firstGroup)
+
+
+
+
+
+
+
+
 # 	wordTokenStream = Tokenizer.GetWordTokenizer(content)
 # 	vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream, debug=(mode & 1 == 1))
 # 	strippedBlockStream = StripAndFuse(vhdlBlockStream)
@@ -349,8 +393,8 @@ if (mode & 8 == 8):
 # 		print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 
 
-if (mode & 16 == 16):
-	from pyVHDLParser.DocumentModel import Document
+if (mode & 32 == 32):
+	from pyVHDLParser.DocumentModel import Document, GroupParserException, GroupParserException
 
 	try:
 		document = Document(file)

@@ -30,69 +30,66 @@
 # load dependencies
 from typing import List
 
-from pyVHDLParser.Blocks.Sequential import Package as PackageBlock, PackageBody as PackageBodyBlock
-from pyVHDLParser.DocumentModel.Reference import Library, Use
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.Object             import Constant
-from pyVHDLParser.Blocks.Structural import Entity as EntityBlock, Architecture as ArchitectureBlock
-from pyVHDLParser.VHDLModel import Entity as EntityModel, Architecture as ArchitectureModel, Package as PackageModel, \
-	PackageBody as PackageBodyModel
+from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock, PackageBody as PackageBodyBlock
+from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks, Architecture as ArchitectureBlocks
+from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
+from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel, Architecture as ArchitectureModelModel
+from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel, PackageBody as PackageBodyVHDLModel
+from pyVHDLParser.DocumentModel.Reference   import Library, Use
 from pyVHDLParser.Functions                 import Console
 
 
-class Entity(EntityModel):
+class Entity(EntityVHDLModel):
 	def __init__(self, entityName):
 		super().__init__()
 		self._name = entityName
 
 	@classmethod
 	def stateParse(cls, document, group):
-		# cls.stateParseEntityName(parserState)
-		#
-		# for block in parserState.GroupIterator:
-		# 	if isinstance(block, GenericListBlocks.OpenBlock):
-		# 		parserState.PushState = cls.stateParseGenericList
-		# 		parserState.ReIssue()
-		# 	elif isinstance(block, PortListBlocks.OpenBlock):
-		# 		parserState.PushState = cls.stateParsePortList
-		# 		parserState.ReIssue()
-		# 	elif isinstance(block, Constant.ConstantBlock):
-		# 		raise NotImplementedError()
-		# 	elif isinstance(block, EntityBlock.BeginBlock):
-		# 		raise NotImplementedError()
-		# 	elif isinstance(block, EntityBlock.EndBlock):
-		# 		break
-		# else:
-		# 	raise TokenParserException("", None)
+		for block in group:
+			if isinstance(block, EntityBlocks.NameBlock):
+				for token in block:
+					if isinstance(token, IdentifierToken):
+						entityName = token.Value
+						break
+				else:
+					raise TokenParserException("EntityName not found.", None)
 
-		parserState.Pop()
-		# parserState.CurrentBlock = None
+				entity = cls(entityName)
+				entity.AddLibraryReferences(document.Libraries)
+				entity.AddUses(document.Uses)
 
-	@classmethod
-	def stateParseEntityName(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, EntityBlock.NameBlock)
-
-		tokenIterator = iter(parserState)
-
-		for token in tokenIterator:
-			if isinstance(token, IdentifierToken):
-				entityName = token.Value
+				print("Found library '{0}'. Adding to current node '{1!s}'.".format(entityName, document))
+				document.AddEntity(entity)
 				break
-		else:
-			raise TokenParserException("", None)
 
-		oldNode = parserState.CurrentNode
-		entity = cls(entityName)
+		subGroupIterator = iter(group.GetSubGroups())
+		subGroup =         next(subGroupIterator)
 
-		parserState.CurrentNode.AddEntity(entity)
-		parserState.CurrentNode = entity
-		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
-		parserState.CurrentNode.AddUses(oldNode.Uses)
+		if isinstance(subGroup, GenericListGroup):
+			cls.stateParseGenericList(document, subGroup)
+			subGroup = next(subGroupIterator)
 
-		oldNode.Libraries.clear()
-		oldNode.Uses.clear()
+		if isinstance(subGroup, PortListGroup):
+			cls.stateParsePortList(document, subGroup)
+			subGroup = next(subGroupIterator)
+
+		# FIXME entity declarative region
+		# if isinstance(subGroup, ):
+		# 	cls.stateParsePortList(document, subGroup)
+		# 	subGroup = next(subGroupIterator)
+
+		# FIXME entity statements
+		# if isinstance(subGroup, ):
+		# 	cls.stateParsePortList(document, subGroup)
+		# 	subGroup = next(subGroupIterator)
+
+		# FIXME: how to check if everthing is consumed?
+
 
 	@classmethod
 	def stateParseGenericList(cls, document, group):
@@ -187,7 +184,7 @@ class Entity(EntityModel):
 		print("{indent}{DARK_CYAN}END ENTITY{NOCOLOR};".format(name=self._name, indent=indentation, **Console.Foreground))
 
 
-class Architecture(ArchitectureModel):
+class Architecture(ArchitectureModelModel):
 	def __init__(self, architectureName, entityName):
 		super().__init__()
 		self._name =    architectureName
@@ -262,7 +259,7 @@ class Architecture(ArchitectureModel):
 		print("{indent}{DARK_CYAN}END ARCHITECTURE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 
 
-class Package(PackageModel):
+class Package(PackageVHDLModel):
 	def __init__(self, packageName):
 		super().__init__()
 		self._name = packageName
@@ -390,7 +387,7 @@ class Package(PackageModel):
 		print("{indent}{DARK_CYAN}END PACKAGE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
 
 
-class PackageBody(PackageBodyModel):
+class PackageBody(PackageBodyVHDLModel):
 	def __init__(self, packageBodyName):
 		super().__init__()
 		self._name = packageBodyName

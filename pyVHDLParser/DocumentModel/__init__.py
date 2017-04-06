@@ -47,7 +47,7 @@ class GroupParserException(ParserException):
 class Document(DocumentModel):
 	def __init__(self, file):
 		from pyVHDLParser.DocumentModel.Reference import Use, Library
-		
+
 		super().__init__()
 		self.__libraries  : list[Library] = []
 		self.__uses       : list[Use] =     []
