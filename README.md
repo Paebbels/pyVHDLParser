@@ -3,6 +3,8 @@
 [![Landscape.io - Code Health](https://landscape.io/github/Paebbels/pyVHDLParser/master/landscape.svg?style=plastic)](https://landscape.io/github/Paebbels/pyVHDLParser/master)
 [![Build Status](https://travis-ci.org/Paebbels/pyVHDLParser.svg?branch=master)](https://travis-ci.org/Paebbels/pyVHDLParser)
 [![Apache License 2.0](https://img.shields.io/github/license/VLSI-EDA/PoC.svg?style=flat)](LICENSE.md)
+[![Made with Koding](https://koding-cdn.s3.amazonaws.com/badges/made-with-koding/v1/koding_badge_ReadmeDark.png)](href="https://koding.com/)
+
 
 This is a token-stream based parser for VHDL-2008.
 
