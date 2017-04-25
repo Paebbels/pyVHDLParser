@@ -52,15 +52,10 @@ class NameBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
-		elif isinstance(token, LinebreakToken):
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       LinebreakBlock(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace1
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
+			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -110,15 +105,10 @@ class NameBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
-		elif isinstance(token, LinebreakToken):
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       LinebreakBlock(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace2
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
+			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace2
 			return
@@ -191,14 +181,9 @@ class ReturnTypeBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
-		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace1
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -244,15 +229,10 @@ class ReturnTypeBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
-		elif isinstance(token, LinebreakToken):
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       LinebreakBlock(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace2
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
+			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace2
 			return
@@ -299,19 +279,14 @@ class ReturnTypeBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace3
 			return
-		elif isinstance(token, LinebreakToken):
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       LinebreakBlock(parserState.NewBlock, token)
+			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace3
 			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace3
-			return
-		
+
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
@@ -367,12 +342,9 @@ class ReturnTypeBlock(Block):
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =      block(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, StringToken):

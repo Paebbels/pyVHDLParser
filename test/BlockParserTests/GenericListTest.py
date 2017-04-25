@@ -58,7 +58,7 @@ class TestCase(TestCaseBase):
 		counter.AddType(StartOfDocumentBlock, 1)
 		counter.AddType(Entity.NameBlock, 9)
 		counter.AddType(GenericList.OpenBlock, 9)
-		counter.AddType(GenericList.ItemBlock, 13)
+		counter.AddType(GenericList.InterfaceConstantBlock, 13)
 		counter.AddType(GenericList.DelimiterBlock, 4)
 		counter.AddType(GenericList.CloseBlock, 9)
 		counter.AddType(Entity.EndBlock, 9)

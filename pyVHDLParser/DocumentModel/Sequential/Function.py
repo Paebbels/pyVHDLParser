@@ -97,7 +97,7 @@ class Function(FunctionModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.ItemBlock):
+			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -108,7 +108,7 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParseGeneric(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:

@@ -172,7 +172,7 @@ if (mode & 6 == 4):
 				print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
 				print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			elif isinstance(vhdlBlock, (GenericList.ItemBlock, PortList.ItemBlock)):
+			elif isinstance(vhdlBlock, (GenericList.InterfaceConstantBlock, PortList.ItemBlock)):
 				print("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			else:
 				print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))

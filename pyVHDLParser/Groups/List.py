@@ -51,7 +51,7 @@ class GenericListGroup(Group):
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
 			return
-		elif isinstance(currentBlock, GenericList.ItemBlock):
+		elif isinstance(currentBlock, GenericList.InterfaceConstantBlock):
 			parserState.PushState =   GenericListItemGroup.stateParse
 			parserState.NextGroup =   GenericListItemGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock

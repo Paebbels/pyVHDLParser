@@ -96,7 +96,7 @@ class Entity(EntityVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.ItemBlock):
+			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -107,7 +107,7 @@ class Entity(EntityVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -317,7 +317,7 @@ class Package(PackageVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.ItemBlock):
+			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -328,7 +328,7 @@ class Package(PackageVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:
@@ -449,7 +449,7 @@ class PackageBody(PackageBodyVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.ItemBlock):
+			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -460,7 +460,7 @@ class PackageBody(PackageBodyVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 

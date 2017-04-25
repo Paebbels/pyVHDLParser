@@ -345,12 +345,9 @@ class ConcurrentBeginBlock(Block):
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = None
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
 		elif isinstance(token, StringToken):
@@ -395,12 +392,9 @@ class SequentialBeginBlock(Block):
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = None
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
 		elif isinstance(token, StringToken):
