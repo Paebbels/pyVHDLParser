@@ -30,6 +30,7 @@
 # load dependencies
 from typing import List
 
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
@@ -96,7 +97,7 @@ class Entity(EntityVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -107,7 +108,7 @@ class Entity(EntityVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -125,7 +126,7 @@ class Entity(EntityVHDLModel):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, PortListBlocks.InterfaceSignalBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
@@ -136,7 +137,7 @@ class Entity(EntityVHDLModel):
 
 	@classmethod
 	def stateParsePort(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, PortListBlocks.InterfaceSignalBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -317,7 +318,7 @@ class Package(PackageVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -328,7 +329,7 @@ class Package(PackageVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:
@@ -449,7 +450,7 @@ class PackageBody(PackageBodyVHDLModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -460,7 +461,7 @@ class PackageBody(PackageBodyVHDLModel):
 
 	@classmethod
 	def stateParseGeneric(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -478,7 +479,7 @@ class PackageBody(PackageBodyVHDLModel):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, PortListBlocks.InterfaceSignalBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
@@ -489,7 +490,7 @@ class PackageBody(PackageBodyVHDLModel):
 
 	@classmethod
 	def stateParsePort(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, PortListBlocks.InterfaceSignalBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
 

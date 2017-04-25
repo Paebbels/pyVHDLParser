@@ -28,17 +28,15 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, \
-	ExtendedIdentifier, FusedCharacterToken, LiteralToken
-from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, DelimiterToken, ClosingRoundBracketToken, ConstantKeyword, InKeyword, \
-	VariableAssignmentKeyword, LessThanOrEqualOperator, UnequalOperator, GreaterThanOrEqualOperator, MatchingEqualOperator, MatchingUnequalOperator, \
+from pyVHDLParser.Token import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, FusedCharacterToken, LiteralToken
+from pyVHDLParser.Token.Keywords import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, LessThanOrEqualOperator, UnequalOperator, GreaterThanOrEqualOperator, MatchingEqualOperator, MatchingUnequalOperator, \
 	MatchingLessThanOperator, MatchingLessThanOrEqualOperator, MatchingGreaterThanOperator, MatchingGreaterThanOrEqualOperator, OrKeyword, NorKeyword, AndKeyword, \
 	NandKeyword, XorKeyword, XnorKeyword, SlaKeyword, SllKeyword, SraKeyword, SrlKeyword, NotKeyword, AbsKeyword, PowerOperator, PlusOperator, MinusOperator, \
 	MultiplyOperator, DivideOperator, ConcatOperator, OpeningRoundBracketToken
 from pyVHDLParser.Token.Keywords       import IdentifierToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 
 
 class ExpressionBlock(Block):
@@ -88,7 +86,7 @@ class ExpressionBlock(Block):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  DelimiterToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					parserState.Pop()
+					parserState.Pop(2)
 					return
 				else:
 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
@@ -100,7 +98,9 @@ class ExpressionBlock(Block):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  BoundaryToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-					parserState.Pop(2)
+					for i in parserState._stack:
+						print(i)
+					parserState.Pop(3)
 					return
 				else:
 					parserState.NewToken =  ClosingRoundBracketToken(token)
@@ -142,7 +142,7 @@ class ExpressionBlock(Block):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  DelimiterToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					parserState.Pop()
+					parserState.Pop(2)
 					return
 				else:
 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
@@ -155,7 +155,9 @@ class ExpressionBlock(Block):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  BoundaryToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-					parserState.Pop(2)
+					for i in parserState._stack:
+						print(i)
+					parserState.Pop(3)
 					return
 				else:
 					parserState.NewToken =  ClosingRoundBracketToken(token)

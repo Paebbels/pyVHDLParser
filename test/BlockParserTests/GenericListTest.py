@@ -28,6 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Comment              import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
@@ -58,7 +59,7 @@ class TestCase(TestCaseBase):
 		counter.AddType(StartOfDocumentBlock, 1)
 		counter.AddType(Entity.NameBlock, 9)
 		counter.AddType(GenericList.OpenBlock, 9)
-		counter.AddType(GenericList.InterfaceConstantBlock, 13)
+		counter.AddType(pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock, 13)
 		counter.AddType(GenericList.DelimiterBlock, 4)
 		counter.AddType(GenericList.CloseBlock, 9)
 		counter.AddType(Entity.EndBlock, 9)

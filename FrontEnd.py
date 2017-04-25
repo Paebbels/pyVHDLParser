@@ -32,6 +32,7 @@ from pathlib import Path
 
 import sys
 
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Token              import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, Token
 from pyVHDLParser.Token.Keywords     import BoundaryToken, EndToken, KeywordToken, DelimiterToken, IdentifierToken
@@ -172,7 +173,7 @@ if (mode & 6 == 4):
 				print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
 				print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
-			elif isinstance(vhdlBlock, (GenericList.InterfaceConstantBlock, PortList.InterfaceSignalBlock)):
+			elif isinstance(vhdlBlock, (pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)):
 				print("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))
 			else:
 				print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **Console.Foreground))

@@ -28,6 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
@@ -51,7 +52,7 @@ class GenericListGroup(Group):
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
 			return
-		elif isinstance(currentBlock, GenericList.InterfaceConstantBlock):
+		elif isinstance(currentBlock, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock):
 			parserState.PushState =   GenericListItemGroup.stateParse
 			parserState.NextGroup =   GenericListItemGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
@@ -128,7 +129,7 @@ class PortListGroup(Group):
 
 		if isinstance(currentBlock, PortList.OpenBlock):
 			return
-		elif isinstance(currentBlock, (PortList.InterfaceSignalBlock, PortList.DelimiterBlock)):
+		elif isinstance(currentBlock, (pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock, PortList.DelimiterBlock)):
 			return
 		elif isinstance(currentBlock, PortList.CloseBlock):
 			parserState.Pop()

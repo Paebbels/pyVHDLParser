@@ -30,6 +30,7 @@
 # load dependencies
 from typing                                         import List
 
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
 from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks
@@ -97,7 +98,7 @@ class Function(FunctionModel):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, GenericListBlocks.InterfaceConstantBlock):
+			if isinstance(block, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock):
 				cls.stateParseGeneric(parserState)
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
@@ -108,7 +109,7 @@ class Function(FunctionModel):
 
 	@classmethod
 	def stateParseGeneric(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, GenericListBlocks.InterfaceConstantBlock)
+		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:

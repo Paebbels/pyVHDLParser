@@ -1,10 +1,11 @@
 entity system is
 	generic (
+		type foobar;
 		constant WIDTH : in natural;
 		HEIGHT1 : natural := xyz;
 		HEIGHT2 : natural := 19324 + abc;
 		HEIGHT3 : natural := 678 * 453;
-		DEPTH : natural := (345 / 666) <= func
+		DEPTH : natural := (345 / 666)
 	);
 	port (
 		Clock : bit := '1';
