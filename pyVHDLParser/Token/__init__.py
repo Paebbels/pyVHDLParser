@@ -206,30 +206,54 @@ class CommentToken(VHDLToken):
 
 
 class LiteralToken(VHDLToken):
-	def __init__(self, previousToken, value, start, end):
-		super().__init__(previousToken, value[1:-1], start=start, end=end)
-
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
 	def __hash__(self):       return super().__hash__()
 
+
+class IntegerLiteralToken(LiteralToken):
 	def __str__(self):
-		return "<LiteralToken   {value:.<40} at {pos!r}>".format(
+		return "<IntLitToken    {value:.<40} at {pos!r}>".format(
+			value=self.Value + "  ",
+			pos=self.Start
+		)
+
+
+class RealLiteralToken(LiteralToken):
+	def __str__(self):
+		return "<RealLitToken   {value:.<40} at {pos!r}>".format(
+			value=self.Value + "  ",
+			pos=self.Start
+		)
+
+
+class CharacterLiteralToken(LiteralToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value[1:-1], start=start, end=end)
+
+	def __str__(self):
+		return "<CharLitToken   {value:.<40} at {pos!r}>".format(
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
 
 
-class StringLiteralToken(VHDLToken):
+class StringLiteralToken(LiteralToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
-	def __eq__(self, other):  return self.Value == other
-	def __ne__(self, other):  return self.Value != other
-	def __hash__(self):       return super().__hash__()
-
 	def __str__(self):
 		return "<StrLitToken    {value:.<40} at {pos!r}>".format(
+			value="\"" + self.Value + "\"  ",
+			pos=self.Start
+		)
+
+class BitStringLiteralToken(LiteralToken):
+	def __init__(self, previousToken, value, start, end):
+		super().__init__(previousToken, value[1:-1], start=start, end=end)
+
+	def __str__(self):
+		return "<BitStrLitToken {value:.<40} at {pos!r}>".format(
 			value="\"" + self.Value + "\"  ",
 			pos=self.Start
 		)

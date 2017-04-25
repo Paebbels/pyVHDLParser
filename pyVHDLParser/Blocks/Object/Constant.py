@@ -28,7 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken, LiteralToken, StringLiteralToken, ExtendedIdentifier
+from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken, CharacterLiteralToken, StringLiteralToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords       import EndToken, BoundaryToken, IdentifierToken, VariableAssignmentKeyword
 from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
@@ -243,7 +243,7 @@ class ConstantBlock(Block):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateExpression
 			return
-		elif isinstance(token, (LiteralToken, StringLiteralToken)):
+		elif isinstance(token, (CharacterLiteralToken, StringLiteralToken)):
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
@@ -267,7 +267,7 @@ class ConstantBlock(Block):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateExpression
 			return
-		elif isinstance(token, (LiteralToken, StringLiteralToken)):
+		elif isinstance(token, (CharacterLiteralToken, StringLiteralToken)):
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, LinebreakToken):

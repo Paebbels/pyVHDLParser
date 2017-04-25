@@ -65,12 +65,26 @@ class OperatorToken(VHDLToken):
 		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
 
 
-class PlusOperatorToken(OperatorToken): pass
-class MinusOperatorToken(OperatorToken): pass
-class MultiplyOperatorToken(OperatorToken): pass
-class DivideOperatorToken(OperatorToken): pass
-class PowerOperatorToken(OperatorToken): pass
-class ConcatOperatorToken(OperatorToken): pass
+class PlusOperator(OperatorToken):        pass
+class MinusOperator(OperatorToken):       pass
+class MultiplyOperator(OperatorToken):    pass
+class DivideOperator(OperatorToken):      pass
+class PowerOperator(OperatorToken):       pass
+class ConcatOperator(OperatorToken):      pass
+
+class RelationalOperator(OperatorToken):  pass
+class EqualOperator(RelationalOperator):                      __KEYWORD__ = "="
+class UnequalOperator(RelationalOperator):                    __KEYWORD__ = "/="
+class LessThanOperator(RelationalOperator):                   __KEYWORD__ = "<"
+class LessThanOrEqualOperator(RelationalOperator):            __KEYWORD__ = "<="
+class GreaterThanOperator(RelationalOperator):                __KEYWORD__ = ">"
+class GreaterThanOrEqualOperator(RelationalOperator):         __KEYWORD__ = ">="
+class MatchingEqualOperator(RelationalOperator):              __KEYWORD__ = "?="
+class MatchingUnequalOperator(RelationalOperator):            __KEYWORD__ = "?/="
+class MatchingLessThanOperator(RelationalOperator):           __KEYWORD__ = "?<"
+class MatchingLessThanOrEqualOperator(RelationalOperator):    __KEYWORD__ = "?<="
+class MatchingGreaterThanOperator(RelationalOperator):        __KEYWORD__ = "?>"
+class MatchingGreaterThanOrEqualOperator(RelationalOperator): __KEYWORD__ = "?>="
 
 
 class DelimiterToken(VHDLToken):
@@ -130,20 +144,6 @@ class AssignmentKeyword(TwoCharKeyword):                      pass
 class VariableAssignmentKeyword(AssignmentKeyword):           __KEYWORD__ = ":="
 class SignalAssignmentKeyword(AssignmentKeyword):             __KEYWORD__ = "<="
 
-class RelationalOperator: pass
-class EqualOperatorKeyword(VHDLToken):                        __KEYWORD__ = "="
-class UnequalOperatorKeyword(VHDLToken):                      __KEYWORD__ = "/="
-class LessThanOperatorKeyword(VHDLToken):                     __KEYWORD__ = "<"
-class LessThanOrEqualOperatorKeyword(VHDLToken):              __KEYWORD__ = "<="
-class GreaterThanOperatorKeyword(VHDLToken):                  __KEYWORD__ = ">"
-class GreaterThanOrEqualOperatorKeyword(VHDLToken):           __KEYWORD__ = ">="
-class MatchingEqualOperatorKeyword(VHDLToken):                __KEYWORD__ = "?="
-class MatchingUnequalOperatorKeyword(VHDLToken):              __KEYWORD__ = "?/="
-class MatchingLessThanOperatorKeyword(VHDLToken):             __KEYWORD__ = "?<"
-class MatchingLessThanOrEqualOperatorKeyword(VHDLToken):      __KEYWORD__ = "?<="
-class MatchingGreaterThanOperatorKeyword(VHDLToken):          __KEYWORD__ = "?>"
-class MatchingGreaterThanOrEqualOperatorKeyword(VHDLToken):   __KEYWORD__ = "?>="
-
 
 class KeywordToken(VHDLToken):
 	__KEYWORD__ = None
@@ -161,19 +161,19 @@ class KeywordToken(VHDLToken):
 			),
 			pos=self.Start)
 
-class DirectionKeyword(KeywordToken): pass
+class DirectionKeyword(KeywordToken):   pass
 
-class OperatorKeyword(KeywordToken): pass
-class LogicalOperatorKeyword(OperatorKeyword): pass
-class MiscellaneousOperatorKeyword(OperatorKeyword): pass
-class ShiftOperatorKeyword(OperatorKeyword): pass
+class Operator(KeywordToken):           pass
+class LogicalOperator(Operator):        pass
+class MiscellaneousOperator(Operator):  pass
+class ShiftOperator(Operator):          pass
 
 class AbsKeyword(KeywordToken):             __KEYWORD__ = "abs"
 class AccessKeyword(KeywordToken):          __KEYWORD__ = "access"
 class AfterKeyword(KeywordToken):           __KEYWORD__ = "after"
 class AliasKeyword(KeywordToken):           __KEYWORD__ = "alias"
 class AllKeyword(KeywordToken):             __KEYWORD__ = "all"
-class AndKeyword(LogicalOperatorKeyword):   __KEYWORD__ = "and"
+class AndKeyword(LogicalOperator):          __KEYWORD__ = "and"
 class ArchitectureKeyword(KeywordToken):    __KEYWORD__ = "architecture"
 class ArrayKeyword(KeywordToken):           __KEYWORD__ = "array"
 class AssertKeyword(KeywordToken):          __KEYWORD__ = "assert"
@@ -216,16 +216,16 @@ class LinkageKeyword(KeywordToken):         __KEYWORD__ = "linkage"
 class LiteralKeyword(KeywordToken):         __KEYWORD__ = "literal"
 class LoopKeyword(KeywordToken):            __KEYWORD__ = "loop"
 class MapKeyword(KeywordToken):             __KEYWORD__ = "map"
-class NandKeyword(LogicalOperatorKeyword):  __KEYWORD__ = "nand"
+class NandKeyword(LogicalOperator):         __KEYWORD__ = "nand"
 class NewKeyword(KeywordToken):             __KEYWORD__ = "new"
 class NextKeyword(KeywordToken):            __KEYWORD__ = "next"
-class NorKeyword(LogicalOperatorKeyword):   __KEYWORD__ = "nor"
+class NorKeyword(LogicalOperator):          __KEYWORD__ = "nor"
 class NotKeyword(KeywordToken):             __KEYWORD__ = "not"
 class NullKeyword(KeywordToken):            __KEYWORD__ = "null"
 class OfKeyword(KeywordToken):              __KEYWORD__ = "of"
 class OnKeyword(KeywordToken):              __KEYWORD__ = "on"
 class OpenKeyword(KeywordToken):            __KEYWORD__ = "open"
-class OrKeyword(LogicalOperatorKeyword):    __KEYWORD__ = "or"
+class OrKeyword(LogicalOperator):           __KEYWORD__ = "or"
 class OthersKeyword(KeywordToken):          __KEYWORD__ = "others"
 class OutKeyword(KeywordToken):             __KEYWORD__ = "out"
 class PackageKeyword(KeywordToken):         __KEYWORD__ = "package"
@@ -244,17 +244,17 @@ class RejectKeyword(KeywordToken):          __KEYWORD__ = "reject"
 class ReleaseKeyword(KeywordToken):         __KEYWORD__ = "release"
 class ReportKeyword(KeywordToken):          __KEYWORD__ = "report"
 class ReturnKeyword(KeywordToken):          __KEYWORD__ = "return"
-class RolKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "rol"
-class RorKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "ror"
+class RolKeyword(ShiftOperator):            __KEYWORD__ = "rol"
+class RorKeyword(ShiftOperator):            __KEYWORD__ = "ror"
 class SelectKeyword(KeywordToken):          __KEYWORD__ = "select"
 class SequenceKeyword(KeywordToken):        __KEYWORD__ = "sequence"
 class SeverityKeyword(KeywordToken):        __KEYWORD__ = "severity"
 class SharedKeyword(KeywordToken):          __KEYWORD__ = "shared"
 class SignalKeyword(KeywordToken):          __KEYWORD__ = "signal"
-class SlaKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "sla"
-class SllKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "sll"
-class SraKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "sra"
-class SrlKeyword(ShiftOperatorKeyword):     __KEYWORD__ = "srl"
+class SlaKeyword(ShiftOperator):            __KEYWORD__ = "sla"
+class SllKeyword(ShiftOperator):            __KEYWORD__ = "sll"
+class SraKeyword(ShiftOperator):            __KEYWORD__ = "sra"
+class SrlKeyword(ShiftOperator):            __KEYWORD__ = "srl"
 class SubtypeKeyword(KeywordToken):         __KEYWORD__ = "subtype"
 class ThenKeyword(KeywordToken):            __KEYWORD__ = "then"
 class ToKeyword(DirectionKeyword):          __KEYWORD__ = "to"
@@ -270,5 +270,5 @@ class WaitKeyword(KeywordToken):            __KEYWORD__ = "wait"
 class WhenKeyword(KeywordToken):            __KEYWORD__ = "when"
 class WhileKeyword(KeywordToken):           __KEYWORD__ = "while"
 class WithKeyword(KeywordToken):            __KEYWORD__ = "with"
-class XorKeyword(LogicalOperatorKeyword):   __KEYWORD__ = "xor"
-class XnorKeyword(LogicalOperatorKeyword):  __KEYWORD__ = "xnor"
+class XorKeyword(LogicalOperator):          __KEYWORD__ = "xor"
+class XnorKeyword(LogicalOperator):         __KEYWORD__ = "xnor"

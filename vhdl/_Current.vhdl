@@ -1,6 +1,10 @@
 entity system is
 	generic (
-		WIDTH : natural := 0
+		constant WIDTH : in natural;
+		HEIGHT1 : natural;
+		HEIGHT2 : natural := 19324;
+		HEIGHT3 : natural := 678;
+		DEPTH : natural := 345666
 	);
 	port (
 		Clock : bit;
