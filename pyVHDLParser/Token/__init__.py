@@ -138,7 +138,7 @@ class CharacterToken(ValuedToken):
 	}
 
 	def __str__(self):
-		return "<CharacterToken {char:.<40} at {pos!r}>".format(
+		return "<CharacterToken                 {char:.<40} at {pos!r}>".format(
 			char="'" + self.__repr__() + "'  ",
 			pos=self.Start
 		)
@@ -159,7 +159,7 @@ class FusedCharacterToken(CharacterToken):
 		return len(self.Value)
 
 	def __str__(self):
-		return "<FusedCharToken {char:.<40} at {pos!r}>".format(
+		return "<FusedCharToken                {char:.<40} at {pos!r}>".format(
 			char="'" + self.__repr__() + "'  ",
 			pos=self.Start
 		)
@@ -170,7 +170,7 @@ class FusedCharacterToken(CharacterToken):
 
 class SpaceToken(ValuedToken):
 	def __str__(self):
-		return "<SpaceToken     {value:.<40} at {pos!r}>".format(
+		return "<SpaceToken                     {value:.<40} at {pos!r}>".format(
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -184,7 +184,7 @@ class StringToken(ValuedToken):
 	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
-		return "<StringToken    {value:.<40} at {pos!r}>".format(
+		return "<StringToken                    {value:.<40} at {pos!r}>".format(
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -213,7 +213,7 @@ class LiteralToken(VHDLToken):
 
 class IntegerLiteralToken(LiteralToken):
 	def __str__(self):
-		return "<IntLitToken    {value:.<40} at {pos!r}>".format(
+		return "<IntegerLiteralToken            {value:.<40} at {pos!r}>".format(
 			value=self.Value + "  ",
 			pos=self.Start
 		)
@@ -221,7 +221,7 @@ class IntegerLiteralToken(LiteralToken):
 
 class RealLiteralToken(LiteralToken):
 	def __str__(self):
-		return "<RealLitToken   {value:.<40} at {pos!r}>".format(
+		return "<RealLiteralToken               {value:.<40} at {pos!r}>".format(
 			value=self.Value + "  ",
 			pos=self.Start
 		)
@@ -232,7 +232,7 @@ class CharacterLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<CharLitToken   {value:.<40} at {pos!r}>".format(
+		return "<CharacterLiteralToken          {value:.<40} at {pos!r}>".format(
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -243,7 +243,7 @@ class StringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<StrLitToken    {value:.<40} at {pos!r}>".format(
+		return "<StringLiteralToken            {value:.<40} at {pos!r}>".format(
 			value="\"" + self.Value + "\"  ",
 			pos=self.Start
 		)
@@ -253,7 +253,7 @@ class BitStringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<BitStrLitToken {value:.<40} at {pos!r}>".format(
+		return "<BitStringLiteralToken         {value:.<40} at {pos!r}>".format(
 			value="\"" + self.Value + "\"  ",
 			pos=self.Start
 		)

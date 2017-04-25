@@ -59,7 +59,7 @@ class TestCase(TestCaseBase):
 		counter.AddType(StartOfDocumentBlock, 1)
 		counter.AddType(Entity.NameBlock, 9)
 		counter.AddType(PortList.OpenBlock, 9)
-		counter.AddType(PortList.ItemBlock, 13)
+		counter.AddType(PortList.InterfaceSignalBlock, 13)
 		counter.AddType(PortList.DelimiterBlock, 4)
 		counter.AddType(PortList.CloseBlock, 9)
 		counter.AddType(Entity.EndBlock, 9)

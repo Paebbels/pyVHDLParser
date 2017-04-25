@@ -47,7 +47,6 @@ class OpenBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
 			parserState.PushState =   cls.stateOpeningParenthesis
-			parserState.Counter =     1
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1
@@ -70,7 +69,6 @@ class OpenBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
 			parserState.PushState =   cls.stateOpeningParenthesis
-			parserState.Counter =     1
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
@@ -143,7 +141,7 @@ class OpenBlock(Block):
 			# parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected interface element name (identifier).", token)
+		raise TokenParserException("Expected interface constant name (identifier) or keyword: CONSTANT, TYPE, PROCEDURE, FUNCTION, PURE, IMPURE.", token)
 
 
 class InterfaceConstantBlock(Block):
@@ -195,38 +193,6 @@ class InterfaceConstantBlock(Block):
 
 		raise TokenParserException("Expected interface constant name (identifier).", token)
 
-
-
-		# token = parserState.Token
-		# if (isinstance(token, CharacterToken)and (token == "(")):
-		# 	parserState.NewToken =    BoundaryToken(token)
-		# 	parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-		# 	parserState.NextState =   CloseBlock.stateClosingParenthesis
-		# 	parserState.PushState =   cls.stateOpeningParenthesis
-		# 	parserState.Counter =     1
-		# 	return
-		# elif isinstance(token, LinebreakToken):
-		# 	if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-		# 		parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-		# 		_ =                     LinebreakBlock(parserState.NewBlock, token)
-		# 	else:
-		# 		parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, token)
-		# 	parserState.TokenMarker = None
-		# 	return
-		# elif isinstance(token, CommentToken):
-		# 	parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
-		# 	parserState.TokenMarker = None
-		# 	return
-		# elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
-		# 	return
-		# elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-		# 	parserState.NewToken =    BoundaryToken(token)
-		# 	parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-		# 	parserState.TokenMarker = None
-		# 	return
-		#
-		# raise TokenParserException("Expected '(' after keyword GENERIC.", token)
-
 	@classmethod
 	def stateConstantName(cls, parserState: ParserState):
 		token = parserState.Token
@@ -242,7 +208,7 @@ class InterfaceConstantBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after entity name.", token)
+		raise TokenParserException("Expected whitespace after interface constant name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -389,7 +355,7 @@ class InterfaceConstantBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
-			parserState.NewBlock =      InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     DelimiterBlock.stateItemDelimiter
 			parserState.PushState =     ExpressionBlock.stateExpression
 			parserState.TokenMarker =   None
@@ -398,13 +364,13 @@ class InterfaceConstantBlock(Block):
 		elif isinstance(token, CharacterToken):
 			if (token == ';'):
 				parserState.NewToken =    DelimiterToken(token)
-				parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				return
 			elif (token == ')'):
 				parserState.NewToken =    BoundaryToken(token)
-				parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop()
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -427,7 +393,7 @@ class InterfaceConstantBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
-			parserState.NewBlock =      InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     DelimiterBlock.stateItemDelimiter
 			parserState.PushState =     ExpressionBlock.stateExpression
 			parserState.TokenMarker =   None
@@ -436,13 +402,13 @@ class InterfaceConstantBlock(Block):
 		elif isinstance(token, CharacterToken):
 			if (token == ';'):
 				parserState.NewToken =    DelimiterToken(token)
-				parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				return
 			elif (token == ')'):
 				parserState.NewToken =    BoundaryToken(token)
-				parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop()
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -467,29 +433,6 @@ class InterfaceConstantBlock(Block):
 			return
 
 		raise TokenParserException("Expected ';' or ':='.", token)
-
-
-		# token = parserState.Token
-		# if isinstance(token, CharacterToken):
-		# 	if (token == "("):
-		# 		parserState.Counter += 1
-		# 	elif (token == ")"):
-		# 		parserState.Counter -= 1
-		# 		if (parserState.Counter == 0):
-		# 			parserState.NewToken =    BoundaryToken(token)
-		# 			parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-		# 			parserState.Pop()
-		# 			parserState.TokenMarker = parserState.NewToken
-		# 		else:
-		# 			parserState.NewToken =    ClosingRoundBracketToken(token)
-		# 	elif (token == ";"):
-		# 		if (parserState.Counter == 1):
-		# 			parserState.NewToken =    DelimiterToken(token)
-		# 			parserState.NewBlock =    InterfaceConstantBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-		# 			_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
-		# 			parserState.NextState =   DelimiterBlock.stateItemDelimiter
-		# 		else:
-		# 			raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
 class DelimiterBlock(SkipableBlock):

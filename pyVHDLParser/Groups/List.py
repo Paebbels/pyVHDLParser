@@ -128,7 +128,7 @@ class PortListGroup(Group):
 
 		if isinstance(currentBlock, PortList.OpenBlock):
 			return
-		elif isinstance(currentBlock, (PortList.ItemBlock, PortList.DelimiterBlock)):
+		elif isinstance(currentBlock, (PortList.InterfaceSignalBlock, PortList.DelimiterBlock)):
 			return
 		elif isinstance(currentBlock, PortList.CloseBlock):
 			parserState.Pop()

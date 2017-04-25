@@ -134,7 +134,8 @@ class ExpressionBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == ";"):
@@ -148,6 +149,7 @@ class ExpressionBlock(Block):
 			elif (token == "("):
 				parserState.NewToken =    OpeningRoundBracketToken(token)
 				parserState.Counter +=    1
+				parserState.NextState =   cls.stateExpression
 				return
 			elif (token == ")"):
 				if (parserState.Counter == 0):
@@ -158,17 +160,21 @@ class ExpressionBlock(Block):
 				else:
 					parserState.NewToken =  ClosingRoundBracketToken(token)
 					parserState.Counter -=  1
+					parserState.NextState = cls.stateExpression
 					return
 			else:
 				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, StringToken):
 			try:
 				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
 			except KeyError:
 				parserState.NewToken =    IdentifierToken(token)
+			parserState.NextState =     cls.stateExpression
 			return
 		elif isinstance(token, LiteralToken):
+			parserState.NextState =     cls.stateExpression
 			parserState.NextState =     cls.stateExpression
 			return
 		elif isinstance(token, LinebreakToken):

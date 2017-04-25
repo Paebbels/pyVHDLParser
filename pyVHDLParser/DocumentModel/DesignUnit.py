@@ -125,7 +125,7 @@ class Entity(EntityVHDLModel):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, PortListBlocks.ItemBlock):
+			if isinstance(block, PortListBlocks.InterfaceSignalBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
@@ -136,7 +136,7 @@ class Entity(EntityVHDLModel):
 
 	@classmethod
 	def stateParsePort(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, PortListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
 
@@ -478,7 +478,7 @@ class PackageBody(PackageBodyVHDLModel):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
-			if isinstance(block, PortListBlocks.ItemBlock):
+			if isinstance(block, PortListBlocks.InterfaceSignalBlock):
 				cls.stateParsePort(parserState)
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
@@ -489,7 +489,7 @@ class PackageBody(PackageBodyVHDLModel):
 
 	@classmethod
 	def stateParsePort(cls, document, group):
-		assert isinstance(parserState.CurrentGroup, PortListBlocks.ItemBlock)
+		assert isinstance(parserState.CurrentGroup, PortListBlocks.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
 
