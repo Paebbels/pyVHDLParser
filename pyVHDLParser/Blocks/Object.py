@@ -1,56 +1,12 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
-# ==============================================================================
-# Authors:            Patrick Lehmann
-#
-# Python functions:   A streaming VHDL parser
-#
-# Description:
-# ------------------------------------
-#		TODO:
-#
-# License:
-# ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-#
-# load dependencies
-from pyVHDLParser.Token                import CommentToken, SpaceToken, LinebreakToken, StringToken, MultiLineCommentToken, CharacterToken, FusedCharacterToken, CharacterLiteralToken, StringLiteralToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords       import EndToken, BoundaryToken, IdentifierToken, VariableAssignmentKeyword
-from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException, ParserState
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks.Common import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Token import StringToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken, CommentToken, SpaceToken, CharacterToken, \
+	FusedCharacterToken, CharacterLiteralToken, StringLiteralToken
+from pyVHDLParser.Token.Keywords import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
 
 
-class ConstantBlock(Block):
-	@classmethod
-	def stateConstantKeyword(cls, parserState: ParserState):
-		token = parserState.Token
-		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
-			parserState.NextState =   cls.stateWhitespace1
-			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			_ =                       block(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace1
-			return
-
-		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+class ObjectDeclarationBlock(Block):
+	OBJECT_KIND = ""
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -80,7 +36,7 @@ class ConstantBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected constant name (identifier).", token)
+		raise TokenParserException("Expected {0} name (identifier).".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateConstantName(cls, parserState: ParserState):
@@ -101,7 +57,7 @@ class ConstantBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected ':' or whitespace after constant name.", token)
+		raise TokenParserException("Expected ':' or whitespace after {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -128,7 +84,7 @@ class ConstantBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected colon after constant name.", token)
+		raise TokenParserException("Expected colon after {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
@@ -149,7 +105,7 @@ class ConstantBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected type (type mark) or whitespace after colon.", token)
+		raise TokenParserException("Expected subtype indication or whitespace after colon.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -176,7 +132,7 @@ class ConstantBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected type (type mark) after colon.", token)
+		raise TokenParserException("Expected subtype indication after colon.", token)
 
 	@classmethod
 	def stateTypeMarkName(cls, parserState: ParserState):
@@ -202,7 +158,7 @@ class ConstantBlock(Block):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise TokenParserException("Expected ':=', ';' or whitespace after type.", token)
+		raise TokenParserException("Expected ':=', ';' or whitespace after subtype indication.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -234,7 +190,7 @@ class ConstantBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ':=' or ';' after type.", token)
+		raise TokenParserException("Expected ':=' or ';' after subtype indication.", token)
 
 	@classmethod
 	def stateVariableAssignment(cls, parserState: ParserState):
@@ -290,35 +246,90 @@ class ConstantBlock(Block):
 
 		raise TokenParserException("Expected expression after ':='.", token)
 
+
+class ObjectDeclarationEndMarkerBlock(Block):
+	pass
+
+
+class ConstantDeclarationBlock(ObjectDeclarationBlock):
+	OBJECT_KIND = "constant"
+
 	@classmethod
-	def stateExpression(cls, parserState: ParserState):
+	def stateConstantKeyword(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
-			parserState.NewToken =    EndToken(token)
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.Pop()
-			return
-		elif isinstance(token, SpaceToken):
+		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
-			parserState.NextState =   cls.stateWhitespace6
+			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace6
+			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after expression.", token)
+		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+
+
+class ConstantDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+
+class VariableDeclarationBlock(ObjectDeclarationBlock):
+	OBJECT_KIND = "variable"
 
 	@classmethod
-	def stateWhitespace6(cls, parserState: ParserState):
+	def stateVariableKeyword(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
-			parserState.NewToken =    EndToken(token)
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.Pop()
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace1
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace1
+			return
+
+		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
+
+
+class VariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+
+class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
+	OBJECT_KIND = "variable"
+
+	@classmethod
+	def stateSharedKeyword(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace0
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace0
+			return
+
+		raise TokenParserException("Expected whitespace after keyword SHARED.", token)
+
+	@classmethod
+	def stateWhitespace0(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, StringToken):
+			parserState.NewToken =    IdentifierToken(token)
+			parserState.NextState =   cls.stateVariableKeyword
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   cls.stateVariableKeyword
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
@@ -338,4 +349,50 @@ class ConstantBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ';'.", token)
+		raise TokenParserException("Expected whitespace after keyword SHARED.", token)
+
+	@classmethod
+	def stateVariableKeyword(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace1
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace1
+			return
+
+		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
+
+
+class SharedVariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+
+class SignalDeclarationBlock(ObjectDeclarationBlock):
+	OBJECT_KIND = "signal"
+
+	@classmethod
+	def stateSignalKeyword(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace1
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace1
+			return
+
+		raise TokenParserException("Expected whitespace after keyword SIGNAL.", token)
+
+
+class SignalDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass

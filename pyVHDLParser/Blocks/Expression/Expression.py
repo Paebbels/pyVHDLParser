@@ -75,6 +75,10 @@ class ExpressionBlock(Block):
 
 	}
 
+
+class ExpressionBlockCharOrClosingRoundBracket(ExpressionBlock):
+	EXIT_CHAR = ";"
+
 	@classmethod
 	def stateExpression(cls, parserState: ParserState):
 		token = parserState.Token
@@ -82,7 +86,7 @@ class ExpressionBlock(Block):
 			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
 			return
 		elif isinstance(token, CharacterToken):
-			if (token == ";"):
+			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  DelimiterToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
@@ -138,7 +142,7 @@ class ExpressionBlock(Block):
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, CharacterToken):
-			if (token == ";"):
+			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
 					parserState.NewToken =  DelimiterToken(token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)

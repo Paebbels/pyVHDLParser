@@ -29,7 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
 from pyVHDLParser.Blocks import Block, TokenParserException, CommentBlock, ParserState
@@ -37,14 +37,74 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase, SequentialBeginBlock
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object  import Constant, Variable
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Sequential         import Procedure
 
 
-
 class NameBlock(Block):
+	@classmethod
+	def statePureKeyword(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace0
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace0
+			return
+
+		raise TokenParserException("Expected whitespace after keyword PURE.", token)
+
+	@classmethod
+	def stateImpureKeyword(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			parserState.NextState =   cls.stateWhitespace0
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                       block(parserState.NewBlock, token)
+			parserState.TokenMarker = None
+			parserState.NextState =   cls.stateWhitespace0
+			return
+
+		raise TokenParserException("Expected whitespace after keyword IMPURE.", token)
+
+	@classmethod
+	def stateWhitespace0(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, StringToken):
+			parserState.NewToken =      IdentifierToken(token)
+			parserState.NextState =     cls.stateFunctionName
+			return
+		elif isinstance(token, LinebreakToken):
+			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, token)
+			else:
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
+
+		raise TokenParserException("Expected keyword FUNCTION.", token)
+
 	@classmethod
 	def stateFunctionKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -327,13 +387,13 @@ class ReturnTypeBlock(Block):
 		keywords = {
 			# Keyword     Transition
 			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
 			FunctionKeyword:  NameBlock.stateFunctionKeyword,
 			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
 			ReportKeyword:    ReportBlock.stateReportKeyword,
-			# PureKeyword:      Function.NameBlock.statePureKeyword,
-			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+			ImpureKeyword:    NameBlock.stateImpureKeyword,
+			PureKeyword:      NameBlock.statePureKeyword
 		}
 
 		token = parserState.Token

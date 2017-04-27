@@ -32,14 +32,14 @@ from pyVHDLParser.Token                     import LinebreakToken, CommentToken,
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword#, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Object             import Constant#, SharedVariable
-# from pyVHDLParser.Blocks.Sequential         import Procedure, Function
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
+from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 
 
 class NameBlock(Block):
@@ -142,16 +142,16 @@ class NameBlock(Block):
 		raise TokenParserException("Expected keyword IS after entity name.", token)
 
 	__KEYWORDS__ = {
-		# Keyword     Transition
+		# Keyword         Transition
 		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 		PortKeyword:      PortList.OpenBlock.statePortKeyword,
-		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-		# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
-		# ProcedureKeyword: Procedure.NameBlock.stateProcesdureKeyword,
-		# FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-		# PureKeyword:      Function.NameBlock.statePureKeyword,
-		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
+		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+		ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+		PureKeyword:      Function.NameBlock.statePureKeyword
 	}
 
 	@classmethod
@@ -180,7 +180,7 @@ class NameBlock(Block):
 
 			if (tokenValue == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
-				parserState.NextState = BeginBlock.stateBeginKeyword
+				parserState.NextState = BeginBlock.stateConcurrentRegion
 				return
 			elif (tokenValue == "end"):
 				parserState.NewToken =  EndKeyword(token)

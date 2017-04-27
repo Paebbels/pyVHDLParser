@@ -31,18 +31,15 @@
 from pyVHDLParser.Blocks.Sequential import Function, Procedure
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords import ArchitectureKeyword, IsKeyword, GenericKeyword, PortKeyword, UseKeyword, \
-	OfKeyword, BeginKeyword, ProcedureKeyword, FunctionKeyword
+from pyVHDLParser.Token.Keywords            import ArchitectureKeyword, IsKeyword, UseKeyword, OfKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword#, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Object             import Constant#, SharedVariable
-# from pyVHDLParser.Blocks.Sequential         import Procedure, Function
-
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
+from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 
 
 class NameBlock(Block):
@@ -243,12 +240,13 @@ class NameBlock(Block):
 	__KEYWORDS__ = {
 		# Keyword     Transition
 		UseKeyword:       Use.StartBlock.stateUseKeyword,
-		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-		# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
-		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+		# VariableKeyword:  VariableDeclarationBlock.stateSharedKeyword,
+		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
 		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-		# PureKeyword:      Function.NameBlock.statePureKeyword,
-		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+		ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+		PureKeyword:      Function.NameBlock.statePureKeyword
 	}
 
 	@classmethod

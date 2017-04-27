@@ -34,7 +34,7 @@ from pyVHDLParser.Token.Keywords                import IdentifierToken, Boundary
 	BufferKeyword, LinkageKeyword
 from pyVHDLParser.Blocks                        import Block, ParserState, CommentBlock, TokenParserException
 from pyVHDLParser.Blocks.Common                 import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Expression.Expression  import ExpressionBlock
+from pyVHDLParser.Blocks.Expression.Expression  import ExpressionBlockCharOrClosingRoundBracket
 
 
 class InterfaceObjectBlock(Block):
@@ -238,7 +238,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlock.stateExpression
+			parserState.PushState =     ExpressionBlockCharOrClosingRoundBracket.stateExpression
 			parserState.TokenMarker =   None
 			parserState.Counter =       0
 			return
@@ -276,7 +276,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlock.stateExpression
+			parserState.PushState =     ExpressionBlockCharOrClosingRoundBracket.stateExpression
 			parserState.TokenMarker =   None
 			parserState.Counter =       0
 			return
@@ -348,7 +348,7 @@ class InterfaceVariableBlock(InterfaceObjectBlock):
 	}
 
 	@classmethod
-	def stateConstantKeyword(cls, parserState: ParserState):
+	def stateVariableKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1

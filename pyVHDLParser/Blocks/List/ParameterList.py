@@ -28,12 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords       import BoundaryToken, DelimiterToken, ClosingRoundBracketToken
-from pyVHDLParser.Token.Keywords       import IdentifierToken
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.InterfaceObject import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
+from pyVHDLParser.Token import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token.Keywords import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, ConstantKeyword, SignalKeyword, VariableKeyword
+from pyVHDLParser.Token.Keywords      import IdentifierToken
+from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic      import CloseBlock as CloseBlockBase
 
 
 class OpenBlock(Block):
@@ -95,9 +97,31 @@ class OpenBlock(Block):
 	def stateOpeningParenthesis(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			parserState.NewToken =    IdentifierToken(token)
-			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   ItemBlock.stateItemRemainder
+			if (token <= "constant"):
+				parserState.NewToken =    ConstantKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   DelimiterBlock.stateItemDelimiter
+				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
+				return
+			elif (token <= "variable"):
+				parserState.NewToken =    VariableKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   DelimiterBlock.stateItemDelimiter
+				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
+				return
+			elif (token <= "signal"):
+				parserState.NewToken =    SignalKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState =   DelimiterBlock.stateItemDelimiter
+				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
+				return
+			else:
+				parserState.NewToken =    IdentifierToken(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
+				return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   ParameterListInterfaceConstantBlock.stateObjectName
 			return
 		elif isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -153,9 +177,31 @@ class DelimiterBlock(SkipableBlock):
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			parserState.NewToken =    IdentifierToken(token)
-			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   ItemBlock.stateItemRemainder
+			if (token <= "constant"):
+				parserState.NewToken =    ConstantKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
+				return
+			elif (token <= "type"):
+				parserState.NewToken =    TypeKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceTypeBlock.stateTypeKeyword
+				return
+			elif (token <= "procedure"):
+				raise NotImplementedError("Generic procedures are not supported.")
+			elif (token <= "function"):
+				raise NotImplementedError("Generic functions are not supported.")
+			elif (token <= "impure"):
+				raise NotImplementedError("Generic impure functions are not supported.")
+			elif (token <= "pure"):
+				raise NotImplementedError("Generic pure functions are not supported.")
+			else:
+				parserState.NewToken =    IdentifierToken(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
+				return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   ParameterListInterfaceConstantBlock.stateObjectName
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.TokenMarker = token
@@ -175,5 +221,17 @@ class DelimiterBlock(SkipableBlock):
 		raise TokenParserException("Expected parameter name (identifier).", token)
 
 
-class CloseBlock(Block):
+class CloseBlock(CloseBlockBase):
 	pass
+
+
+class ParameterListInterfaceConstantBlock(InterfaceConstantBlock):
+	DELIMITER_BLOCK = DelimiterBlock
+
+
+class ParameterListInterfaceVariableBlock(InterfaceVariableBlock):
+	DELIMITER_BLOCK = DelimiterBlock
+
+
+class ParameterListInterfaceSignalBlock(InterfaceSignalBlock):
+	DELIMITER_BLOCK = DelimiterBlock

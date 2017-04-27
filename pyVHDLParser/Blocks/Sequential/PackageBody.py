@@ -34,10 +34,10 @@ from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, En
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Blocks import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Object  import Constant#, SharedVariable
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 
 
@@ -136,12 +136,13 @@ class NameBlock(Block):
 
 	__KEYWORDS__ = {
 		# Keyword     Transition
-		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-		# SharedKeyword:    SharedVariable.SharedVariableBlock.stateSharedKeyword,
+		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+		# VariableKeyword:  Variable.stateSharedKeyword,
+		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
 		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
 		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-		# PureKeyword:      Function.NameBlock.statePureKeyword,
-		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+		ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+		PureKeyword:      Function.NameBlock.statePureKeyword
 	}
 
 	@classmethod

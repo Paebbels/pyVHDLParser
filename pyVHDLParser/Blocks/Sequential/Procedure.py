@@ -29,18 +29,18 @@
 #
 # load dependencies
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, \
+	ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
-from pyVHDLParser.Blocks import Block, TokenParserException, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase, SequentialBeginBlock
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object  import Constant, Variable
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
 from pyVHDLParser.Blocks.Sequential         import Function
-
 
 
 class NameBlock(Block):
@@ -227,13 +227,13 @@ class VoidBlock(Block):
 		keywords = {
 			# Keyword     Transition
 			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
 			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
 			ProcedureKeyword: NameBlock.stateProcedureKeyword,
 			ReportKeyword:    ReportBlock.stateReportKeyword,
-			# PureKeyword:      Procedure.NameBlock.statePureKeyword,
-			# ImpureKeyword:    Procedure.NameBlock.stateImpureKeyword
+			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+			PureKeyword:      Function.NameBlock.statePureKeyword
 		}
 
 		token = parserState.Token

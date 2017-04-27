@@ -1,16 +1,12 @@
 entity system is
 	generic (
-		type foobar;
-		constant WIDTH : in natural;
-		HEIGHT1 : natural := xyz;
-		HEIGHT2 : natural := 19324 + abc;
-		HEIGHT3 : natural := 678 * 453;
-		DEPTH : natural := (345 / 666)
+		constant WIDTH : in natural := (19324 + abc) * 345
 	);
 	port (
 		Clock : bit := '1';
 		Reset : std_logic := "011101"
 	);
+	constant foo : positive := foo(bar(a, b, c) & "spam") >?= 456;
 end entity;
 
 xxx
