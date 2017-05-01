@@ -2,9 +2,9 @@ entity system is
 	function foo return integer is
 	begin
 		if (a <= b) or True then
-
+			break;
 		elsif (c xor d) then
-
+			break bar ;
 		else
 
 		end if;

@@ -37,7 +37,7 @@ from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 class NextBlock(Block):
 	@classmethod
-	def stateLibraryKeyword(cls, parserState: ParserState):
+	def stateNextKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = BoundaryToken(token)
@@ -53,7 +53,7 @@ class NextBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword LIBRARY.", token)
+		raise TokenParserException("Expected ';' or whitespace after keyword NEXT.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -82,7 +82,7 @@ class NextBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected library name (identifier).", token)
+		raise TokenParserException("Expected ';' or loop label.", token)
 
 	@classmethod
 	def stateNextLoopLabel(cls, parserState: ParserState):
@@ -105,7 +105,7 @@ class NextBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after keyword LIBRARY.", token)
+		raise TokenParserException("Expected ';' or whitespace after loop label.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -131,4 +131,4 @@ class NextBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected loop name (label).", token)
+		raise TokenParserException("Expected ';'.", token)

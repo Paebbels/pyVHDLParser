@@ -28,9 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.ControlStructure.Exit import ExitBlock
+from pyVHDLParser.Blocks.ControlStructure.Next import NextBlock
+from pyVHDLParser.Blocks.ControlStructure.Return import ReturnBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, EndKeyword, IfKeyword, ForKeyword, ThenKeyword, ReportKeyword, ElsIfKeyword, ElseKeyword
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, EndKeyword, IfKeyword, ForKeyword, ThenKeyword, ReportKeyword, ElsIfKeyword, ElseKeyword, \
+	ExitKeyword, NextKeyword, ReturnKeyword
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
@@ -42,6 +46,9 @@ class ThenBlock(Block):
 		# Keyword         Transition
 		# IfKeyword:        IfConditionBlock.stateIfKeyword,
 		# ForKeyword:       ForLoopBlock.,
+		ExitKeyword:      ExitBlock.stateExitKeyword,
+		NextKeyword:      NextBlock.stateNextKeyword,
+		ReturnKeyword:    ReturnBlock.stateReturnKeyword,
 		ReportKeyword:    ReportBlock.stateReportKeyword
 	}
 
