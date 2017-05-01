@@ -29,14 +29,15 @@
 #
 # load dependencies
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Blocks import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
-from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock
+from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import SensitivityList
-from pyVHDLParser.Blocks.Object  import Constant, Variable
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Reporting          import Report
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
@@ -47,12 +48,12 @@ class OpenBlock(Block):
 	KEYWORDS = {
 		# Keyword     Transition
 		UseKeyword:       Use.StartBlock.stateUseKeyword,
-		ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-		VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
+		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+		VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
 		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
 		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
-		# PureKeyword:      Function.NameBlock.statePureKeyword,
-		# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+		ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+		PureKeyword:      Function.NameBlock.statePureKeyword
 	}
 
 	@classmethod
@@ -228,12 +229,12 @@ class OpenBlock2(Block):
 		keywords = {
 			# Keyword     Transition
 			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  Constant.ConstantBlock.stateConstantKeyword,
-			VariableKeyword:  Variable.VariableBlock.stateVariableKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
 			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
 			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-			# PureKeyword:      Function.NameBlock.statePureKeyword,
-			# ImpureKeyword:    Function.NameBlock.stateImpureKeyword
+			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+			PureKeyword:      Function.NameBlock.statePureKeyword
 		}
 
 		token = parserState.Token

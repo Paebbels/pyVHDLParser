@@ -30,14 +30,15 @@
 # load dependencies
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword
+from pyVHDLParser.Token.Keywords import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
+from pyVHDLParser.Blocks.Object import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, \
+	SharedVariableDeclarationEndMarkerBlock, SignalDeclarationBlock
 from pyVHDLParser.Blocks.Reference          import Use
 from pyVHDLParser.Blocks.Sequential         import PackageBody, Procedure, Function
 
@@ -143,6 +144,7 @@ class NameBlock(Block):
 		# Keyword     Transition
 		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
+		SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
 		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
 		# VariableKeyword:  SharedVariableDeclarationBlock.stateVariableKeyword,
 		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,

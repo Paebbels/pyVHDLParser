@@ -30,15 +30,17 @@
 # load dependencies
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
+from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword, SignalKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock
+from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, \
+	SharedVariableDeclarationEndMarkerBlock, SignalDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 
 
@@ -146,6 +148,7 @@ class NameBlock(Block):
 		UseKeyword:       Use.StartBlock.stateUseKeyword,
 		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
 		PortKeyword:      PortList.OpenBlock.statePortKeyword,
+		SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
 		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
 		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
 		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
@@ -156,7 +159,6 @@ class NameBlock(Block):
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock

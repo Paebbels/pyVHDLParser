@@ -1,12 +1,14 @@
 entity system is
-	generic (
-		constant WIDTH : in natural := (19324 + abc) * 345
-	);
-	port (
-		Clock : bit := '1';
-		Reset : std_logic := "011101"
-	);
-	constant foo : positive := foo(bar(a, b, c) & "spam") >?= 456;
+	function foo return integer is
+	begin
+		if (a <= b) or True then
+
+		elsif (c xor d) then
+
+		else
+
+		end if;
+	end function;
 end entity;
 
 xxx

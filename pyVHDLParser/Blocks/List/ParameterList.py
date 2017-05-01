@@ -35,7 +35,7 @@ from pyVHDLParser.Token.Keywords      import IdentifierToken
 from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic      import CloseBlock as CloseBlockBase
+from pyVHDLParser.Blocks.Generic1 import CloseBlock as CloseBlockBase
 
 
 class OpenBlock(Block):

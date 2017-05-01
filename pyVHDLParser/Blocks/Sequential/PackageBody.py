@@ -30,14 +30,15 @@
 # load dependencies
 from pyVHDLParser.Blocks.Sequential import Function
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword, FunctionKeyword
+from pyVHDLParser.Token.Keywords import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword, FunctionKeyword, SignalKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, SharedVariableDeclarationEndMarkerBlock
+from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Object import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, \
+	SharedVariableDeclarationEndMarkerBlock, SignalDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Procedure, Function
 
 
@@ -136,6 +137,7 @@ class NameBlock(Block):
 
 	__KEYWORDS__ = {
 		# Keyword     Transition
+		SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
 		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
 		# VariableKeyword:  Variable.stateSharedKeyword,
 		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,

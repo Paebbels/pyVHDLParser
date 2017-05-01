@@ -54,6 +54,7 @@ class ParserState:
 		self._iterator =            iter(tokenGenerator)
 		self._tokenMarker : Token = None
 		self.NextState =            StartOfDocumentBlock.stateDocument
+		self.ReIssue =              False
 		self.LastBlock    : Block = None
 		self.NewBlock     : Block = StartOfDocumentBlock(next(self._iterator))
 		self.Token        : Token = self.NewBlock.StartToken
@@ -104,6 +105,9 @@ class ParserState:
 		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 
 		for token in self._iterator:
+			# set parserState.Token to current token
+			self.Token = token
+
 			# overwrite an existing token and connect the next token with the new one
 			if (self.NewToken is not None):
 				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
@@ -115,7 +119,6 @@ class ParserState:
 				token.PreviousToken = self.NewToken
 				self.NewToken =       None
 
-			self.Token = token
 			# an empty marker means: fill on next yield run
 			if (self._tokenMarker is None):
 				if self.debug: print("  new token marker: None -> {0!s}".format(token))
