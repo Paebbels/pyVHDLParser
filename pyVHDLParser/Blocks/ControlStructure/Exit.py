@@ -39,15 +39,20 @@ class ExitBlock(Block):
 	@classmethod
 	def stateExitKeyword(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+		if (isinstance(token, CharacterToken) and (token == ";")):
+			parserState.NewToken =    EndToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.TokenMarker = None
+			parserState.Pop()
+			return
+		elif isinstance(token, SpaceToken):
+			parserState.NewToken =    BoundaryToken(token)
+			# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
+			# parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace1
@@ -58,9 +63,14 @@ class ExitBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if (isinstance(token, CharacterToken) and (token == ";")):
+			parserState.NewToken =    EndToken(token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		elif isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
-			parserState.TokenMarker = parserState.NewToken
+			# parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   cls.stateExitLoopLabel
 			return
 		elif isinstance(token, ExtendedIdentifier):
@@ -90,13 +100,13 @@ class ExitBlock(Block):
 			parserState.Pop()
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token)
-			parserState.TokenMarker = None
+			# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
+			# parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                       block(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			parserState.NextState =   cls.stateWhitespace2

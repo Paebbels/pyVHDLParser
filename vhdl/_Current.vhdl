@@ -2,11 +2,11 @@ entity system is
 	function foo return integer is
 	begin
 		if (a <= b) or True then
-			break;
+			exit;
 		elsif (c xor d) then
-			break bar ;
+			exit bar ;
 		else
-
+			next foo/*~*/;
 		end if;
 	end function;
 end entity;

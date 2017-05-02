@@ -28,12 +28,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks               import Block
+from pyVHDLParser.Blocks import Block, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
-
-
 
 
 class ReturnBlock(Block):

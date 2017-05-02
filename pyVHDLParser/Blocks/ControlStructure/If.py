@@ -48,7 +48,7 @@ class ThenBlock(Block):
 		# ForKeyword:       ForLoopBlock.,
 		ExitKeyword:      ExitBlock.stateExitKeyword,
 		NextKeyword:      NextBlock.stateNextKeyword,
-		ReturnKeyword:    ReturnBlock.stateReturnKeyword,
+		# ReturnKeyword:    ReturnBlock.stateReturnKeyword,
 		ReportKeyword:    ReportBlock.stateReportKeyword
 	}
 
