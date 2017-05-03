@@ -36,14 +36,21 @@ import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Token              import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, Token
 from pyVHDLParser.Token.Keywords     import BoundaryToken, EndToken, KeywordToken, DelimiterToken, IdentifierToken
-from pyVHDLParser.Blocks             import CommentBlock, Block, StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks             import CommentBlock, Block, StartOfDocumentBlock, EndOfDocumentBlock, MetaBlock
 from pyVHDLParser.Blocks.Common      import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Structural  import Entity
 from pyVHDLParser.Blocks.List        import GenericList, PortList
 from pyVHDLParser.Functions          import Console, Exit
 
 
+
 Console.init()
+
+for block in MetaBlock.BLOCKS:
+	try:
+		block.__cls_init__()
+	except AttributeError:
+		pass
 
 rootDirectory = Path(".")
 vhdlDirectory = rootDirectory / "vhdl"

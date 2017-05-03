@@ -148,6 +148,8 @@ class ParserState:
 
 
 class MetaBlock(type):
+	BLOCKS = []
+
 	"""Register all state*** methods in an array called '__STATES__'"""
 	def __new__(cls, className, baseClasses, classMembers : dict):
 		states = []
@@ -156,7 +158,10 @@ class MetaBlock(type):
 				states.append(memberObject)
 
 		classMembers['__STATES__'] = states
-		return super().__new__(cls, className, baseClasses, classMembers)
+
+		block = super().__new__(cls, className, baseClasses, classMembers)
+		cls.BLOCKS.append(block)
+		return block
 
 
 class Block(metaclass=MetaBlock):
@@ -267,22 +272,29 @@ class EndOfBlock(Block):
 
 
 class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
+	KEYWORDS = None
+
 	@classmethod
-	def stateDocument(cls, parserState: ParserState):
+	def __cls_init__(cls):
 		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 		from pyVHDLParser.Blocks.Reference  import Library, Use, Context
 		from pyVHDLParser.Blocks.Sequential import Package
 		from pyVHDLParser.Blocks.Structural import Entity, Architecture
 
-		keywords = {
+		cls.KEYWORDS = {
 			# Keyword             Transition
-			LibraryKeyword :      Library.StartBlock.stateLibraryKeyword,
-			UseKeyword :          Use.StartBlock.stateUseKeyword,
-		  ContextKeyword :      Context.NameBlock.stateContextKeyword,
-		  EntityKeyword :       Entity.NameBlock.stateEntityKeyword,
-		  ArchitectureKeyword : Architecture.NameBlock.stateArchitectureKeyword,
-		  PackageKeyword :      Package.NameBlock.statePackageKeyword
+			LibraryKeyword:       Library.StartBlock.stateLibraryKeyword,
+			UseKeyword:           Use.StartBlock.stateUseKeyword,
+			ContextKeyword:       Context.NameBlock.stateContextKeyword,
+			EntityKeyword:        Entity.NameBlock.stateEntityKeyword,
+			ArchitectureKeyword:  Architecture.NameBlock.stateArchitectureKeyword,
+			PackageKeyword:       Package.NameBlock.statePackageKeyword
 		}
+
+
+	@classmethod
+	def stateDocument(cls, parserState: ParserState):
+		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
@@ -298,10 +310,10 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in keywords:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   keywords[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -313,7 +325,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 		raise TokenParserException(
 			"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in keywords]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)
