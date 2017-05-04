@@ -33,10 +33,20 @@ from pyVHDLParser.Token.Keywords       import StringToken, BoundaryToken, Identi
 from pyVHDLParser.Blocks               import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Reference     import Use, Library
 
 
 class NameBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Reference     import Use, Library
+
+		cls.KEYWORDS = {
+			# Keyword       Transition
+			UseKeyword:     Use.StartBlock.stateUseKeyword,
+			LibraryKeyword: Library.StartBlock.stateLibraryKeyword
+		}
 	@classmethod
 	def stateContextKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -136,12 +146,6 @@ class NameBlock(Block):
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-		keywords = {
-			# Keyword     Transition
-			UseKeyword:     Use.StartBlock.stateUseKeyword,
-			LibraryKeyword: Library.StartBlock.stateLibraryKeyword
-		}
-
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -154,10 +158,10 @@ class NameBlock(Block):
 			return
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
-			for keyword in keywords:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   keywords[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -171,7 +175,7 @@ class NameBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in keywords]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)

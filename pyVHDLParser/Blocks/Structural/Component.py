@@ -32,15 +32,24 @@ from pyVHDLParser.Token                     import LinebreakToken, CommentToken,
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import ComponentKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.List               import GenericList, PortList
-from pyVHDLParser.Blocks.Reference          import Use
-
 
 
 class NameBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.List           import GenericList, PortList
+
+		cls.KEYWORDS = {
+			# Keyword         Transition
+			GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
+			PortKeyword:      PortList.OpenBlock.statePortKeyword
+		}
+
 	@classmethod
 	def stateComponentKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -138,12 +147,6 @@ class NameBlock(Block):
 			return
 
 		raise TokenParserException("Expected keyword IS after component name.", token)
-
-	__KEYWORDS__ = {
-		# Keyword     Transition
-		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
-		PortKeyword:      PortList.OpenBlock.statePortKeyword
-	}
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):

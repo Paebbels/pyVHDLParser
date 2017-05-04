@@ -38,10 +38,6 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
-from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
-from pyVHDLParser.Blocks.Sequential         import Function
 
 
 class NameBlock(Block):
@@ -169,6 +165,27 @@ class NameBlock(Block):
 
 
 class VoidBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
+		from pyVHDLParser.Blocks.Reference          import Use
+		from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
+		from pyVHDLParser.Blocks.Sequential         import Function
+
+		cls.KEYWORDS = {
+			# Keyword         Transition
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
+			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: NameBlock.stateProcedureKeyword,
+			ReportKeyword:    ReportBlock.stateReportKeyword,
+			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+			PureKeyword:      Function.NameBlock.statePureKeyword
+		}
+
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
@@ -225,18 +242,6 @@ class VoidBlock(Block):
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-		keywords = {
-			# Keyword     Transition
-			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
-			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
-			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-			ProcedureKeyword: NameBlock.stateProcedureKeyword,
-			ReportKeyword:    ReportBlock.stateReportKeyword,
-			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
-			PureKeyword:      Function.NameBlock.statePureKeyword
-		}
-
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -250,10 +255,10 @@ class VoidBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in keywords:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   keywords[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -273,7 +278,7 @@ class VoidBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in keywords]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)

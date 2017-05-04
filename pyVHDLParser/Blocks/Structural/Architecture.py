@@ -37,14 +37,32 @@ from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeywor
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock
-from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Object import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, \
-	SharedVariableDeclarationEndMarkerBlock, SignalDeclarationBlock
-from pyVHDLParser.Blocks.Sequential         import Procedure, Function
+from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 
 
 class NameBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Reference          import Use
+		from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, SharedVariableDeclarationBlock, \
+			SharedVariableDeclarationEndMarkerBlock, SignalDeclarationBlock
+		from pyVHDLParser.Blocks.Sequential         import Procedure, Function
+
+		cls.KEYWORDS = {
+		# Keyword           Transition
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
+			SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			# VariableKeyword:  VariableDeclarationBlock.stateSharedKeyword,
+			SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
+			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+			PureKeyword:      Function.NameBlock.statePureKeyword
+		}
+
 	@classmethod
 	def stateArchitectureKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -239,19 +257,6 @@ class NameBlock(Block):
 
 		raise TokenParserException("Expected keyword IS after architecture name.", token)
 
-	__KEYWORDS__ = {
-		# Keyword     Transition
-		UseKeyword:       Use.StartBlock.stateUseKeyword,
-		SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
-		ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
-		# VariableKeyword:  VariableDeclarationBlock.stateSharedKeyword,
-		SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword,
-		FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
-		ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
-		ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
-		PureKeyword:      Function.NameBlock.statePureKeyword
-	}
-
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 		token = parserState.Token
@@ -267,10 +272,10 @@ class NameBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in cls.__KEYWORDS__:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   cls.__KEYWORDS__[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -284,7 +289,7 @@ class NameBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in cls.__KEYWORDS__]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)

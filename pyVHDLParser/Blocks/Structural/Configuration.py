@@ -35,12 +35,24 @@ from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToke
 from pyVHDLParser.Blocks import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.List               import GenericList, PortList
-from pyVHDLParser.Blocks.Reference          import Use
 
 
 
 class NameBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Reference          import Use
+		from pyVHDLParser.Blocks.List               import GenericList, PortList
+
+		cls.KEYWORDS = {
+		# Keyword           Transition
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
+			GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
+			PortKeyword:      PortList.OpenBlock.statePortKeyword
+		}
+
 	@classmethod
 	def stateConfigurationKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -139,13 +151,6 @@ class NameBlock(Block):
 
 		raise TokenParserException("Expected keyword IS after configuration name.", token)
 
-	__KEYWORD__ = {
-		# Keyword     Transition
-		UseKeyword:       Use.StartBlock.stateUseKeyword,
-		GenericKeyword:   GenericList.OpenBlock.stateGenericKeyword,
-		PortKeyword:      PortList.OpenBlock.statePortKeyword,
-	}
-
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
 
@@ -162,10 +167,10 @@ class NameBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in cls.__KEYWORD__:
-				if (tokenValue == keyword.__KEYWORD__):
+			for keyword in cls.KEYWORDS:
+				if (tokenValue == keyword.KEYWORDS):
 					newToken =                keyword(token)
-					parserState.PushState =   cls.__KEYWORD__[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -182,7 +187,7 @@ class NameBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in cls.__KEYWORD__]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)

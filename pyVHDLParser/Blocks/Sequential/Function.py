@@ -29,19 +29,14 @@
 #
 # load dependencies
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
-from pyVHDLParser.Blocks import Block, TokenParserException, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-# from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock
-from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
-from pyVHDLParser.Blocks.Reference          import Use
-from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
-from pyVHDLParser.Blocks.Sequential         import Procedure
 
 
 class NameBlock(Block):
@@ -229,6 +224,27 @@ class NameBlock(Block):
 
 
 class ReturnTypeBlock(Block):
+	KEYWORDS = None
+
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
+		from pyVHDLParser.Blocks.Reference          import Use
+		from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
+		from pyVHDLParser.Blocks.Sequential         import Procedure
+
+		cls.KEYWORDS = {
+		# Keyword           Transition
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
+			FunctionKeyword:  NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+			ReportKeyword:    ReportBlock.stateReportKeyword,
+			ImpureKeyword:    NameBlock.stateImpureKeyword,
+			PureKeyword:      NameBlock.statePureKeyword
+		}
+
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
@@ -385,18 +401,6 @@ class ReturnTypeBlock(Block):
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
-		keywords = {
-			# Keyword     Transition
-			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
-			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
-			FunctionKeyword:  NameBlock.stateFunctionKeyword,
-			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
-			ReportKeyword:    ReportBlock.stateReportKeyword,
-			ImpureKeyword:    NameBlock.stateImpureKeyword,
-			PureKeyword:      NameBlock.statePureKeyword
-		}
-
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -411,10 +415,10 @@ class ReturnTypeBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in keywords:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
-					parserState.PushState =   keywords[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -434,7 +438,7 @@ class ReturnTypeBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in keywords]
+					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)

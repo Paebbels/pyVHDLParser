@@ -291,7 +291,6 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			PackageKeyword:       Package.NameBlock.statePackageKeyword
 		}
 
-
 	@classmethod
 	def stateDocument(cls, parserState: ParserState):
 		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
