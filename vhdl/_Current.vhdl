@@ -1,13 +1,15 @@
 entity system is
 	function foo return integer is
 	begin
-		if (a <= b) or True then
-			exit;
-		elsif (c xor d) then
-			exit bar ;
-		else
-			next foo/*~*/;
-		end if;
+		for i in 0 to 15 loop
+			if (a <= b) or True then
+				exit;
+			elsif (c xor d) then
+				exit bar ;
+			else
+				next foo/*~*/;
+			end if;
+		end loop;
 	end function;
 end entity;
 

@@ -29,7 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword
+from pyVHDLParser.Token.Keywords import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, ExitKeyword
 from pyVHDLParser.Token.Parser    import SpaceToken, StringToken
 from pyVHDLParser.Blocks          import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
@@ -97,14 +97,25 @@ class SequentialBeginBlock(Block):
 
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.ControlStructure.If  import IfConditionBlock
-		from pyVHDLParser.Blocks.Reporting.Report     import ReportBlock
+		from pyVHDLParser.Blocks.ControlStructure.If        import IfConditionBlock
+		# from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
+		from pyVHDLParser.Blocks.ControlStructure.Exit      import ExitBlock
+		from pyVHDLParser.Blocks.ControlStructure.Next      import NextBlock
+		from pyVHDLParser.Blocks.ControlStructure.Return    import ReturnBlock
+		from pyVHDLParser.Blocks.ControlStructure.ForLoop   import IteratorBlock
+		# from pyVHDLParser.Blocks.ControlStructure.WhileLoop import ConditionBlock
+		from pyVHDLParser.Blocks.Reporting.Report           import ReportBlock
 
 		cls.KEYWORDS = {
-			# Keyword           Transition
-			IfKeyword:          IfConditionBlock.stateIfKeyword,
-			ReportKeyword:      ReportBlock.stateReportKeyword,
-			# ProcessKeyword:     Process.NameBlock.stateProcesdureKeyword,
+			# Keyword       Transition
+			IfKeyword:      IfConditionBlock.stateIfKeyword,
+			# CaseKeyword:    CaseBlock.stateCaseKeyword,
+			ForKeyword:     IteratorBlock.stateForKeyword,
+			# WhileKeyword:   ConditionBlock.stateWhileKeyword,
+			ReturnKeyword:  ReturnBlock.stateReturnKeyword,
+			NextKeyword:    NextBlock.stateNextKeyword,
+			ExitKeyword:    ExitBlock.stateExitKeyword,
+			ReportKeyword:  ReportBlock.stateReportKeyword
 		}
 
 	@classmethod

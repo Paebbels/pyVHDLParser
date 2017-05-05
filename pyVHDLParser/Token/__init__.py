@@ -60,7 +60,7 @@ class Token:
 class ValuedToken(Token):
 	def __init__(self, previousToken, value, start, end=None):
 		super().__init__(previousToken, start, end)
-		self.Value =  value
+		self.Value : str =  value
 
 	def __str__(self):
 		return "<{content: <91} at {pos!r}>".format(
