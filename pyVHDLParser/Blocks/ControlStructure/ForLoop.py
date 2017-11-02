@@ -28,44 +28,19 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockExitedByKeywordOrToOrDownto
-from pyVHDLParser.Token import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken
-from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword, SignalKeyword, IfKeyword, \
-	ForKeyword, CaseKeyword, NextKeyword, ExitKeyword, ReturnKeyword, WhileKeyword, ReportKeyword, InKeyword
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic import ConcurrentBeginBlock, SequentialBeginBlock
-from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockExitedByKeywordOrToOrDownto, ExpressionBlockKeywordORClosingRoundBracket
+from pyVHDLParser.Token                         import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken
+from pyVHDLParser.Token.Parser                  import StringToken, SpaceToken
+from pyVHDLParser.Token.Keywords                import IfKeyword, CaseKeyword, ReportKeyword, InKeyword
+from pyVHDLParser.Token.Keywords                import ForKeyword, NextKeyword, ExitKeyword, ReturnKeyword, WhileKeyword, LoopKeyword
+from pyVHDLParser.Token.Keywords                import BoundaryToken, IdentifierToken
+from pyVHDLParser.Blocks                        import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common                 import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic                import SequentialBeginBlock
+from pyVHDLParser.Blocks.Generic1               import EndBlock as EndBlockBase
 
 
 class IteratorBlock(Block):
-	KEYWORDS = None
-
-	@classmethod
-	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.ControlStructure.If        import IfConditionBlock
-		# from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
-		from pyVHDLParser.Blocks.ControlStructure.Exit      import ExitBlock
-		from pyVHDLParser.Blocks.ControlStructure.Next      import NextBlock
-		from pyVHDLParser.Blocks.ControlStructure.Return    import ReturnBlock
-		# from pyVHDLParser.Blocks.ControlStructure.WhileLoop import ConditionBlock
-		from pyVHDLParser.Blocks.Reporting.Report           import ReportBlock
-
-		cls.KEYWORDS = {
-			# Keyword       Transition
-			IfKeyword:      IfConditionBlock.stateIfKeyword,
-			# CaseKeyword:    CaseBlock.stateCaseKeyword,
-			ForKeyword:     IteratorBlock.stateForKeyword,
-			# WhileKeyword:   ConditionBlock.stateWhileKeyword,
-			ReturnKeyword:  ReturnBlock.stateReturnKeyword,
-			NextKeyword:    NextBlock.stateNextKeyword,
-			ExitKeyword:    ExitBlock.stateExitKeyword,
-			ReportKeyword:  ReportBlock.stateReportKeyword
-		}
-
 	@classmethod
 	def stateForKeyword(cls, parserState: ParserState):
 		token = parserState.Token
@@ -137,8 +112,8 @@ class IteratorBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, StringToken) and (token <= "in")):
 			parserState.NewToken =      InKeyword(token)
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.TokenMarker =   None
+			# parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			# parserState.TokenMarker =   None
 			parserState.NextState =     cls.stateInKeyword
 			return
 		elif isinstance(token, LinebreakToken):
@@ -211,15 +186,24 @@ class IteratorBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		else:
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			parserState.NextState =   LoopBlock.stateLoopKeyword
-			parserState.PushState =   ExpressionBlockExitedByLoopOrToOrDownto.stateExpression
-			parserState.TokenMarker = parserState.Token
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
+			parserState.NextState =     LoopBlock.stateLoopKeyword
+			parserState.PushState =     ExpressionBlockExitedByLoop.stateExpression
+			parserState.PushState =     ExpressionBlockExitedByLoopOrToOrDownto.stateExpression
+			parserState.TokenMarker =   parserState.Token
 			parserState.NextState(parserState)
 			return
 
 
+class EndBlock(EndBlockBase):
+	KEYWORD =             ForKeyword
+	KEYWORD_IS_OPTIONAL = False
+	EXPECTED_NAME =       KEYWORD.__KEYWORD__
+
+
 class LoopBlock(SequentialBeginBlock):
+	END_BLOCK = EndBlock
+
 	@classmethod
 	def stateLoopKeyword(cls, parserState: ParserState):
 		parserState.NextState = cls.stateSequentialRegion
@@ -227,11 +211,15 @@ class LoopBlock(SequentialBeginBlock):
 
 
 class ExpressionBlockExitedByLoopOrToOrDownto(ExpressionBlockExitedByKeywordOrToOrDownto):
-	EXIT_KEYWORD =  ForKeyword
+	EXIT_KEYWORD =  LoopKeyword
 	EXIT_BLOCK =    LoopBlock
 
 
-class EndBlock(EndBlockBase):
-	KEYWORD =             ForKeyword
-	KEYWORD_IS_OPTIONAL = False
-	EXPECTED_NAME =       KEYWORD.__KEYWORD__
+class ExpressionBlockExitedByLoop(ExpressionBlockKeywordORClosingRoundBracket):
+	EXIT_KEYWORD = LoopKeyword
+	EXIT_BLOCK =   LoopBlock
+
+
+class LoopIterationDirectionBlock(Block):
+	pass
+

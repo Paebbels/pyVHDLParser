@@ -28,89 +28,36 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Generic import SequentialBeginBlock
+from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, EndKeyword, IfKeyword, ForKeyword, ThenKeyword, ReportKeyword, ElsIfKeyword, ElseKeyword, \
-	ExitKeyword, NextKeyword, ReturnKeyword, CaseKeyword, WhileKeyword
+from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, IfKeyword, ThenKeyword
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockKeywordORClosingRoundBracket
 
 
+class EndBlock(EndBlockBase):
+	KEYWORD =       IfKeyword
+	EXPECTED_NAME = KEYWORD.__KEYWORD__
+
+
 class ThenBlock(SequentialBeginBlock):
+	END_BLOCK = EndBlock
+
 	@classmethod
 	def stateThenKeyword(cls, parserState: ParserState):
 		parserState.NextState = cls.stateSequentialRegion
 		parserState.NextState(parserState)
 
-	# KEYWORDS = None
-	#
-	# @classmethod
-	# def __cls_init__(cls):
-	# 	# from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
-	# 	from pyVHDLParser.Blocks.ControlStructure.Exit      import ExitBlock
-	# 	from pyVHDLParser.Blocks.ControlStructure.Next      import NextBlock
-	# 	from pyVHDLParser.Blocks.ControlStructure.Return    import ReturnBlock
-	# 	from pyVHDLParser.Blocks.ControlStructure.ForLoop   import IteratorBlock
-	# 	# from pyVHDLParser.Blocks.ControlStructure.WhileLoop import ConditionBlock
-	# 	from pyVHDLParser.Blocks.Reporting.Report           import ReportBlock
-	#
-	# 	cls.KEYWORDS = {
-	# 		# Keyword       Transition
-	# 		IfKeyword:      IfConditionBlock.stateIfKeyword,
-	# 		# CaseKeyword:    CaseBlock.stateCaseKeyword,
-	# 		ForKeyword:     IteratorBlock.stateForKeyword,
-	# 		# WhileKeyword:   ConditionBlock.stateWhileKeyword,
-	# 		ReturnKeyword:  ReturnBlock.stateReturnKeyword,
-	# 		NextKeyword:    NextBlock.stateNextKeyword,
-	# 		ExitKeyword:    ExitBlock.stateExitKeyword,
-	# 		ReportKeyword:  ReportBlock.stateReportKeyword
-	# 	}
-	#
-	# @classmethod
-	# def stateDeclarativeRegion(cls, parserState: ParserState):
-	# 	token = parserState.Token
-	# 	if isinstance(token, SpaceToken):
-	# 		blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
-	# 		parserState.NewBlock =      blockType(parserState.LastBlock, token)
-	# 		return
-	# 	elif isinstance(token, (LinebreakToken, CommentToken)):
-	# 		blockType =                 LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-	# 		parserState.NewBlock =      blockType(parserState.LastBlock, token)
-	# 		parserState.TokenMarker =   None
-	# 		return
-	# 	elif isinstance(token, StringToken):
-	# 		tokenValue = token.Value.lower()
-	#
-	# 		for keyword in cls.KEYWORDS:
-	# 			if (tokenValue == keyword.__KEYWORD__):
-	# 				newToken =                keyword(token)
-	# 				parserState.PushState =   cls.KEYWORDS[keyword]
-	# 				parserState.NewToken =    newToken
-	# 				parserState.TokenMarker = newToken
-	# 				return
-	#
-	# 		if (tokenValue == "elsif"):
-	# 			parserState.NewToken =  ElsIfKeyword(token)
-	# 			parserState.NextState = ElsIfConditionBlock.stateElsIfKeyword
-	# 			return
-	# 		elif (tokenValue == "else"):
-	# 			parserState.NewToken =  ElseKeyword(token)
-	# 			parserState.NextState = ElseBlock.stateElseKeyword
-	# 			return
-	# 		elif (tokenValue == "end"):
-	# 			parserState.NewToken =  EndKeyword(token)
-	# 			parserState.NextState = EndBlock.stateEndKeyword
-	# 			return
-	#
-	# 	raise TokenParserException(
-	# 		"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
-	# 			keywords=", ".join(
-	# 				[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
-	# 			),
-	# 			tokenValue=token.Value
-	# 		), token)
+
+class ElseBlock(SequentialBeginBlock):
+	END_BLOCK = EndBlock
+
+	@classmethod
+	def stateThenKeyword(cls, parserState: ParserState):
+		parserState.NextState = cls.stateSequentialRegion
+		parserState.NextState(parserState)
 
 
 # class IfConditionThenBlock(ThenBlock):    pass
@@ -176,7 +123,7 @@ class IfConditionBlock(Block):
 			return
 		else:
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			parserState.NextState =   ThenBlock.stateDeclarativeRegion
+			parserState.NextState =   ThenBlock.stateThenKeyword
 			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
@@ -242,15 +189,3 @@ class ElsIfConditionBlock(Block):
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
 			return
-
-
-class ElseBlock(SequentialBeginBlock):
-	@classmethod
-	def stateThenKeyword(cls, parserState: ParserState):
-		parserState.NextState = cls.stateSequentialRegion
-		parserState.NextState(parserState)
-
-
-class EndBlock(EndBlockBase):
-	KEYWORD =       IfKeyword
-	EXPECTED_NAME = KEYWORD.__KEYWORD__

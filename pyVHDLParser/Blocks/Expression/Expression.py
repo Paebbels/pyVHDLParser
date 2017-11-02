@@ -236,7 +236,7 @@ class ExpressionBlockKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:
@@ -273,9 +273,9 @@ class ExpressionBlockKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NextState =   cls.stateExpression
 				return
 			elif (token == ")"):
-				parserState.NewToken =  ClosingRoundBracketToken(token)
-				parserState.Counter -=  1
-				parserState.NextState = cls.stateExpression
+				parserState.NewToken =    ClosingRoundBracketToken(token)
+				parserState.Counter -=    1
+				parserState.NextState =   cls.stateExpression
 				return
 			else:
 				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
@@ -287,14 +287,14 @@ class ExpressionBlockKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:
-					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](token)
 				except KeyError:
-					parserState.NewToken =    IdentifierToken(token)
-				parserState.NextState =     cls.stateExpression
+					parserState.NewToken =  IdentifierToken(token)
+				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, LiteralToken):
 			parserState.NextState =     cls.stateExpression
@@ -351,10 +351,12 @@ class ExpressionBlockExitedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewToken =    LoopKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
-				parserState.Pop()
+				parserState.Pop(2)
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "to"):
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
 				parserState.NewToken =    ToKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
@@ -362,6 +364,8 @@ class ExpressionBlockExitedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "downto"):
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
 				parserState.NewToken =    DowntoKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
@@ -421,25 +425,29 @@ class ExpressionBlockExitedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "to"):
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
 				parserState.NewToken =    ToKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				# parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "downto"):
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
 				parserState.NewToken =    DowntoKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:
-					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](token)
 				except KeyError:
-					parserState.NewToken =    IdentifierToken(token)
-				parserState.NextState =     cls.stateExpression
+					parserState.NewToken =  IdentifierToken(token)
+				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, LiteralToken):
 			parserState.NextState =     cls.stateExpression
