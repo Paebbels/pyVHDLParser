@@ -208,7 +208,8 @@ class ExpressionBlockCharOrClosingRoundBracket(ExpressionBlock):
 
 		raise TokenParserException("Expected ????????????.", token)
 
-class ExpressionBlockKeywordORClosingRoundBracket(ExpressionBlock):
+
+class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	EXIT_KEYWORD =  None
 	EXIT_BLOCK =    None
 

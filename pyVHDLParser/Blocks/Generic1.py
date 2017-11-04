@@ -294,6 +294,16 @@ class EndBlock(FinalBlock):
 		raise TokenParserException("Expected ';'.", token)
 
 
+class BeginBlock(Block):
+	END_BLOCK : EndBlock = None
+
+	PUSH_KEYWORDS = None
+
+	@classmethod
+	def stateStatementRegion(cls, parserState: ParserState):
+		pass
+
+
 class CloseBlock(Block):
 	@classmethod
 	def stateClosingParenthesis(cls, parserState: ParserState):

@@ -34,9 +34,24 @@ from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
 from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock
+from pyVHDLParser.Blocks.Generic import SequentialBeginBlock, SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
+
+
+class EndBlock(EndBlockBase):
+	KEYWORD =             FunctionKeyword
+	KEYWORD_IS_OPTIONAL = True
+	EXPECTED_NAME =       KEYWORD.__KEYWORD__
+
+
+class BeginBlock(SequentialBeginBlock):
+	END_BLOCK =   EndBlock
+
+
+class DeclarativeRegion(SequentialDeclarativeRegion):
+	BEGIN_BLOCK = BeginBlock
+	END_BLOCK =   EndBlock
 
 
 class NameBlock(Block):
@@ -224,27 +239,6 @@ class NameBlock(Block):
 
 
 class ReturnTypeBlock(Block):
-	KEYWORDS = None
-
-	@classmethod
-	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
-		from pyVHDLParser.Blocks.Reference          import Use
-		from pyVHDLParser.Blocks.Reporting.Report   import ReportBlock
-		from pyVHDLParser.Blocks.Sequential         import Procedure
-
-		cls.KEYWORDS = {
-		# Keyword           Transition
-			UseKeyword:       Use.StartBlock.stateUseKeyword,
-			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
-			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword,
-			FunctionKeyword:  NameBlock.stateFunctionKeyword,
-			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
-			ReportKeyword:    ReportBlock.stateReportKeyword,
-			ImpureKeyword:    NameBlock.stateImpureKeyword,
-			PureKeyword:      NameBlock.statePureKeyword
-		}
-
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
@@ -377,7 +371,7 @@ class ReturnTypeBlock(Block):
 		elif (isinstance(token, StringToken) and (token <= "is")):
 			parserState.NewToken =    IsKeyword(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =   cls.stateDeclarativeRegion
+			parserState.NextState =   DeclarativeRegion.stateDeclarativeRegion
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
@@ -398,56 +392,3 @@ class ReturnTypeBlock(Block):
 			return
 
 		raise TokenParserException("Expected function name (designator).", token)
-
-	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
-		token = parserState.Token
-		if isinstance(token, SpaceToken):
-			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
-			parserState.NewBlock =      blockType(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =      block(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, StringToken):
-			tokenValue = token.Value.lower()
-
-			for keyword in cls.KEYWORDS:
-				if (tokenValue == keyword.__KEYWORD__):
-					newToken =                keyword(token)
-					parserState.PushState =   cls.KEYWORDS[keyword]
-					parserState.NewToken =    newToken
-					parserState.TokenMarker = newToken
-					return
-
-			if (tokenValue == "begin"):
-				parserState.NewToken =    BeginKeyword(token)
-				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.TokenMarker = None
-				parserState.NextState =   BeginBlock.stateSequentialRegion
-				return
-			elif (tokenValue == "end"):
-				parserState.NewToken =    EndKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
-				parserState.NextState =   EndBlock.stateEndKeyword
-				return
-
-		raise TokenParserException(
-			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
-				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
-				),
-				tokenValue=token.Value
-			), token)
-
-
-class EndBlock(EndBlockBase):
-	KEYWORD =             FunctionKeyword
-	KEYWORD_IS_OPTIONAL = True
-	EXPECTED_NAME =       KEYWORD.__KEYWORD__
-
-class BeginBlock(SequentialBeginBlock):
-	END_BLOCK = EndBlock

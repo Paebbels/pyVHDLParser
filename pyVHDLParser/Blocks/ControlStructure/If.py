@@ -30,11 +30,11 @@
 # load dependencies
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, IfKeyword, ThenKeyword
+from pyVHDLParser.Token.Keywords import StringToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockKeywordORClosingRoundBracket
+from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockEndedByKeywordORClosingRoundBracket
 
 
 class EndBlock(EndBlockBase):
@@ -44,6 +44,16 @@ class EndBlock(EndBlockBase):
 
 class ThenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
+
+	@classmethod
+	def __cls_init__(cls):
+		super().__cls_init__()
+
+		cls.STEP_KEYWORDS = {
+			# Keyword       Transition
+			ElsIfKeyword:   ElsIfConditionBlock.stateElsIfKeyword,
+			ElseKeyword:    ElseBlock.stateThenKeyword
+		}
 
 	@classmethod
 	def stateThenKeyword(cls, parserState: ParserState):
@@ -60,11 +70,7 @@ class ElseBlock(SequentialBeginBlock):
 		parserState.NextState(parserState)
 
 
-# class IfConditionThenBlock(ThenBlock):    pass
-# class ElsIfConditionThenBlock(ThenBlock): pass
-
-
-class ExpressionBlockExitedByThen(ExpressionBlockKeywordORClosingRoundBracket):
+class ExpressionBlockEndedByThen(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 	EXIT_KEYWORD = ThenKeyword
 	EXIT_BLOCK =   ThenBlock
 
@@ -77,8 +83,8 @@ class IfConditionBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   ThenBlock.stateSequentialRegion
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.NextState =   ThenBlock.stateThenKeyword
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -93,8 +99,8 @@ class IfConditionBlock(Block):
 			return
 		else:
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			parserState.NextState =   ThenBlock.stateSequentialRegion
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.NextState =   ThenBlock.stateThenKeyword
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
 			return
@@ -124,7 +130,7 @@ class IfConditionBlock(Block):
 		else:
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 			parserState.NextState =   ThenBlock.stateThenKeyword
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
 			return
@@ -138,8 +144,8 @@ class ElsIfConditionBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
-			parserState.NextState =   ThenBlock.stateDeclarativeRegion
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.NextState =   ThenBlock.stateThenKeyword
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -154,8 +160,8 @@ class ElsIfConditionBlock(Block):
 			return
 		else:
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			parserState.NextState =   ThenBlock.stateDeclarativeRegion
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.NextState =   ThenBlock.stateThenKeyword
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
 			return
@@ -185,7 +191,7 @@ class ElsIfConditionBlock(Block):
 		else:
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 			parserState.NextState =   ThenBlock.stateThenKeyword
-			parserState.PushState =   ExpressionBlockExitedByThen.stateExpression
+			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			parserState.TokenMarker = parserState.Token
 			parserState.NextState(parserState)
 			return

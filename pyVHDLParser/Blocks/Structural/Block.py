@@ -37,12 +37,25 @@ from pyVHDLParser.Blocks import Block, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Exception         import TokenParserException
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
-from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Generic import EndBlock as EndBlockBase, ConcurrentDeclarativeRegion, ConcurrentBeginBlock
 from pyVHDLParser.Blocks.List              import PortList
 from pyVHDLParser.Blocks.Reporting         import Assert
 from pyVHDLParser.Blocks.Sequential        import Process
 from pyVHDLParser.Blocks.Object import Constant, Signal, Variable, SharedVariable
 
+
+class EndBlock(EndBlockBase):
+	KEYWORD =       BlockKeyword
+	EXPECTED_NAME = KEYWORD.__KEYWORD__
+
+
+class BeginBlock(ConcurrentBeginBlock):
+	END_BLOCK =   EndBlock
+
+
+class DeclarativeRegion(ConcurrentDeclarativeRegion):
+	BEGIN_BLOCK = BeginBlock
+	END_BLOCK =   EndBlock
 
 
 class NameBlock(Block):
@@ -183,7 +196,7 @@ class NameBlock(Block):
 		elif (isinstance(token, StringToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =     cls.stateDeclarativeRegion
+			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 			parserState.NewToken =      BoundaryToken(token)
@@ -192,54 +205,3 @@ class NameBlock(Block):
 			return
 
 		raise TokenParserException(errorMessage, token)
-
-	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
-		errorMessage = "Expected one of these keywords: generic, port, begin, end."
-		token = parserState.Token
-		if isinstance(parserState.Token, CharacterToken):
-			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.TokenMarker = parserState.NewToken
-				return
-			elif (token == "-"):
-				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
-				return
-			elif (token == "/"):
-				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
-				parserState.TokenMarker = token
-				return
-		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      IndentationToken(token)
-			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
-			return
-		elif isinstance(token, StringToken):
-			keyword = token.Value.lower()
-			if (keyword == "constant"):
-				newToken = ConstantKeyword(token)
-				parserState.PushState =   Constant.ConstantBlock.stateConstantKeyword
-			elif (keyword == "variable"):
-				newToken = VariableKeyword(token)
-				parserState.PushState =   Variable.VariableBlock.stateVariableKeyword
-			elif (keyword == "begin"):
-				parserState.NewToken =    BeginKeyword(token)
-				parserState.NewBlock =    BeginBlock(parserState.LastBlock, parserState.NewToken)
-				parserState.NextState =   BeginBlock.stateBeginKeyword
-				return
-			else:
-				raise TokenParserException(errorMessage, token)
-
-			parserState.NewToken = newToken
-			parserState.TokenMarker = newToken
-			return
-
-		raise TokenParserException(errorMessage, token)
-
-class BeginBlock(Block): pass
-
-
-class EndBlock(EndBlockBase):
-	KEYWORD =       BlockKeyword
-	EXPECTED_NAME = KEYWORD.__KEYWORD__

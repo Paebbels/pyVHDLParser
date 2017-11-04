@@ -28,20 +28,107 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
 from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, \
-	ExitKeyword, ElsIfKeyword, ElseKeyword
+from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword, ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword
 from pyVHDLParser.Token.Parser    import SpaceToken, StringToken
-from pyVHDLParser.Blocks          import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks          import TokenParserException, CommentBlock, ParserState, MetaBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Generic1 import EndBlock
+from pyVHDLParser.Blocks.Generic1 import EndBlock, BeginBlock
 
 
-class ConcurrentBeginBlock(Block):
-	END_BLOCK : EndBlock = None
+class DeclarativeRegion(metaclass=MetaBlock):
+	BEGIN_BLOCK : BeginBlock = None
+	END_BLOCK :   EndBlock =   None
 
-	KEYWORDS = None
+	PUSH_KEYWORDS = None
 
+	@classmethod
+	def __cls_init__(cls):
+		from pyVHDLParser.Blocks.Reference  import Use
+		from pyVHDLParser.Blocks.Object     import ConstantDeclarationBlock
+		from pyVHDLParser.Blocks.Sequential import Procedure, Function
+
+		cls.PUSH_KEYWORDS = {
+			# Keyword         Transition
+			UseKeyword:       Use.StartBlock.stateUseKeyword,
+			ConstantKeyword:  ConstantDeclarationBlock.stateConstantKeyword,
+			FunctionKeyword:  Function.NameBlock.stateFunctionKeyword,
+			ProcedureKeyword: Procedure.NameBlock.stateProcedureKeyword,
+			ImpureKeyword:    Function.NameBlock.stateImpureKeyword,
+			PureKeyword:      Function.NameBlock.statePureKeyword,
+			# AliasKeyword:     Alias.NameBlock.stateAliasKeyword
+		}
+
+
+	@classmethod
+	def stateDeclarativeRegion(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
+			parserState.NewBlock =      blockType(parserState.LastBlock, token)
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                     LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =      block(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			for keyword in cls.PUSH_KEYWORDS:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.PushState =   cls.PUSH_KEYWORDS[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+			if (tokenValue == "begin"):
+				parserState.NewToken =  BeginKeyword(token)
+				parserState.NextState = cls.BEGIN_BLOCK.stateStatementRegion
+				return
+			elif (tokenValue == "end"):
+				parserState.NewToken =  EndKeyword(token)
+				parserState.NextState = cls.END_BLOCK.stateEndKeyword
+				return
+
+		raise TokenParserException(
+			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
+				keywords=", ".join(
+					[kw.__KEYWORD__.upper() for kw in cls.PUSH_KEYWORDS]
+				),
+				tokenValue=token.Value
+			), token)
+
+
+class ConcurrentDeclarativeRegion(DeclarativeRegion):
+	@classmethod
+	def __cls_init__(cls):
+		super().__cls_init__()
+
+		from pyVHDLParser.Blocks.Object import SharedVariableDeclarationBlock, SignalDeclarationBlock
+
+		cls.PUSH_KEYWORDS.update({
+			# Keyword         Transition
+			SignalKeyword:    SignalDeclarationBlock.stateSignalKeyword,
+			SharedKeyword:    SharedVariableDeclarationBlock.stateSharedKeyword
+		})
+
+
+
+class SequentialDeclarativeRegion(DeclarativeRegion):
+	@classmethod
+	def __cls_init__(cls):
+		super().__cls_init__()
+
+		cls.PUSH_KEYWORDS.update({
+			# Keyword         Transition
+			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword
+		})
+
+
+class ConcurrentBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):
 		from pyVHDLParser.Blocks.Sequential       import Process
@@ -52,6 +139,11 @@ class ConcurrentBeginBlock(Block):
 			AssertKeyword:      AssertBlock.stateAssertKeyword,
 			ProcessKeyword:     Process.OpenBlock.stateProcessKeyword,
 		}
+
+	@classmethod
+	def stateStatementRegion(cls, parserState: ParserState):
+		parserState.NextState = cls.stateConcurrentRegion
+		parserState.NextState(parserState)
 
 	@classmethod
 	def stateConcurrentRegion(cls, parserState: ParserState):
@@ -69,10 +161,10 @@ class ConcurrentBeginBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in cls.KEYWORDS:
+			for keyword in cls.PUSH_KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken = keyword(token)
-					parserState.PushState = cls.KEYWORDS[keyword]
+					parserState.PushState = cls.PUSH_KEYWORDS[keyword]
 					parserState.NewToken = newToken
 					parserState.TokenMarker = newToken
 					return
@@ -85,16 +177,14 @@ class ConcurrentBeginBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
+					[kw.__KEYWORD__.upper() for kw in cls.PUSH_KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)
 
 
-class SequentialBeginBlock(Block):
-	END_BLOCK : EndBlock = None
-
-	KEYWORDS = None
+class SequentialBeginBlock(BeginBlock):
+	STEP_KEYWORDS = {}
 
 	@classmethod
 	def __cls_init__(cls):
@@ -107,11 +197,9 @@ class SequentialBeginBlock(Block):
 		# from pyVHDLParser.Blocks.ControlStructure.WhileLoop import ConditionBlock
 		from pyVHDLParser.Blocks.Reporting.Report           import ReportBlock
 
-		cls.KEYWORDS = {
+		cls.PUSH_KEYWORDS = {
 			# Keyword       Transition
 			IfKeyword:      IfConditionBlock.stateIfKeyword,
-			ElsIfKeyword:   ElsIfConditionBlock.stateElsIfKeyword,
-			ElseKeyword:    ElseBlock.stateThenKeyword,
 			# CaseKeyword:    CaseBlock.stateCaseKeyword,
 			ForKeyword:     IteratorBlock.stateForKeyword,
 			# WhileKeyword:   ConditionBlock.stateWhileKeyword,
@@ -120,6 +208,11 @@ class SequentialBeginBlock(Block):
 			ExitKeyword:    ExitBlock.stateExitKeyword,
 			ReportKeyword:  ReportBlock.stateReportKeyword
 		}
+
+	@classmethod
+	def stateStatementRegion(cls, parserState: ParserState):
+		parserState.NextState = cls.stateSequentialRegion
+		parserState.NextState(parserState)
 
 	@classmethod
 	def stateSequentialRegion(cls, parserState: ParserState):
@@ -137,11 +230,19 @@ class SequentialBeginBlock(Block):
 		elif isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in cls.KEYWORDS:
+			for keyword in cls.PUSH_KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken = keyword(token)
-					parserState.PushState = cls.KEYWORDS[keyword]
-					parserState.NewToken = newToken
+					newToken =                keyword(token)
+					parserState.PushState =   cls.PUSH_KEYWORDS[keyword]
+					parserState.NewToken =    newToken
+					parserState.TokenMarker = newToken
+					return
+
+			for keyword in cls.STEP_KEYWORDS:
+				if (tokenValue == keyword.__KEYWORD__):
+					newToken =                keyword(token)
+					parserState.NextState =   cls.STEP_KEYWORDS[keyword]
+					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
 
@@ -153,9 +254,7 @@ class SequentialBeginBlock(Block):
 		raise TokenParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
-					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
+					[kw.__KEYWORD__.upper() for kw in cls.PUSH_KEYWORDS]
 				),
 				tokenValue=token.Value
 			), token)
-
-
