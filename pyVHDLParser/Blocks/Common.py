@@ -37,7 +37,7 @@ class WhitespaceBlock(SkipableBlock):
 		super().__init__(previousBlock, startToken, startToken)
 
 	def __str__(self):
-		return "[{blockName: <30s}  {stream}  at {start!s} .. {end!s}]".format(
+		return "[{blockName: <47s}  {stream}  at {start!s} .. {end!s}]".format(
 			blockName=type(self).__name__,
 			stream=" "*60,
 			start=self.StartToken.Start,
@@ -74,7 +74,7 @@ class IndentationBlock(WhitespaceBlock):
 		length = len(self.StartToken.Value)
 		actual = sum([(self.__TABSIZE__ if (c == "\t") else 1) for c in self.StartToken.Value])
 
-		return "[{blockName: <30s}  length={len: <53}  at {start!s} .. {end!s}]".format(
+		return "[{blockName: <47s}  length={len: <53}  at {start!s} .. {end!s}]".format(
 			blockName=type(self).__name__,
 			len="{len} ({actual}) ".format(len=length, actual=actual),
 			start=self.StartToken.Start,

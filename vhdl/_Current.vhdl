@@ -6,6 +6,8 @@ entity system is
 				exit;
 			elsif (c xor d) then
 				exit bar ;
+			elsif (e = f) then
+				exit bar ;
 			else
 				next foo/*~*/;
 			end if;
@@ -13,7 +15,6 @@ entity system is
 	end function;
 end entity;
 
-xxx
 
 architecture rtl of system is
 begin

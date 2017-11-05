@@ -34,7 +34,7 @@ from pyVHDLParser.Token.Keywords import BoundaryToken, DelimiterToken, ClosingRo
 	MatchingLessThanOperator, MatchingLessThanOrEqualOperator, MatchingGreaterThanOperator, MatchingGreaterThanOrEqualOperator, OrKeyword, NorKeyword, AndKeyword, \
 	NandKeyword, XorKeyword, XnorKeyword, SlaKeyword, SllKeyword, SraKeyword, SrlKeyword, NotKeyword, AbsKeyword, PowerOperator, PlusOperator, MinusOperator, \
 	MultiplyOperator, DivideOperator, ConcatOperator, OpeningRoundBracketToken, EndToken, LessThanOperator, GreaterThanOperator, DowntoKeyword, LoopKeyword, \
-	ToKeyword
+	ToKeyword, EqualOperator
 from pyVHDLParser.Token.Keywords       import IdentifierToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
 from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState
@@ -43,6 +43,7 @@ from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 
 class ExpressionBlock(Block):
 	CHARACTER_TRANSLATION = {
+		"=":    EqualOperator,
 		"+":    PlusOperator,
 		"-":    MinusOperator,
 		"*":    MultiplyOperator,
@@ -77,7 +78,6 @@ class ExpressionBlock(Block):
 		"srl":   SrlKeyword,
 		"not":   NotKeyword,
 		"abs":   AbsKeyword
-
 	}
 
 

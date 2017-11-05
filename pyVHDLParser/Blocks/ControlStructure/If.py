@@ -46,28 +46,38 @@ class ThenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def __cls_init__(cls):
-		super().__cls_init__()
-
-		cls.STEP_KEYWORDS = {
-			# Keyword       Transition
-			ElsIfKeyword:   ElsIfConditionBlock.stateElsIfKeyword,
-			ElseKeyword:    ElseBlock.stateThenKeyword
-		}
+	def stateThenKeyword(cls, parserState: ParserState):
+		cls.stateSequentialRegion(parserState)
 
 	@classmethod
-	def stateThenKeyword(cls, parserState: ParserState):
-		parserState.NextState = cls.stateSequentialRegion
-		parserState.NextState(parserState)
+	def stateSequentialRegion(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, StringToken):
+			tokenValue = token.Value.lower()
+
+			if (tokenValue == "elsif"):
+				newToken =                ElsIfKeyword(token)
+				parserState.NewToken =    newToken
+				parserState.TokenMarker = newToken
+				parserState.NextState =   ElsIfConditionBlock.stateElsIfKeyword
+				return
+			elif (tokenValue == "else"):
+				newToken =                ElseKeyword(token)
+				parserState.NewToken =    newToken
+				parserState.NewBlock =    ElseBlock(parserState.LastBlock, newToken)
+				parserState.TokenMarker = None
+				parserState.NextState =   ElseBlock.stateElseKeyword
+				return
+
+		super().stateSequentialRegion(parserState)
 
 
 class ElseBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def stateThenKeyword(cls, parserState: ParserState):
-		parserState.NextState = cls.stateSequentialRegion
-		parserState.NextState(parserState)
+	def stateElseKeyword(cls, parserState: ParserState):
+		cls.stateSequentialRegion(parserState)
 
 
 class ExpressionBlockEndedByThen(ExpressionBlockEndedByKeywordORClosingRoundBracket):

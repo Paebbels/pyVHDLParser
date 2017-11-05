@@ -112,10 +112,10 @@ class OpenBlock(Block):
 
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 
-			for keyword in cls.KEYWORDS:
+			for keyword in OpenBlock2.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken = keyword(token)
-					parserState.NextState =   OpenBlock2.stateDeclarativeRegion
+					parserState.NextState =  DeclarativeRegion.stateDeclarativeRegion
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
@@ -159,11 +159,11 @@ class OpenBlock2(Block):
 		if isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in OpenBlock.KEYWORDS:
+			for keyword in OpenBlock2.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
 					parserState.NextState =   DeclarativeRegion.stateDeclarativeRegion
-					parserState.PushState =   OpenBlock.KEYWORDS[keyword]
+					parserState.PushState =   OpenBlock2.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
@@ -178,7 +178,7 @@ class OpenBlock2(Block):
 				parserState.NewToken =    IsKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
 				parserState.TokenMarker = None
-				parserState.NextState =   OpenBlock2.stateDeclarativeRegion
+				parserState.NextState =   DeclarativeRegion.stateDeclarativeRegion
 				return
 		elif isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(token)
@@ -200,11 +200,11 @@ class OpenBlock2(Block):
 		if isinstance(token, StringToken):
 			tokenValue = token.Value.lower()
 
-			for keyword in OpenBlock.KEYWORDS:
+			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
 					newToken =                keyword(token)
 					parserState.NextState =   DeclarativeRegion.stateDeclarativeRegion
-					parserState.PushState =   OpenBlock.KEYWORDS[keyword]
+					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return

@@ -202,7 +202,7 @@ class Block(metaclass=MetaBlock):
 		return buffer
 
 	def __str__(self):
-		return "[{blockName: <30s} {stream: <62s} at {start!s} .. {end!s}]".format(
+		return "[{blockName: <47s} {stream: <62s} at {start!s} .. {end!s}]".format(
 			blockName="{module}.{classname}{multiparted}".format(
 				module=self.__module__.rpartition(".")[2],
 				classname=self.__class__.__name__,

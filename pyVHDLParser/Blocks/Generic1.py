@@ -297,7 +297,7 @@ class EndBlock(FinalBlock):
 class BeginBlock(Block):
 	END_BLOCK : EndBlock = None
 
-	PUSH_KEYWORDS = None
+	KEYWORDS = None
 
 	@classmethod
 	def stateStatementRegion(cls, parserState: ParserState):

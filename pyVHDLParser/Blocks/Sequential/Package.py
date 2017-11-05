@@ -28,6 +28,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Sequential import PackageBody
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
