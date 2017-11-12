@@ -28,14 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.InterfaceObject import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
-from pyVHDLParser.Token import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, ConstantKeyword, SignalKeyword, VariableKeyword
-from pyVHDLParser.Token.Keywords      import IdentifierToken
-from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
-from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic1 import CloseBlock as CloseBlockBase
+from pyVHDLParser.Token                   import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
+from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
+from pyVHDLParser.Token.Parser            import SpaceToken, StringToken
+from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
+from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
 
 
 class OpenBlock(Block):
@@ -177,23 +177,34 @@ class DelimiterBlock(SkipableBlock):
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			if (token <= "constant"):
+			tokenValue = token.Value.lower()
+			if (tokenValue == "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
 				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
 				return
-			elif (token <= "type"):
+			elif (tokenValue == "variable"):
+				parserState.NewToken =    VariableKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
+				return
+			elif (tokenValue == "signal"):
+				parserState.NewToken =    SignalKeyword(token)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
+				return
+			elif (tokenValue == "type"):
 				parserState.NewToken =    TypeKeyword(token)
 				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceTypeBlock.stateTypeKeyword
 				return
-			elif (token <= "procedure"):
+			elif (tokenValue == "procedure"):
 				raise NotImplementedError("Generic procedures are not supported.")
-			elif (token <= "function"):
+			elif (tokenValue == "function"):
 				raise NotImplementedError("Generic functions are not supported.")
-			elif (token <= "impure"):
+			elif (tokenValue == "impure"):
 				raise NotImplementedError("Generic impure functions are not supported.")
-			elif (token <= "pure"):
+			elif (tokenValue == "pure"):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(token)

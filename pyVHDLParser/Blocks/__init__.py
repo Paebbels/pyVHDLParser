@@ -136,7 +136,7 @@ class ParserState:
 				yield self.LastBlock
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-			if self.debug: print("  {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **Console.Foreground))
+			if self.debug: print("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **Console.Foreground))
 			# execute a state
 			self.NextState(self)
 
@@ -202,7 +202,7 @@ class Block(metaclass=MetaBlock):
 		return buffer
 
 	def __str__(self):
-		return "[{blockName: <47s} {stream: <62s} at {start!s} .. {end!s}]".format(
+		return "[{blockName: <50s} {stream: <62s} at {start!s} .. {end!s}]".format(
 			blockName="{module}.{classname}{multiparted}".format(
 				module=self.__module__.rpartition(".")[2],
 				classname=self.__class__.__name__,
@@ -229,6 +229,10 @@ class Block(metaclass=MetaBlock):
 	def States(self):
 		return self.__STATES__
 
+	@classmethod
+	def stateError(cls, parserState: ParserState):
+		raise TokenParserException("Reached unreachable state!")
+
 
 class SkipableBlock(Block):         pass
 class FinalBlock(Block):            pass
@@ -250,7 +254,9 @@ class StartOfBlock(Block):
 		return 0
 
 	def __str__(self):
-		return "[{0}]".format(self.__class__.__name__)
+		return "[{name}]".format(
+				name=self.__class__.__name__
+			)
 
 
 class EndOfBlock(Block):
@@ -268,7 +274,9 @@ class EndOfBlock(Block):
 		return 0
 
 	def __str__(self):
-		return "[{0}]".format(self.__class__.__name__)
+		return "[{name}]".format(
+				name=self.__class__.__name__
+			)
 
 
 class StartOfDocumentBlock(StartOfBlock, StartOfDocument):

@@ -1,4 +1,16 @@
 entity system is
+	procedure bar(constant x : in integer;variable y : out integer) is
+	begin
+		case x is
+			when 2 =>
+				return 5 + 2;
+			when 2 * 5 =>
+				--return b ; -- 10 + 5 * 2;
+			when others =>
+				--return c;
+		end case;
+	end procedure;
+
 	function foo return integer is
 	begin
 		for i in 0 to 15 loop

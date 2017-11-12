@@ -62,13 +62,16 @@ class ValuedToken(Token):
 		super().__init__(previousToken, start, end)
 		self.Value : str =  value
 
+	def __eq__(self, other):  return self.Value == other
+	def __ne__(self, other):  return self.Value != other
+	def __hash__(self):       return super().__hash__()
+
 	def __str__(self):
-		return "<{content: <91} at {pos!r}>".format(
-			content="{name: <30} '{value}'".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 				name=self.__class__.__name__,
-				value=self.Value
-			),
-			pos=self.Start)
+				value="'" + self.Value + "'  ",
+				pos=self.Start
+			)
 
 
 class SuperToken(Token):
@@ -96,7 +99,9 @@ class StartOfToken(Token):
 		return 0
 
 	def __str__(self):
-		return "<{0}>".format(self.__class__.__name__)
+		return "<{name}>".format(
+				name=self.__class__.__name__
+			)
 
 class EndOfToken(Token):
 	def __init__(self, previousToken, end):
@@ -110,7 +115,9 @@ class EndOfToken(Token):
 		return 0
 
 	def __str__(self):
-		return "<{0}>".format(self.__class__.__name__)
+		return "<{name}>".format(
+				name=self.__class__.__name__
+			)
 
 
 class StartOfDocumentToken(StartOfToken, StartOfDocument):  pass
@@ -126,10 +133,6 @@ class CharacterToken(ValuedToken):
 	def __len__(self):
 		return 1
 
-	def __eq__(self, other):  return self.Value == other
-	def __ne__(self, other):  return self.Value != other
-	def __hash__(self):       return super().__hash__()
-
 	__CHARACTER_TRANSLATION__ = {
 		"\r":    "\\r",
 		"\n":    "\\n",
@@ -138,7 +141,8 @@ class CharacterToken(ValuedToken):
 	}
 
 	def __str__(self):
-		return "<CharacterToken                 {char:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {char:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			char="'" + self.__repr__() + "'  ",
 			pos=self.Start
 		)
@@ -159,7 +163,8 @@ class FusedCharacterToken(CharacterToken):
 		return len(self.Value)
 
 	def __str__(self):
-		return "<FusedCharToken                {char:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {char:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			char="'" + self.__repr__() + "'  ",
 			pos=self.Start
 		)
@@ -170,7 +175,8 @@ class FusedCharacterToken(CharacterToken):
 
 class SpaceToken(ValuedToken):
 	def __str__(self):
-		return "<SpaceToken                     {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -184,7 +190,8 @@ class StringToken(ValuedToken):
 	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
-		return "<StringToken                    {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -197,12 +204,11 @@ class CommentToken(VHDLToken):
 		value = value.replace("\n", "\\n")
 		value = value.replace("\r", "\\r")
 		value = value.replace("\t", "\\t")
-		return "<{content: <91} at {pos!r}>".format(
-			content="{name: <30} '{value}'".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 				name=self.__class__.__name__,
-				value=value
-			),
-			pos=self.Start)
+				value="'" + value + "'  ",
+				pos=self.Start
+			)
 
 
 class LiteralToken(VHDLToken):
@@ -210,21 +216,16 @@ class LiteralToken(VHDLToken):
 	def __ne__(self, other):  return self.Value != other
 	def __hash__(self):       return super().__hash__()
 
-
-class IntegerLiteralToken(LiteralToken):
 	def __str__(self):
-		return "<IntegerLiteralToken            {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			value=self.Value + "  ",
 			pos=self.Start
 		)
 
 
-class RealLiteralToken(LiteralToken):
-	def __str__(self):
-		return "<RealLiteralToken               {value:.<40} at {pos!r}>".format(
-			value=self.Value + "  ",
-			pos=self.Start
-		)
+class IntegerLiteralToken(LiteralToken):  pass
+class RealLiteralToken(LiteralToken):     pass
 
 
 class CharacterLiteralToken(LiteralToken):
@@ -232,7 +233,8 @@ class CharacterLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<CharacterLiteralToken          {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			value="'" + self.Value + "'  ",
 			pos=self.Start
 		)
@@ -243,7 +245,8 @@ class StringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<StringLiteralToken            {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+			name=self.__class__.__name__,
 			value="\"" + self.Value + "\"  ",
 			pos=self.Start
 		)
@@ -253,7 +256,8 @@ class BitStringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
-		return "<BitStringLiteralToken         {value:.<40} at {pos!r}>".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+				name=self.__class__.__name__,
 			value="\"" + self.Value + "\"  ",
 			pos=self.Start
 		)
@@ -268,10 +272,11 @@ class ExtendedIdentifier(VHDLToken):
 	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
-		return "<ExtIdentifier  {value:.<40} at {pos!r}>".format(
-			value="'" + self.Value + "'  ",
-			pos=self.Start
-		)
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
+				name=self.__class__.__name__,
+				value="'" + self.Value + "'  ",
+				pos=self.Start
+			)
 
 
 class SingleLineCommentToken(CommentToken): pass
@@ -281,16 +286,18 @@ class DirectiveToken(CommentToken):         pass
 
 class LinebreakToken(VHDLToken):
 	def __str__(self):
-		return "<LinebreakToken ---------------------------------------------------------------------------- at {pos!r}>".format(pos=self.Start)
+		return "<{name:-<110} at {pos!r}>".format(
+				name=self.__class__.__name__ + "  ",
+				pos=self.Start
+			)
 
 
 class IndentationToken(SpaceToken):
 	def __str__(self):
 		value = self.Value
 		value = value.replace("\t", "\\t")
-		return "<{content: <91} at {pos!r}>".format(
-			content="{name: <30} '{value}'".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 				name=self.__class__.__name__,
-				value=value
-			),
-			pos=self.Start)
+				value="'" + value + "'  ",
+				pos=self.Start
+			)

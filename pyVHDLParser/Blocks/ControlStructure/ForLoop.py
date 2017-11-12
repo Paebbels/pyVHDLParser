@@ -28,16 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Expression.Expression import ExpressionBlockExitedByKeywordOrToOrDownto, ExpressionBlockEndedByKeywordORClosingRoundBracket
-from pyVHDLParser.Token                         import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken
-from pyVHDLParser.Token.Parser                  import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords                import IfKeyword, CaseKeyword, ReportKeyword, InKeyword
-from pyVHDLParser.Token.Keywords                import ForKeyword, NextKeyword, ExitKeyword, ReturnKeyword, WhileKeyword, LoopKeyword
-from pyVHDLParser.Token.Keywords                import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks                        import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common                 import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic                import SequentialBeginBlock
-from pyVHDLParser.Blocks.Generic1               import EndBlock as EndBlockBase
+from pyVHDLParser.Token               import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken, SpaceToken
+from pyVHDLParser.Token.Keywords      import InKeyword, ForKeyword, LoopKeyword, BoundaryToken, IdentifierToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
+from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByKeywordORClosingRoundBracket, ExpressionBlockEndedByKeywordOrToOrDownto
 
 
 class IteratorBlock(Block):
@@ -210,7 +207,7 @@ class LoopBlock(SequentialBeginBlock):
 		parserState.NextState(parserState)
 
 
-class ExpressionBlockEndedByLoopORToORDownto(ExpressionBlockExitedByKeywordOrToOrDownto):
+class ExpressionBlockEndedByLoopORToORDownto(ExpressionBlockEndedByKeywordOrToOrDownto):
 	EXIT_KEYWORD =  LoopKeyword
 	EXIT_BLOCK =    LoopBlock
 

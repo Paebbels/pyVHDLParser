@@ -33,5 +33,5 @@ package body Components is
 		begin
 		end procedure;
 	begin
-	end function
+	end function;
 end package body;

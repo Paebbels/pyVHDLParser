@@ -28,12 +28,14 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
 from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword, ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword
+from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword
+from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
+from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
 from pyVHDLParser.Token.Parser    import SpaceToken, StringToken
 from pyVHDLParser.Blocks          import TokenParserException, CommentBlock, ParserState, MetaBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Generic1 import EndBlock, BeginBlock
 
 
@@ -187,7 +189,7 @@ class SequentialBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):
 		from pyVHDLParser.Blocks.ControlStructure.If        import IfConditionBlock, ElsIfConditionBlock, ElseBlock
-		# from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
+		from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
 		from pyVHDLParser.Blocks.ControlStructure.Exit      import ExitBlock
 		from pyVHDLParser.Blocks.ControlStructure.Next      import NextBlock
 		from pyVHDLParser.Blocks.ControlStructure.Return    import ReturnBlock
@@ -198,7 +200,7 @@ class SequentialBeginBlock(BeginBlock):
 		cls.KEYWORDS = {
 			# Keyword       Transition
 			IfKeyword:      IfConditionBlock.stateIfKeyword,
-			# CaseKeyword:    CaseBlock.stateCaseKeyword,
+			CaseKeyword:    CaseBlock.stateCaseKeyword,
 			ForKeyword:     IteratorBlock.stateForKeyword,
 			# WhileKeyword:   ConditionBlock.stateWhileKeyword,
 			ReturnKeyword:  ReturnBlock.stateReturnKeyword,

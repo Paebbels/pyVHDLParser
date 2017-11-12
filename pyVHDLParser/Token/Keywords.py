@@ -120,29 +120,33 @@ class RepeatedLabelToken(LabelToken):
 	pass
 
 
-class TwoCharKeyword(VHDLToken):
+class MultiCharKeyword(VHDLToken):
 	__KEYWORD__ = None
 
 	def __init__(self, characterToken):
 		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.End)
 
 	def __str__(self):
-		return "<{name: <30} '{value}' at {pos!r}>".format(
+		return "<{name: <50} '{value}' at {pos!r}>".format(
 			name=self.__class__.__name__[:-7],
 			value=self.__KEYWORD__,
 			pos=self.Start
 		)
 
 
-class CommentKeyword(TwoCharKeyword):                         pass
+class CommentKeyword(MultiCharKeyword):                       pass
 class SingleLineCommentKeyword(CommentKeyword):               __KEYWORD__ = "--"
 class MultiLineCommentKeyword(CommentKeyword):                pass
 class MultiLineCommentStartKeyword(MultiLineCommentKeyword):  __KEYWORD__ = "/*"
 class MultiLineCommentEndKeyword(MultiLineCommentKeyword):    __KEYWORD__ = "*/"
 
-class AssignmentKeyword(TwoCharKeyword):                      pass
+class AssignmentKeyword(MultiCharKeyword):                    pass
 class VariableAssignmentKeyword(AssignmentKeyword):           __KEYWORD__ = ":="
 class SignalAssignmentKeyword(AssignmentKeyword):             __KEYWORD__ = "<="
+
+class AssociationKeyword(MultiCharKeyword):                   pass
+class MapAssociationKeyword(AssociationKeyword):              __KEYWORD__ = "=>"
+class SignalAssociationKeyword(AssociationKeyword):           __KEYWORD__ = "<=>"
 
 
 class KeywordToken(VHDLToken):
@@ -154,12 +158,11 @@ class KeywordToken(VHDLToken):
 		super().__init__(stringToken.PreviousToken, self.__KEYWORD__, stringToken.Start, stringToken.End)
 
 	def __str__(self):
-		return "<{content: <91} at {pos!r}>".format(
-			content="{name: <30} '{value}'".format(
+		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 				name=self.__class__.__name__,
-				value=self.Value
-			),
-			pos=self.Start)
+				value="'" + self.Value + "'  ",
+				pos=self.Start
+			)
 
 class DirectionKeyword(KeywordToken):   pass
 

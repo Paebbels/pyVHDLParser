@@ -28,13 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                         import SpaceToken, LinebreakToken, CommentToken, StringToken, ExtendedIdentifier, MultiLineCommentToken, IndentationToken, \
-	SingleLineCommentToken, CharacterToken, FusedCharacterToken
-from pyVHDLParser.Token.Keywords                import IdentifierToken, BoundaryToken, DelimiterToken, InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, \
-	BufferKeyword, LinkageKeyword
-from pyVHDLParser.Blocks                        import Block, ParserState, CommentBlock, TokenParserException
-from pyVHDLParser.Blocks.Common                 import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Expression.Expression  import ExpressionBlockCharOrClosingRoundBracket
+from pyVHDLParser.Token               import SpaceToken, LinebreakToken, CommentToken, StringToken, ExtendedIdentifier, MultiLineCommentToken
+from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
+from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
+from pyVHDLParser.Token.Keywords      import IdentifierToken, BoundaryToken, DelimiterToken
+from pyVHDLParser.Blocks              import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket
 
 
 class InterfaceObjectBlock(Block):
@@ -150,11 +150,12 @@ class InterfaceObjectBlock(Block):
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
-			if (token <= "in"):
-				parserState.NewToken =    InKeyword(token)
+			tokenValue = token.Value.lower()
+			try:
+				parserState.NewToken =    cls.MODES[tokenValue](token)
 				parserState.NextState =   cls.stateModeKeyword
 				return
-			else:
+			except ValueError:
 				parserState.NewToken =    IdentifierToken(token)
 				parserState.NextState =   cls.stateSubtypeIndication
 				return
@@ -238,7 +239,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlockCharOrClosingRoundBracket.stateExpression
+			parserState.PushState =     ExpressionBlockEndedByCharORClosingRoundBracket.stateExpression
 			parserState.TokenMarker =   None
 			parserState.Counter =       0
 			return
@@ -276,7 +277,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlockCharOrClosingRoundBracket.stateExpression
+			parserState.PushState =     ExpressionBlockEndedByCharORClosingRoundBracket.stateExpression
 			parserState.TokenMarker =   None
 			parserState.Counter =       0
 			return
