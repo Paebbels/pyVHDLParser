@@ -5,6 +5,7 @@ entity system is
 			when (2 + 5) =>
 				exit when ((5 + 2) = 7);
 				next iter when z = TRUE;
+				NUll ;
 			when 2 * 5 =>
 				return 10 + 5 * 2;
 			when others =>

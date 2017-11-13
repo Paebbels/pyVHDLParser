@@ -29,7 +29,7 @@
 #
 # load dependencies
 from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword
+from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
 from pyVHDLParser.Token.Parser    import SpaceToken, StringToken
@@ -188,7 +188,7 @@ class ConcurrentBeginBlock(BeginBlock):
 class SequentialBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.ControlStructure.If        import IfConditionBlock, ElsIfConditionBlock, ElseBlock
+		from pyVHDLParser.Blocks.ControlStructure.If        import IfConditionBlock
 		from pyVHDLParser.Blocks.ControlStructure.Case      import CaseBlock
 		from pyVHDLParser.Blocks.ControlStructure.Exit      import ExitBlock
 		from pyVHDLParser.Blocks.ControlStructure.Next      import NextBlock
@@ -196,6 +196,7 @@ class SequentialBeginBlock(BeginBlock):
 		from pyVHDLParser.Blocks.ControlStructure.ForLoop   import IteratorBlock
 		# from pyVHDLParser.Blocks.ControlStructure.WhileLoop import ConditionBlock
 		from pyVHDLParser.Blocks.Reporting.Report           import ReportBlock
+		from pyVHDLParser.Blocks.ControlStructure.Null      import NullBlock
 
 		cls.KEYWORDS = {
 			# Keyword       Transition
@@ -206,7 +207,8 @@ class SequentialBeginBlock(BeginBlock):
 			ReturnKeyword:  ReturnBlock.stateReturnKeyword,
 			NextKeyword:    NextBlock.stateNextKeyword,
 			ExitKeyword:    ExitBlock.stateExitKeyword,
-			ReportKeyword:  ReportBlock.stateReportKeyword
+			ReportKeyword:  ReportBlock.stateReportKeyword,
+			NullKeyword:    NullBlock.stateNullKeyword
 		}
 
 	@classmethod
