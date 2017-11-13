@@ -1,11 +1,12 @@
 entity system is
 	procedure bar(constant x : in integer;variable y : out integer) is
 	begin
-		case x is
-			when 2 =>
-				return 5 + 2;
+		case x & y is
+			when (2 + 5) =>
+				exit when ((5 + 2) = 7);
+				next iter when z = TRUE;
 			when 2 * 5 =>
-				--return b ; -- 10 + 5 * 2;
+				return 10 + 5 * 2;
 			when others =>
 				--return c;
 		end case;

@@ -78,7 +78,7 @@ class ReturnBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and  (token == ";")):
+		if (isinstance(token, CharacterToken) and  (token == ";")):
 			parserState.NewToken =    EndToken(token)
 			parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.Pop()
