@@ -32,7 +32,8 @@ from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, Line
 from pyVHDLParser.Token.Keywords    import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
 from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, TokenParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedByCharacter
+from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
+from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 
 
 class ObjectDeclarationBlock(Block):
@@ -231,22 +232,22 @@ class ObjectDeclarationBlock(Block):
 		raise TokenParserException("Expected ':=' or ';' after subtype indication.", token)
 
 
-class ObjectDeclarationEndMarkerBlock(Block):                                   pass
+class ObjectDeclarationEndMarkerBlock(EndOfStatementBlock):                     pass
 class ConstantDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):       pass
 class VariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):       pass
 class SharedVariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock): pass
 class SignalDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):         pass
 
 
-class ConstantDeclarationDefaultExpressionBlock(ExpressionBlockEndedByCharacter):
+class ConstantDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = ConstantDeclarationEndMarkerBlock
 
 
-class VariableDeclarationDefaultExpressionBlock(ExpressionBlockEndedByCharacter):
+class VariableDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = VariableDeclarationEndMarkerBlock
 
 
-class SignalDeclarationDefaultExpressionBlock(ExpressionBlockEndedByCharacter):
+class SignalDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = SignalDeclarationEndMarkerBlock
 
 
