@@ -28,14 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Sequential import Function, Procedure
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import ArchitectureKeyword, IsKeyword, UseKeyword, OfKeyword, BeginKeyword, SignalKeyword
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import ArchitectureKeyword, IsKeyword, OfKeyword, BoundaryToken, IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 
@@ -92,7 +89,8 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
@@ -188,7 +186,8 @@ class NameBlock(Block):
 			parserState.TokenMarker = None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):

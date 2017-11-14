@@ -88,6 +88,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 
 			if (tokenValue == "begin"):
 				parserState.NewToken =  BeginKeyword(token)
+				parserState.NewBlock =  cls.BEGIN_BLOCK(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = cls.BEGIN_BLOCK.stateStatementRegion
 				return
 			elif (tokenValue == "end"):

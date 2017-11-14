@@ -65,29 +65,30 @@ class OpenBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =   CloseBlock.stateClosingParenthesis
-			parserState.PushState =   cls.stateOpeningParenthesis
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NextState =     CloseBlock.stateClosingParenthesis
+			parserState.PushState =     cls.stateOpeningParenthesis
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				_ =                     LinebreakBlock(parserState.NewBlock, token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
-				parserState.NewBlock =  LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = None
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = None
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =    BoundaryToken(token)
-			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker = None
+			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
 			return
 
 		raise TokenParserException("Expected '(' after keyword GENERIC.", token)

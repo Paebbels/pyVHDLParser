@@ -28,11 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks               import Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Token                import CommentToken
-from pyVHDLParser.Token.Keywords       import *
-from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Token           import SpaceToken, LinebreakToken, StringToken, IndentationToken, CharacterToken
+from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
+from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, ReportKeyword, EndToken, SeverityKeyword
+from pyVHDLParser.Blocks          import Block, CommentBlock, ParserState, TokenParserException
+from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
 class AssertBlock(Block):
@@ -69,7 +69,8 @@ class AssertBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):

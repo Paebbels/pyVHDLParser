@@ -28,11 +28,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks               import Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Token                import CommentToken
-from pyVHDLParser.Token.Keywords       import *
-from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Token           import SpaceToken, LinebreakToken, StringToken, IndentationToken, CharacterToken
+from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
+from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, EndToken, SeverityKeyword
+from pyVHDLParser.Blocks          import Block, CommentBlock, ParserState, TokenParserException
+from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
 class ReportBlock(Block):

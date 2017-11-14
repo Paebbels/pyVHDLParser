@@ -112,7 +112,8 @@ class WhenBlock(SequentialBeginBlock):
 			parserState.TokenMarker = None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
@@ -176,7 +177,8 @@ class IsBlock(SequentialBeginBlock):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
@@ -237,7 +239,8 @@ class CaseBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
