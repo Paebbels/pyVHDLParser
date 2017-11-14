@@ -155,7 +155,7 @@ class InterfaceObjectBlock(Block):
 				parserState.NewToken =    cls.MODES[tokenValue](token)
 				parserState.NextState =   cls.stateModeKeyword
 				return
-			except ValueError:
+			except KeyError:
 				parserState.NewToken =    IdentifierToken(token)
 				parserState.NextState =   cls.stateSubtypeIndication
 				return

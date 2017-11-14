@@ -95,7 +95,7 @@ class ParserState:
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
-			# print("unpopped: " + str(top[0]))
+			# print("popped: " + str(top[0]))
 		self.NextState =    top[0]
 		self.Counter =      top[1]
 		self._tokenMarker = None

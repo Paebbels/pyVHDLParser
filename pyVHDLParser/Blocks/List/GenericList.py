@@ -208,7 +208,6 @@ class CloseBlock(CloseBlockBase):
 
 class GenericListInterfaceConstantBlock(InterfaceConstantBlock):
 	DELIMITER_BLOCK = DelimiterBlock
-	MODES =           None
 
 
 class GenericListInterfaceTypeBlock(InterfaceTypeBlock):
