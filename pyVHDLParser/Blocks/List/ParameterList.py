@@ -42,7 +42,7 @@ class OpenBlock(Block):
 	@classmethod
 	def stateParameterKeyword(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "(")):
+		if (isinstance(token, CharacterToken) and (token == "(")):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
@@ -65,7 +65,7 @@ class OpenBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "(")):
+		if (isinstance(token, CharacterToken) and (token == "(")):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.PushState =   cls.stateOpeningParenthesis
@@ -100,26 +100,26 @@ class OpenBlock(Block):
 		if isinstance(token, StringToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "variable"):
 				parserState.NewToken =    VariableKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   ParameterListInterfaceConstantBlock.stateObjectName
@@ -181,23 +181,23 @@ class DelimiterBlock(SkipableBlock):
 			tokenValue = token.Value.lower()
 			if (tokenValue == "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "variable"):
 				parserState.NewToken =    VariableKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "signal"):
 				parserState.NewToken =    SignalKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "type"):
 				parserState.NewToken =    TypeKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceTypeBlock.stateTypeKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "procedure"):
 				raise NotImplementedError("Generic procedures are not supported.")
@@ -209,8 +209,8 @@ class DelimiterBlock(SkipableBlock):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   ParameterListInterfaceConstantBlock.stateObjectName

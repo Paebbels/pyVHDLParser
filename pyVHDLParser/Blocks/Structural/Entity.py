@@ -28,14 +28,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import EntityKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword, SignalKeyword
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
+from pyVHDLParser.Token           import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token.Parser    import StringToken, SpaceToken
+from pyVHDLParser.Token.Keywords  import EntityKeyword, IsKeyword, GenericKeyword, PortKeyword
+from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken
+from pyVHDLParser.Blocks          import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic  import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
 
 

@@ -105,15 +105,15 @@ class OpenBlock(Block):
 		elif isinstance(token, StringToken):
 			if (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceSignalBlock.stateSignalKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceSignalBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   GenericListInterfaceSignalBlock.stateObjectName
@@ -147,13 +147,13 @@ class DelimiterBlock(SkipableBlock):
 		if isinstance(token, StringToken):
 			if (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceSignalBlock.stateSignalKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceSignalBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   GenericListInterfaceSignalBlock.stateObjectName

@@ -210,13 +210,15 @@ class NameBlock(Block):
 				return
 			elif (keyword == "generic"):
 				parserState.NewToken =    GenericKeyword(token)
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.NextState =   GenericList.OpenBlock.stateGenericKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (keyword == "parameter"):
 				parserState.NewToken =    ParameterKeyword(token)
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.NextState =   ParameterList.OpenBlock.stateParameterKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):

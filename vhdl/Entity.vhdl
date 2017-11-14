@@ -59,11 +59,15 @@ entity myEntity20 is
 end myEntity20 ;
 
 entity myEntity21 is
-end entity myEntity22;
+end entity myEntity21;
 
-entity myEntity23 is
-end entity myEntity23 ;
+entity myEntity22 is
+end entity myEntity22 ;
 
-entity/* comment0 */myEntity24/* comment1 */is/* comment2 */end/* comment3 */;/* comment4 */
+entity/* comment0 */myEntity23/* comment1 */is/* comment2 */end/* comment3 */;/* comment4 */
 
-entity /* comment0 */ myEntity25 /* comment1 */ is /* comment2 */ end /* comment3 */ ; /* comment4 */
+entity /* comment0 */ myEntity24 /* comment1 */ is /* comment2 */ end /* comment3 */ ; /* comment4 */
+
+entity myEntity25 is
+begin
+end entity;

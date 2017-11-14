@@ -34,7 +34,7 @@ from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Token.Parser            import SpaceToken, StringToken
 from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic1 import CloseBlock as CloseBlockBase
+from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.InterfaceObject  import InterfaceConstantBlock, InterfaceTypeBlock
 
 
@@ -105,15 +105,15 @@ class OpenBlock(Block):
 		elif isinstance(token, StringToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "type"):
 				parserState.NewToken =    TypeKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "procedure"):
 				raise NotImplementedError("Generic procedures are not supported.")
@@ -125,8 +125,8 @@ class OpenBlock(Block):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   GenericListInterfaceConstantBlock.stateObjectName
@@ -160,13 +160,13 @@ class DelimiterBlock(SkipableBlock):
 		if isinstance(token, StringToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "type"):
 				parserState.NewToken =    TypeKeyword(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
+				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "procedure"):
 				raise NotImplementedError("Generic procedures are not supported.")
@@ -178,8 +178,8 @@ class DelimiterBlock(SkipableBlock):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(token)
-				parserState.TokenMarker = parserState.NewToken
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   GenericListInterfaceConstantBlock.stateObjectName
@@ -208,6 +208,7 @@ class CloseBlock(CloseBlockBase):
 
 class GenericListInterfaceConstantBlock(InterfaceConstantBlock):
 	DELIMITER_BLOCK = DelimiterBlock
+	MODES =           None
 
 
 class GenericListInterfaceTypeBlock(InterfaceTypeBlock):

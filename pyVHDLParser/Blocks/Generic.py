@@ -69,6 +69,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                     LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
@@ -97,7 +98,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 				return
 
 		raise TokenParserException(
-			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
+			"Expected one of these keywords: BEGIN, END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
