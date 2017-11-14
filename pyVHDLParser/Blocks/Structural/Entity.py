@@ -52,6 +52,19 @@ class DeclarativeRegion(ConcurrentDeclarativeRegion):
 	BEGIN_BLOCK = BeginBlock
 	END_BLOCK =   EndBlock
 
+	@classmethod
+	def __cls_init__(cls):
+		super().__cls_init__()
+
+		from pyVHDLParser.Blocks.List.GenericList import OpenBlock as GenericListOpenBlock
+		from pyVHDLParser.Blocks.List.PortList    import OpenBlock as PortListOpenBlock
+
+		cls.KEYWORDS.update({
+			# Keyword         Transition
+			GenericKeyword:   GenericListOpenBlock.stateGenericKeyword,
+			PortKeyword:      PortListOpenBlock.statePortKeyword
+		})
+
 
 class NameBlock(Block):
 	@classmethod
