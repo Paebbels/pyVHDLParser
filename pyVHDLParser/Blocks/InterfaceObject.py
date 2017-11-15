@@ -81,6 +81,10 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
+		elif (isinstance(token, CharacterToken) and (token == ":")):
+			parserState.NewToken =    DelimiterToken(token)
+			parserState.NextState =   cls.stateColon1
+			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)

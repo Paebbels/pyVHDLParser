@@ -152,7 +152,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+		raise TokenParserException("Expected ?????????????.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
