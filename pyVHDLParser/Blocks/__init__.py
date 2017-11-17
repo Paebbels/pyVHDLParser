@@ -72,6 +72,7 @@ class ParserState:
 			self.NextState,
 			self.Counter
 		))
+		if self.debug: print("pushed: " + str(self.NextState))
 		self.NextState =    value
 		self._tokenMarker =  None
 
@@ -95,7 +96,7 @@ class ParserState:
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
-			# print("popped: " + str(top[0]))
+			if self.debug: print("popped: " + str(top[0]))
 		self.NextState =    top[0]
 		self.Counter =      top[1]
 		self._tokenMarker = None
@@ -186,7 +187,7 @@ class Block(metaclass=MetaBlock):
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):
-				raise TokenParserException("Token after {0!r} ==> {1!r} ==> {2!r} is None.".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
+				raise TokenParserException("Token after '{2!r}'\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
 			token = token.NextToken
 
 		yield self.EndToken

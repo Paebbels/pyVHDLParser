@@ -40,6 +40,7 @@ from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosing
 class InterfaceObjectBlock(Block):
 	OBJECT_KIND =     ""
 	MODES =           {}
+	EXPRESSION =      None
 	DELIMITER_BLOCK = None
 
 	@classmethod
@@ -243,7 +244,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlockEndedByCharORClosingRoundBracket.stateExpression
+			parserState.PushState =     cls.EXPRESSION.stateBeforeExpression
 			parserState.TokenMarker =   None
 			parserState.Counter =       0
 			return
@@ -281,8 +282,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NewToken =      VariableAssignmentKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
-			parserState.PushState =     ExpressionBlockEndedByCharORClosingRoundBracket.stateExpression
-			parserState.TokenMarker =   None
+			parserState.PushState =     cls.EXPRESSION.stateBeforeExpression
 			parserState.Counter =       0
 			return
 		elif isinstance(token, CharacterToken):

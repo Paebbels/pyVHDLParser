@@ -28,14 +28,66 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
 from pyVHDLParser.Token                   import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords          import BoundaryToken, EndToken, SignalKeyword
+from pyVHDLParser.Token.Keywords          import BoundaryToken, EndToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Token.Parser            import SpaceToken, StringToken
 from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic1 import CloseBlock as CloseBlockBase
+from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock
+
+
+class CloseBlock(CloseBlockBase):
+	pass
+
+
+class DelimiterBlock(SkipableBlock):
+	@classmethod
+	def stateItemDelimiter(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, StringToken):
+			if (token <= "signal"):
+				parserState.NewToken =    SignalKeyword(token)
+				parserState.PushState =   PortListInterfaceSignalBlock.stateSignalKeyword
+				parserState.TokenMarker = parserState.NewToken
+				return
+			else:
+				parserState.NewToken =    IdentifierToken(token)
+				parserState.PushState =   PortListInterfaceSignalBlock.stateObjectName
+				parserState.TokenMarker = parserState.NewToken
+				return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =     PortListInterfaceSignalBlock.stateObjectName
+			return
+		elif isinstance(token, SpaceToken):
+			parserState.NextState =     OpenBlock.stateOpeningParenthesis
+			return
+		elif isinstance(token, LinebreakToken):
+			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   token
+			parserState.NextState =     OpenBlock.stateOpeningParenthesis
+			return
+		elif isinstance(token, CommentToken):
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.NewBlock, token)
+			parserState.TokenMarker =   None
+			# parserState.NextState =     cls.stateWhitespace1
+			return
+
+		raise TokenParserException("Expected port name (identifier).", token)
+
+
+class DefaultValueExpressionBlock(ExpressionBlockEndedByCharORClosingRoundBracket):
+	EXIT_CHAR =  ";"
+	EXIT_TOKEN = DelimiterToken
+	EXIT_BLOCK = DelimiterBlock
+
+
+class PortListInterfaceSignalBlock(InterfaceSignalBlock):
+	DELIMITER_BLOCK = DelimiterBlock
+	EXPRESSION =      DefaultValueExpressionBlock
 
 
 class OpenBlock(Block):
@@ -106,17 +158,17 @@ class OpenBlock(Block):
 			if (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
-				parserState.PushState =   GenericListInterfaceSignalBlock.stateSignalKeyword
+				parserState.PushState =   PortListInterfaceSignalBlock.stateSignalKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				parserState.NewToken =    IdentifierToken(token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
-				parserState.PushState =   GenericListInterfaceSignalBlock.stateObjectName
+				parserState.PushState =   PortListInterfaceSignalBlock.stateObjectName
 				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, ExtendedIdentifier):
-			parserState.NextState =   GenericListInterfaceSignalBlock.stateObjectName
+			parserState.NextState =   PortListInterfaceSignalBlock.stateObjectName
 			return
 		elif isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -135,50 +187,3 @@ class OpenBlock(Block):
 			return
 
 		raise TokenParserException("Expected interface signal name (identifier) or keyword: SIGNAL.", token)
-
-
-class DelimiterBlock(SkipableBlock):
-	def __init__(self, previousBlock, startToken):
-		super().__init__(previousBlock, startToken, startToken)
-
-	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
-		token = parserState.Token
-		if isinstance(token, StringToken):
-			if (token <= "signal"):
-				parserState.NewToken =    SignalKeyword(token)
-				parserState.PushState =   GenericListInterfaceSignalBlock.stateSignalKeyword
-				parserState.TokenMarker = parserState.NewToken
-				return
-			else:
-				parserState.NewToken =    IdentifierToken(token)
-				parserState.PushState =   GenericListInterfaceSignalBlock.stateObjectName
-				parserState.TokenMarker = parserState.NewToken
-				return
-		elif isinstance(token, ExtendedIdentifier):
-			parserState.NextState =   GenericListInterfaceSignalBlock.stateObjectName
-			return
-		elif isinstance(token, SpaceToken):
-			parserState.NextState =   OpenBlock.stateOpeningParenthesis
-			return
-		elif isinstance(token, LinebreakToken):
-			parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker = token
-			parserState.NextState =   OpenBlock.stateOpeningParenthesis
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       CommentBlock(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			# parserState.NextState =   cls.stateWhitespace1
-			return
-
-		raise TokenParserException("Expected port name (identifier).", token)
-
-
-class CloseBlock(CloseBlockBase):
-	pass
-
-
-class GenericListInterfaceSignalBlock(InterfaceSignalBlock):
-	DELIMITER_BLOCK = DelimiterBlock
