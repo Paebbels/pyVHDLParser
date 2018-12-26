@@ -130,6 +130,7 @@ class SequentialDeclarativeRegion(DeclarativeRegion):
 	def __cls_init__(cls):
 		super().__cls_init__()
 
+		# TODO: use key assignment: a[b] = c
 		cls.KEYWORDS.update({
 			# Keyword         Transition
 			VariableKeyword:  VariableDeclarationBlock.stateVariableKeyword

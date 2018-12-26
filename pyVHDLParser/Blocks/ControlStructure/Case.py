@@ -53,7 +53,7 @@ class ArrowBlock(SequentialBeginBlock):
 	@classmethod
 	def stateSequentialRegion(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken)and (token <= "when")):
+		if (isinstance(token, StringToken) and (token <= "when")):
 			newToken =                WhenKeyword(token)
 			parserState.NewToken =    newToken
 			parserState.TokenMarker = newToken

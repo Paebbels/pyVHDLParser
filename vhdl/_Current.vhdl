@@ -16,6 +16,8 @@ entity system is
 	procedure bar (constant x : in integer; variable y : out integer) is
 	begin
 		case x & y is
+			when 3 =>
+			when 4 =>
 			when (2 + 5) =>
 				exit when ((5 + 2) = 7);
 				next iter when z = TRUE;

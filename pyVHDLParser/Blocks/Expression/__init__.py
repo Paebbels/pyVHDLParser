@@ -209,7 +209,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 						parserState.NewToken =  cls.EXIT_TOKEN(token)
 						parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 						_ =                     cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
-						parserState.Pop(2)
+						parserState.Pop(1)
 						return
 					else:
 						raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
