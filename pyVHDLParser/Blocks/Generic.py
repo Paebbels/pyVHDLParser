@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,9 +255,11 @@ class SequentialBeginBlock(BeginBlock):
 				return
 
 		raise TokenParserException(
-			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
+			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}' at line {tokenPositionRow}:{tokenPositionColumn}.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
 				),
-				tokenValue=token.Value
+				tokenValue=token.Value,
+				tokenPositionRow=token.Start.Row,
+				tokenPositionColumn=token.Start.Column
 			), token)

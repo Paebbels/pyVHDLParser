@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,18 +75,18 @@ class ValuedToken(Token):
 			)
 
 
-class SuperToken(Token):
-	def __init__(self, startToken, endToken=None):
-		super().__init__(startToken.PreviousToken, startToken.Start, endToken.End if endToken else None)
-		self.StartToken = startToken
-		self.EndToken =   endToken
-
-	def __iter__(self):
-		token = self.StartToken
-		while (token is not self.EndToken):
-			yield token
-			token = token.NextToken
-		yield self.EndToken
+# class SuperToken(Token):
+# 	def __init__(self, startToken, endToken=None):
+# 		super().__init__(startToken.PreviousToken, startToken.Start, endToken.End if endToken else None)
+# 		self.StartToken = startToken
+# 		self.EndToken =   endToken
+#
+# 	def __iter__(self):
+# 		token = self.StartToken
+# 		while (token is not self.EndToken):
+# 			yield token
+# 			token = token.NextToken
+# 		yield self.EndToken
 
 
 class StartOfToken(Token):

@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,14 +93,14 @@ class ParserState:
 	def __str__(self):
 		return self.NextState.__func__.__qualname__
 
-	def Pop(self, n=1):
+	def Pop(self, n=1, tokenMarker=None):
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
 			if self.debug: print("popped: " + str(top[0]))
 		self.NextState =    top[0]
 		self.Counter =      top[1]
-		self._tokenMarker = None
+		self._tokenMarker = tokenMarker
 
 
 	def GetGenerator(self):
@@ -183,11 +184,15 @@ class Block(metaclass=MetaBlock):
 
 	def __iter__(self):
 		token = self.StartToken
-		# print("block={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
 		while (token is not self.EndToken):
 			yield token
 			if (token.NextToken is None):
-				raise TokenParserException("Token after '{2!r}'\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
+				print("block={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
+				t = self.StartToken
+				while ((t is not None) and (t is not self.EndToken)):
+					print("  " + str(t))
+					t = t.NextToken
+				raise TokenParserException("Token after '{2!r}' is empty (None).\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
 			token = token.NextToken
 
 		yield self.EndToken

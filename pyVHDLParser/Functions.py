@@ -13,7 +13,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +32,8 @@
 
 from functools  import reduce
 from operator   import or_
-from sys        import version_info
 
-
+# TODO: move to lib/Utilities.py
 def merge(*dicts):
 	"""Merge 2 or more dictionaries."""
 	return {k : reduce(lambda d,x: x.get(k, d), dicts, None) for k in reduce(or_, map(lambda x: x.keys(), dicts), set()) }
@@ -42,6 +42,7 @@ def merge_with(f, *dicts):
 	"""Merge 2 or more dictionaries. Apply function f to each element during merge."""
 	return {k : reduce(lambda x: f(*x) if (len(x) > 1) else x[0])([ d[k] for d in dicts if k in d ]) for k in reduce(or_, map(lambda x: x.keys(), dicts), set()) }
 
+# TODO: move to lib/Utilities.py
 class CallByRefParam:
 	def __init__(self, value=None):
 		self.value = value

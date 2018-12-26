@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -142,13 +143,13 @@ class EndBlock(FinalBlock):
 		elif isinstance(token, LinebreakToken):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
 			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateWhitespace1
+			parserState.NextState =     cls.stateWhitespace3
 			return
 		elif isinstance(token, CommentToken):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateWhitespace1
+			parserState.NextState =     cls.stateWhitespace3
 			return
 
 		raise TokenParserException("Expected ';' or whitespace.", token)

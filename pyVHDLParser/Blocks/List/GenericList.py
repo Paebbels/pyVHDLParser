@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -168,8 +169,7 @@ class OpenBlock(Block):
 		if (isinstance(token, CharacterToken)and (token == ")")):
 			# if (parserState.TokenMarker != token):
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
-			parserState.Pop()
-			parserState.TokenMarker = token
+			parserState.Pop(1, token)
 			return
 		elif isinstance(token, StringToken):
 			if (token <= "constant"):

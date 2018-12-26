@@ -112,7 +112,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyVHDLParser'
-copyright = 'Copyright 2007-2017 Patrick Lehmann - Dresden, Germany'
+copyright = 'Copyright 2016-2019 Patrick Lehmann - Boetzingen, Germany'
 author = 'Patrick Lehmann'
 
 # The version info for the project you're documenting, acts as replacement for

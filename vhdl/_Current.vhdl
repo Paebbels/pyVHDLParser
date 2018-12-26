@@ -1,5 +1,19 @@
+entity myEntity8 is
+	generic (
+		GEN8a : positive :=(8);
+		GEN8b : positive := 8 + axd;
+		GEN8c : positive :=-8
+	);
+end entity;
+
+entity myEntity3 is
+generic (
+GEN3 : positive := 8
+);
+end entity;
+
 entity system is
-	procedure bar(constant x : in integer;variable y : out integer) is
+	procedure bar (constant x : in integer; variable y : out integer) is
 	begin
 		case x & y is
 			when (2 + 5) =>

@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +35,7 @@ from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeywo
 from pyVHDLParser.Blocks                    import Block, CommentBlock, TokenParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
-from pyVHDLParser.Blocks.Generic import SequentialBeginBlock, SequentialDeclarativeRegion
+from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import SensitivityList
 

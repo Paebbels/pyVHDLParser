@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -164,8 +165,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 				if (parserState.Counter == 0):
 					parserState.NewToken =    BoundaryToken(token)
 					parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					parserState.Pop(3)
-					parserState.TokenMarker = parserState.NewToken
+					parserState.Pop(3, parserState.NewToken)
 					return
 				else:
 					parserState.NewToken =    ClosingRoundBracketToken(token)
@@ -231,13 +231,12 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			elif (token == ")"):
 				if (parserState.Counter == 0):
 					parserState.NewToken =    BoundaryToken(token)
-					parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+					# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					i = 1
 					for stackElement in parserState._stack:
 						print("{0}: {1!s}".format(i, stackElement))
 						i += 1
-					parserState.Pop(3)
-					parserState.TokenMarker = parserState.NewToken
+					parserState.Pop(3, parserState.NewToken)
 					return
 				else:
 					parserState.NewToken =    ClosingRoundBracketToken(token)
@@ -313,7 +312,6 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:
@@ -364,7 +362,6 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:
@@ -431,8 +428,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewToken =    LoopKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
-				parserState.Pop(2)
-				parserState.TokenMarker = parserState.NewToken
+				parserState.Pop(2, parserState.NewToken)
 				return
 			elif (tokenValue == "to"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
@@ -440,8 +436,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewToken =    ToKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
-				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				parserState.Pop(1, parserState.NewToken)
 				return
 			elif (tokenValue == "downto"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
@@ -449,8 +444,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewToken =    DowntoKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
-				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				parserState.Pop(1, parserState.NewToken)
 				return
 			else:
 				try:
@@ -501,8 +495,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewToken =    LoopKeyword(token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
-				parserState.Pop()
-				parserState.TokenMarker = parserState.NewToken
+				parserState.Pop(1, parserState.NewToken)
 				return
 			elif (tokenValue == "to"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
@@ -511,7 +504,6 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				# parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "downto"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
@@ -520,7 +512,6 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
-				# parserState.TokenMarker = parserState.NewToken
 				return
 			else:
 				try:

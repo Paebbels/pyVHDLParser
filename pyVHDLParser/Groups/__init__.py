@@ -12,7 +12,8 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2007-2017 Patrick Lehmann - Dresden, Germany
+# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -233,7 +234,7 @@ class Group(metaclass=MetaGroup):
 		while (block is not self.EndBlock):
 			yield block
 			if (block.NextBlock is None):
-				raise BlockParserException("Token after {0!r} <- {1!r} <- {2!r} is None.".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
+				raise BlockParserException("Token after {0!r} <- {1!r} <- {2!r} is empty (None).".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
 			block = block.NextBlock
 
 		yield self.EndBlock
