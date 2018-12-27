@@ -38,18 +38,19 @@ from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 
 
 class ObjectDeclarationBlock(Block):
-	OBJECT_KIND =   ""
-	END_BLOCK =     None
+	OBJECT_KIND =       ""
+	EXPRESSION_BLOCK =  None
+	END_BLOCK =         None
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, StringToken):
 			parserState.NewToken =    IdentifierToken(token)
-			parserState.NextState =   cls.stateConstantName
+			parserState.NextState =   cls.stateObjectName
 			return
 		elif isinstance(token, ExtendedIdentifier):
-			parserState.NextState =   cls.stateConstantName
+			parserState.NextState =   cls.stateObjectName
 			return
 		elif isinstance(token, LinebreakToken):
 			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
@@ -72,7 +73,7 @@ class ObjectDeclarationBlock(Block):
 		raise TokenParserException("Expected {0} name (identifier).".format(cls.OBJECT_KIND), token)
 
 	@classmethod
-	def stateConstantName(cls, parserState: ParserState):
+	def stateObjectName(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == ":")):
 			parserState.NewToken =    BoundaryToken(token)
@@ -173,7 +174,7 @@ class ObjectDeclarationBlock(Block):
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
 			parserState.NewToken =    VariableAssignmentKeyword(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =   ConstantDeclarationDefaultExpressionBlock.stateExpression
+			parserState.PushState =   cls.EXPRESSION_BLOCK.stateExpression
 			parserState.TokenMarker = None
 			parserState.Counter =     0
 			return
@@ -203,7 +204,7 @@ class ObjectDeclarationBlock(Block):
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
 			parserState.NewToken =    VariableAssignmentKeyword(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =   ConstantDeclarationDefaultExpressionBlock.stateExpression
+			parserState.PushState =   cls.EXPRESSION_BLOCK.stateExpression
 			parserState.TokenMarker = None
 			parserState.Counter =     0
 			return
@@ -253,8 +254,9 @@ class SignalDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 
 
 class ConstantDeclarationBlock(ObjectDeclarationBlock):
-	OBJECT_KIND = "constant"
-	END_BLOCK =   ConstantDeclarationEndMarkerBlock
+	OBJECT_KIND =       "constant"
+	EXPRESSION_BLOCK =  ConstantDeclarationDefaultExpressionBlock
+	END_BLOCK =         ConstantDeclarationEndMarkerBlock
 
 	@classmethod
 	def stateConstantKeyword(cls, parserState: ParserState):
@@ -275,8 +277,9 @@ class ConstantDeclarationBlock(ObjectDeclarationBlock):
 
 
 class VariableDeclarationBlock(ObjectDeclarationBlock):
-	OBJECT_KIND = "variable"
-	END_BLOCK =  VariableDeclarationEndMarkerBlock
+	OBJECT_KIND =       "variable"
+	EXPRESSION_BLOCK =  VariableDeclarationDefaultExpressionBlock
+	END_BLOCK =         VariableDeclarationEndMarkerBlock
 
 	@classmethod
 	def stateVariableKeyword(cls, parserState: ParserState):
@@ -417,8 +420,9 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 
 
 class SignalDeclarationBlock(ObjectDeclarationBlock):
-	OBJECT_KIND = "signal"
-	END_BLOCK =   SignalDeclarationEndMarkerBlock
+	OBJECT_KIND =       "signal"
+	EXPRESSION_BLOCK =  SignalDeclarationDefaultExpressionBlock
+	END_BLOCK =         SignalDeclarationEndMarkerBlock
 
 	@classmethod
 	def stateSignalKeyword(cls, parserState: ParserState):

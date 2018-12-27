@@ -67,9 +67,9 @@ package pkg0 is
 end package;
 
 package body pkg0 is
-	constant const3 : std_logic := '0';
+	constant const3 : std_logic := (8 + '0');
 	function func1 return integer is
-		constant const3 : std_logic := '0';
+		constant const4 : std_logic := '1';
 		/*procedure proc1 is
 			variable var5 : integer := 20;
 			variable \var6\ : string := "20";
