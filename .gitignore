@@ -4,7 +4,7 @@ __pycache__/
 
 # Sphinx
 doc/_build/
-doc/pyVHDLParser/
+doc/pyVHDLParser/**/*.*
 !doc/pyVHDLParser/index.rst
 
 # IntelliJ project files
