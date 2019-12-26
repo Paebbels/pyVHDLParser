@@ -7,8 +7,9 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/pyVHDLParser)
 ![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser)
 
-.. #
+<!--
    [![Build Status](https://travis-ci.org/Paebbels/pyVHDLParser.svg?branch=master)](https://travis-ci.org/Paebbels/pyVHDLParser)
+-->
 
 # pyVHDLParser
 
