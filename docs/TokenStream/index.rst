@@ -1,6 +1,0 @@
-
-headline
-########
-
-some content
-

@@ -30,11 +30,12 @@
 #
 from types                          import FunctionType
 
+from pyTerminalUI import LineTerminal
+
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, StringToken, EndOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
-from pyVHDLParser.Functions         import Console
 
 
 class TokenParserException(ParserException):
@@ -73,14 +74,14 @@ class ParserState:
 			self.NextState,
 			self.Counter
 		))
-		if self.debug: print("pushed: " + str(self.NextState))
+		LineTerminal().WriteDebug("pushed: " + str(self.NextState))
 		self.NextState =    value
 		self._tokenMarker =  None
 
 	@property
 	def TokenMarker(self):
 		if ((self.NewToken is not None) and (self._tokenMarker is self.Token)):
-			if self.debug: print("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **Console.Foreground))
+			LineTerminal().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **LineTerminal.Foreground))
 			self._tokenMarker = self.NewToken
 		return self._tokenMarker
 	@TokenMarker.setter
@@ -97,7 +98,7 @@ class ParserState:
 		top = None
 		for i in range(n):
 			top = self._stack.pop()
-			if self.debug: print("popped: " + str(top[0]))
+			LineTerminal().WriteDebug("popped: " + str(top[0]))
 		self.NextState =    top[0]
 		self.Counter =      top[1]
 		self._tokenMarker = tokenMarker
@@ -117,7 +118,7 @@ class ParserState:
 				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 				# update topmost TokenMarker
 				if (self._tokenMarker is token.PreviousToken):
-					if self.debug: print("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
+					LineTerminal().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
 					self._tokenMarker = self.NewToken
 
 				token.PreviousToken = self.NewToken
@@ -125,7 +126,7 @@ class ParserState:
 
 			# an empty marker means: fill on next yield run
 			if (self._tokenMarker is None):
-				if self.debug: print("  new token marker: None -> {0!s}".format(token))
+				LineTerminal().WriteDebug("  new token marker: None -> {0!s}".format(token))
 				self._tokenMarker = token
 
 			# a new block is assembled
@@ -140,7 +141,7 @@ class ParserState:
 				yield self.LastBlock
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-			if self.debug: print("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **Console.Foreground))
+			LineTerminal().WriteDebug("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **LineTerminal.Foreground))
 			# execute a state
 			self.NextState(self)
 

@@ -287,7 +287,7 @@ class DirectiveToken(CommentToken):         pass
 
 class LinebreakToken(VHDLToken):
 	def __str__(self):
-		return "<{name:-<110} at {pos!r}>".format(
+		return "<{name:-<111} at {pos!r}>".format(
 				name=self.__class__.__name__ + "  ",
 				pos=self.Start
 			)

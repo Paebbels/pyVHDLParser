@@ -4,6 +4,7 @@ entity myEntity8 is
 		GEN8b : positive := 8 + axd;
 		GEN8c : positive :=-8
 	);
+	constant C : integer := Gen8A + 2;
 end entity;
 
 entity myEntity3 is

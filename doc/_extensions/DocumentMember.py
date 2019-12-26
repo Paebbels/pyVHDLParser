@@ -1,7 +1,6 @@
 # EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
 # vim: tabstop=2:shiftwidth=2:noexpandtab
 # kate: tab-width 2; replace-tabs off; indent-width 2;
-#
 # ==============================================================================
 # Authors:          Patrick Lehmann
 #
@@ -28,7 +27,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from lib.SphinxExtensions   import DocumentMemberAttribute
+from SphinxExtensions   import DocumentMemberAttribute
 
 
 def skip_member_handler(app, what, name, obj, skip, options):

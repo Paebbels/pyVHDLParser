@@ -56,7 +56,45 @@ pyVHDLParser is a streaming parser for VHDL to extract the documentation.
    News
    ****
 
-   20.09.2016 - Project started
+.. only:: html
+
+   Dec. 2019 - Major reworks
+   =========================
+
+.. only:: latex
+
+   .. rubric:: Dec. 2019 - Major reworks
+
+* Reworked and updated documentation.
+* Implemented a new test frontend.
+
+.. only:: html
+
+   Dec. 2018 - Minor updates
+   ==========================
+
+.. only:: latex
+
+   .. rubric:: Dec. 2018 - Minor updates
+
+Fixed some NextToken linking problems.
+
+
+.. only:: html
+
+   Nov. 2017 - New features
+   ========================
+
+.. only:: latex
+
+   .. rubric:: Nov. 2017 - New features
+
+Implemented new features like case statements.
+
+
+.. only:: html
+
+   20.09.2017 - Project started
    ============================
 
 .. only:: latex
@@ -65,6 +103,17 @@ pyVHDLParser is a streaming parser for VHDL to extract the documentation.
 
 Let's create a new parser in Python to process VHDL code.
 
+
+Contributors
+************
+
+* `Patrick Lehmann <https://github.com/Paebbels>`_ (Maintainer)
+
+
+License
+*******
+
+This library is licensed under **Apache License 2.0**.
 
 ------------------------------------
 
@@ -81,6 +130,8 @@ Let's create a new parser in Python to process VHDL code.
 
    Goals
    Concepts
+   Installation
+   Dependencies
 
 .. raw:: latex
 
@@ -95,6 +146,8 @@ Let's create a new parser in Python to process VHDL code.
    GroupStream/index
    DocumentObjectModel/index
    LanguageModel/index
+
+.. #
    SimulationModel/index
    SynthesisModel/index
    Examples/index
@@ -118,9 +171,12 @@ Let's create a new parser in Python to process VHDL code.
    :hidden:
 
    ChangeLog/index
+   License
    genindex
+   py-modindex
 
-.. ifconfig:: visibility in ('Internal')
+.. #
+   ifconfig:: visibility in ('Internal')
 
    .. raw:: latex
 

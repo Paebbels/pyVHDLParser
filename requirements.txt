@@ -1,2 +1,7 @@
-colorama>=0.3.7
-py-flags>=1.1.2
+colorama>=0.4.3
+py-flags>=1.1.3
+
+pyExceptions>=0.1.11
+pyAttributes>=0.2.6
+pyCallBy>=1.0.0
+pyTerminalUI>=1.2.1

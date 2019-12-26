@@ -7,7 +7,7 @@ matrix:
       sudo: false
       python: "3.5"
 install:
-  - pip3 install -r .Travis-CI/requirements.txt
+  - pip3 install -U -r .Travis-CI/requirements.txt
 before_script:
   - ./.PyPI/PyPI.setup.sh
 script:
