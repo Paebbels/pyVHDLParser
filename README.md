@@ -1,10 +1,16 @@
+![PyPI - License](https://img.shields.io/pypi/l/pyVHDLParser)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser) 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Paebbels/pyVHDLParser)
+[![Documentation Status](https://readthedocs.org/projects/pyvhdlparser/badge/?version=latest)](https://pyVHDLParser.readthedocs.io/en/latest/?badge=latest)
+[![PyPI](https://img.shields.io/pypi/v/pyVHDLParser)](https://pypi.org/project/pyVHDLParser/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/pyVHDLParser)
+![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser)
+
+.. #
+   [![Build Status](https://travis-ci.org/Paebbels/pyVHDLParser.svg?branch=master)](https://travis-ci.org/Paebbels/pyVHDLParser)
+
 # pyVHDLParser
-
-[![Landscape.io - Code Health](https://landscape.io/github/Paebbels/pyVHDLParser/master/landscape.svg?style=plastic)](https://landscape.io/github/Paebbels/pyVHDLParser/master)
-[![Build Status](https://travis-ci.org/Paebbels/pyVHDLParser.svg?branch=master)](https://travis-ci.org/Paebbels/pyVHDLParser)
-[![Apache License 2.0](https://img.shields.io/github/license/VLSI-EDA/PoC.svg?style=flat)](LICENSE.md)
-[![Made with Koding](https://koding-cdn.s3.amazonaws.com/badges/made-with-koding/v1/koding_badge_ReadmeDark.png)](href="https://koding.com/)
-
 
 This is a token-stream based parser for VHDL-2008.
 
