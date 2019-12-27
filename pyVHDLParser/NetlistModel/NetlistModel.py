@@ -28,17 +28,28 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
+from pyVHDLParser.Decorators          import Export
+
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class ModelBase:
 	pass
 
 
+@Export
 class Netlist(ModelBase):
 	pass
 
 
+@Export
 class Wire(ModelBase):
 	pass
 
 
+@Export
 class Primitive(ModelBase):
 	pass

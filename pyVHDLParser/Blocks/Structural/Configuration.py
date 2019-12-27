@@ -29,16 +29,20 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import ConfigurationKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class NameBlock(Block):
 	KEYWORDS = None
 
@@ -194,11 +198,13 @@ class NameBlock(Block):
 			), token)
 
 
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =             ConfigurationKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
+@Export
 class BeginBlock(ConcurrentBeginBlock):
 	END_BLOCK = EndBlock

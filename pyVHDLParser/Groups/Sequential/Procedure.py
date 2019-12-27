@@ -32,6 +32,7 @@
 from collections                          import ChainMap
 from itertools                            import chain
 
+from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
@@ -46,7 +47,11 @@ from pyVHDLParser.Groups.List             import GenericListGroup, ParameterList
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
 from pyVHDLParser.Groups.Reference        import UseGroup
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class ProcedureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Use.StartBlock:  UseGroup,

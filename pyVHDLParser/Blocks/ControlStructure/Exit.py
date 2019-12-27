@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken, WhenKeyword
@@ -37,15 +38,21 @@ from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class EndBlock(EndOfStatementBlock):
 	pass
 
 
+@Export
 class ExitConditionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = EndBlock
 
 
+@Export
 class ExitBlock(Block):
 	@classmethod
 	def stateExitKeyword(cls, parserState: ParserState):

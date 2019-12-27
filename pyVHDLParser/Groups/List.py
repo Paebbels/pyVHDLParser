@@ -29,14 +29,19 @@
 # ==============================================================================
 #
 # load dependencies
-import pyVHDLParser.Blocks.InterfaceObject
+from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
 from pyVHDLParser.Groups            import ParserState, BlockParserException, Group, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment    import WhitespaceGroup, CommentGroup
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class GenericListGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
@@ -82,6 +87,7 @@ class GenericListGroup(Group):
 		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
+@Export
 class GenericListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -98,6 +104,7 @@ class GenericListItemGroup(Group):
 		raise BlockParserException("End of generic not found.", block)
 
 
+@Export
 class GenericMapGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -106,6 +113,7 @@ class GenericMapGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class GenericMapItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -114,6 +122,7 @@ class GenericMapItemGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class PortListGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
@@ -155,6 +164,7 @@ class PortListGroup(Group):
 		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
+@Export
 class PortListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -171,6 +181,7 @@ class PortListItemGroup(Group):
 		raise BlockParserException("End of port not found.", block)
 
 
+@Export
 class PortMapGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -179,6 +190,7 @@ class PortMapGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class PortMapItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -187,6 +199,7 @@ class PortMapItemGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class ParameterListGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
@@ -228,6 +241,7 @@ class ParameterListGroup(Group):
 		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
+@Export
 class ParameterListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -244,6 +258,7 @@ class ParameterListItemGroup(Group):
 		raise BlockParserException("End of parameter not found.", block)
 
 
+@Export
 class ParameterMapGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -252,6 +267,7 @@ class ParameterMapGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class ParameterMapItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -260,6 +276,7 @@ class ParameterMapItemGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
+@Export
 class SensitivityListGroup(Group):
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		super().__init__(previousGroup, startBlock, endBlock)
@@ -301,6 +318,7 @@ class SensitivityListGroup(Group):
 		raise BlockParserException("End of generic list not found.", currentBlock)
 
 
+@Export
 class SensitivityListItemGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, CaseKeyword, WhenKeyword, OthersKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
@@ -37,12 +38,17 @@ from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket, ExpressionBlockEndedByKeywordORClosingRoundBracket
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =       CaseKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__
 
 
+@Export
 class ArrowBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -63,12 +69,14 @@ class ArrowBlock(SequentialBeginBlock):
 		super().stateSequentialRegion(parserState)
 
 
+@Export
 class WhenExpressionBlock(ExpressionBlockEndedByCharORClosingRoundBracket):
 	EXIT_CHAR =    "=>"
 	EXIT_TOKEN =   MapAssociationKeyword
 	EXIT_BLOCK =   ArrowBlock
 
 
+@Export
 class WhenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -133,6 +141,7 @@ class WhenBlock(SequentialBeginBlock):
 			return
 
 
+@Export
 class IsBlock(SequentialBeginBlock):
 	END_BLOCK = None
 
@@ -193,11 +202,13 @@ class IsBlock(SequentialBeginBlock):
 		raise TokenParserException("Expected one of these keywords: WHEN or END. Found: '{tokenValue}'.".format(tokenValue=token.Value), token)
 
 
+@Export
 class CaseExpressionBlock(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 	EXIT_KEYWORD = IsKeyword
 	EXIT_BLOCK =   IsBlock
 
 
+@Export
 class CaseBlock(Block):
 	@classmethod
 	def stateCaseKeyword(cls, parserState: ParserState):

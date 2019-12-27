@@ -32,6 +32,7 @@
 from collections                          import ChainMap
 from itertools                            import chain
 
+from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Token.Keywords          import EndToken
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
@@ -48,7 +49,11 @@ from pyVHDLParser.Groups.List             import GenericListGroup, ParameterList
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
 from pyVHDLParser.Groups.Reference        import UseGroup
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class FunctionGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Use.StartBlock:  UseGroup,
@@ -276,5 +281,7 @@ class FunctionGroup(Group):
 
 		raise BlockParserException("End of function declaration not found.", currentBlock)
 
+
+@Export
 class ReturnTypeGroup(Group):
 	pass

@@ -28,6 +28,14 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
+from pyVHDLParser.Decorators          import Export
+
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class Scheduler:
 	def __init__(self):
 		self._now =             0
@@ -40,6 +48,7 @@ class Scheduler:
 		return None
 
 
+@Export
 class Event:
 	def __init__(self, time, process):
 		self._previous =  None
@@ -51,6 +60,7 @@ class Event:
 		self.WakeList.append(process)
 	
 
+@Export
 class Transaction:
 	def __init__(self, time, value):
 		self._time =  time
@@ -62,6 +72,7 @@ class Transaction:
 	__repr__ = __str__
 		
 
+@Export
 class TimeLine:
 	def __init__(self):
 		self._transactions =    []
@@ -70,6 +81,7 @@ class TimeLine:
 		pass
 
 
+@Export
 class Waveform:
 	def __init__(self, signal):
 		self._signal =          signal
@@ -82,6 +94,7 @@ class Waveform:
 		self._transactions.append(Transaction(time, value))
 	
 
+@Export
 class ProjectedWaveform(TimeLine):
 	def __init__(self, signal):
 		self._signal =          signal

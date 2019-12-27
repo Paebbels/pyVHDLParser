@@ -29,16 +29,21 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, LoopKeyword
-from pyVHDLParser.Token.Keywords       import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic       import EndBlock as EndBlockBase
-from pyVHDLParser.Blocks.List          import GenericList, PortList
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import CharacterToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
+from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
+from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.List         import GenericList, PortList
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class ConditionBlock(Block):
 	@classmethod
 	def stateWhileKeyword(cls, parserState: ParserState):
@@ -229,6 +234,7 @@ class ConditionBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =       LoopKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__

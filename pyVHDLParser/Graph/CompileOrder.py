@@ -29,9 +29,15 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators    import Export
 from pyVHDLParser.Graph.Graph   import Graph as BaseGraph
 from pyVHDLParser.Graph.Graph   import Node as  BaseNode
 
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class Graph(BaseGraph):
 	def __init__(self):
 		self._nodes =   []
@@ -43,6 +49,7 @@ class Graph(BaseGraph):
 		pass
 
 
+@Export
 class VHDLDocument(BaseNode):
 	def __init__(self, file):
 		super().__init__()

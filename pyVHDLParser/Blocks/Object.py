@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken, CommentToken, SpaceToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords    import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
 from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, TokenParserException
@@ -36,7 +37,11 @@ from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class ObjectDeclarationBlock(Block):
 	OBJECT_KIND =       ""
 	EXPRESSION_BLOCK =  None
@@ -234,25 +239,43 @@ class ObjectDeclarationBlock(Block):
 		raise TokenParserException("Expected ':=' or ';' after subtype indication.", token)
 
 
-class ObjectDeclarationEndMarkerBlock(EndOfStatementBlock):                     pass
-class ConstantDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):       pass
-class VariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):       pass
-class SharedVariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock): pass
-class SignalDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):         pass
+@Export
+class ObjectDeclarationEndMarkerBlock(EndOfStatementBlock):
+	pass
+
+@Export
+class ConstantDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+@Export
+class VariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+@Export
+class SharedVariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
+
+@Export
+class SignalDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+	pass
 
 
+@Export
 class ConstantDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = ConstantDeclarationEndMarkerBlock
 
 
+@Export
 class VariableDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = VariableDeclarationEndMarkerBlock
 
 
+@Export
 class SignalDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = SignalDeclarationEndMarkerBlock
 
 
+@Export
 class ConstantDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND =       "constant"
 	EXPRESSION_BLOCK =  ConstantDeclarationDefaultExpressionBlock
@@ -276,6 +299,7 @@ class ConstantDeclarationBlock(ObjectDeclarationBlock):
 		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
 
 
+@Export
 class VariableDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND =       "variable"
 	EXPRESSION_BLOCK =  VariableDeclarationDefaultExpressionBlock
@@ -299,6 +323,7 @@ class VariableDeclarationBlock(ObjectDeclarationBlock):
 		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
 
 
+@Export
 class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND = "variable"
 	END_BLOCK =   SharedVariableDeclarationEndMarkerBlock
@@ -419,6 +444,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 		raise TokenParserException("Expected ';' after subtype indication.", token)
 
 
+@Export
 class SignalDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND =       "signal"
 	EXPRESSION_BLOCK =  SignalDeclarationDefaultExpressionBlock

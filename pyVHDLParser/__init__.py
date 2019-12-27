@@ -35,6 +35,14 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
+from pyVHDLParser.Decorators          import Export
+
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class SourceCodePosition:
 	def __init__(self, row, column, absolute):
 		self.Row =       row
@@ -48,10 +56,26 @@ class SourceCodePosition:
 		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
 
 
-class StartOf:                  pass
-class StartOfDocument(StartOf): pass
-class StartOfSnippet(StartOf):  pass
+@Export
+class StartOf:
+	pass
 
-class EndOf:                    pass
-class EndOfDocument(EndOf):     pass
-class EndOfSnippet(EndOf):      pass
+@Export
+class StartOfDocument(StartOf):
+	pass
+
+@Export
+class StartOfSnippet(StartOf):
+	pass
+
+@Export
+class EndOf:
+	pass
+
+@Export
+class EndOfDocument(EndOf):
+	pass
+
+@Export
+class EndOfSnippet(EndOf):
+	pass

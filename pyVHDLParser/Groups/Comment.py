@@ -29,10 +29,16 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators      import Export
 from pyVHDLParser.Blocks          import CommentBlock
 from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Groups          import ParserState, BlockParserException, Group
 
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class CommentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -46,6 +52,7 @@ class CommentGroup(Group):
 		raise BlockParserException("End of library clause not found.", block)
 
 
+@Export
 class WhitespaceGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

@@ -29,9 +29,14 @@
 # ==============================================================================
 #
 # load dependencies
-from enum import Enum
+from enum                     import Enum
+from pyVHDLParser.Decorators  import Export
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class ModelEntity:
 	def __init__(self):
 		self._parent = None
@@ -41,6 +46,7 @@ class ModelEntity:
 		return self._parent
 
 
+@Export
 class NamedEntity:
 	def __init__(self):
 		self._name = None
@@ -50,6 +56,7 @@ class NamedEntity:
 		return self._name
 
 
+@Export
 class LabledEntity:
 	def __init__(self):
 		self._label = None
@@ -59,6 +66,7 @@ class LabledEntity:
 		return self._label
 
 
+@Export
 class Model(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -74,6 +82,7 @@ class Model(ModelEntity):
 		return self._documents
 
 
+@Export
 class Library(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -94,6 +103,7 @@ class Library(ModelEntity):
 		return self._packages
 
 
+@Export
 class Document(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -115,6 +125,7 @@ class Document(ModelEntity):
 	def PackageBodies(self):  return self._packageBodies
 
 
+@Export
 class Modes(Enum):
 	Default = 0
 	In =      1
@@ -124,6 +135,7 @@ class Modes(Enum):
 	Linkage = 5
 
 
+@Export
 class Class(Enum):
 	Default =    0
 	Constant =   1
@@ -134,6 +146,7 @@ class Class(Enum):
 	Subprogram = 6
 
 
+@Export
 class InterfaceItem(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -143,11 +156,20 @@ class InterfaceItem(ModelEntity):
 	def Name(self):
 		return self._name
 
-class GenericInterfaceItem(InterfaceItem):   pass
-class PortInterfaceItem(InterfaceItem):      pass
-class ParameterInterfaceItem(InterfaceItem): pass
 
+@Export
+class GenericInterfaceItem(InterfaceItem):
+	pass
 
+@Export
+class PortInterfaceItem(InterfaceItem):
+	pass
+
+@Export
+class ParameterInterfaceItem(InterfaceItem):
+	pass
+
+@Export
 class ConstantInterfaceItem(GenericInterfaceItem):
 	def __init__(self):
 		super().__init__()
@@ -163,6 +185,7 @@ class ConstantInterfaceItem(GenericInterfaceItem):
 		return self._defaultExpression
 
 
+@Export
 class PortSignalInterfaceItem(PortInterfaceItem):
 	def __init__(self):
 		super().__init__()
@@ -183,6 +206,7 @@ class PortSignalInterfaceItem(PortInterfaceItem):
 		return self._defaultExpression
 
 
+@Export
 class ParameterVariableInterfaceItem(ParameterInterfaceItem):
 	def __init__(self):
 		super().__init__()
@@ -221,18 +245,21 @@ class ParameterVariableInterfaceItem(ParameterInterfaceItem):
 # 		self._class =       None
 
 
+@Export
 class PrimaryUnit(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
 		NamedEntity.__init__(self)
 
 
+@Export
 class SecondaryUnit(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
 		NamedEntity.__init__(self)
 
 
+@Export
 class Context(PrimaryUnit):
 	def __init__(self):
 		super().__init__()
@@ -244,6 +271,7 @@ class Context(PrimaryUnit):
 		return self._uses
 
 
+@Export
 class Entity(PrimaryUnit):
 	def __init__(self):
 		super().__init__()
@@ -275,6 +303,7 @@ class Entity(PrimaryUnit):
 		return self._bodyItems
 
 
+@Export
 class Architecture(SecondaryUnit):
 	def __init__(self):
 		super().__init__()
@@ -305,6 +334,7 @@ class Architecture(SecondaryUnit):
 		return self._bodyItems
 
 
+@Export
 class AssociationItem(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -320,11 +350,19 @@ class AssociationItem(ModelEntity):
 		return self._actual
 
 
-class GenericAssociationItem(InterfaceItem):   pass
-class PortAssociationItem(InterfaceItem):      pass
-class ParameterAssociationItem(InterfaceItem): pass
+@Export
+class GenericAssociationItem(InterfaceItem):
+	pass
 
+@Export
+class PortAssociationItem(InterfaceItem):
+	pass
 
+@Export
+class ParameterAssociationItem(InterfaceItem):
+	pass
+
+@Export
 class Configuration(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
@@ -332,6 +370,7 @@ class Configuration(ModelEntity, NamedEntity):
 		raise NotImplementedError()
 
 
+@Export
 class Instantiation(NamedEntity):
 	def __init__(self):
 		super().__init__()
@@ -339,6 +378,7 @@ class Instantiation(NamedEntity):
 		self._genericAssociations = []
 
 
+@Export
 class Package(PrimaryUnit):
 	def __init__(self):
 		super().__init__()
@@ -365,6 +405,7 @@ class Package(PrimaryUnit):
 		return self._declaredItems
 
 
+@Export
 class PackageBody(SecondaryUnit):
 	def __init__(self):
 		super().__init__()
@@ -390,6 +431,7 @@ class PackageBody(SecondaryUnit):
 		return self._declaredItems
 
 
+@Export
 class PackageInstantiation(PrimaryUnit, Instantiation):
 	def __init__(self):
 		super().__init__()
@@ -397,6 +439,7 @@ class PackageInstantiation(PrimaryUnit, Instantiation):
 		self._packageReferences = None
 
 
+@Export
 class LibraryReference(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -407,6 +450,7 @@ class LibraryReference(ModelEntity):
 		return self._library
 
 
+@Export
 class Use(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -427,6 +471,7 @@ class Use(ModelEntity):
 		return self._item
 
 
+@Export
 class Object(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
@@ -438,9 +483,11 @@ class Object(ModelEntity, NamedEntity):
 		return self._subType
 
 
-class BaseConstant(Object): pass
+@Export
+class BaseConstant(Object):
+	pass
 
-
+@Export
 class DeferredConstant(BaseConstant):
 	def __init__(self):
 		super().__init__()
@@ -451,6 +498,7 @@ class DeferredConstant(BaseConstant):
 		return self._constantReference
 
 
+@Export
 class Constant(BaseConstant):
 	def __init__(self):
 		super().__init__()
@@ -461,6 +509,7 @@ class Constant(BaseConstant):
 		return self._defaultExpression
 
 
+@Export
 class Variable(Object):
 	def __init__(self):
 		super().__init__()
@@ -471,6 +520,7 @@ class Variable(Object):
 		return self._defaultExpression
 
 
+@Export
 class Signal(Object):
 	def __init__(self):
 		super().__init__()
@@ -481,15 +531,18 @@ class Signal(Object):
 		return self._defaultExpression
 
 
+@Export
 class BaseType(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
 		NamedEntity.__init__(self)
 
 
-class Type(BaseType): pass
+@Export
+class Type(BaseType):
+	pass
 
-
+@Export
 class SubType(BaseType):
 	def __init__(self):
 		super().__init__()
@@ -500,13 +553,27 @@ class SubType(BaseType):
 		return self._type
 
 
-class ScalarType(BaseType):     pass
-class CompositeType(BaseType):  pass
-class ProtectedType(BaseType):  pass
-class AccessType(BaseType):     pass
-class FileType(BaseType):       pass
+@Export
+class ScalarType(BaseType):
+	pass
 
+@Export
+class CompositeType(BaseType):
+	pass
 
+@Export
+class ProtectedType(BaseType):
+	pass
+
+@Export
+class AccessType(BaseType):
+	pass
+
+@Export
+class FileType(BaseType):
+	pass
+
+@Export
 class EnumeratedType(ScalarType):
 	def __init__(self):
 		super().__init__()
@@ -517,6 +584,7 @@ class EnumeratedType(ScalarType):
 		return self._elements
 
 
+@Export
 class IntegerType(ScalarType):
 	def __init__(self):
 		super().__init__()
@@ -524,6 +592,7 @@ class IntegerType(ScalarType):
 		self._rightBound = None
 
 
+@Export
 class RealType(ScalarType):
 	def __init__(self):
 		super().__init__()
@@ -531,6 +600,7 @@ class RealType(ScalarType):
 		self._rightBound = None
 
 
+@Export
 class ArrayType(CompositeType):
 	def __init__(self):
 		super().__init__()
@@ -538,12 +608,14 @@ class ArrayType(CompositeType):
 		self._baseType =    None
 
 
+@Export
 class RecordType(BaseType):
 	def __init__(self):
 		super().__init__()
 		self._members =     []
 
 
+@Export
 class RecordTypeMember(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -551,6 +623,7 @@ class RecordTypeMember(ModelEntity):
 		self._subType =     None
 
 
+@Export
 class Range:
 	def __init__(self):
 		self._leftBound = None
@@ -558,6 +631,7 @@ class Range:
 		self._direction =  None
 
 
+@Export
 class SubProgramm(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
@@ -584,9 +658,11 @@ class SubProgramm(ModelEntity, NamedEntity):
 		return self._bodyItems
 
 
-class Procedure(SubProgramm): pass
+@Export
+class Procedure(SubProgramm):
+	pass
 
-
+@Export
 class Function(SubProgramm):
 	def __init__(self):
 		super().__init__()
@@ -602,44 +678,58 @@ class Function(SubProgramm):
 		return self._isPure
 
 
+@Export
 class SubprogramInstantiation(ModelEntity, Instantiation):
 	def __init__(self):
 		super().__init__()
 		Instantiation.__init__(self)
 		self._subprogramReference = None
 
-class ProcedureInstantiation(SubprogramInstantiation):  pass
-class FunctionInstantiation(SubprogramInstantiation):   pass
+@Export
+class ProcedureInstantiation(SubprogramInstantiation):
+	pass
 
+@Export
+class FunctionInstantiation(SubprogramInstantiation):
+	pass
 
+@Export
 class Method:
 	def __init__(self):
 		super().__init__()
 		self._protectedType = None
 
 
+@Export
 class ProcedureMethod(Procedure, Method):
 	def __init__(self):
 		super().__init__()
 		Method.__init__(self)
 
 
+@Export
 class FunctionMethod(Function, Method):
 	def __init__(self):
 		super().__init__()
 		Method.__init__(self)
 
 
+@Export
 class Statement(ModelEntity, LabledEntity):
 	def __init__(self):
 		super().__init__()
 		LabledEntity.__init__(self)
 
 
-class ConcurrentStatement(Statement):	pass
-class SequentialStatement(Statement):	pass
+@Export
+class ConcurrentStatement(Statement):
+	pass
 
+@Export
+class SequentialStatement(Statement):
+	pass
 
+@Export
 class ProcessStatement(ConcurrentStatement):
 	def __init__(self):
 		super().__init__()
@@ -660,6 +750,7 @@ class ProcessStatement(ConcurrentStatement):
 		return self._bodyItems
 
 
+@Export
 class ConcurrentBlockStatement(ConcurrentStatement):
 	def __init__(self):
 		super().__init__()
@@ -680,6 +771,7 @@ class ConcurrentBlockStatement(ConcurrentStatement):
 		return self._bodyItems
 
 
+@Export
 class GenerateStatement(ConcurrentStatement):
 	def __init__(self):
 		super().__init__()
@@ -695,6 +787,7 @@ class GenerateStatement(ConcurrentStatement):
 		return self._bodyItems
 
 
+@Export
 class IfGenerateStatement(GenerateStatement):
 	def __init__(self):
 		super().__init__()
@@ -703,6 +796,7 @@ class IfGenerateStatement(GenerateStatement):
 		self._elseBranch =    None
 
 
+@Export
 class BaseConditional:
 	def __init__(self):
 		super().__init__()
@@ -713,39 +807,55 @@ class BaseConditional:
 		return self._condition
 
 
-class BaseBranch: pass
+@Export
+class BaseBranch:
+	pass
 
+@Export
 class BaseConditionalBranch(BaseBranch, BaseConditional):
 	def __init__(self):
 		super().__init__()
 		BaseConditional.__init__(self)
 
 
-class BaseIfBranch(BaseConditionalBranch):                  pass
-class BaseElsifBranch(BaseConditionalBranch):               pass
-class BaseElseBranch(BaseBranch):                           pass
+@Export
+class BaseIfBranch(BaseConditionalBranch):
+	pass
 
-class GenerateBranch(ModelEntity):                          pass
+@Export
+class BaseElsifBranch(BaseConditionalBranch):
+	pass
 
+@Export
+class BaseElseBranch(BaseBranch):
+	pass
 
+@Export
+class GenerateBranch(ModelEntity):
+	pass
+
+@Export
 class IfGenerateBranch(GenerateBranch, BaseIfBranch):
 	def __init__(self):
 		super().__init__()
 		BaseIfBranch.__init__(self)
 
 
+@Export
 class ElsifGenerateBranch(GenerateBranch, BaseElsifBranch):
 	def __init__(self):
 		super().__init__()
 		BaseElsifBranch.__init__(self)
 
 
+@Export
 class ElseGenerateBranch(GenerateBranch, BaseElseBranch):
 	def __init__(self):
 		super().__init__()
 		BaseElseBranch.__init__(self)
 
 
+@Export
 class ForGenerateStatement(GenerateStatement):
 	def __init__(self):
 		super().__init__()
@@ -767,6 +877,7 @@ class ForGenerateStatement(GenerateStatement):
 # 		self._expression =      None
 # 		self._cases =           []
 
+@Export
 class Assignment:
 	def __init__(self):
 		super().__init__()
@@ -782,22 +893,29 @@ class Assignment:
 		return self._expression
 
 
-class SignalAssignment(Assignment):    pass
-class VariableAssignment(Assignment):  pass
+@Export
+class SignalAssignment(Assignment):
+	pass
 
+@Export
+class VariableAssignment(Assignment):
+	pass
 
+@Export
 class ConcurrentSignalAssignment(ConcurrentStatement, SignalAssignment):
 	def __init__(self):
 		super().__init__()
 		SignalAssignment.__init__(self)
 
 
+@Export
 class SequentialSignalAssignment(SequentialStatement, SignalAssignment):
 	def __init__(self):
 		super().__init__()
 		SignalAssignment.__init__(self)
 
 
+@Export
 class SequentialVariableAssignment(SequentialStatement, VariableAssignment):
 	def __init__(self):
 		super().__init__()
@@ -805,6 +923,7 @@ class SequentialVariableAssignment(SequentialStatement, VariableAssignment):
 
 
 
+@Export
 class ReportStatement:
 	def __init__(self):
 		super().__init__()
@@ -820,6 +939,7 @@ class ReportStatement:
 		return self._severity
 
 
+@Export
 class AssertStatement(ReportStatement):
 	def __init__(self):
 		super().__init__()
@@ -830,25 +950,28 @@ class AssertStatement(ReportStatement):
 		return self._condition
 
 
+@Export
 class ConcurrentAssertStatement(ConcurrentStatement, AssertStatement):
 	def __init__(self):
 		super().__init__()
 		AssertStatement.__init__(self)
 
 
+@Export
 class SequentialReportStatement(SequentialStatement, ReportStatement):
 	def __init__(self):
 		super().__init__()
 		ReportStatement.__init__(self)
 
 
+@Export
 class SequentialAssertStatement(SequentialStatement, AssertStatement):
 	def __init__(self):
 		super().__init__()
 		AssertStatement.__init__(self)
 
 
-
+@Export
 class CompoundStatement(SequentialStatement):
 	def __init__(self):
 		super().__init__()
@@ -859,6 +982,7 @@ class CompoundStatement(SequentialStatement):
 		return self._bodyItems
 
 
+@Export
 class IfStatement(CompoundStatement):
 	def __init__(self):
 		super().__init__()
@@ -867,26 +991,32 @@ class IfStatement(CompoundStatement):
 		self._elseBranch =    None
 
 
-class Branch(ModelEntity):  pass
+@Export
+class Branch(ModelEntity):
+	pass
 
+@Export
 class IfBranch(Branch, BaseIfBranch):
 	def __init__(self):
 		super().__init__()
 		BaseIfBranch.__init__(self)
 
 
+@Export
 class ElsifBranch(Branch, BaseElsifBranch):
 	def __init__(self):
 		super().__init__()
 		BaseElsifBranch.__init__(self)
 
 
+@Export
 class ElseBranch(Branch, BaseElseBranch):
 	def __init__(self):
 		super().__init__()
 		BaseElseBranch.__init__(self)
 
 
+@Export
 class ForLoopStatement(CompoundStatement):
 	def __init__(self):
 		super().__init__()
@@ -902,12 +1032,14 @@ class ForLoopStatement(CompoundStatement):
 		return self._range
 
 
+@Export
 class WhileLoopStatement(CompoundStatement, BaseConditional):
 	def __init__(self):
 		super().__init__()
 		BaseConditional.__init__(self)
 
 
+@Export
 class LoopControlStatement(ModelEntity, BaseConditional):
 	def __init__(self):
 		super().__init__()
@@ -919,6 +1051,14 @@ class LoopControlStatement(ModelEntity, BaseConditional):
 		return self._loopReference
 
 
-class NextStatement(LoopControlStatement):  pass
-class ExitStatement(LoopControlStatement):  pass
-class ReturnStatement(SequentialStatement): pass
+@Export
+class NextStatement(LoopControlStatement):
+	pass
+
+@Export
+class ExitStatement(LoopControlStatement):
+	pass
+
+@Export
+class ReturnStatement(SequentialStatement):
+	pass

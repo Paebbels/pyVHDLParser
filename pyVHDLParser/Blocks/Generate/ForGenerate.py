@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, EndToken, BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
@@ -40,8 +41,11 @@ from pyVHDLParser.Blocks.List               import GenericList, PortList
 from pyVHDLParser.Blocks.Reporting.Assert   import AssertBlock, GenerateKeyword
 from pyVHDLParser.Blocks.Sequential         import Process
 
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class RangeBlock(Block):
 	@classmethod
 	def stateGenerateKeyword(cls, parserState: ParserState):
@@ -236,6 +240,8 @@ class RangeBlock(Block):
 
 		raise TokenParserException(errorMessage, token)
 
+
+@Export
 class BeginBlock(Block):
 	@classmethod
 	def stateBeginKeyword(cls, parserState: ParserState):
@@ -281,5 +287,6 @@ class BeginBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 
+@Export
 class EndGenerateBlock(EndGenerateBlockBase):
 	pass

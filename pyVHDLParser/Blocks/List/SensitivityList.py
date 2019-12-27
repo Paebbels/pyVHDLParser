@@ -29,16 +29,20 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, IndentationToken, CommentToken, ExtendedIdentifier
-from pyVHDLParser.Token                import MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords       import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
-from pyVHDLParser.Token.Keywords       import IdentifierToken, AllKeyword
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import CharacterToken, LinebreakToken, IndentationToken, CommentToken, ExtendedIdentifier
+from pyVHDLParser.Token               import MultiLineCommentToken, SingleLineCommentToken
+from pyVHDLParser.Token.Keywords      import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
+from pyVHDLParser.Token.Keywords      import IdentifierToken, AllKeyword
+from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
+
+__all__ = []
+__api__ = __all__
 
 
-
+@Export
 class OpenBlock(Block):
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -75,6 +79,7 @@ class OpenBlock(Block):
 		raise TokenParserException("Expected keyword ALL or signal name (identifier).", token)
 
 
+@Export
 class ItemBlock(Block):
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
@@ -102,6 +107,7 @@ class ItemBlock(Block):
 					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
+@Export
 class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -134,6 +140,7 @@ class DelimiterBlock(SkipableBlock):
 		raise TokenParserException("Expected signal name (identifier).", token)
 
 
+@Export
 class CloseBlock(Block):
 	@classmethod
 	def stateAllKeyword(cls, parserState: ParserState):

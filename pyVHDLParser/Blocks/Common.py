@@ -29,10 +29,15 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token     import SpaceToken, IndentationToken
-from pyVHDLParser.Blocks    import ParserState, SkipableBlock
+from pyVHDLParser.Decorators  import Export
+from pyVHDLParser.Token       import SpaceToken, IndentationToken
+from pyVHDLParser.Blocks      import ParserState, SkipableBlock
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class WhitespaceBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -46,6 +51,7 @@ class WhitespaceBlock(SkipableBlock):
 		)
 
 
+@Export
 class LinebreakBlock(WhitespaceBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState: ParserState):
@@ -64,10 +70,12 @@ class LinebreakBlock(WhitespaceBlock):
 			parserState.NextState(parserState)
 
 
+@Export
 class EmptyLineBlock(LinebreakBlock):
 	pass
 
 
+@Export
 class IndentationBlock(WhitespaceBlock):
 	__TABSIZE__ = 2
 

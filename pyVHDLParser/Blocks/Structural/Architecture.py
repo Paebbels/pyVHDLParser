@@ -29,30 +29,38 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import ArchitectureKeyword, IsKeyword, OfKeyword, BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
-from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token.Parser        import StringToken, SpaceToken
+from pyVHDLParser.Token.Keywords      import ArchitectureKeyword, IsKeyword, OfKeyword, BoundaryToken, IdentifierToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic      import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
+from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =             ArchitectureKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
+@Export
 class BeginBlock(ConcurrentBeginBlock):
 	END_BLOCK =   EndBlock
 
 
+@Export
 class DeclarativeRegion(ConcurrentDeclarativeRegion):
 	BEGIN_BLOCK = BeginBlock
 	END_BLOCK =   EndBlock
 
 
+@Export
 class NameBlock(Block):
 	@classmethod
 	def stateArchitectureKeyword(cls, parserState: ParserState):

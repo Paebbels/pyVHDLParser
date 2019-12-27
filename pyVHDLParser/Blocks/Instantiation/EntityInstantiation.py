@@ -29,12 +29,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks import TokenParserException, Block, ParserState, FinalBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState, FinalBlock
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class EntityInstantiationBlock(Block):
 	@classmethod
 	def stateEntityInstantiationKeyword(cls, parserState: ParserState):
@@ -187,4 +192,7 @@ class EntityInstantiationBlock(Block):
 
 		raise TokenParserException(errorMessage, token)
 
-class EndBlock(FinalBlock): pass
+
+@Export
+class EndBlock(FinalBlock):
+	pass

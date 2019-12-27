@@ -28,10 +28,16 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Token.Keywords import GenerateKeyword
-from pyVHDLParser.Blocks.Generic import EndBlock
+# load dependencies
+from pyVHDLParser.Decorators      import Export
+from pyVHDLParser.Token.Keywords  import GenerateKeyword
+from pyVHDLParser.Blocks.Generic  import EndBlock
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class EndGenerateBlock(EndBlock):
 	KEYWORD =             GenerateKeyword
 	KEYWORD_IS_OPTIONAL = True

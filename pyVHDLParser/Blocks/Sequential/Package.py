@@ -29,7 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Sequential import PackageBody
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
@@ -39,19 +39,26 @@ from pyVHDLParser.Blocks                    import TokenParserException, Block, 
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Sequential import PackageBody
 from pyVHDLParser.Blocks.List               import GenericList
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =             PackageKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
+@Export
 class DeclarativeRegion(SequentialDeclarativeRegion):
 	END_BLOCK = EndBlock
 
 
+@Export
 class NameBlock(Block):
 	@classmethod
 	def statePackageKeyword(cls, parserState: ParserState):

@@ -29,12 +29,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
-from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks import TokenParserException, Block, ParserState, FinalBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState, FinalBlock
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class EntityInstantiationBlock(Block):
 	@classmethod
 	def stateEntityInstantiationKeyword(cls, parserState: ParserState):
@@ -187,12 +192,39 @@ class EntityInstantiationBlock(Block):
 
 		raise TokenParserException(errorMessage, token)
 
-class GenericMapBeginBlock(Block): pass
-class GenericMapItemBlock(Block): pass
-class GenericMapDelimiterBlock(SkipableBlock): pass
-class GenericMapEndBlock(FinalBlock): pass
-class PortMapBeginBlock(Block): pass
-class PortMapItemBlock(Block): pass
-class PortMapDelimiterBlock(SkipableBlock): pass
-class PortMapEndBlock(FinalBlock): pass
-class EndBlock(FinalBlock): pass
+
+@Export
+class GenericMapBeginBlock(Block):
+	pass
+
+@Export
+class GenericMapItemBlock(Block):
+	pass
+
+@Export
+class GenericMapDelimiterBlock(SkipableBlock):
+	pass
+
+@Export
+class GenericMapEndBlock(FinalBlock):
+	pass
+
+@Export
+class PortMapBeginBlock(Block):
+	pass
+
+@Export
+class PortMapItemBlock(Block):
+	pass
+
+@Export
+class PortMapDelimiterBlock(SkipableBlock):
+	pass
+
+@Export
+class PortMapEndBlock(FinalBlock):
+	pass
+
+@Export
+class EndBlock(FinalBlock):
+	pass

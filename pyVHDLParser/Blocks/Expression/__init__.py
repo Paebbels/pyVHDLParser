@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators      import Export
 from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, StringToken, LiteralToken, SpaceToken, LinebreakToken, CommentToken
 from pyVHDLParser.Token           import MultiLineCommentToken, IndentationToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords  import EqualOperator, PlusOperator, MinusOperator, MultiplyOperator, DivideOperator, ConcatOperator, LessThanOperator
@@ -41,7 +42,11 @@ from pyVHDLParser.Token.Keywords  import LoopKeyword, ToKeyword, DowntoKeyword, 
 from pyVHDLParser.Blocks          import Block, ParserState, TokenParserException, CommentBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class ExpressionBlock(Block):
 	CHARACTER_TRANSLATION = {
 		"=":    EqualOperator,
@@ -85,6 +90,7 @@ class ExpressionBlock(Block):
 	}
 
 
+@Export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 	EXIT_CHAR =   None
 	EXIT_TOKEN =  None
@@ -284,6 +290,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		raise TokenParserException("Expected ????????????.", token)
 
 
+@Export
 class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	EXIT_KEYWORD =  None
 	EXIT_BLOCK =    None
@@ -400,6 +407,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 		raise TokenParserException("Expected ????????????.", token)
 
 
+@Export
 class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 	EXIT_KEYWORD =  None
 	EXIT_BLOCK =    None
@@ -550,6 +558,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 		raise TokenParserException("Expected ????????????.", token)
 
 
+# @Export
 # class ExpressionBlockEndedByCharacter(ExpressionBlock):
 # 	END_CHAR =  None
 # 	END_TOKEN = None
@@ -677,6 +686,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 		raise TokenParserException("Expected ????????????.", token)
 
 
+@Export
 class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 	END_BLOCK = None
 

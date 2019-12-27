@@ -29,9 +29,14 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators                  import Export
 from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform, Scheduler, Event
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class Simulation:
 	def __init__(self):
 		self._signals =     []
@@ -78,6 +83,7 @@ class Simulation:
 		pass
 
 
+@Export
 class Path:
 	def __init__(self, name, path):
 		self._name =    name
@@ -90,6 +96,7 @@ class Path:
 		return self._name
 
 
+@Export
 class Signal:
 	def __init__(self, path, subType, initializer=None):
 		self._path =              path
@@ -117,6 +124,7 @@ class Signal:
 		return "{path!s}: {value}".format(path=self._path, value="------")
 
 
+@Export
 class Process:
 	def __init__(self, path, generator, sensitivityList=None):
 		self._path =            path
@@ -131,18 +139,22 @@ class Process:
 		pass
 
 
+@Export
 class Source:
 	pass
 
 
+@Export
 class Driver(Source):
 	pass
 
 
+@Export
 class ResolutionFunction:
 	def __init__(self):
 		self._function =  None
 
 
+@Export
 class DrivingValue:
 	pass

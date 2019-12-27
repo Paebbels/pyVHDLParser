@@ -29,14 +29,19 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators           import Export
+from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks import TokenParserException, Block, ParserState
+from pyVHDLParser.Blocks               import TokenParserException, Block, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class SignalAssignmentBlock(Block):
 	@classmethod
 	def stateSignalAssignmentKeyword(cls, parserState: ParserState):
@@ -188,4 +193,3 @@ class SignalAssignmentBlock(Block):
 			return
 
 		raise TokenParserException(errorMessage, token)
-

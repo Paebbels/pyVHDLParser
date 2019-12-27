@@ -29,14 +29,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks               import Block
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Decorators           import Export
 from pyVHDLParser.Token.Keywords       import *
 from pyVHDLParser.Token.Parser         import *
+from pyVHDLParser.Blocks               import Block
+from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+
+__all__ = []
+__api__ = __all__
 
 
-
-
+@Export
 class AttributeDeclarationBlock(Block):
 	@classmethod
 	def stateAttributeDeclarationKeyword(cls, parserState: ParserState):

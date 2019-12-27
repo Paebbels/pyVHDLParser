@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, \
 	ImpureKeyword, PureKeyword
@@ -40,22 +41,29 @@ from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, Sequent
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, ParameterList
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =             ProcedureKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
+@Export
 class BeginBlock(SequentialBeginBlock):
 	END_BLOCK =   EndBlock
 
 
+@Export
 class DeclarativeRegion(SequentialDeclarativeRegion):
 	BEGIN_BLOCK = BeginBlock
 	END_BLOCK =   EndBlock
 
 
+@Export
 class NameBlock(Block):
 	@classmethod
 	def stateProcedureKeyword(cls, parserState: ParserState):
@@ -183,6 +191,7 @@ class NameBlock(Block):
 		raise TokenParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after procedure name.", token)
 
 
+@Export
 class VoidBlock(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):

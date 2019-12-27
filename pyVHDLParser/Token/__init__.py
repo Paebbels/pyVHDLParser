@@ -28,9 +28,15 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
+# load dependencies
+from pyVHDLParser.Decorators  import Export
+from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class Token:
 	def __init__(self, previousToken, start, end=None):
 		previousToken.NextToken = self
@@ -58,6 +64,7 @@ class Token:
 		return repr(self) + " at " + str(self.Start)
 
 
+@Export
 class ValuedToken(Token):
 	def __init__(self, previousToken, value, start, end=None):
 		super().__init__(previousToken, start, end)
@@ -89,6 +96,7 @@ class ValuedToken(Token):
 # 		yield self.EndToken
 
 
+@Export
 class StartOfToken(Token):
 	"""Meta token representing the start of a token stream."""
 
@@ -106,6 +114,8 @@ class StartOfToken(Token):
 				name=self.__class__.__name__
 			)
 
+
+@Export
 class EndOfToken(Token):
 	"""Meta token representing the end of a token stream."""
 
@@ -125,12 +135,24 @@ class EndOfToken(Token):
 			)
 
 
-class StartOfDocumentToken(StartOfToken, StartOfDocument):  pass
-class EndOfDocumentToken(EndOfToken, EndOfDocument):        pass
-class StartOfSnippetToken(StartOfToken, StartOfSnippet):    pass
-class EndOfSnippetToken(EndOfToken, EndOfSnippet):          pass
+@Export
+class StartOfDocumentToken(StartOfToken, StartOfDocument):
+	pass
+
+@Export
+class EndOfDocumentToken(EndOfToken, EndOfDocument):
+	pass
+
+@Export
+class StartOfSnippetToken(StartOfToken, StartOfSnippet):
+	pass
+
+@Export
+class EndOfSnippetToken(EndOfToken, EndOfSnippet):
+	pass
 
 
+@Export
 class CharacterToken(ValuedToken):
 	"""Token representing a single character."""
 
@@ -161,6 +183,7 @@ class CharacterToken(ValuedToken):
 			return self.Value
 
 
+@Export
 class FusedCharacterToken(CharacterToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value, start=start)
@@ -180,6 +203,7 @@ class FusedCharacterToken(CharacterToken):
 		return self.Value
 
 
+@Export
 class SpaceToken(ValuedToken):
 	def __str__(self):
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
@@ -189,6 +213,7 @@ class SpaceToken(ValuedToken):
 		)
 
 
+@Export
 class StringToken(ValuedToken):
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
@@ -204,7 +229,11 @@ class StringToken(ValuedToken):
 		)
 
 
-class VHDLToken(ValuedToken):   pass
+@Export
+class VHDLToken(ValuedToken):
+	pass
+
+@Export
 class CommentToken(VHDLToken):
 	def __str__(self):
 		value = self.Value
@@ -218,6 +247,7 @@ class CommentToken(VHDLToken):
 			)
 
 
+@Export
 class LiteralToken(VHDLToken):
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
@@ -231,10 +261,16 @@ class LiteralToken(VHDLToken):
 		)
 
 
-class IntegerLiteralToken(LiteralToken):  pass
-class RealLiteralToken(LiteralToken):     pass
+@Export
+class IntegerLiteralToken(LiteralToken):
+	pass
+
+@Export
+class RealLiteralToken(LiteralToken):
+	pass
 
 
+@Export
 class CharacterLiteralToken(LiteralToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
@@ -247,6 +283,7 @@ class CharacterLiteralToken(LiteralToken):
 		)
 
 
+@Export
 class StringLiteralToken(LiteralToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
@@ -258,6 +295,8 @@ class StringLiteralToken(LiteralToken):
 			pos=self.Start
 		)
 
+
+@Export
 class BitStringLiteralToken(LiteralToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
@@ -270,6 +309,7 @@ class BitStringLiteralToken(LiteralToken):
 		)
 
 
+@Export
 class ExtendedIdentifier(VHDLToken):
 	def __init__(self, previousToken, value, start, end):
 		super().__init__(previousToken, value, start=start, end=end)
@@ -286,11 +326,20 @@ class ExtendedIdentifier(VHDLToken):
 			)
 
 
-class SingleLineCommentToken(CommentToken): pass
-class MultiLineCommentToken(CommentToken):  pass
-class DirectiveToken(CommentToken):         pass
+@Export
+class SingleLineCommentToken(CommentToken):
+	pass
+
+@Export
+class MultiLineCommentToken(CommentToken):
+	pass
+
+@Export
+class DirectiveToken(CommentToken):
+	pass
 
 
+@Export
 class LinebreakToken(VHDLToken):
 	def __str__(self):
 		return "<{name:-<111} at {pos!r}>".format(
@@ -299,6 +348,7 @@ class LinebreakToken(VHDLToken):
 			)
 
 
+@Export
 class IndentationToken(SpaceToken):
 	def __str__(self):
 		value = self.Value

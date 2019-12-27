@@ -29,11 +29,16 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class AssertGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -53,6 +58,7 @@ class AssertGroup(Group):
 		return
 
 
+@Export
 class ReportGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -72,6 +78,7 @@ class ReportGroup(Group):
 		return
 
 
+@Export
 class SignalAssignmentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

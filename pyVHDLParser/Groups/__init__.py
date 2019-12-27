@@ -28,9 +28,13 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
 from types                                  import FunctionType
 from typing                                 import Iterator
 
+from pyTerminalUI                           import LineTerminal
+
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser                           import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base                      import ParserException
 from pyVHDLParser.Blocks                    import Block, CommentBlock, StartOfDocumentBlock, EndOfDocumentBlock
@@ -38,15 +42,19 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 from pyVHDLParser.Blocks.Reference          import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
-from pyVHDLParser.Functions                 import Console
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class BlockParserException(ParserException):
 	def __init__(self, message, block):
 		super().__init__(message)
 		self._block = block
 
 
+@Export
 class BlockToGroupParser:
 	@staticmethod
 	def Transform(blockGenerator, debug=False):
@@ -66,6 +74,8 @@ class BlockToGroupParser:
 # 			if (not group.MultiPart):
 # 				break
 
+
+@Export
 class _BlockIterator:
 	def __init__(self, parserState, blockGenerator: Iterator):
 		self._parserState : ParserState = parserState
@@ -81,6 +91,7 @@ class _BlockIterator:
 		return nextBlock
 
 
+@Export
 class ParserState:
 	def __init__(self, blockGenerator, debug):
 		self.NextState =            StartOfDocumentGroup.stateDocument
@@ -183,7 +194,7 @@ class ParserState:
 			self.ReIssue = True
 			while self.ReIssue:
 				self.ReIssue = False
-				if self.debug: print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **Console.Foreground))
+				if self.debug: print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **LineTerminal.Foreground))
 				self.NextState(self)
 
 				# yield a new group
@@ -199,6 +210,7 @@ class ParserState:
 			raise BlockParserException("Unexpected end of document.", self.Block)
 
 
+@Export
 class MetaGroup(type):
 	"""Register all state*** methods in an array called '__STATES__'"""
 	def __new__(cls, className, baseClasses, classMembers : dict):
@@ -211,6 +223,7 @@ class MetaGroup(type):
 		return super().__new__(cls, className, baseClasses, classMembers)
 
 
+@Export
 class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
@@ -278,6 +291,7 @@ class Group(metaclass=MetaGroup):
 		return self.__STATES__
 
 
+@Export
 class StartOfGroup(Group):
 	def __init__(self, startBlock):
 		self._previousGroup =                   None
@@ -305,6 +319,7 @@ class StartOfGroup(Group):
 		)
 
 
+@Export
 class EndOfGroup(Group):
 	def __init__(self, endBlock):
 		self._previousGroup =     None
@@ -329,6 +344,7 @@ class EndOfGroup(Group):
 		)
 
 
+@Export
 class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 	def __init__(self, startBlock):
 		from pyVHDLParser.Groups.Comment      import CommentGroup, WhitespaceGroup
@@ -411,6 +427,14 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		), currentBlock)
 
 
-class EndOfDocumentGroup(EndOfGroup, EndOfDocument):        pass
-class StartOfSnippetGroup(StartOfGroup, StartOfSnippet):    pass
-class EndOfSnippetGroup(EndOfGroup, EndOfSnippet):          pass
+@Export
+class EndOfDocumentGroup(EndOfGroup, EndOfDocument):
+	pass
+
+@Export
+class StartOfSnippetGroup(StartOfGroup, StartOfSnippet):
+	pass
+
+@Export
+class EndOfSnippetGroup(EndOfGroup, EndOfSnippet):
+	pass

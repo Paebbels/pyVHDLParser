@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators      import Export
 from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
@@ -39,7 +40,11 @@ from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, Indent
 from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Generic1 import EndBlock, BeginBlock
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class DeclarativeRegion(metaclass=MetaBlock):
 	BEGIN_BLOCK : BeginBlock = None
 	END_BLOCK :   EndBlock =   None
@@ -110,6 +115,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 			), token)
 
 
+@Export
 class ConcurrentDeclarativeRegion(DeclarativeRegion):
 	@classmethod
 	def __cls_init__(cls):
@@ -124,7 +130,7 @@ class ConcurrentDeclarativeRegion(DeclarativeRegion):
 		})
 
 
-
+@Export
 class SequentialDeclarativeRegion(DeclarativeRegion):
 	@classmethod
 	def __cls_init__(cls):
@@ -137,6 +143,7 @@ class SequentialDeclarativeRegion(DeclarativeRegion):
 		})
 
 
+@Export
 class ConcurrentBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):
@@ -192,6 +199,7 @@ class ConcurrentBeginBlock(BeginBlock):
 			), token)
 
 
+@Export
 class SequentialBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):

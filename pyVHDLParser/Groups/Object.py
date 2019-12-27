@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
 from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
 from pyVHDLParser.Blocks.Object.Variable    import VariableBlock
@@ -36,6 +37,11 @@ from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
 from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
 
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class ConstantGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -55,6 +61,7 @@ class ConstantGroup(Group):
 		return
 
 
+@Export
 class VariableGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -74,6 +81,7 @@ class VariableGroup(Group):
 		return
 
 
+@Export
 class SignalGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

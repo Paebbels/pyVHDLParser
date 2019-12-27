@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
@@ -37,12 +38,17 @@ from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByKeywordORClosingRoundBracket
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =       IfKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__
 
 
+@Export
 class ThenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -73,6 +79,7 @@ class ThenBlock(SequentialBeginBlock):
 		super().stateSequentialRegion(parserState)
 
 
+@Export
 class ElseBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -81,11 +88,13 @@ class ElseBlock(SequentialBeginBlock):
 		cls.stateSequentialRegion(parserState)
 
 
+@Export
 class ExpressionBlockEndedByThen(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 	EXIT_KEYWORD = ThenKeyword
 	EXIT_BLOCK =   ThenBlock
 
 
+@Export
 class IfConditionBlock(Block):
 	@classmethod
 	def stateIfKeyword(cls, parserState: ParserState):
@@ -148,6 +157,7 @@ class IfConditionBlock(Block):
 			return
 
 
+@Export
 class ElsIfConditionBlock(Block):
 	@classmethod
 	def stateElsIfKeyword(cls, parserState: ParserState):

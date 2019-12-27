@@ -29,13 +29,18 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token                import CharacterToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Blocks               import TokenParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import CharacterToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
+from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class StartBlock(Block):
 	@classmethod
 	def stateLibraryKeyword(cls, parserState: ParserState):
@@ -83,6 +88,7 @@ class StartBlock(Block):
 		raise TokenParserException("Expected library name (identifier).", token)
 
 
+@Export
 class LibraryNameBlock(Block):
 	@classmethod
 	def stateLibraryName(cls, parserState: ParserState):
@@ -150,6 +156,7 @@ class LibraryNameBlock(Block):
 		raise TokenParserException("Expected ';'.", token)
 
 
+@Export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
@@ -206,5 +213,7 @@ class DelimiterBlock(SkipableBlock):
 
 		raise TokenParserException("Expected library name (identifier).", token)
 
+
+@Export
 class EndBlock(FinalBlock):
 	pass

@@ -29,9 +29,15 @@
 # ==============================================================================
 #
 # load dependencies
-from enum import Enum
+from enum                     import Enum
+
+from pyVHDLParser.Decorators  import Export
+
+__all__ = []
+__api__ = __all__
 
 
+@Export
 class VHDLVersion(Enum):
 	Any =       0
 	VHDL87 =    87

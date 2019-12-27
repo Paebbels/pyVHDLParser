@@ -2,9 +2,16 @@
 # vim: tabstop=2:shiftwidth=2:noexpandtab
 # kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
+#            __     ___   _ ____  _     ____
+#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __
+# | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|
+# | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |
+# | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|
+# |_|    |___/
+# ==============================================================================
 # Authors:            Patrick Lehmann
 #
-# Python functions:   A streaming VHDL parser
+# Python package:     A streaming-based VHDL parser.
 #
 # Description:
 # ------------------------------------
@@ -28,36 +35,29 @@
 # limitations under the License.
 # ==============================================================================
 #
-# load dependencies
-from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Blocks.Reference    import Library, Use
-from pyVHDLParser.Groups              import ParserState, BlockParserException, Group
+import sys
 
-__all__ = []
+__all__ = [
+	'Export',
+]
 __api__ = __all__
 
 
-@Export
-class LibraryGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		for block in parserState.GetBlockIterator:
-			if isinstance(block, Library.EndBlock):
-				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
+def Export(entity):
+	"""
+	Register the given entity as public accessible in a module.
+	"""
 
-		raise BlockParserException("End of library clause not found.", block)
+	# * Based on an idea by Duncan Booth:
+	#   http://groups.google.com/group/comp.lang.python/msg/11cbb03e09611b8a
+	# * Improved via a suggestion by Dave Angel:
+	#   http://groups.google.com/group/comp.lang.python/msg/3d400fb22d8a42e1
 
+	module = sys.modules[entity.__module__]
+	if hasattr(module, '__all__'):
+		if entity.__name__ not in module.__all__:
+			module.__all__.append(entity.__name__)
+	else:
+		module.__all__ = [ entity.__name__ ]
 
-@Export
-class UseGroup(Group):
-	@classmethod
-	def stateParse(cls, parserState: ParserState):
-		for block in parserState.GetBlockIterator:
-			if isinstance(block, Use.EndBlock):
-				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
-				parserState.Pop()
-				return
-
-		raise BlockParserException("End of library clause not found.", block)
+	return entity

@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken, SpaceToken
 from pyVHDLParser.Token.Keywords      import InKeyword, ForKeyword, LoopKeyword, BoundaryToken, IdentifierToken, StringToken
 from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
@@ -37,7 +38,11 @@ from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByKeywordORClosingRoundBracket, ExpressionBlockEndedByKeywordOrToOrDownto
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class IteratorBlock(Block):
 	@classmethod
 	def stateForKeyword(cls, parserState: ParserState):
@@ -195,12 +200,14 @@ class IteratorBlock(Block):
 			return
 
 
+@Export
 class EndBlock(EndBlockBase):
 	KEYWORD =             ForKeyword
 	KEYWORD_IS_OPTIONAL = False
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
+@Export
 class LoopBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -210,15 +217,18 @@ class LoopBlock(SequentialBeginBlock):
 		parserState.NextState(parserState)
 
 
+@Export
 class ExpressionBlockEndedByLoopORToORDownto(ExpressionBlockEndedByKeywordOrToOrDownto):
 	EXIT_KEYWORD =  LoopKeyword
 	EXIT_BLOCK =    LoopBlock
 
 
+@Export
 class ExpressionBlockEndedByLoop(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 	EXIT_KEYWORD = LoopKeyword
 	EXIT_BLOCK =   LoopBlock
 
 
+@Export
 class LoopIterationDirectionBlock(Block):
 	pass

@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Token                   import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
@@ -38,7 +39,11 @@ from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBloc
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class OpenBlock(Block):
 	@classmethod
 	def stateParameterKeyword(cls, parserState: ParserState):
@@ -142,6 +147,7 @@ class OpenBlock(Block):
 		raise TokenParserException("Expected interface element name (identifier).", token)
 
 
+@Export
 class ItemBlock(Block):
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
@@ -171,6 +177,7 @@ class ItemBlock(Block):
 					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
+@Export
 class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -234,17 +241,21 @@ class DelimiterBlock(SkipableBlock):
 		raise TokenParserException("Expected parameter name (identifier).", token)
 
 
+@Export
 class CloseBlock(CloseBlockBase):
 	pass
 
 
+@Export
 class ParameterListInterfaceConstantBlock(InterfaceConstantBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 
 
+@Export
 class ParameterListInterfaceVariableBlock(InterfaceVariableBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 
 
+@Export
 class ParameterListInterfaceSignalBlock(InterfaceSignalBlock):
 	DELIMITER_BLOCK = DelimiterBlock

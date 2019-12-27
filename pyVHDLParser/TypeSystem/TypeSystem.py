@@ -29,18 +29,23 @@
 # ==============================================================================
 #
 # load dependencies
-from enum import Enum, unique
+from enum                     import Enum, unique
+
+from pyVHDLParser.Decorators  import Export
 
 
+@Export
 class _Attributes:
 	pass
-	
 
+
+@Export
 class Type:
 	def __init__(self, name):
 		self._name =      name
 
 
+@Export
 class IntegerType(Type):
 	class _Attributes(_Attributes):
 		def __init__(self, integer):
@@ -57,11 +62,13 @@ class IntegerType(Type):
 		super().__init__(name)
 	
 
+@Export
 class RealType(Type):
 	def __init__(self, name):
 		super().__init__(name)
 
 
+@Export
 class EnumerationLiteral:
 	def __init__(self, enum, name, pos):
 		self._enum =  enum
@@ -75,6 +82,7 @@ class EnumerationLiteral:
 		return self.Name
 	
 
+@Export
 class EnumerationType(Type):
 	class _Attributes(_Attributes):
 		def __init__(self, enum):
@@ -113,6 +121,7 @@ class EnumerationType(Type):
 		return self._name
 
 
+@Export
 class ArrayType(Type):
 	def __init__(self, name, ranges, elementType):
 		super().__init__(name)
@@ -125,8 +134,8 @@ class ArrayType(Type):
 			if (not range.IsConstrained):
 				return False
 		return self._elementType.IsConstrained
-		
-		
+
+@Export
 class RecordMember:
 	def __init__(self, name, elementType):
 		self._name =          None
@@ -137,6 +146,7 @@ class RecordMember:
 		return self._elementType.IsConstrained
 
 
+@Export
 class RecordType(Type):
 	def __init__(self, name, members):
 		super().__init__(name)
@@ -149,7 +159,8 @@ class RecordType(Type):
 				return False
 		return True
 	
-	
+
+@Export
 class SubType:
 	class _Attributes(_Attributes):
 		def __init__(self, subType):
@@ -178,6 +189,7 @@ class SubType:
 		return (self._range is not None)
 
 
+@Export
 class IntegerSubType(SubType):
 	class _Attributes(SubType._Attributes):
 		def Left(self):
@@ -187,6 +199,7 @@ class IntegerSubType(SubType):
 			return self._subType._range.Right
 
 
+@Export
 class EnumerationSubType(SubType):
 	class _Attributes(SubType._Attributes):
 		def Low(self):
@@ -204,12 +217,15 @@ class EnumerationSubType(SubType):
 			range = subType._range
 		super().__init__(name, subType, range, resolutionFunction)
 
+
+@Export
 @unique
 class Direction(Enum):
 	To =      0
 	Downto =  1
 
 
+@Export
 class Range:
 	def __init__(self, baseType, direction=None, left=None, right=None):
 		self._baseType =  baseType
@@ -228,10 +244,11 @@ class Range:
 		return (self.Direction is not None)
 
 
+@Export
 class TypeInstance:
 	pass
 
-
+@Export
 class Array(TypeInstance):
 	def __init__(self, arrayType):
 		self._arrayType = arrayType

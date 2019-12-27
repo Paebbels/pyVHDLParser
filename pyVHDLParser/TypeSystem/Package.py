@@ -28,38 +28,51 @@
 # limitations under the License.
 # ==============================================================================
 #
+# load dependencies
+from pyVHDLParser.Decorators          import Export
+
+__all__ = []
+__api__ = __all__
+
+
+@Export
 class Parameter:
 	def __init__(self, name, subType):
 		self._name = name
 		self._subType = subType
 
 
+@Export
 class SubProgramDeclaration:
 	def __init__(self, name, parameters):
 		self._name = name
 		self._parameters = parameters
 
 
+@Export
 class ProcedureDeclaration(SubProgramDeclaration):
 	pass
 
-
+@Export
 class FunctionDeclaration(SubProgramDeclaration):
 	def __init__(self, name, parameters, returnType):
 		super().__init__(name, parameters)
 		self._returnType = returnType
 
 
+@Export
 class SubProgram:
 	def __init__(self, subprogramDeclaration):
 		self._subprogramDeclaration = subprogramDeclaration
 
 
+@Export
 class Procedure(SubProgram):
 	def __init__(self, procedureDeclaration):
 		super().__init__(procedureDeclaration)
 
 
+@Export
 class Function(SubProgram):
 	def __init__(self, functionDeclaration, function):
 		super().__init__(functionDeclaration)
@@ -69,18 +82,19 @@ class Function(SubProgram):
 		return self._function(arguments)
 	
 
+@Export
 class PackageDeclation:
 	def __init__(self, name, publicMembers):
 		self._name =            name
 		self._publicMembers =   publicMembers
-		
-		
+
+@Export
 class PackageBody:
 	def __init__(self, declaration, privateMembers):
 		self._declaration =     declaration
 		self._privateMembers =  privateMembers
-		
-		
+
+@Export
 class Package:
 	def __init__(self, declaration, body):
 		self._declaration =     declaration

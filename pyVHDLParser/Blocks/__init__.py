@@ -32,24 +32,31 @@ from types                          import FunctionType
 
 from pyTerminalUI import LineTerminal
 
+from pyVHDLParser.Decorators        import Export
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, StringToken, EndOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class TokenParserException(ParserException):
 	def __init__(self, message, token):
 		super().__init__(message)
 		self._token = token
 
 
+@Export
 class TokenToBlockParser:
 	@staticmethod
 	def Transform(tokenGenerator, debug=False):
 		return ParserState(tokenGenerator, debug=debug).GetGenerator()
 
 
+@Export
 class ParserState:
 	def __init__(self, tokenGenerator, debug):
 		self._stack =               []
@@ -152,6 +159,7 @@ class ParserState:
 				raise TokenParserException("Unexpected end of document.", self.Token)
 
 
+@Export
 class MetaBlock(type):
 	BLOCKS = []
 
@@ -169,6 +177,7 @@ class MetaBlock(type):
 		return block
 
 
+@Export
 class Block(metaclass=MetaBlock):
 	__STATES__ = None
 
@@ -243,11 +252,20 @@ class Block(metaclass=MetaBlock):
 		raise TokenParserException("Reached unreachable state!")
 
 
-class SkipableBlock(Block):         pass
-class FinalBlock(Block):            pass
-class CommentBlock(SkipableBlock):  pass
+@Export
+class SkipableBlock(Block):
+	pass
+
+@Export
+class FinalBlock(Block):
+	pass
+
+@Export
+class CommentBlock(SkipableBlock):
+	pass
 
 
+@Export
 class StartOfBlock(Block):
 	def __init__(self, startToken):
 		self._previousBlock =     None
@@ -268,6 +286,7 @@ class StartOfBlock(Block):
 			)
 
 
+@Export
 class EndOfBlock(Block):
 	def __init__(self, endToken):
 		self._previousBlock =     None
@@ -288,6 +307,7 @@ class EndOfBlock(Block):
 			)
 
 
+@Export
 class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 	KEYWORDS = None
 
@@ -347,6 +367,14 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			), token)
 
 
-class EndOfDocumentBlock(EndOfBlock, EndOfDocument):        pass
-class StartOfSnippetBlock(StartOfBlock, StartOfSnippet):    pass
-class EndOfSnippetBlock(EndOfBlock, EndOfSnippet):          pass
+@Export
+class EndOfDocumentBlock(EndOfBlock, EndOfDocument):
+	pass
+
+@Export
+class StartOfSnippetBlock(StartOfBlock, StartOfSnippet):
+	pass
+
+@Export
+class EndOfSnippetBlock(EndOfBlock, EndOfSnippet):
+	pass

@@ -32,6 +32,7 @@
 from collections                              import ChainMap
 from itertools                                import chain
 
+from pyVHDLParser.Decorators                  import Export
 from pyVHDLParser.Blocks                      import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List                 import GenericList, ParameterList, PortList
@@ -52,7 +53,11 @@ from pyVHDLParser.Groups.Sequential.Procedure import ProcedureGroup
 from pyVHDLParser.Groups.Sequential.Process   import ProcessGroup
 from pyVHDLParser.Functions                   import Console
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class ContextGroup(Group):
 	SIMPLE_BLOCKS = {
 		Library.StartBlock:    LibraryGroup,
@@ -110,6 +115,7 @@ class ContextGroup(Group):
 		), currentBlock)
 
 
+@Export
 class EntityGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		GenericList.OpenBlock:  GenericListGroup,
@@ -312,6 +318,7 @@ class EntityGroup(Group):
 		raise BlockParserException("End of entity declaration not found.", currentBlock)
 
 
+@Export
 class ArchitectureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Use.StartBlock:           UseGroup,
@@ -463,6 +470,7 @@ class ArchitectureGroup(Group):
 		), currentBlock)
 
 
+@Export
 class PackageGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Library.StartBlock:       LibraryGroup,
@@ -538,6 +546,7 @@ class PackageGroup(Group):
 		), currentBlock)
 
 
+@Export
 class PackageBodyGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Library.StartBlock:       LibraryGroup,
@@ -614,6 +623,7 @@ class PackageBodyGroup(Group):
 		), currentBlock)
 
 
+@Export
 class ComponentGroup(Group):
 	SIMPLE_BLOCKS = {
 		# LibraryBlock:             LibraryGroup,
@@ -680,6 +690,8 @@ class ComponentGroup(Group):
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
+
+@Export
 class ConfigurationGroup(Group):
 	SIMPLE_BLOCKS = {
 		# LibraryBlock: LibraryGroup,

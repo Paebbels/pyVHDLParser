@@ -29,16 +29,20 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Token.Keywords       import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, \
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token.Keywords      import LinebreakToken, BoundaryToken, IndentationToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, \
 	ClosingRoundBracketToken
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
-from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks import TokenParserException, Block, ParserState
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
+from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState
+from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
+
+__all__ = []
+__api__ = __all__
 
 
-
+@Export
 class OpenBlock(Block):
 	@classmethod
 	def statePortKeyword(cls, parserState: ParserState):
@@ -167,6 +171,8 @@ class OpenBlock(Block):
 
 		raise TokenParserException(errorMessage, token)
 
+
+@Export
 class ItemBlock(Block):
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
@@ -194,6 +200,7 @@ class ItemBlock(Block):
 					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
+@Export
 class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -221,6 +228,8 @@ class DelimiterBlock(SkipableBlock):
 
 		raise TokenParserException(errorMessage, token)
 
+
+@Export
 class CloseBlock(Block):
 	@classmethod
 	def stateClosingParenthesis(cls, parserState: ParserState):
