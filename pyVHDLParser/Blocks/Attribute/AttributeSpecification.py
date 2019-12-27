@@ -29,14 +29,16 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators           import Export
-from pyVHDLParser.Token.Keywords       import *
-from pyVHDLParser.Token.Parser         import *
-from pyVHDLParser.Blocks               import Block
-from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Decorators      import Export
+from pyVHDLParser.Blocks          import Block, ParserState
+from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommentBlock
 
 __all__ = []
 __api__ = __all__
+
+from pyVHDLParser.Token import CharacterToken, LinebreakToken, SpaceToken, StringToken
+from pyVHDLParser.Token.Keywords import BoundaryToken, IdentifierToken, VariableAssignmentKeyword, EndToken
 
 
 @Export

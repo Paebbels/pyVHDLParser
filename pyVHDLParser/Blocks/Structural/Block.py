@@ -35,14 +35,12 @@ from pyVHDLParser.Token.Keywords           import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, AssertKeyword, BlockKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
 from pyVHDLParser.Blocks                   import Block, TokenParserException, ParserState
-from pyVHDLParser.Blocks.Exception         import TokenParserException
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase, ConcurrentDeclarativeRegion, ConcurrentBeginBlock
 from pyVHDLParser.Blocks.List              import PortList
 from pyVHDLParser.Blocks.Reporting         import Assert
 from pyVHDLParser.Blocks.Sequential        import Process
-from pyVHDLParser.Blocks.Object import Constant, Signal, Variable, SharedVariable
 
 __all__ = []
 __api__ = __all__

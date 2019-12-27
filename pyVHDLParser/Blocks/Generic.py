@@ -30,11 +30,10 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token           import LinebreakToken, StringToken, SpaceToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
-from pyVHDLParser.Token.Parser    import SpaceToken, StringToken
 from pyVHDLParser.Blocks          import TokenParserException, CommentBlock, ParserState, MetaBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock

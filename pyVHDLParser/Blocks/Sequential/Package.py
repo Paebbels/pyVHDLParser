@@ -29,18 +29,17 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                import Export
-from pyVHDLParser.Token                     import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken
-from pyVHDLParser.Token.Parser              import StringToken, SpaceToken
-from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
-from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Generic            import SequentialDeclarativeRegion
-from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
+from pyVHDLParser.Decorators        import Export
+from pyVHDLParser.Token             import LinebreakToken, StringToken, SpaceToken, CommentToken, MultiLineCommentToken
+from pyVHDLParser.Token.Keywords    import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
+from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken
+from pyVHDLParser.Token.Keywords    import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
+from pyVHDLParser.Blocks            import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Generic    import SequentialDeclarativeRegion
+from pyVHDLParser.Blocks.Generic1   import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Sequential import PackageBody
-from pyVHDLParser.Blocks.List               import GenericList
+from pyVHDLParser.Blocks.List       import GenericList
 
 __all__ = []
 __api__ = __all__

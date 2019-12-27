@@ -30,7 +30,7 @@
 #
 from types                          import FunctionType
 
-from pyTerminalUI import LineTerminal
+from pyTerminalUI                   import LineTerminal
 
 from pyVHDLParser.Decorators        import Export
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet

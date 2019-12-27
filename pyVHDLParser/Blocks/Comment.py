@@ -29,88 +29,93 @@
 # ==============================================================================
 #
 # load dependencies
-# from pyVHDLParser.Blocks.Common        import IndentationBlock
-# from pyVHDLParser.Blocks.Document      import CommentBlock
-# from pyVHDLParser.Blocks.Parser        import TokenToBlockParser
-# from pyVHDLParser.Token                import CharacterToken, SpaceToken
-# from pyVHDLParser.Token.Keywords       import IndentationToken, SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
+from pyVHDLParser.Decorators          import Export
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, IndentationToken
+from pyVHDLParser.Token.Keywords      import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
+from pyVHDLParser.Blocks              import CommentBlock, TokenToBlockParser
+from pyVHDLParser.Blocks.Common       import IndentationBlock
+
+__all__ = []
+__api__ = __all__
 
 
 # Type alias for type hinting
-# ParserState = TokenToBlockParser.TokenParserState
+ParserState = TokenToBlockParser.TokenParserState
 
-#
-# class SingleLineCommentBlock(CommentBlock):
-# 	@classmethod
-# 	def statePossibleCommentStart(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if (isinstance(token, CharacterToken) and (token == "-")):
-# 			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
-# 			parserState.TokenMarker = parserState.NewToken
-# 			parserState.NextState =   cls.stateConsumeComment
-# 			return
-#
-# 		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
-#
-# 	@classmethod
-# 	def stateConsumeComment(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if (isinstance(token, CharacterToken)and (token == "\n")):
-# 			parserState.NewBlock =    SingleLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.Token)
-# 			parserState.NextState =   cls.stateLinebreak
-# 			return
-# 		else:
-# 			pass	# consume everything until "\n"
-#
-# 	@classmethod
-# 	def stateLinebreak(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if isinstance(token, SpaceToken):
-# 			parserState.NewToken = IndentationToken(token)
-# 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
-# 			parserState.Pop()
-# 		else:
-# 			parserState.Pop()
-# 			if (parserState.TokenMarker is None):
-# 				# print("  new marker: None -> {0!s}".format(token))
-# 				parserState.TokenMarker = token
-# 				# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
-# 			parserState.NextState(parserState)
-#
-#
-# class MultiLineCommentBlock(CommentBlock):
-# 	@classmethod
-# 	def statePossibleCommentStart(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if (isinstance(token, CharacterToken) and (token == "*")):
-# 			parserState.NewToken =    MultiLineCommentStartKeyword(parserState.TokenMarker)
-# 			parserState.TokenMarker = parserState.NewToken
-# 			parserState.NextState =   cls.stateConsumeComment
-# 			return
-# 		else:
-# 			parserState.Pop()
-# 			# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
-# 			parserState.NextState(parserState)
-#
-# 	@classmethod
-# 	def stateConsumeComment(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if (isinstance(token, CharacterToken) and (token == "*")):
-# 			parserState.PushState =   cls.statePossibleCommentEnd
-# 			parserState.TokenMarker = token
-# 			return
-# 		else:
-# 			pass  # consume everything until "*/"
-#
-# 	@classmethod
-# 	def statePossibleCommentEnd(cls, parserState: ParserState):
-# 		token = parserState.Token
-# 		if (isinstance(token, CharacterToken) and (token == "/")):
-# 			parserState.NewToken = MultiLineCommentEndKeyword(parserState.TokenMarker)
-# 			parserState.Pop()
-# 			parserState.NewBlock = MultiLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-# 			parserState.Pop()
-# 			return
-# 		else:
-# 			parserState.Pop()
-# 			parserState.NextState(parserState)
+
+@Export
+class SingleLineCommentBlock(CommentBlock):
+	@classmethod
+	def statePossibleCommentStart(cls, parserState: ParserState):
+		token = parserState.Token
+		if (isinstance(token, CharacterToken) and (token == "-")):
+			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
+			parserState.TokenMarker = parserState.NewToken
+			parserState.NextState =   cls.stateConsumeComment
+			return
+
+		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
+
+	@classmethod
+	def stateConsumeComment(cls, parserState: ParserState):
+		token = parserState.Token
+		if (isinstance(token, CharacterToken)and (token == "\n")):
+			parserState.NewBlock =    SingleLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.Token)
+			parserState.NextState =   cls.stateLinebreak
+			return
+		else:
+			pass	# consume everything until "\n"
+
+	@classmethod
+	def stateLinebreak(cls, parserState: ParserState):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken = IndentationToken(token)
+			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.Pop()
+		else:
+			parserState.Pop()
+			if (parserState.TokenMarker is None):
+				# print("  new marker: None -> {0!s}".format(token))
+				parserState.TokenMarker = token
+				# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+			parserState.NextState(parserState)
+
+
+@Export
+class MultiLineCommentBlock(CommentBlock):
+	@classmethod
+	def statePossibleCommentStart(cls, parserState: ParserState):
+		token = parserState.Token
+		if (isinstance(token, CharacterToken) and (token == "*")):
+			parserState.NewToken =    MultiLineCommentStartKeyword(parserState.TokenMarker)
+			parserState.TokenMarker = parserState.NewToken
+			parserState.NextState =   cls.stateConsumeComment
+			return
+		else:
+			parserState.Pop()
+			# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+			parserState.NextState(parserState)
+
+	@classmethod
+	def stateConsumeComment(cls, parserState: ParserState):
+		token = parserState.Token
+		if (isinstance(token, CharacterToken) and (token == "*")):
+			parserState.PushState =   cls.statePossibleCommentEnd
+			parserState.TokenMarker = token
+			return
+		else:
+			pass  # consume everything until "*/"
+
+	@classmethod
+	def statePossibleCommentEnd(cls, parserState: ParserState):
+		token = parserState.Token
+		if (isinstance(token, CharacterToken) and (token == "/")):
+			parserState.NewToken = MultiLineCommentEndKeyword(parserState.TokenMarker)
+			parserState.Pop()
+			parserState.NewBlock = MultiLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.Pop()
+			return
+		else:
+			parserState.Pop()
+			parserState.NextState(parserState)

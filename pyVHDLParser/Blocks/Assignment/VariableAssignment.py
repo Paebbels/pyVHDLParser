@@ -31,8 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators           import Export
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Token.Keywords       import BoundaryToken, LinebreakToken, IdentifierToken, EndToken
-from pyVHDLParser.Token.Parser         import SpaceToken, StringToken
+from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Blocks               import TokenParserException, Block, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock

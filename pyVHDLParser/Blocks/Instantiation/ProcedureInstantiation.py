@@ -30,10 +30,11 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState, FinalBlock
+from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
+from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 
 __all__ = []
 __api__ = __all__
