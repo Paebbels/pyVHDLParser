@@ -34,7 +34,6 @@ from pyVHDLParser.Blocks                            import TokenParserException
 from pyVHDLParser.Blocks.Object.Constant import ConstantBlock
 from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
-from pyVHDLParser.Functions                         import Console
 
 # Type alias for type hinting
 ParserState = GroupToModelParser.GroupParserState

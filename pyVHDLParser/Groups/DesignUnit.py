@@ -51,7 +51,6 @@ from pyVHDLParser.Groups.Reference            import LibraryGroup, UseGroup
 from pyVHDLParser.Groups.Sequential.Function  import FunctionGroup
 from pyVHDLParser.Groups.Sequential.Procedure import ProcedureGroup
 from pyVHDLParser.Groups.Sequential.Process   import ProcessGroup
-from pyVHDLParser.Functions                   import Console
 
 __all__ = []
 __api__ = __all__

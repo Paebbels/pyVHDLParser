@@ -29,20 +29,19 @@
 # ==============================================================================
 #
 # load dependencies
-from typing import List
+from typing                                 import List
 
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import TokenParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.Object             import Constant
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock, PackageBody as PackageBodyBlock
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks, Architecture as ArchitectureBlocks
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
 from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel, Architecture as ArchitectureModelModel
 from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel, PackageBody as PackageBodyVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
-from pyVHDLParser.Functions                 import Console
 
 
 class Entity(EntityVHDLModel):

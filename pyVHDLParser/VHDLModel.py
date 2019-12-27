@@ -30,6 +30,7 @@
 #
 # load dependencies
 from enum                     import Enum
+
 from pyVHDLParser.Decorators  import Export
 
 __all__ = []
