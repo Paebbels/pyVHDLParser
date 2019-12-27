@@ -49,12 +49,59 @@
 The pyVHDLParser Documentation
 ##############################
 
-pyVHDLParser is a streaming parser for VHDL to extract the documentation.
+This is a token-stream based parser for VHDL-2008.
 
-.. only:: html
+Main Goals
+**********
 
-   News
-   ****
+* **Parsing**
+
+  * slice an input document into **tokens** and text **blocks** which are categorized
+  * preserve case, whitespace and comments
+  * recover on parsing errors
+  * good error reporting / throw exceptions
+
+* **Fast Processing**
+
+  * multi-pass parsing and analysis
+  * delay analysis if not needed at current pass
+  * link tokens and blocks for fast-forward scanning
+
+* **Generic VHDL Language Model**
+
+  * Assemble a document-object-model (Code-DOM)
+  * Provide an API for code introspection
+
+
+Use Cases
+*********
+
+* generate documentation by using the fast-forward scanner
+* generate a document/language model by using the grouped text-block scanner
+* extract compile orders and other dependency graphs
+* generate highlighted syntax
+* re-annotate documenting comments to their objects for doc extraction
+
+
+Parsing approach
+****************
+
+1. slice an input document into **tokens**
+2. assemble tokens to text **blocks** which are categorized
+3. assemble text blocks for fast-forward scanning into **groups**
+4. translate groups into a document-object-model (DOM)
+5. provide a generic VHDL language model
+
+
+Long time goals
+***************
+
+* A Sphinx language plugin for VHDL
+
+
+
+News
+****
 
 .. only:: html
 

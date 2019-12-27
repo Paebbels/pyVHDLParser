@@ -1,40 +1,66 @@
-![PyPI - License](https://img.shields.io/pypi/l/pyVHDLParser)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser) 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Paebbels/pyVHDLParser)
-[![Documentation Status](https://readthedocs.org/projects/pyvhdlparser/badge/?version=latest)](https://pyVHDLParser.readthedocs.io/en/latest/?badge=latest)
-[![PyPI](https://img.shields.io/pypi/v/pyVHDLParser)](https://pypi.org/project/pyVHDLParser/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser)
-![PyPI - Wheel](https://img.shields.io/pypi/wheel/pyVHDLParser)
-![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser)
-
-<!--
-   [![Build Status](https://travis-ci.org/Paebbels/pyVHDLParser.svg?branch=master)](https://travis-ci.org/Paebbels/pyVHDLParser)
--->
+[![PyPI - License](https://img.shields.io/pypi/l/pyVHDLParser?logo=PyPI)](LICENSE.md)
+[![GitHub tag (latest SemVer incl. pre-release)](https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/tags)
+[![GitHub release (latest SemVer incl. including pre-releases)](https://img.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/releases/latest)
+[![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub&)](https://github.com/Paebbels/pyVHDLParser/releases)
+[![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser)
+[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyVHDLParser)](https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master)  
+[![Travis](https://img.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis)](https://travis-ci.com/Paebbels/pyVHDLParser)
+[![PyPI](https://img.shields.io/pypi/v/pyVHDLParser?logo=PyPI)](https://pypi.org/project/pyVHDLParser/)
+![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI)
+[![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser)](https://github.com/Paebbels/pyVHDLParser/network/dependents)  
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1155f244b6f54a3a95abdaa80d6771f8)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
+[![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank)
+[![Read the Docs](https://img.shields.io/readthedocs/pyvhdlparser)](https://pyVHDLParser.readthedocs.io/en/latest/)
 
 # pyVHDLParser
 
 This is a token-stream based parser for VHDL-2008.
 
-Main goals:
- * slice an input document into text blocks which are categorized
- * group text blocks for fast-forward scanning
- * provide a generic VHDL language model
+## Intruduction
 
-Use cases:
- * generate documentation by using the fast-forward scanner
- * generate a document/language model by using the grouped text-block scanner
- * extract compile orders and other dependency graphs
- * generate highlighted syntax
- * re-annotate documenting comments to their objects for doc extraction
+### Main Goals
 
-Long time goals:
- * A Sphinx language plugin for VHDL 
+* **Parsing**
+  * slice an input document into **tokens** and text **blocks** which are categorized
+  * preserve case, whitespace and comments
+  * recover on parsing errors
+  * good error reporting / throw exceptions
+* **Fast Processing**
+  * multi-pass parsing and analysis
+  * delay analysis if not needed at current pass
+  * link tokens and blocks for fast-forward scanning
+* **Generic VHDL Language Model**
+  * Assemble a document-object-model (Code-DOM)
+  * Provide an API for code introspection
+
+### Use Cases
+
+* generate documentation by using the fast-forward scanner
+* generate a document/language model by using the grouped text-block scanner
+* extract compile orders and other dependency graphs
+* generate highlighted syntax
+* re-annotate documenting comments to their objects for doc extraction
+
+### Parsing approach
+
+1. slice an input document into **tokens**
+2. assemble tokens to text **blocks** which are categorized
+3. assemble text blocks for fast-forward scanning into **groups**
+4. translate groups into a document-object-model (DOM)
+5. provide a generic VHDL language model
+
+### Long time goals
+
+* A Sphinx language plugin for VHDL 
+
+    TODO: Move the following documentation to ReadTheDocs and replace it with a more lightweight version.
 
 ## Basic Concept
 
 [![][concept]][concept]
 
-[concept]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/images/Linking_TokenBlockGroup.png
+[concept]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/images/Linking_TokenBlockGroup.png
 
 ## Example 1
 
