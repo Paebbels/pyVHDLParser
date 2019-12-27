@@ -90,6 +90,8 @@ class ValuedToken(Token):
 
 
 class StartOfToken(Token):
+	"""Meta token representing the start of a token stream."""
+
 	def __init__(self):
 		self._previousToken =     None
 		self._nextToken =         None
@@ -105,6 +107,8 @@ class StartOfToken(Token):
 			)
 
 class EndOfToken(Token):
+	"""Meta token representing the end of a token stream."""
+
 	def __init__(self, previousToken, end):
 		previousToken.NextToken =     self
 		self._previousToken : Token = previousToken
@@ -128,6 +132,8 @@ class EndOfSnippetToken(EndOfToken, EndOfSnippet):          pass
 
 
 class CharacterToken(ValuedToken):
+	"""Token representing a single character."""
+
 	def __init__(self, previousToken, value, start):
 		super().__init__(previousToken, value, start=start, end=start)
 

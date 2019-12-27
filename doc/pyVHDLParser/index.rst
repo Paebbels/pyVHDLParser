@@ -2,6 +2,9 @@
 
    pyVHDLParser
 
+
+------------------
+
 .. automodule:: pyVHDLParser
    :show-inheritance:
    :members:

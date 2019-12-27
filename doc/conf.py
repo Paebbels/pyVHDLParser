@@ -13,7 +13,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
-#sys.path.insert(0, os.path.abspath('../pyVHDLParser'))
+sys.path.insert(0, os.path.abspath('../pyVHDLParser'))
 #sys.path.insert(0, os.path.abspath('_extensions'))
 #sys.path.insert(0, os.path.abspath('_themes/sphinx_rtd_theme'))
 
@@ -182,7 +182,7 @@ extensions = [
 # local extensions (patched)
 
 # local extensions (patched)
-#	'autoapi.sphinx',
+	'autoapi.sphinx',
 #	'autoprogram',               #'sphinxcontrib.autoprogram',
 
 # local extensions
