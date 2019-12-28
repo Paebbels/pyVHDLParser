@@ -72,18 +72,22 @@ Main Goals
   * Assemble a document-object-model (Code-DOM)
   * Provide an API for code introspection
 
+**See chapter :ref:`goal` for details.**
+
 
 Use Cases
 *********
 
-* generate documentation by using the fast-forward scanner
-* generate a document/language model by using the grouped text-block scanner
-* extract compile orders and other dependency graphs
-* generate highlighted syntax
-* re-annotate documenting comments to their objects for doc extraction
+* generate :ref:`documentation <usecase-doc>` by using the fast-forward scanner
+* generate a :ref:`document <usecase-codedom>`/:ref:`language <usecase-vhdlmodel>` model by using the grouped text-block scanner
+* extract compile orders and other dependency :ref:`graphs <usecase-graphs>`
+* generate :ref:`highlighted syntax <usecase-highlight>`
 
+.. seealso::
 
-Parsing approach
+   See chapter :ref:`usecase` for details.
+
+Parsing Approach
 ****************
 
 1. slice an input document into **tokens**
@@ -92,12 +96,18 @@ Parsing approach
 4. translate groups into a document-object-model (DOM)
 5. provide a generic VHDL language model
 
+.. seealso::
 
-Long time goals
+   See chapter :ref:`concept` for details.
+
+Additional Aims
 ***************
 
-* A Sphinx language plugin for VHDL
+* A VHDL domain for Sphinx
 
+  * A autodoc plugin for the VHDL domain in Sphinx
+* VHDL plugins/extensions for style checkers supported by CI environments
+* Testing new VHDL language features beyond VHDL-2008/VHDL-2019
 
 
 News
@@ -175,7 +185,8 @@ This library is licensed under **Apache License 2.0**.
    :caption: Introduction
    :hidden:
 
-   Goals
+   ProjectGoals
+   UseCases
    Concepts
    Installation
    Dependencies

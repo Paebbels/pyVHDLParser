@@ -1,5 +1,9 @@
+.. _installation:
+
 Installation/Updates
 ####################
+
+.. _installation:pip:
 
 Using PIP
 *********

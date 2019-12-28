@@ -1,5 +1,7 @@
-Goals
-#####
+.. _goal:
+
+Project Goals
+#############
 
 The main goal of this project is to parse VHDL source files for language
 revisions (1987), 1993, 2002/2008 and soon for 2019. The result of the parser
