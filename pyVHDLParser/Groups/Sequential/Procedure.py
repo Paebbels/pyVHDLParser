@@ -36,8 +36,7 @@ from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object.Constant  import ConstantBlock
-from pyVHDLParser.Blocks.Object.Variable  import VariableBlock
+from pyVHDLParser.Blocks.Object           import ConstantDeclarationBlock, VariableDeclarationBlock
 from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Procedure
@@ -54,9 +53,9 @@ __api__ = __all__
 @Export
 class ProcedureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		Use.StartBlock:  UseGroup,
-		ConstantBlock:   ConstantGroup,
-		VariableBlock:   VariableGroup
+		Use.StartBlock:           UseGroup,
+		ConstantDeclarationBlock: ConstantGroup,
+		VariableDeclarationBlock: VariableGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		# Procedure.NameBlock:       ProcedureGroup,
