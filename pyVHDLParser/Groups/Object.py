@@ -30,9 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators                import Export
-from pyVHDLParser.Blocks.Object.Constant    import ConstantBlock
-from pyVHDLParser.Blocks.Object.Signal      import SignalBlock
-from pyVHDLParser.Blocks.Object.Variable    import VariableBlock
+from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, SignalDeclarationBlock, VariableDeclarationBlock
 from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
 from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
@@ -48,7 +46,7 @@ class ConstantGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, ConstantBlock) and not block.MultiPart):
+				if (isinstance(block, ConstantDeclarationBlock) and not block.MultiPart):
 					marker2 = block
 					break
 			else:
@@ -68,7 +66,7 @@ class VariableGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, VariableBlock) and not block.MultiPart):
+				if (isinstance(block, VariableDeclarationBlock) and not block.MultiPart):
 					marker2 = block
 					break
 			else:
@@ -88,7 +86,7 @@ class SignalGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, SignalBlock) and not block.MultiPart):
+				if (isinstance(block, SignalDeclarationBlock) and not block.MultiPart):
 					marker2 = block
 					break
 			else:
