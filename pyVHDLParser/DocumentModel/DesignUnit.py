@@ -42,6 +42,10 @@ from pyVHDLParser.Groups.List               import GenericListGroup, PortListGro
 from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel, Architecture as ArchitectureModelModel
 from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel, PackageBody as PackageBodyVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
+
+# Type alias for type hinting
+ParserState = GroupToModelParser.GroupParserState
 
 
 class Entity(EntityVHDLModel):

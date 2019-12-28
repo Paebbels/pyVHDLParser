@@ -28,7 +28,7 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pathlib import Path
+from pathlib                         import Path
 
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Token.Parser       import Tokenizer

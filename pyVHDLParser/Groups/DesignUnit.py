@@ -36,8 +36,7 @@ from pyVHDLParser.Decorators                  import Export
 from pyVHDLParser.Blocks                      import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List                 import GenericList, ParameterList, PortList
-from pyVHDLParser.Blocks.Object.Constant      import ConstantBlock
-from pyVHDLParser.Blocks.Object.Signal        import SignalBlock
+from pyVHDLParser.Blocks.Object               import ConstantDeclarationBlock, SignalDeclarationBlock
 from pyVHDLParser.Blocks.Reference            import Context, Library, Use
 from pyVHDLParser.Blocks.Reporting.Assert     import AssertBlock
 from pyVHDLParser.Blocks.Sequential           import Package, PackageBody, Function, Procedure, Process
@@ -117,10 +116,10 @@ class ContextGroup(Group):
 @Export
 class EntityGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
-		GenericList.OpenBlock:  GenericListGroup,
-		PortList.OpenBlock:     PortListGroup,
-		Use.StartBlock:         UseGroup,
-		ConstantBlock:          ConstantGroup
+		GenericList.OpenBlock:    GenericListGroup,
+		PortList.OpenBlock:       PortListGroup,
+		Use.StartBlock:           UseGroup,
+		ConstantDeclarationBlock: ConstantGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {}
 	STATEMENT_SIMPLE_BLOCKS = {
@@ -321,9 +320,9 @@ class EntityGroup(Group):
 class ArchitectureGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Use.StartBlock:           UseGroup,
-		ConstantBlock:            ConstantGroup,
+		ConstantDeclarationBlock: ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
-		SignalBlock:              SignalGroup
+		SignalDeclarationBlock:   SignalGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		Function.NameBlock:       FunctionGroup,
@@ -474,9 +473,9 @@ class PackageGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Library.StartBlock:       LibraryGroup,
 		Use.StartBlock:           UseGroup,
-		ConstantBlock:            ConstantGroup,
+		ConstantDeclarationBlock: ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
-		SignalBlock:              SignalGroup
+		SignalDeclarationBlock:   SignalGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		Function.NameBlock:       FunctionGroup,
@@ -550,9 +549,9 @@ class PackageBodyGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Library.StartBlock:       LibraryGroup,
 		Use.StartBlock:           UseGroup,
-		ConstantBlock:            ConstantGroup,
+		ConstantDeclarationBlock: ConstantGroup,
 		# SharedVariableBlock:            VariableGroup,
-		SignalBlock:              SignalGroup
+		SignalDeclarationBlock:   SignalGroup
 	}
 	DECLARATION_COMPOUND_BLOCKS = {
 		Function.NameBlock:       FunctionGroup,

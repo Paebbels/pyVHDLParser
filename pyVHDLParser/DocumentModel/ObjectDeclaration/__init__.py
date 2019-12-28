@@ -29,9 +29,11 @@
 # ==============================================================================
 #
 # load dependencies
+from pyTerminalUI                                   import LineTerminal
+
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import TokenParserException
-from pyVHDLParser.Blocks.Object.Constant import ConstantBlock
+from pyVHDLParser.Blocks.Object                     import ConstantDeclarationBlock
 from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
@@ -46,7 +48,7 @@ class Constant(ConstantBase):
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, ConstantBlock)
+		assert isinstance(parserState.CurrentGroup, ConstantDeclarationBlock)
 
 		cls.stateParseConstantName(parserState)
 
@@ -54,7 +56,7 @@ class Constant(ConstantBase):
 
 	@classmethod
 	def stateParseConstantName(cls, parserState: ParserState):
-		assert isinstance(parserState.CurrentGroup, ConstantBlock)
+		assert isinstance(parserState.CurrentGroup, ConstantDeclarationBlock)
 
 		tokenIterator = iter(parserState)
 		for token in tokenIterator:
@@ -70,8 +72,8 @@ class Constant(ConstantBase):
 		parserState.CurrentNode = constant
 
 	def __str__(self):
-		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subType, **Console.Foreground)
+		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subType, **LineTerminal().Foreground)
 
 	def Print(self, indent=0):
 		indentation = "  " * indent
-		print("{indent}{DARK_CYAN}CONSTANT {GREEN}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR} := xxx;".format(indent=indentation, name=self._name, type="", **Console.Foreground))
+		print("{indent}{DARK_CYAN}CONSTANT {GREEN}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR} := xxx;".format(indent=indentation, name=self._name, type="", **LineTerminal().Foreground))
