@@ -44,22 +44,40 @@ __api__ = __all__
 
 
 @Export
-class TokenParserException(ParserException):
+class BlockParserException(ParserException):
+	"""Base-class for exceptions when reading tokens and generating blocks."""
+
+	_token : Token = None   #: Token that was involved in an exception situation
+
 	def __init__(self, message, token):
 		super().__init__(message)
 		self._token = token
 
+	@property
+	def Token(self):
+		"""Returns the token involved in an exception situation."""
+		return self._token
+
 
 @Export
 class TokenToBlockParser:
+	"""Wrapping class to offer some class methods."""
+
 	@staticmethod
 	def Transform(tokenGenerator, debug=False):
-		return ParserState(tokenGenerator, debug=debug).GetGenerator()
+		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
+
+		state = ParserState(tokenGenerator, debug=debug)
+		return state.GetGenerator()
 
 
 @Export
 class ParserState:
+	"""Represents the current state of a token-to-block parser."""
+
 	def __init__(self, tokenGenerator, debug):
+		"""Initializes the parser state."""
+
 		self._stack =               []
 		self._iterator =            iter(tokenGenerator)
 		self._tokenMarker : Token = None
@@ -82,7 +100,7 @@ class ParserState:
 			self.NextState,
 			self.Counter
 		))
-		LineTerminal().WriteDebug("pushed: " + str(self.NextState))
+		LineTerminal().WriteDebug("  pushed: " + str(self.NextState))
 		self.NextState =    value
 		self._tokenMarker =  None
 
@@ -97,9 +115,11 @@ class ParserState:
 		self._tokenMarker = value
 
 	def __eq__(self, other):
+		"""Implement a '==' operator for the current state."""
 		return self.NextState is other
 
 	def __str__(self):
+		"""Returns the current state (function name) as str."""
 		return self.NextState.__func__.__qualname__
 
 	def Pop(self, n=1, tokenMarker=None):
@@ -114,7 +134,7 @@ class ParserState:
 
 	def GetGenerator(self):
 		from pyVHDLParser.Token             import EndOfDocumentToken
-		from pyVHDLParser.Blocks            import TokenParserException, EndOfDocumentBlock
+		from pyVHDLParser.Blocks            import BlockParserException, EndOfDocumentBlock
 		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 
 		for token in self._iterator:
@@ -157,7 +177,7 @@ class ParserState:
 			if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
 				yield self.NewBlock
 			else:
-				raise TokenParserException("Unexpected end of document.", self.Token)
+				raise BlockParserException("Unexpected end of document.", self.Token)
 
 
 @Export
@@ -228,7 +248,7 @@ class Block(metaclass=MetaBlock):
 				while ((t is not None) and (t is not self.EndToken)):
 					print("  " + str(t))
 					t = t.NextToken
-				raise TokenParserException("Token after '{2!r}' is empty (None).\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
+				raise BlockParserException("Token after '{2!r}' is empty (None).\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
 			token = token.NextToken
 
 		yield self.EndToken
@@ -278,7 +298,7 @@ class Block(metaclass=MetaBlock):
 	@classmethod
 	def stateError(cls, parserState: ParserState):
 		"""Predefined state to catch error situations."""
-		raise TokenParserException("Reached unreachable state!")
+		raise BlockParserException("Reached unreachable state!")
 
 
 @Export
@@ -396,7 +416,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			parserState.NewBlock =    EndOfDocumentBlock(token)
 			return
 
-		raise TokenParserException(
+		raise BlockParserException(
 			"Expected one of these keywords: {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]

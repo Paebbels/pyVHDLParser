@@ -41,7 +41,7 @@ from pyVHDLParser.Token.Keywords  import MatchingLessThanOrEqualOperator, Matchi
 from pyVHDLParser.Token.Keywords  import NorKeyword, AndKeyword, NandKeyword, XorKeyword, XnorKeyword, SlaKeyword, SllKeyword, SraKeyword, SrlKeyword
 from pyVHDLParser.Token.Keywords  import NotKeyword, AbsKeyword, OpeningRoundBracketToken, BoundaryToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords  import LoopKeyword, ToKeyword, DowntoKeyword, EndToken
-from pyVHDLParser.Blocks          import Block, ParserState, TokenParserException, CommentBlock
+from pyVHDLParser.Blocks          import Block, ParserState, BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 __all__ = []
@@ -136,7 +136,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(', unary operator, identifier, literal or whitespace.", token)
+		raise BlockParserException("Expected '(', unary operator, identifier, literal or whitespace.", token)
 
 	@classmethod
 	def stateExpression(cls, parserState: ParserState):
@@ -154,7 +154,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 						parserState.Pop(2)
 						return
 					else:
-						raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+						raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 		elif isinstance(token, CharacterToken):
 			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
@@ -164,7 +164,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 					parserState.Pop(2)
 					return
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
 				parserState.NewToken =    OpeningRoundBracketToken(token)
 				parserState.Counter +=    1
@@ -201,7 +201,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ?????????????.", token)
+		raise BlockParserException("Expected ?????????????.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -220,7 +220,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 						parserState.Pop(1)
 						return
 					else:
-						raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+						raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 		elif isinstance(token, CharacterToken):
 			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
@@ -230,7 +230,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 					parserState.Pop(2)
 					return
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
 				parserState.NewToken =    OpeningRoundBracketToken(token)
 				parserState.Counter +=    1
@@ -240,11 +240,11 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 				if (parserState.Counter == 0):
 					parserState.NewToken =    BoundaryToken(token)
 					# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					i = 1
-					LineTerminal().WriteDebug("Parserstate.stack:")
-					for stackElement in parserState._stack:
-						LineTerminal().WriteDebug("  {0}: {1!s}".format(i, stackElement))
-						i += 1
+					# i = 1
+					# LineTerminal().WriteDebug("Parserstate.stack:")
+					# for stackElement in parserState._stack:
+						# LineTerminal().WriteDebug("  {0}: {1!s}".format(i, stackElement))
+						# i += 1
 					parserState.Pop(3, tokenMarker=parserState.NewToken)
 					return
 				else:
@@ -290,7 +290,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ????????????.", token)
+		raise BlockParserException("Expected ????????????.", token)
 
 
 @Export
@@ -342,7 +342,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -407,7 +407,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ????????????.", token)
+		raise BlockParserException("Expected ????????????.", token)
 
 
 @Export
@@ -476,7 +476,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -558,7 +558,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ????????????.", token)
+		raise BlockParserException("Expected ????????????.", token)
 
 
 # @Export
@@ -582,14 +582,14 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 					parserState.Pop()
 # 					return
 # 				else:
-# 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+# 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 # 			elif (token == "("):
 # 				parserState.NewToken =    OpeningRoundBracketToken(token)
 # 				parserState.Counter +=    1
 # 				return
 # 			elif (token == ")"):
 # 				if (parserState.Counter == -1):
-# 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+# 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 # 				else:
 # 					parserState.NewToken =  ClosingRoundBracketToken(token)
 # 					parserState.Counter -=  1
@@ -616,7 +616,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 			parserState.NextState =     cls.stateWhitespace1
 # 			return
 #
-# 		raise TokenParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+# 		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 #
 # 	@classmethod
 # 	def stateWhitespace1(cls, parserState: ParserState):
@@ -634,7 +634,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 					parserState.Pop()
 # 					return
 # 				else:
-# 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+# 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 # 			elif (token == "("):
 # 				parserState.NewToken =    OpeningRoundBracketToken(token)
 # 				parserState.Counter +=    1
@@ -642,7 +642,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 				return
 # 			elif (token == ")"):
 # 				if (parserState.Counter == -1):
-# 					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+# 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 # 				else:
 # 					parserState.NewToken =  ClosingRoundBracketToken(token)
 # 					parserState.Counter -=  1
@@ -686,7 +686,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 # 			parserState.TokenMarker =   None
 # 			return
 #
-# 		raise TokenParserException("Expected ????????????.", token)
+# 		raise BlockParserException("Expected ????????????.", token)
 
 
 @Export
@@ -708,14 +708,14 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 					parserState.Pop(2)
 					return
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
 				parserState.NewToken =    OpeningRoundBracketToken(token)
 				parserState.Counter +=    1
 				return
 			elif (token == ")"):
 				if (parserState.Counter == -1):
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 				else:
 					parserState.NewToken =  ClosingRoundBracketToken(token)
 					parserState.Counter -=  1
@@ -742,7 +742,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected operator, '(', ')', ';' or whitespace.", token)
+		raise BlockParserException("Expected operator, '(', ')', ';' or whitespace.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -760,7 +760,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 					parserState.Pop(2)
 					return
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
 				parserState.NewToken =    OpeningRoundBracketToken(token)
 				parserState.Counter +=    1
@@ -768,7 +768,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 				return
 			elif (token == ")"):
 				if (parserState.Counter == -1):
-					raise TokenParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 				else:
 					parserState.NewToken =  ClosingRoundBracketToken(token)
 					parserState.Counter -=  1
@@ -812,4 +812,4 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected identifier, literal, operator, '(', ')' or ';'.", token)
+		raise BlockParserException("Expected identifier, literal, operator, '(', ')' or ';'.", token)

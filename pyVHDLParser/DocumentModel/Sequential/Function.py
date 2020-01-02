@@ -34,7 +34,7 @@ from typing                                         import List
 from pyTerminalUI                                   import LineTerminal
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
-from pyVHDLParser.Blocks                            import TokenParserException
+from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks
 from pyVHDLParser.Blocks.Object                     import ConstantDeclarationBlock
 import pyVHDLParser.Blocks.InterfaceObject
@@ -73,9 +73,9 @@ class Function(FunctionModel):
 			elif isinstance(block, FunctionBlock.EndBlock):
 				break
 			else:
-				raise TokenParserException("Block '{0!r}' not supported in a function.".format(block), block)
+				raise BlockParserException("Block '{0!r}' not supported in a function.".format(block), block)
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -89,7 +89,7 @@ class Function(FunctionModel):
 				functionName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		function = cls(functionName)
 		parserState.CurrentNode.AddFunction(function)
@@ -105,7 +105,7 @@ class Function(FunctionModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -119,7 +119,7 @@ class Function(FunctionModel):
 				genericName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 

@@ -34,7 +34,7 @@ from pyVHDLParser.Token           import LinebreakToken, StringToken, SpaceToken
 from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
-from pyVHDLParser.Blocks          import TokenParserException, CommentBlock, ParserState, MetaBlock
+from pyVHDLParser.Blocks          import BlockParserException, CommentBlock, ParserState, MetaBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Generic1 import EndBlock, BeginBlock
@@ -107,7 +107,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 
-		raise TokenParserException(
+		raise BlockParserException(
 			"Expected one of these keywords: BEGIN, END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
@@ -195,7 +195,7 @@ class ConcurrentBeginBlock(BeginBlock):
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 
-		raise TokenParserException(
+		raise BlockParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
@@ -268,7 +268,7 @@ class SequentialBeginBlock(BeginBlock):
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 
-		raise TokenParserException(
+		raise BlockParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}' at line {tokenPositionRow}:{tokenPositionColumn}.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]

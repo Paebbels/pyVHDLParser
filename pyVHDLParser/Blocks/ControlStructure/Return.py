@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CommentToken, CharacterToken, SpaceToken, LinebreakToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, EndToken
-from pyVHDLParser.Blocks              import Block, ParserState, TokenParserException, CommentBlock
+from pyVHDLParser.Blocks              import Block, ParserState, BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Generic1     import EndOfStatementBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedBySemicolon
@@ -81,7 +81,7 @@ class ReturnBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after keyword RETURN.", token)
+		raise BlockParserException("Expected ';' or whitespace after keyword RETURN.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):

@@ -29,11 +29,12 @@ from pathlib        import Path
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
 
-from pyAttributes import Attribute
+from pyAttributes                     import Attribute
 from pyExceptions                     import ExceptionBase
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, SwitchArgumentAttribute
 from pyAttributes.ArgParseAttributes  import CommandAttribute, ArgumentAttribute, DefaultAttribute
 from pyAttributes.ArgParseAttributes  import CommonSwitchArgumentAttribute
+from pyMetaClasses                    import Singleton
 from pyTerminalUI                     import LineTerminal, Severity
 
 import pyVHDLParser
@@ -86,9 +87,11 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 	# load platform information (Windows, Linux, Darwin, ...)
 	__PLATFORM =              platform_system()
 
-	
+
 	def __init__(self, debug, verbose, quiet, sphinx=False):
 		super().__init__(verbose, debug, quiet)
+
+		Singleton.Register(LineTerminal, self)
 
 		for block in MetaBlock.BLOCKS:
 			try:
@@ -391,87 +394,91 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
+		from pyVHDLParser.Base         import ParserException
+		from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, Token
 		from pyVHDLParser.Token.Parser import Tokenizer
-		from pyVHDLParser.Blocks import TokenToBlockParser
-		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, Token
-		from pyVHDLParser.Blocks import Block, StartOfDocumentBlock, EndOfDocumentBlock
+		from pyVHDLParser.Blocks       import Block, StartOfDocumentBlock, EndOfDocumentBlock
+		from pyVHDLParser.Blocks       import TokenToBlockParser
 
 
-		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **self.Foreground))
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=True)
 
 		try:
 			blockIterator = iter(vhdlBlockStream)
 			firstBlock = next(blockIterator)
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):
-				print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock,
-				                                                                              **self.Foreground))
-			elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)):
-				print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken,
-				                                                                              **self.Foreground))
+			self.WriteVerbose(str(firstBlock))
 
-			lastBlock: Block = firstBlock
-			endBlock: Block = None
-			lastToken: Token = firstBlock.StartToken
+			if (not isinstance(firstBlock, StartOfDocumentBlock)):
+				self.WriteError("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
+				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
+			startToken = firstBlock.StartToken
+			self.WriteDebug(str(startToken))
+			if (not isinstance(startToken, StartOfDocumentToken)):
+				self.WriteError("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
+				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
+
+			lastBlock : Block = firstBlock
+			endBlock :  Block = None
+			lastToken : Token = startToken
 
 			for vhdlBlock in blockIterator:
+				self.WriteVerbose(str(vhdlBlock))
+
 				if isinstance(vhdlBlock, EndOfDocumentBlock):
+					self.WriteDebug("{GREEN}Found EndOfDocumentBlock...{NOCOLOR}".format(**self.Foreground))
 					endBlock = vhdlBlock
 					break
+
 				tokenIterator = iter(vhdlBlock)
 
-				relTokenPosition = 0
 				for token in tokenIterator:
-					relTokenPosition += 1
+					self.WriteDebug(str(token))
+
 					if (token.NextToken is None):
-						print("{RED}Token({pos}) has an open end.{NOCOLOR}".format(pos=relTokenPosition, **self.Foreground))
-						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-						print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
+						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))
+						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
 					elif (lastToken.NextToken is not token):
-						print("{RED}Last token is not connected to the current ({pos}) one.{NOCOLOR}".format(pos=relTokenPosition,
-						                                                                                     **self.Foreground))
-						token11 = lastToken
-						token21 = lastToken.NextToken
-						token31 = "--------" if (lastToken.NextToken is None) else lastToken.NextToken.NextToken
-						token41 = "--------" if (lastToken.NextToken.NextToken is None) else lastToken.NextToken.NextToken.NextToken
-						token12 = "--------" if (
-								token.PreviousToken.PreviousToken is None) else token.PreviousToken.PreviousToken.PreviousToken
-						token22 = "--------" if (token.PreviousToken is None) else token.PreviousToken.PreviousToken
-						token32 = token.PreviousToken
-						token42 = token
-						print("{RED} Block: {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-						print("{RED} | Last:  {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token11, token2=token12, **self.Foreground))
-						print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token21, token2=token22, **self.Foreground))
-						print("{DARK_RED} |  Next: {token1}{NOCOLOR} =?= {DARK_RED}Prev: {token2}{NOCOLOR}".format(token1=token31, token2=token32, **self.Foreground))
-						print("{DARK_RED} v  Next: {token1}{NOCOLOR} =?= {RED}Curr: {token2}{NOCOLOR}".format(token1=token41, token2=token42, **self.Foreground))
+						self.WriteError("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
+						self.WriteError("{YELLOW}  Last:   {token!s}{NOCOLOR}".format(token=lastToken, **self.Foreground))
+						self.WriteError("{YELLOW}    Next: {token!s}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
+						self.WriteError("")
+						self.WriteError("{YELLOW}  Cur.:   {token!s}{NOCOLOR}".format(token=token, **self.Foreground))
+						self.WriteError("")
+
+					if (token.PreviousToken is None):
+						self.WriteError("{RED}Token has an open end (PreviousToken).{NOCOLOR}".format(**self.Foreground))
+						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
 					elif (token.PreviousToken is not lastToken):
 						print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-						print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-						print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-						print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
-						print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
+						# print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+						print("{YELLOW}  Cur.:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
+						print("{YELLOW}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
+						self.WriteError("")
+						print("{YELLOW}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
+						print("{YELLOW}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
+						self.WriteError("")
 
 					lastToken = token
 
 				lastBlock = vhdlBlock
 			else:
-				print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**self.Foreground))
+				self.WriteError("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**self.Foreground))
 
 			if (not isinstance(endBlock, EndOfDocumentBlock)):
-				print(
-					"{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=endBlock, **self.Foreground))
-			elif (not isinstance(endBlock.StartToken, EndOfDocumentToken)):
-				print("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=endBlock.StartToken,
-				                                                                           **self.Foreground))
+				self.WriteError("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=endBlock, **self.Foreground))
+				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
+			elif (not isinstance(endBlock.EndToken, EndOfDocumentToken)):
+				self.WriteError("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
+				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
 
 		except ParserException as ex:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 
+		self.WriteNormal("")
+		self.WriteNormal("{CYAN}All checks are done.{NOCOLOR}".format(**self.Foreground))
 		self.exit()
 
 	# ----------------------------------------------------------------------------
@@ -553,7 +560,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
-		from pyVHDLParser.DocumentModel import Document, GroupParserException, GroupParserException
+		from pyVHDLParser.DocumentModel import Document, DOMParserException, DOMParserException
 
 		try:
 			document = Document(file)

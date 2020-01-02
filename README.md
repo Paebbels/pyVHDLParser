@@ -1,4 +1,4 @@
-[![PyPI - License](https://img.shields.io/pypi/l/pyVHDLParser?logo=PyPI)](LICENSE.md)
+[![License](https://img.shields.io/badge/Apache%20License,%202.0-bd0000.svg?longCache=true&label=code%20license&logo=Apache&logoColor=D22128)](LICENSE.md)
 [![GitHub tag (latest SemVer incl. pre-release)](https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/tags)
 [![GitHub release (latest SemVer incl. including pre-releases)](https://img.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/releases/latest)
 [![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub&)](https://github.com/Paebbels/pyVHDLParser/releases)
@@ -9,7 +9,7 @@
 ![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser)](https://github.com/Paebbels/pyVHDLParser/network/dependents)  
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1155f244b6f54a3a95abdaa80d6771f8)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
+[![Codacy Badge](https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
 [![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank)
 [![Read the Docs](https://img.shields.io/readthedocs/pyvhdlparser)](https://pyVHDLParser.readthedocs.io/en/latest/)
 

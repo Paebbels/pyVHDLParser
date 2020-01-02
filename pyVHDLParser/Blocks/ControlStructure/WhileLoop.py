@@ -34,8 +34,9 @@ from pyVHDLParser.Token               import CharacterToken, LinebreakToken, Ind
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
-from pyVHDLParser.Blocks              import TokenParserException, Block
+from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List         import GenericList, PortList
 
@@ -77,7 +78,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -116,7 +117,7 @@ class ConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhileName(cls, parserState: ParserState):
@@ -149,7 +150,7 @@ class ConditionBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -189,7 +190,7 @@ class ConditionBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -225,13 +226,13 @@ class ConditionBlock(Block):
 				newToken =              EndKeyword(token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:
-				raise TokenParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 @Export

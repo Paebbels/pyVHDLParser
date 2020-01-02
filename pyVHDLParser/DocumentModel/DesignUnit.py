@@ -33,7 +33,7 @@ from typing                                 import List
 
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
-from pyVHDLParser.Blocks                    import TokenParserException
+from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock, PackageBody as PackageBodyBlock
@@ -42,10 +42,7 @@ from pyVHDLParser.Groups.List               import GenericListGroup, PortListGro
 from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel, Architecture as ArchitectureModelModel
 from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel, PackageBody as PackageBodyVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
-from pyVHDLParser.DocumentModel.Parser      import GroupToModelParser
-
-# Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
+from pyVHDLParser.DocumentModel             import GroupToModelParser
 
 
 class Entity(EntityVHDLModel):
@@ -62,7 +59,7 @@ class Entity(EntityVHDLModel):
 						entityName = token.Value
 						break
 				else:
-					raise TokenParserException("EntityName not found.", None)
+					raise BlockParserException("EntityName not found.", None)
 
 				entity = cls(entityName)
 				entity.AddLibraryReferences(document.Libraries)
@@ -106,7 +103,7 @@ class Entity(EntityVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -121,7 +118,7 @@ class Entity(EntityVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -135,7 +132,7 @@ class Entity(EntityVHDLModel):
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -150,7 +147,7 @@ class Entity(EntityVHDLModel):
 				portName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddPort(portName)
 
@@ -207,7 +204,7 @@ class Architecture(ArchitectureModelModel):
 		# 	elif isinstance(block, ArchitectureBlock.EndBlock):
 		# 		break
 		# else:
-		# 	raise TokenParserException("", None)
+		# 	raise BlockParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -223,14 +220,14 @@ class Architecture(ArchitectureModelModel):
 				architectureName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				entityName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		architecture = cls(architectureName, entityName)
@@ -287,9 +284,9 @@ class Package(PackageVHDLModel):
 			elif isinstance(block, PackageBlock.EndBlock):
 				break
 			else:
-				raise TokenParserException("Block '{0!r}' not supported in a package.".format(block), block)
+				raise BlockParserException("Block '{0!r}' not supported in a package.".format(block), block)
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -304,7 +301,7 @@ class Package(PackageVHDLModel):
 				packageName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		package = cls(packageName)
@@ -327,7 +324,7 @@ class Package(PackageVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -341,7 +338,7 @@ class Package(PackageVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -418,9 +415,9 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, PackageBodyBlock.EndBlock):
 				break
 			else:
-				raise TokenParserException("Block '{0!r}' not supported in a package body.".format(block), block)
+				raise BlockParserException("Block '{0!r}' not supported in a package body.".format(block), block)
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -436,7 +433,7 @@ class PackageBody(PackageBodyVHDLModel):
 				packageName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		oldNode = parserState.CurrentNode
 		packageBody = cls(packageName)
@@ -459,7 +456,7 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -474,7 +471,7 @@ class PackageBody(PackageBodyVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -488,7 +485,7 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.Pop()
 
@@ -503,7 +500,7 @@ class PackageBody(PackageBodyVHDLModel):
 				portName = token.Value
 				break
 		else:
-			raise TokenParserException("", None)
+			raise BlockParserException("", None)
 
 		parserState.CurrentNode.AddPort(portName)
 

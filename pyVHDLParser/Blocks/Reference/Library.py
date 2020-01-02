@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 
 __all__ = []
@@ -58,7 +58,7 @@ class StartBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword LIBRARY.", token)
+		raise BlockParserException("Expected whitespace after keyword LIBRARY.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -84,7 +84,7 @@ class StartBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected library name (identifier).", token)
+		raise BlockParserException("Expected library name (identifier).", token)
 
 
 @Export
@@ -117,7 +117,7 @@ class LibraryNameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ';' after library name.", token)
+		raise BlockParserException("Expected ';' after library name.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -152,7 +152,7 @@ class LibraryNameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ';'.", token)
+		raise BlockParserException("Expected ';'.", token)
 
 
 @Export
@@ -184,7 +184,7 @@ class DelimiterBlock(SkipableBlock):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected library name (identifier).", token)
+		raise BlockParserException("Expected library name (identifier).", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -210,7 +210,7 @@ class DelimiterBlock(SkipableBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected library name (identifier).", token)
+		raise BlockParserException("Expected library name (identifier).", token)
 
 
 @Export

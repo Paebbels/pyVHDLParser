@@ -29,7 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks           import TokenParserException, CommentBlock
+from pyVHDLParser.Blocks           import BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.Document  import CommentBlock
 
@@ -51,7 +51,7 @@ def StripAndFuse(generator):
 					if isinstance(nextBlock, (WhitespaceBlock, CommentBlock)):
 						continue
 					if (type(block) is not type(nextBlock)):
-						raise TokenParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)), None)   # TODO: review exception type
+						raise BlockParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)), None)   # TODO: review exception type
 
 					nextBlock.StartToken.PreviousToken = block.EndToken
 					block.EndToken = nextBlock.EndToken

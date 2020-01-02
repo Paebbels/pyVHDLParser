@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Token                   import CharacterToken, StringToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
-from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
@@ -82,7 +82,7 @@ class DelimiterBlock(SkipableBlock):
 			# parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected port name (identifier).", token)
+		raise BlockParserException("Expected port name (identifier).", token)
 
 
 @Export
@@ -120,7 +120,7 @@ class OpenBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword PORT.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword PORT.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -152,7 +152,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected '(' after keyword PORT.", token)
+		raise BlockParserException("Expected '(' after keyword PORT.", token)
 
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -195,4 +195,4 @@ class OpenBlock(Block):
 			# parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected interface signal name (identifier) or keyword: SIGNAL.", token)
+		raise BlockParserException("Expected interface signal name (identifier) or keyword: SIGNAL.", token)

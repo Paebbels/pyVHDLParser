@@ -34,7 +34,7 @@ from pyVHDLParser.Token                     import LinebreakToken, StringToken, 
 from pyVHDLParser.Token.Keywords            import PackageKeyword, IsKeyword, EndKeyword, BodyKeyword, FunctionKeyword, SignalKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
@@ -72,7 +72,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ", token)
+		raise BlockParserException("Expected whitespace after keyword ", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -100,7 +100,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected package name (identifier).", token)
+		raise BlockParserException("Expected package name (identifier).", token)
 
 	@classmethod
 	def statePackageName(cls, parserState: ParserState):
@@ -117,7 +117,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after package name.", token)
+		raise BlockParserException("Expected whitespace after package name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -147,4 +147,4 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword IS after package name.", token)
+		raise BlockParserException("Expected keyword IS after package name.", token)

@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token             import CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, EndToken
-from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 
@@ -67,7 +67,7 @@ class NullBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after keyword NULL.", token)
+		raise BlockParserException("Expected ';' or whitespace after keyword NULL.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -90,4 +90,4 @@ class NullBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ';'.", token)
+		raise BlockParserException("Expected ';'.", token)

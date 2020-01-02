@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
-from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException
+from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException
 
 __all__ = []
 __api__ = __all__
@@ -49,7 +49,7 @@ class AssertGroup(Group):
 					marker2 = block
 					break
 			else:
-				raise BlockParserException("End of multi parted constant declaration not found.", block)
+				raise GroupParserException("End of multi parted constant declaration not found.", block)
 		else:
 			marker2 = marker
 
@@ -69,7 +69,7 @@ class ReportGroup(Group):
 					marker2 = block
 					break
 			else:
-				raise BlockParserException("End of multi parted constant declaration not found.", block)
+				raise GroupParserException("End of multi parted constant declaration not found.", block)
 		else:
 			marker2 = marker
 

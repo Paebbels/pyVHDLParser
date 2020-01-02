@@ -39,7 +39,7 @@ from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel          import Document as DocumentModel
 
 
-class GroupParserException(ParserException):
+class DOMParserException(ParserException):
 	def __init__(self, message, group):
 		super().__init__(message)
 		self._group = group
@@ -63,7 +63,7 @@ class Document(DocumentModel):
 	def Parse(self, content=None):
 		if (content is None):
 			if (not self._filePath.exists()):
-				raise GroupParserException("File '{0!s}' does not exist.".format(self._filePath))
+				raise DOMParserException("File '{0!s}' does not exist.".format(self._filePath))
 
 			with self._filePath.open('r') as fileHandle:
 				content = fileHandle.read()
@@ -76,9 +76,9 @@ class Document(DocumentModel):
 		lastGroup =       groups[-1]
 
 		if (not isinstance(firstGroup, StartOfDocumentGroup)):
-			raise GroupParserException("Expected group is not a StartOfDocumentGroup.", firstGroup)
+			raise DOMParserException("Expected group is not a StartOfDocumentGroup.", firstGroup)
 		elif (not isinstance(lastGroup, EndOfDocumentGroup)):
-			raise GroupParserException("Expected group is not an EndOfDocumentGroup.", lastGroup)
+			raise DOMParserException("Expected group is not an EndOfDocumentGroup.", lastGroup)
 
 		# run recursively (node, group)
 		self.stateParse(self, firstGroup)

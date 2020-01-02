@@ -34,7 +34,7 @@ from pyVHDLParser.Token                   import CharacterToken, LinebreakToken,
 from pyVHDLParser.Token.Keywords          import BoundaryToken, ConstantKeyword, TypeKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Token.Parser            import SpaceToken, StringToken
-from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
@@ -96,7 +96,7 @@ class DelimiterBlock(SkipableBlock):
 			# parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected generic name (identifier).", token)
+		raise BlockParserException("Expected generic name (identifier).", token)
 
 
 @Export
@@ -139,7 +139,7 @@ class OpenBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -171,7 +171,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected '(' after keyword GENERIC.", token)
+		raise BlockParserException("Expected '(' after keyword GENERIC.", token)
 
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -227,4 +227,4 @@ class OpenBlock(Block):
 			# parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected interface constant name (identifier) or keyword: CONSTANT, TYPE, PROCEDURE, FUNCTION, PURE, IMPURE.", token)
+		raise BlockParserException("Expected interface constant name (identifier) or keyword: CONSTANT, TYPE, PROCEDURE, FUNCTION, PURE, IMPURE.", token)

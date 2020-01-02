@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, SignalDeclarationBlock, VariableDeclarationBlock
 from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
-from pyVHDLParser.Groups                    import ParserState, BlockParserException, Group
+from pyVHDLParser.Groups                    import ParserState, GroupParserException, Group
 
 __all__ = []
 __api__ = __all__
@@ -50,7 +50,7 @@ class ConstantGroup(Group):
 					marker2 = block
 					break
 			else:
-				raise BlockParserException("End of multi parted constant declaration not found.", block)
+				raise GroupParserException("End of multi parted constant declaration not found.", block)
 		else:
 			marker2 = marker
 
@@ -70,7 +70,7 @@ class VariableGroup(Group):
 					marker2 = block
 					break
 			else:
-				raise BlockParserException("End of multi parted variable declaration not found.", block)
+				raise GroupParserException("End of multi parted variable declaration not found.", block)
 		else:
 			marker2 = marker
 
@@ -90,7 +90,7 @@ class SignalGroup(Group):
 					marker2 = block
 					break
 			else:
-				raise BlockParserException("End of multi parted signal declaration not found.", block)
+				raise GroupParserException("End of multi parted signal declaration not found.", block)
 		else:
 			marker2 = marker
 

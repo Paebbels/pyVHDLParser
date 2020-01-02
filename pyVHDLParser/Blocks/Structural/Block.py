@@ -34,7 +34,7 @@ from pyVHDLParser.Token                    import CharacterToken, SpaceToken, St
 from pyVHDLParser.Token.Keywords           import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, AssertKeyword, BlockKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
-from pyVHDLParser.Blocks                   import Block, TokenParserException, ParserState
+from pyVHDLParser.Blocks                   import Block, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase, ConcurrentDeclarativeRegion, ConcurrentBeginBlock
@@ -97,7 +97,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -137,7 +137,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateBlockName(cls, parserState: ParserState):
@@ -170,7 +170,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -210,4 +210,4 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)

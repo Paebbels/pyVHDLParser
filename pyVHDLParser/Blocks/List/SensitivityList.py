@@ -34,7 +34,7 @@ from pyVHDLParser.Token           import CharacterToken, StringToken, SpaceToken
 from pyVHDLParser.Token           import CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
 from pyVHDLParser.Token.Keywords  import IdentifierToken, AllKeyword
-from pyVHDLParser.Blocks          import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks          import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, IndentationBlock, WhitespaceBlock
 
 __all__ = []
@@ -75,7 +75,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected keyword ALL or signal name (identifier).", token)
+		raise BlockParserException("Expected keyword ALL or signal name (identifier).", token)
 
 
 @Export
@@ -103,7 +103,7 @@ class ItemBlock(Block):
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
 @Export
@@ -136,7 +136,7 @@ class DelimiterBlock(SkipableBlock):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected signal name (identifier).", token)
+		raise BlockParserException("Expected signal name (identifier).", token)
 
 
 @Export
@@ -160,7 +160,7 @@ class CloseBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ')' or whitespace after keyword ALL.", token)
+		raise BlockParserException("Expected ')' or whitespace after keyword ALL.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -192,4 +192,4 @@ class CloseBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)

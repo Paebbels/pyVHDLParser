@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import LinebreakToken, StringToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import ArchitectureKeyword, IsKeyword, OfKeyword, BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
@@ -76,7 +76,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ARCHITECTURE.", token)
+		raise BlockParserException("Expected whitespace after keyword ARCHITECTURE.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -109,7 +109,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected architecture name (identifier).", token)
+		raise BlockParserException("Expected architecture name (identifier).", token)
 
 	@classmethod
 	def stateArchitectureName(cls, parserState: ParserState):
@@ -126,7 +126,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after architecture name.", token)
+		raise BlockParserException("Expected whitespace after architecture name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -156,7 +156,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword IS after architecture name.", token)
+		raise BlockParserException("Expected keyword IS after architecture name.", token)
 
 	@classmethod
 	def stateOfKeyword(cls, parserState: ParserState):
@@ -173,7 +173,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ARCHITECTURE.", token)
+		raise BlockParserException("Expected whitespace after keyword ARCHITECTURE.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -206,7 +206,7 @@ class NameBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected architecture name (identifier).", token)
+		raise BlockParserException("Expected architecture name (identifier).", token)
 
 	@classmethod
 	def stateEntityName(cls, parserState: ParserState):
@@ -223,7 +223,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise TokenParserException("Expected whitespace after architecture name.", token)
+		raise BlockParserException("Expected whitespace after architecture name.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -255,4 +255,4 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword IS after architecture name.", token)
+		raise BlockParserException("Expected keyword IS after architecture name.", token)

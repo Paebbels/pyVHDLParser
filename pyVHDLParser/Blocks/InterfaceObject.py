@@ -34,7 +34,7 @@ from pyVHDLParser.Token               import SpaceToken, LinebreakToken, Comment
 from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
 from pyVHDLParser.Token.Keywords      import IdentifierToken, BoundaryToken, DelimiterToken
-from pyVHDLParser.Blocks              import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks              import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket
 
@@ -79,7 +79,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected interface {0} name (identifier).".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected interface {0} name (identifier).".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateObjectName(cls, parserState: ParserState):
@@ -100,7 +100,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after interface {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected whitespace after interface {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -129,7 +129,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ':' after interface {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected ':' after interface {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
@@ -155,7 +155,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected subtype indication or whitespace after colon.", token)
+		raise BlockParserException("Expected subtype indication or whitespace after colon.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -193,7 +193,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected subtype indication or keyword IN.", token)
+		raise BlockParserException("Expected subtype indication or keyword IN.", token)
 
 	@classmethod
 	def stateModeKeyword(cls, parserState: ParserState):
@@ -209,7 +209,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -241,7 +241,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected subtype indication (name).", token)
+		raise BlockParserException("Expected subtype indication (name).", token)
 
 	@classmethod
 	def stateSubtypeIndication(cls, parserState: ParserState):
@@ -279,7 +279,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NextState =   cls.stateWhitespace5
 			return
 
-		raise TokenParserException("Expected ';', ':=' or whitespace after subtype indication.", token)
+		raise BlockParserException("Expected ';', ':=' or whitespace after subtype indication.", token)
 
 	@classmethod
 	def stateWhitespace5(cls, parserState: ParserState):
@@ -324,7 +324,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ';' or ':='.", token)
+		raise BlockParserException("Expected ';' or ':='.", token)
 
 
 @Export
@@ -348,7 +348,7 @@ class InterfaceConstantBlock(InterfaceObjectBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 
 @Export
@@ -374,7 +374,7 @@ class InterfaceVariableBlock(InterfaceObjectBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
+		raise BlockParserException("Expected whitespace after keyword VARIABLE.", token)
 
 
 @Export
@@ -402,7 +402,7 @@ class InterfaceSignalBlock(InterfaceObjectBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword SIGNAL.", token)
+		raise BlockParserException("Expected whitespace after keyword SIGNAL.", token)
 
 
 @Export
@@ -423,7 +423,7 @@ class InterfaceTypeBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -455,7 +455,7 @@ class InterfaceTypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected interface type name (identifier).", token)
+		raise BlockParserException("Expected interface type name (identifier).", token)
 
 	@classmethod
 	def stateTypeName(cls, parserState: ParserState):
@@ -485,7 +485,7 @@ class InterfaceTypeBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected ';', ')' or whitespace after interface type name.", token)
+		raise BlockParserException("Expected ';', ')' or whitespace after interface type name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -523,4 +523,4 @@ class InterfaceTypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected ';' or ')'.", token)
+		raise BlockParserException("Expected ';' or ')'.", token)

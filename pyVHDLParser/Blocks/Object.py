@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken, CommentToken, SpaceToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords    import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
-from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
@@ -75,7 +75,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected {0} name (identifier).".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected {0} name (identifier).".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateObjectName(cls, parserState: ParserState):
@@ -96,7 +96,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected ':' or whitespace after {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected ':' or whitespace after {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -123,7 +123,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected colon after {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException("Expected colon after {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
@@ -144,7 +144,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected subtype indication or whitespace after colon.", token)
+		raise BlockParserException("Expected subtype indication or whitespace after colon.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -171,7 +171,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected subtype indication after colon.", token)
+		raise BlockParserException("Expected subtype indication after colon.", token)
 
 	@classmethod
 	def stateSubtypeIndication(cls, parserState: ParserState):
@@ -201,7 +201,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise TokenParserException("Expected ':=', ';' or whitespace after subtype indication.", token)
+		raise BlockParserException("Expected ':=', ';' or whitespace after subtype indication.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -236,7 +236,7 @@ class ObjectDeclarationBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ':=' or ';' after subtype indication.", token)
+		raise BlockParserException("Expected ':=' or ';' after subtype indication.", token)
 
 
 @Export
@@ -296,7 +296,7 @@ class ConstantDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword CONSTANT.", token)
+		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 
 @Export
@@ -320,7 +320,7 @@ class VariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
+		raise BlockParserException("Expected whitespace after keyword VARIABLE.", token)
 
 
 @Export
@@ -343,7 +343,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace0
 			return
 
-		raise TokenParserException("Expected whitespace after keyword SHARED.", token)
+		raise BlockParserException("Expected whitespace after keyword SHARED.", token)
 
 	@classmethod
 	def stateWhitespace0(cls, parserState: ParserState):
@@ -373,7 +373,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected whitespace after keyword SHARED.", token)
+		raise BlockParserException("Expected whitespace after keyword SHARED.", token)
 
 	@classmethod
 	def stateVariableKeyword(cls, parserState: ParserState):
@@ -390,7 +390,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword VARIABLE.", token)
+		raise BlockParserException("Expected whitespace after keyword VARIABLE.", token)
 
 	@classmethod
 	def stateSubtypeIndication(cls, parserState: ParserState):
@@ -413,7 +413,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after subtype indication.", token)
+		raise BlockParserException("Expected ';' or whitespace after subtype indication.", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -441,7 +441,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ';' after subtype indication.", token)
+		raise BlockParserException("Expected ';' after subtype indication.", token)
 
 
 @Export
@@ -465,4 +465,4 @@ class SignalDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword SIGNAL.", token)
+		raise BlockParserException("Expected whitespace after keyword SIGNAL.", token)

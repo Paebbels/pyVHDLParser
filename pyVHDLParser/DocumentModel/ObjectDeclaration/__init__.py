@@ -32,7 +32,7 @@
 from pyTerminalUI                                   import LineTerminal
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
-from pyVHDLParser.Blocks                            import TokenParserException
+from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.Object                     import ConstantDeclarationBlock
 from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
@@ -64,7 +64,7 @@ class Constant(ConstantBase):
 				constantName = token.Value
 				break
 		else:
-			raise TokenParserException("Constant name (identifier) not found.", None)
+			raise BlockParserException("Constant name (identifier) not found.", None)
 
 		constant = cls(constantName)
 

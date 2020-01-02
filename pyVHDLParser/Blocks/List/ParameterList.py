@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Token                   import CharacterToken, StringToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
-from pyVHDLParser.Blocks                  import TokenParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
@@ -65,7 +65,7 @@ class OpenBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword PARAMETER.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword PARAMETER.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -97,7 +97,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected '(' after keyword PARAMETER.", token)
+		raise BlockParserException("Expected '(' after keyword PARAMETER.", token)
 
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -143,7 +143,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected interface element name (identifier).", token)
+		raise BlockParserException("Expected interface element name (identifier).", token)
 
 
 @Export
@@ -173,7 +173,7 @@ class ItemBlock(Block):
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
 @Export
@@ -237,7 +237,7 @@ class DelimiterBlock(SkipableBlock):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected parameter name (identifier).", token)
+		raise BlockParserException("Expected parameter name (identifier).", token)
 
 
 @Export

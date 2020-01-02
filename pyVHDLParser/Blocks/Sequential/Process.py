@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
-from pyVHDLParser.Blocks                    import Block, CommentBlock, TokenParserException, ParserState
+from pyVHDLParser.Blocks                    import Block, CommentBlock, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
@@ -85,7 +85,7 @@ class OpenBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword PROCESS.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword PROCESS.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -137,7 +137,7 @@ class OpenBlock(Block):
 				parserState.NextState =   BeginBlock.stateSequentialRegion
 				return
 
-		raise TokenParserException("Expected '(' after keyword PROCESS.", token)
+		raise BlockParserException("Expected '(' after keyword PROCESS.", token)
 
 # TODO: Find a better name
 @Export
@@ -202,7 +202,7 @@ class OpenBlock2(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword ENTITY.", token)
+		raise BlockParserException("Expected whitespace after keyword ENTITY.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -252,4 +252,4 @@ class OpenBlock2(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected declarations or keyword IS after sensitivity list.", token)
+		raise BlockParserException("Expected declarations or keyword IS after sensitivity list.", token)

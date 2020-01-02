@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken, WhenKeyword
-from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, TokenParserException
+from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
@@ -76,7 +76,7 @@ class ExitBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after keyword EXIT.", token)
+		raise BlockParserException("Expected ';' or whitespace after keyword EXIT.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -112,7 +112,7 @@ class ExitBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ';', keyword WHEN or loop label.", token)
+		raise BlockParserException("Expected ';', keyword WHEN or loop label.", token)
 
 	@classmethod
 	def stateExitLoopLabel(cls, parserState: ParserState):
@@ -136,7 +136,7 @@ class ExitBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after loop label.", token)
+		raise BlockParserException("Expected ';' or whitespace after loop label.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -163,7 +163,7 @@ class ExitBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise TokenParserException("Expected ';' or keyword WHEN.", token)
+		raise BlockParserException("Expected ';' or keyword WHEN.", token)
 
 	@classmethod
 	def stateWhenKeyword(cls, parserState: ParserState):
@@ -193,7 +193,7 @@ class ExitBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected ';' or whitespace after keyword RETURN.", token)
+		raise BlockParserException("Expected ';' or whitespace after keyword RETURN.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):

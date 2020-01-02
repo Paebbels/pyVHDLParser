@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
-from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
@@ -79,7 +79,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword PROCEDURE.", token)
+		raise BlockParserException("Expected whitespace after keyword PROCEDURE.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -107,7 +107,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected procedure name (designator).", token)
+		raise BlockParserException("Expected procedure name (designator).", token)
 
 	@classmethod
 	def stateProcedureName(cls, parserState: ParserState):
@@ -133,7 +133,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after procedure name.", token)
+		raise BlockParserException("Expected '(' or whitespace after procedure name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -187,7 +187,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after procedure name.", token)
+		raise BlockParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after procedure name.", token)
 
 
 @Export
@@ -217,7 +217,7 @@ class VoidBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected keyword RETURN.", token)
+		raise BlockParserException("Expected keyword RETURN.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -245,4 +245,4 @@ class VoidBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected procedure name (designator).", token)
+		raise BlockParserException("Expected procedure name (designator).", token)

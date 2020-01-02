@@ -41,7 +41,7 @@ from pyVHDLParser.Blocks.Object           import ConstantDeclarationBlock, Varia
 from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Function
-from pyVHDLParser.Groups                  import ParserState, Group, BlockParserException, EndOfDocumentGroup
+from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
 from pyVHDLParser.Groups.Concurrent       import ReportGroup
 from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup
@@ -97,7 +97,7 @@ class FunctionGroup(Group):
 			parserState.NextState =   cls.stateParseGenerics
 			return
 		else:
-			raise BlockParserException("Begin of function expected.", currentBlock)
+			raise GroupParserException("Begin of function expected.", currentBlock)
 
 	@classmethod
 	def stateParseGenerics(cls, parserState: ParserState):
@@ -141,7 +141,7 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic clause not found.", currentBlock)
+		raise GroupParserException("End of generic clause not found.", currentBlock)
 
 	@classmethod
 	def stateParseParameters(cls, parserState: ParserState):
@@ -171,7 +171,7 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of parameters not found.", currentBlock)
+		raise GroupParserException("End of parameters not found.", currentBlock)
 
 	# FIXME move to FunctionGroup2 as stateParse
 	@classmethod
@@ -235,7 +235,7 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of function declarative region not found.", currentBlock)
+		raise GroupParserException("End of function declarative region not found.", currentBlock)
 
 	@classmethod
 	def stateParseStatements(cls, parserState: ParserState):
@@ -278,7 +278,7 @@ class FunctionGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of function declaration not found.", currentBlock)
+		raise GroupParserException("End of function declaration not found.", currentBlock)
 
 
 @Export

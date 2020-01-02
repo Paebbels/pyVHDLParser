@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
-from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
@@ -161,7 +161,7 @@ class IsBlock(SequentialBeginBlock):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword IS.", token)
+		raise BlockParserException("Expected whitespace after keyword IS.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -199,7 +199,7 @@ class IsBlock(SequentialBeginBlock):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected one of these keywords: WHEN or END. Found: '{tokenValue}'.".format(tokenValue=token.Value), token)
+		raise BlockParserException("Expected one of these keywords: WHEN or END. Found: '{tokenValue}'.".format(tokenValue=token.Value), token)
 
 
 @Export

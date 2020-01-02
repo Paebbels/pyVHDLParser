@@ -30,10 +30,10 @@
 #
 # load dependencies
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
-from pyVHDLParser.Blocks                    import TokenParserException
+from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Library as LibraryBlocks, Use as UseBlocks
 from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel             import GroupParserException
+from pyVHDLParser.DocumentModel             import DOMParserException
 
 
 class Library(LibraryReferenceModel):
@@ -54,9 +54,9 @@ class Library(LibraryReferenceModel):
 			elif isinstance(block, LibraryBlocks.EndBlock):
 				return
 			else:
-				raise GroupParserException("Unexpected block type in LibraryGroup.")
+				raise DOMParserException("Unexpected block type in LibraryGroup.")
 
-		raise GroupParserException("End of use clause not found.")
+		raise DOMParserException("End of use clause not found.")
 
 	def __str__(self):
 		return self._library
@@ -82,14 +82,14 @@ class Use(UseModel):
 						libraryName = token.Value
 						break
 				else:
-					raise TokenParserException("", None)
+					raise BlockParserException("", None)
 
 				for token in tokenIterator:
 					if isinstance(token, IdentifierToken):
 						packageName = token.Value
 						break
 				else:
-					raise TokenParserException("", None)
+					raise BlockParserException("", None)
 
 				for token in tokenIterator:
 					if isinstance(token, IdentifierToken):
@@ -99,16 +99,16 @@ class Use(UseModel):
 						objectName = "ALL"
 						break
 				else:
-					raise TokenParserException("", None)
+					raise BlockParserException("", None)
 
 				use = cls(libraryName, packageName, objectName)
 				currentNode.AddUse(use)
 			elif isinstance(block, UseBlocks.EndBlock):
 				return
 			else:
-				raise GroupParserException("Unexpected block type in LibraryGroup.")
+				raise DOMParserException("Unexpected block type in LibraryGroup.")
 
-		raise GroupParserException("End of use clause not found.")
+		raise DOMParserException("End of use clause not found.")
 
 	def __str__(self):
 		return "{0}.{1}".format(self._library, self._package)

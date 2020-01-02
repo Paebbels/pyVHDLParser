@@ -41,7 +41,7 @@ from pyVHDLParser.Blocks.Reference            import Context, Library, Use
 from pyVHDLParser.Blocks.Reporting.Assert     import AssertBlock
 from pyVHDLParser.Blocks.Sequential           import Package, PackageBody, Function, Procedure, Process
 from pyVHDLParser.Blocks.Structural           import Entity, Architecture, Component, Configuration
-from pyVHDLParser.Groups                      import BlockParserException, Group, EndOfDocumentGroup, ParserState
+from pyVHDLParser.Groups                      import GroupParserException, Group, EndOfDocumentGroup, ParserState
 from pyVHDLParser.Groups.Comment              import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Concurrent           import AssertGroup
 from pyVHDLParser.Groups.List                 import GenericListGroup, ParameterListGroup, PortListGroup
@@ -108,7 +108,7 @@ class ContextGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of context declaration not found.".format(
+		raise GroupParserException("End of context declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -155,7 +155,7 @@ class EntityGroup(Group):
 			parserState.NextState =   cls.stateParseGenerics
 			return
 		else:
-			raise BlockParserException("Begin of entity expected.", currentBlock)
+			raise GroupParserException("Begin of entity expected.", currentBlock)
 
 	@classmethod
 	def stateParseGenerics(cls, parserState: ParserState):
@@ -192,7 +192,7 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic clause not found.", currentBlock)
+		raise GroupParserException("End of generic clause not found.", currentBlock)
 
 	@classmethod
 	def stateParsePorts(cls, parserState: ParserState):
@@ -222,7 +222,7 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of port clause not found.", currentBlock)
+		raise GroupParserException("End of port clause not found.", currentBlock)
 
 	@classmethod
 	def stateParseDeclarations(cls, parserState: ParserState):
@@ -269,7 +269,7 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of entity declarative region not found.", currentBlock)
+		raise GroupParserException("End of entity declarative region not found.", currentBlock)
 
 	@classmethod
 	def stateParseStatements(cls, parserState: ParserState):
@@ -313,7 +313,7 @@ class EntityGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of entity declaration not found.", currentBlock)
+		raise GroupParserException("End of entity declaration not found.", currentBlock)
 
 
 @Export
@@ -373,7 +373,7 @@ class ArchitectureGroup(Group):
 			parserState.NextGroup =   EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of architecture declaration not found.".format(
+		raise GroupParserException("End of architecture declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -417,7 +417,7 @@ class ArchitectureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of architecture declaration not found.".format(
+		raise GroupParserException("End of architecture declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -463,7 +463,7 @@ class ArchitectureGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of architecture declaration not found.".format(
+		raise GroupParserException("End of architecture declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -539,7 +539,7 @@ class PackageGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of package declaration not found.".format(
+		raise GroupParserException("End of package declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -616,7 +616,7 @@ class PackageBodyGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of package body declaration not found.".format(
+		raise GroupParserException("End of package body declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -684,7 +684,7 @@ class ComponentGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of component declaration not found.".format(
+		raise GroupParserException("End of component declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 
@@ -752,6 +752,6 @@ class ConfigurationGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of configuration declaration not found.".format(
+		raise GroupParserException("End of configuration declaration not found.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)

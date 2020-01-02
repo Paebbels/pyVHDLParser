@@ -34,7 +34,7 @@ from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, C
 from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
-from pyVHDLParser.Blocks                    import Block, TokenParserException, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
@@ -79,7 +79,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace0
 			return
 
-		raise TokenParserException("Expected whitespace after keyword PURE.", token)
+		raise BlockParserException("Expected whitespace after keyword PURE.", token)
 
 	@classmethod
 	def stateImpureKeyword(cls, parserState: ParserState):
@@ -96,7 +96,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace0
 			return
 
-		raise TokenParserException("Expected whitespace after keyword IMPURE.", token)
+		raise BlockParserException("Expected whitespace after keyword IMPURE.", token)
 
 	@classmethod
 	def stateWhitespace0(cls, parserState: ParserState):
@@ -124,7 +124,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword FUNCTION.", token)
+		raise BlockParserException("Expected keyword FUNCTION.", token)
 
 	@classmethod
 	def stateFunctionKeyword(cls, parserState: ParserState):
@@ -141,7 +141,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword FUNCTION.", token)
+		raise BlockParserException("Expected whitespace after keyword FUNCTION.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -169,7 +169,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected function name (designator).", token)
+		raise BlockParserException("Expected function name (designator).", token)
 
 	@classmethod
 	def stateFunctionName(cls, parserState: ParserState):
@@ -195,7 +195,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after function name.", token)
+		raise BlockParserException("Expected '(' or whitespace after function name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -248,7 +248,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after function name.", token)
+		raise BlockParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after function name.", token)
 
 
 @Export
@@ -273,7 +273,7 @@ class ReturnTypeBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected keyword RETURN.", token)
+		raise BlockParserException("Expected keyword RETURN.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -301,7 +301,7 @@ class ReturnTypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected function name (designator).", token)
+		raise BlockParserException("Expected function name (designator).", token)
 
 	@classmethod
 	def stateReturnKeyword(cls, parserState: ParserState):
@@ -323,7 +323,7 @@ class ReturnTypeBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -351,7 +351,7 @@ class ReturnTypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected return type (type mark).", token)
+		raise BlockParserException("Expected return type (type mark).", token)
 
 	@classmethod
 	def stateReturnType(cls, parserState: ParserState):
@@ -374,7 +374,7 @@ class ReturnTypeBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -408,4 +408,4 @@ class ReturnTypeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected function name (designator).", token)
+		raise BlockParserException("Expected function name (designator).", token)

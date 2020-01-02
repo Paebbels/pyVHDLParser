@@ -48,7 +48,7 @@ __api__ = __all__
 
 
 @Export
-class BlockParserException(ParserException):
+class GroupParserException(ParserException):
 	def __init__(self, message, block):
 		super().__init__(message)
 		self._block = block
@@ -109,7 +109,7 @@ class ParserState:
 		self.debug        : bool =  debug
 
 		if (not isinstance(self.NextGroup.StartBlock, StartOfDocumentBlock)):
-			raise BlockParserException("First block is not a StartOfDocumentBlock.", self.NextGroup.StartBlock)
+			raise GroupParserException("First block is not a StartOfDocumentBlock.", self.NextGroup.StartBlock)
 
 	@property
 	def PushState(self):
@@ -169,7 +169,7 @@ class ParserState:
 		if (self.NextGroup.InnerGroup is None):
 			self.NextGroup.InnerGroup = self.NewGroup
 		if (self.NewGroup.__class__ not in self.NextGroup._subGroups):
-			raise BlockParserException("Group '{group1}' not supported in {group2}.".format(
+			raise GroupParserException("Group '{group1}' not supported in {group2}.".format(
 				group1=self.NewGroup.__class__,
 				group2=self.NextGroup.__class__.__qualname__
 			), self.Block)
@@ -177,7 +177,7 @@ class ParserState:
 		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
 	def GetGenerator(self):
-		from pyVHDLParser.Groups            import BlockParserException
+		from pyVHDLParser.Groups            import GroupParserException
 
 		# yield StartOfDocumentGroup
 		self.LastGroup = self.NextGroup
@@ -207,7 +207,7 @@ class ParserState:
 						return
 
 		else:
-			raise BlockParserException("Unexpected end of document.", self.Block)
+			raise GroupParserException("Unexpected end of document.", self.Block)
 
 
 @Export
@@ -247,7 +247,7 @@ class Group(metaclass=MetaGroup):
 		while (block is not self.EndBlock):
 			yield block
 			if (block.NextBlock is None):
-				raise BlockParserException("Token after {0!r} <- {1!r} <- {2!r} is empty (None).".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
+				raise GroupParserException("Token after {0!r} <- {1!r} <- {2!r} is empty (None).".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
 			block = block.NextBlock
 
 		yield self.EndBlock
@@ -422,7 +422,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 				parserState.NewGroup = EndOfDocumentGroup(currentBlock)
 				return
 
-		raise BlockParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
+		raise GroupParserException("Expected keywords: architecture, context, entity, library, package, use. Found '{block!s}'.".format(
 			block=currentBlock.__class__.__qualname__
 		), currentBlock)
 

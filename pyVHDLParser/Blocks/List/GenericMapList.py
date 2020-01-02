@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, ParserState, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -80,7 +80,7 @@ class OpenBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -125,7 +125,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -167,7 +167,7 @@ class OpenBlock(Block):
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token)
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 @Export
@@ -195,7 +195,7 @@ class ItemBlock(Block):
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				else:
-					raise TokenParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
+					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
 @Export
@@ -221,7 +221,7 @@ class DelimiterBlock(SkipableBlock):
 			parserState.NextState =     ItemBlock.stateItemRemainder
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 @Export
@@ -259,7 +259,7 @@ class CloseBlock(Block):
 			parserState.NextState = cls.stateWhitespace1
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -295,4 +295,4 @@ class CloseBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)

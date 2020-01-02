@@ -34,7 +34,7 @@ from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
-from pyVHDLParser.Groups            import ParserState, BlockParserException, Group, EndOfDocumentGroup
+from pyVHDLParser.Groups            import ParserState, GroupParserException, Group, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment    import WhitespaceGroup, CommentGroup
 
 __all__ = []
@@ -84,7 +84,7 @@ class GenericListGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic list not found.", currentBlock)
+		raise GroupParserException("End of generic list not found.", currentBlock)
 
 
 @Export
@@ -101,7 +101,7 @@ class GenericListItemGroup(Group):
 				parserState.ReIssue = True
 				return
 
-		raise BlockParserException("End of generic not found.", block)
+		raise GroupParserException("End of generic not found.", block)
 
 
 @Export
@@ -161,7 +161,7 @@ class PortListGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic list not found.", currentBlock)
+		raise GroupParserException("End of generic list not found.", currentBlock)
 
 
 @Export
@@ -178,7 +178,7 @@ class PortListItemGroup(Group):
 				parserState.ReIssue = True
 				return
 
-		raise BlockParserException("End of port not found.", block)
+		raise GroupParserException("End of port not found.", block)
 
 
 @Export
@@ -238,7 +238,7 @@ class ParameterListGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic list not found.", currentBlock)
+		raise GroupParserException("End of generic list not found.", currentBlock)
 
 
 @Export
@@ -255,7 +255,7 @@ class ParameterListItemGroup(Group):
 				parserState.ReIssue = True
 				return
 
-		raise BlockParserException("End of parameter not found.", block)
+		raise GroupParserException("End of parameter not found.", block)
 
 
 @Export
@@ -315,7 +315,7 @@ class SensitivityListGroup(Group):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
 			return
 
-		raise BlockParserException("End of generic list not found.", currentBlock)
+		raise GroupParserException("End of generic list not found.", currentBlock)
 
 
 @Export

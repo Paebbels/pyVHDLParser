@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken, SpaceToken
 from pyVHDLParser.Token.Keywords      import InKeyword, ForKeyword, LoopKeyword, BoundaryToken, IdentifierToken, StringToken
-from pyVHDLParser.Blocks              import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
@@ -59,7 +59,7 @@ class IteratorBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword FOR.", token)
+		raise BlockParserException("Expected whitespace after keyword FOR.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -92,7 +92,7 @@ class IteratorBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected iterator name (identifier).", token)
+		raise BlockParserException("Expected iterator name (identifier).", token)
 
 	@classmethod
 	def stateIteratorName(cls, parserState: ParserState):
@@ -109,7 +109,7 @@ class IteratorBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after iterator name.", token)
+		raise BlockParserException("Expected whitespace after iterator name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -141,7 +141,7 @@ class IteratorBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword IN after iterator name.", token)
+		raise BlockParserException("Expected keyword IN after iterator name.", token)
 
 	@classmethod
 	def stateInKeyword(cls, parserState: ParserState):
@@ -165,7 +165,7 @@ class IteratorBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise TokenParserException("Expected '(' or whitespace after keyword IN.", token)
+		raise BlockParserException("Expected '(' or whitespace after keyword IN.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):

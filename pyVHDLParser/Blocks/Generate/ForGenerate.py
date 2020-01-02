@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Blocks                    import Block, TokenParserException, ParserState
+from pyVHDLParser.Blocks                    import Block, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generate           import EndGenerateBlock as EndGenerateBlockBase
@@ -79,7 +79,7 @@ class RangeBlock(Block):
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -118,7 +118,7 @@ class RangeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateGenerateName(cls, parserState: ParserState):
@@ -151,7 +151,7 @@ class RangeBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -191,7 +191,7 @@ class RangeBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -232,13 +232,13 @@ class RangeBlock(Block):
 				parserState.NextState = BeginBlock.stateBeginKeyword
 				return
 			else:
-				raise TokenParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 @Export
@@ -278,13 +278,13 @@ class BeginBlock(Block):
 				newToken =                EndKeyword(token)
 				parserState.NextState =   EndGenerateBlock.stateEndKeyword
 			else:
-				raise TokenParserException(errorMessage, token)
+				raise BlockParserException(errorMessage, token)
 
 			parserState.NewToken =      newToken
 			parserState.TokenMarker =   newToken
 			return
 
-		raise TokenParserException(errorMessage, token)
+		raise BlockParserException(errorMessage, token)
 
 
 @Export

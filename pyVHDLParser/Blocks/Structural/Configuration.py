@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import LinebreakToken, StringToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import ConfigurationKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks                    import TokenParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 
@@ -72,7 +72,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 
-		raise TokenParserException("Expected whitespace after keyword CONFIGURATION.", token)
+		raise BlockParserException("Expected whitespace after keyword CONFIGURATION.", token)
 
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
@@ -104,7 +104,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected configuration name (identifier).", token)
+		raise BlockParserException("Expected configuration name (identifier).", token)
 
 	@classmethod
 	def stateConfigurationName(cls, parserState: ParserState):
@@ -121,7 +121,7 @@ class NameBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise TokenParserException("Expected whitespace after configuration name.", token)
+		raise BlockParserException("Expected whitespace after configuration name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -153,7 +153,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise TokenParserException("Expected keyword IS after configuration name.", token)
+		raise BlockParserException("Expected keyword IS after configuration name.", token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: ParserState):
@@ -188,7 +188,7 @@ class NameBlock(Block):
 				parserState.NextState = EndBlock.stateEndKeyword
 				return
 
-		raise TokenParserException(
+		raise BlockParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
 					[kw.__KEYWORD__.upper() for kw in cls.KEYWORDS]
