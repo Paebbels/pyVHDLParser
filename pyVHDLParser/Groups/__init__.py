@@ -194,7 +194,7 @@ class ParserState:
 			self.ReIssue = True
 			while self.ReIssue:
 				self.ReIssue = False
-				if self.debug: print("{DARK_GRAY}state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **LineTerminal.Foreground))
+				LineTerminal().WriteDryRun("{DARK_GRAY}reissue state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **LineTerminal.Foreground))
 				self.NextState(self)
 
 				# yield a new group

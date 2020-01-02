@@ -29,8 +29,6 @@
 # ==============================================================================
 #
 # load dependencies
-from pyTerminalUI import LineTerminal
-
 from pyVHDLParser.Decorators      import Export
 from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, StringToken, LiteralToken, SpaceToken, LinebreakToken, CommentToken
 from pyVHDLParser.Token           import MultiLineCommentToken, IndentationToken, SingleLineCommentToken
@@ -239,12 +237,8 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 			elif (token == ")"):
 				if (parserState.Counter == 0):
 					parserState.NewToken =    BoundaryToken(token)
-					# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
-					# i = 1
-					# LineTerminal().WriteDebug("Parserstate.stack:")
-					# for stackElement in parserState._stack:
-						# LineTerminal().WriteDebug("  {0}: {1!s}".format(i, stackElement))
-						# i += 1
+					parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+
 					parserState.Pop(3, tokenMarker=parserState.NewToken)
 					return
 				else:

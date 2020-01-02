@@ -146,7 +146,7 @@ class ParserState:
 				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 				# update topmost TokenMarker
 				if (self._tokenMarker is token.PreviousToken):
-					LineTerminal().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
+					# XXX: LineTerminal().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
 					self._tokenMarker = self.NewToken
 
 				token.PreviousToken = self.NewToken
@@ -169,7 +169,7 @@ class ParserState:
 				yield self.LastBlock
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-			LineTerminal().WriteDebug("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **LineTerminal.Foreground))
+			# XXX: LineTerminal().WriteDebug("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **LineTerminal.Foreground))
 			# execute a state
 			self.NextState(self)
 
