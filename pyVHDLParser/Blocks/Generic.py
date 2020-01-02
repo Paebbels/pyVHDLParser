@@ -45,6 +45,8 @@ __api__ = __all__
 
 @Export
 class DeclarativeRegion(metaclass=MetaBlock):
+	"""Base-class for all declarative region blocks."""
+
 	BEGIN_BLOCK : BeginBlock = None
 	END_BLOCK :   EndBlock =   None
 
@@ -116,6 +118,8 @@ class DeclarativeRegion(metaclass=MetaBlock):
 
 @Export
 class ConcurrentDeclarativeRegion(DeclarativeRegion):
+	"""Base-class for all concurrent declarative region blocks."""
+
 	@classmethod
 	def __cls_init__(cls):
 		super().__cls_init__()
@@ -131,6 +135,8 @@ class ConcurrentDeclarativeRegion(DeclarativeRegion):
 
 @Export
 class SequentialDeclarativeRegion(DeclarativeRegion):
+	"""Base-class for all sequential declarative region blocks."""
+
 	@classmethod
 	def __cls_init__(cls):
 		super().__cls_init__()

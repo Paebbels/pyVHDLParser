@@ -72,7 +72,7 @@ Main Goals
   * Assemble a document-object-model (Code-DOM)
   * Provide an API for code introspection
 
-**See chapter :ref:`goal` for details.**
+See chapter :ref:`goal` for details.
 
 
 Use Cases
@@ -230,6 +230,7 @@ This library is licensed under **Apache License 2.0**.
 
    ChangeLog/index
    License
+   Glossary
    genindex
    py-modindex
 

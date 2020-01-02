@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 from types                          import FunctionType
+from typing                         import List
 
 from pyTerminalUI                   import LineTerminal
 
@@ -161,10 +162,20 @@ class ParserState:
 
 @Export
 class MetaBlock(type):
-	BLOCKS = []
+	"""
+	A :term:`meta-class` to construct *Block* classes.
 
-	"""Register all state*** methods in an array called '__STATES__'"""
+	Modifications done by this meta-class:
+
+	* Register all classes of type :class:`Block` or derived variants in a class field :attr:`Block.BLOCKS` in this meta-class.
+	* Register all method of name `state....` in the constructed class' attribute :attr:`Block.__STATES__`.
+	"""
+
+	BLOCKS = []     #: List of all classes of type :class:`Block` or derived variants
+
 	def __new__(cls, className, baseClasses, classMembers : dict):
+		# """Register all state*** methods in a list called `__STATES__`."""
+
 		states = []
 		for memberName, memberObject in classMembers.items():
 			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
@@ -179,9 +190,21 @@ class MetaBlock(type):
 
 @Export
 class Block(metaclass=MetaBlock):
-	__STATES__ = None
+	"""
+	Base-class for all :term:`block` classes.
+	"""
+
+	__STATES__ :      List =   None   #: List of all `state...` methods in this class.
+
+	_previousBlock : 'Block' = None   #: Reference to the previous block.
+	NextBlock :      'Block' = None   #: Reference to the next block.
+	StartToken :     Token =   None   #: Reference to the first token in the scope of this block.
+	EndToken :       Token =   None   #: Reference to the last token in the scope of this block.
+	MultiPart :      bool =    None   #: True, if this block has multiple parts.
 
 	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
+		"""Base-class constructor for a new block instance."""
+
 		previousBlock.NextBlock =       self
 		self._previousBlock : 'Block' = previousBlock
 		self.NextBlock      : 'Block' = None
@@ -190,9 +213,12 @@ class Block(metaclass=MetaBlock):
 		self.MultiPart =                multiPart
 
 	def __len__(self):
+		"""Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1
 
 	def __iter__(self):
+		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
+
 		token = self.StartToken
 		while (token is not self.EndToken):
 			yield token
@@ -241,32 +267,40 @@ class Block(metaclass=MetaBlock):
 
 	@property
 	def Length(self):
+		"""Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return len(self)
 
 	@property
 	def States(self):
+		"""Returns a list of all `state...` methods in this class."""
 		return self.__STATES__
 
 	@classmethod
 	def stateError(cls, parserState: ParserState):
+		"""Predefined state to catch error situations."""
 		raise TokenParserException("Reached unreachable state!")
 
 
 @Export
 class SkipableBlock(Block):
+	"""Base-class for blocks that can be skipped in fast-forward scanning."""
 	pass
 
 @Export
 class FinalBlock(Block):
+	"""Base-class for blocks that are final in a fast-forward scanning."""
 	pass
 
 @Export
 class CommentBlock(SkipableBlock):
+	"""Base-class for all comment blocks."""
 	pass
 
 
 @Export
 class StartOfBlock(Block):
+	"""Base-class for a first block in a sequence of double-linked blocks."""
+
 	def __init__(self, startToken):
 		self._previousBlock =     None
 		self.NextBlock =          None
@@ -288,6 +322,8 @@ class StartOfBlock(Block):
 
 @Export
 class EndOfBlock(Block):
+	"""Base-class for a last block in a sequence of double-linked blocks."""
+
 	def __init__(self, endToken):
 		self._previousBlock =     None
 		self.NextBlock =          None
@@ -309,6 +345,8 @@ class EndOfBlock(Block):
 
 @Export
 class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
+	"""First block in a sequence of double-linked blocks."""
+
 	KEYWORDS = None
 
 	@classmethod
@@ -369,6 +407,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 @Export
 class EndOfDocumentBlock(EndOfBlock, EndOfDocument):
+	"""Last block in a sequence of double-linked blocks."""
 	pass
 
 @Export
