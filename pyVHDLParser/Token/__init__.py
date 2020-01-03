@@ -38,7 +38,23 @@ __api__ = __all__
 
 @Export
 class Token:
+	"""Base-class for all token classes."""
+
+	_previousToken :  'Token' =             None    #: Reference to the previous token
+	_NextToken :      'Token' =             None    #: Reference to the next token
+	Start :           SourceCodePosition =  None    #: Position for the token start
+	End :             SourceCodePosition =  None    #: Position for the token end
+
 	def __init__(self, previousToken, start, end=None):
+		"""
+		Initializes a token object.
+
+		While initialization, the following additional tasks are done:
+
+		* link this token to previous token.
+		* link previous token to this token.
+		"""
+
 		previousToken.NextToken = self
 		self._previousToken : Token =               previousToken
 		self.NextToken      : Token =               None
@@ -66,13 +82,30 @@ class Token:
 
 @Export
 class ValuedToken(Token):
+	"""
+	Base-class for all *valued* token.
+
+	A ValuedToken contains a :attr:`Value` field for the underlying string from the source code file.
+	"""
+
+	Value : str = None  #: String value of this token.
+
 	def __init__(self, previousToken, value, start, end=None):
+		"""Initializes a *valued* token object."""
+
 		super().__init__(previousToken, start, end)
 		self.Value : str =  value
 
-	def __eq__(self, other):  return self.Value == other
-	def __ne__(self, other):  return self.Value != other
-	def __hash__(self):       return super().__hash__()
+	def __eq__(self, other : str):
+		"""Return true if the internal value is equal to the second operand."""
+		return self.Value == other
+
+	def __ne__(self, other : str):
+		"""Return true if the internal value is unequal to the second operand."""
+		return self.Value != other
+
+	def __hash__(self):
+		return super().__hash__()
 
 	def __str__(self):
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
@@ -82,31 +115,20 @@ class ValuedToken(Token):
 			)
 
 
-# class SuperToken(Token):
-# 	def __init__(self, startToken, endToken=None):
-# 		super().__init__(startToken.PreviousToken, startToken.Start, endToken.End if endToken else None)
-# 		self.StartToken = startToken
-# 		self.EndToken =   endToken
-#
-# 	def __iter__(self):
-# 		token = self.StartToken
-# 		while (token is not self.EndToken):
-# 			yield token
-# 			token = token.NextToken
-# 		yield self.EndToken
-
-
 @Export
 class StartOfToken(Token):
-	"""Meta token representing the start of a token stream."""
+	"""Base-class for meta-tokens representing the start of a token stream."""
 
 	def __init__(self):
+		"""Initializes a StartOfToken object."""
+
 		self._previousToken =     None
 		self._nextToken =         None
 		self.Start =              SourceCodePosition(1, 1, 1)
 		self.End =                None
 
 	def __len__(self):
+		"""Returns always 0."""
 		return 0
 
 	def __str__(self):
@@ -117,9 +139,11 @@ class StartOfToken(Token):
 
 @Export
 class EndOfToken(Token):
-	"""Meta token representing the end of a token stream."""
+	"""Base-class for meta-tokens representing the end of a token stream."""
 
 	def __init__(self, previousToken, end):
+		"""Initializes a EndOfToken object."""
+
 		previousToken.NextToken =     self
 		self._previousToken : Token = previousToken
 		self._nextToken =             None
@@ -127,6 +151,7 @@ class EndOfToken(Token):
 		self.End =                    end
 
 	def __len__(self):
+		"""Returns always 0."""
 		return 0
 
 	def __str__(self):
@@ -157,6 +182,11 @@ class CharacterToken(ValuedToken):
 	"""Token representing a single character."""
 
 	def __init__(self, previousToken, value, start):
+		"""
+		Initializes a CharacterToken object.
+
+		This class is used for single characters, thus: :attr:`Start` = :attr:`End`.
+		"""
 		super().__init__(previousToken, value, start=start, end=start)
 
 	def __len__(self):
@@ -185,10 +215,14 @@ class CharacterToken(ValuedToken):
 
 @Export
 class FusedCharacterToken(CharacterToken):
+	"""Token representing a double (or triple) character."""
+
 	def __init__(self, previousToken, value, start, end):
+		"""Initializes a FusedCharacterToken object."""
 		super().__init__(previousToken, value, start=start)
 		self.End = end
 
+	# FIXME: check if base-base class implementation could solve this question.
 	def __len__(self):
 		return len(self.Value)
 
@@ -205,6 +239,7 @@ class FusedCharacterToken(CharacterToken):
 
 @Export
 class SpaceToken(ValuedToken):
+	"""Token representing a space (space or tab)."""
 	def __str__(self):
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 			name=self.__class__.__name__,
@@ -215,10 +250,12 @@ class SpaceToken(ValuedToken):
 
 @Export
 class StringToken(ValuedToken):
-	def __eq__(self, other):  return self.Value == other
-	def __ne__(self, other):  return self.Value != other
-	def __le__(self, other):  return self.Value.lower() == other
-	def __ge__(self, other):  return self.Value.upper() == other
+	"""Token representing a string."""
+
+	def __eq__(self, other : str):  return self.Value == other
+	def __ne__(self, other : str):  return self.Value != other
+	def __le__(self, other : str):  return self.Value.lower() == other
+	def __ge__(self, other : str):  return self.Value.upper() == other
 	def __hash__(self):       return super().__hash__()
 
 	def __str__(self):
@@ -231,10 +268,12 @@ class StringToken(ValuedToken):
 
 @Export
 class VHDLToken(ValuedToken):
-	pass
+	"""Base-class for all VHDL specific tokens."""
 
 @Export
 class CommentToken(VHDLToken):
+	"""Token representing a comment in VHDL."""
+
 	def __str__(self):
 		value = self.Value
 		value = value.replace("\n", "\\n")
@@ -248,7 +287,19 @@ class CommentToken(VHDLToken):
 
 
 @Export
+class SingleLineCommentToken(CommentToken):
+	"""Token representing a single-line comment."""
+
+
+@Export
+class MultiLineCommentToken(CommentToken):
+	"""Token representing a multi-line comment."""
+
+
+@Export
 class LiteralToken(VHDLToken):
+	"""base-class for all literals in VHDL."""
+
 	def __eq__(self, other):  return self.Value == other
 	def __ne__(self, other):  return self.Value != other
 	def __hash__(self):       return super().__hash__()
@@ -263,16 +314,23 @@ class LiteralToken(VHDLToken):
 
 @Export
 class IntegerLiteralToken(LiteralToken):
-	pass
+	"""Token representing an integer literal."""
 
 @Export
 class RealLiteralToken(LiteralToken):
-	pass
+	"""Token representing a real literal."""
 
 
 @Export
 class CharacterLiteralToken(LiteralToken):
+	"""Token representing a character literal in VHDL."""
+
 	def __init__(self, previousToken, value, start, end):
+		"""
+		Initializes a CharacterLiteralToken object.
+
+		Single quotes are omitted in the :attr:`Value`.
+		"""
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
@@ -285,7 +343,14 @@ class CharacterLiteralToken(LiteralToken):
 
 @Export
 class StringLiteralToken(LiteralToken):
+	"""Token representing a string literal in VHDL."""
+
 	def __init__(self, previousToken, value, start, end):
+		"""
+		Initializes a CharacterLiteralToken object.
+
+		Double quotes are omitted in the :attr:`Value`.
+		"""
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
@@ -298,7 +363,14 @@ class StringLiteralToken(LiteralToken):
 
 @Export
 class BitStringLiteralToken(LiteralToken):
+	"""Token representing a bit-string literal in VHDL."""
+
 	def __init__(self, previousToken, value, start, end):
+		"""
+		Initializes a BitStringLiteralToken object.
+
+		Double quotes are omitted in the :attr:`Value`.
+		"""
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __str__(self):
@@ -311,28 +383,8 @@ class BitStringLiteralToken(LiteralToken):
 
 @Export
 class ExtendedIdentifier(VHDLToken):
-	def __init__(self, previousToken, value, start, end):
-		super().__init__(previousToken, value, start=start, end=end)
+	"""Token representing an extended identifier in VHDL."""
 
-	def __eq__(self, other):  return self.Value == other
-	def __ne__(self, other):  return self.Value != other
-	def __hash__(self):       return super().__hash__()
-
-	def __str__(self):
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-				name=self.__class__.__name__,
-				value="'" + self.Value + "'  ",
-				pos=self.Start
-			)
-
-
-@Export
-class SingleLineCommentToken(CommentToken):
-	pass
-
-@Export
-class MultiLineCommentToken(CommentToken):
-	pass
 
 @Export
 class DirectiveToken(CommentToken):
@@ -341,6 +393,8 @@ class DirectiveToken(CommentToken):
 
 @Export
 class LinebreakToken(VHDLToken):
+	"""Token representing a linebreak in the source code file."""
+
 	def __str__(self):
 		return "<{name:-<111} at {pos!r}>".format(
 				name=self.__class__.__name__ + "  ",
@@ -350,6 +404,8 @@ class LinebreakToken(VHDLToken):
 
 @Export
 class IndentationToken(SpaceToken):
+	"""Token representing an indentation in a source code line."""
+
 	def __str__(self):
 		value = self.Value
 		value = value.replace("\t", "\\t")

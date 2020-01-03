@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators    import Export
-from pyVHDLParser.Token         import StringToken, VHDLToken
+from pyVHDLParser.Token         import Token, StringToken, VHDLToken
 from pyVHDLParser.Token.Parser  import TokenizerException
 
 __all__ = []
@@ -38,90 +38,136 @@ __api__ = __all__
 
 
 @Export
-class BoundaryToken(VHDLToken):
-	def __init__(self, spaceToken):
-		super().__init__(spaceToken.PreviousToken, spaceToken.Value, spaceToken.Start, spaceToken.End)
+class SpecificVHDLToken(VHDLToken):
+	"""Base-class for all specific tokens.
+
+	Simple token will be converted to specific tokens while parsing.
+	The internal data is copied, and the original token is replaced by this token.
+	"""
+
+	def __init__(self, token : Token):
+		"""
+		Initialize a specific token, by copying the simple token's data and link
+		this new token to the previous token as a replacement.
+		"""
+		super().__init__(token.PreviousToken, token.Value, token.Start, token.End)
 
 
 @Export
-class BracketToken(VHDLToken):
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
+class BoundaryToken(SpecificVHDLToken):
+	"""
+	Token representing a boundary between (reserved) words.
 
+	In many cases, a :class:`SpaceToken`, :class:`CommentToken`,
+	:class:`LinebreakToken` or :class:`CharacterToken` becomes a BoundaryToken.
+	"""
+
+# ==============================================================================
+# Bracket tokens: (), [], {}, <>
+# ==============================================================================
+@Export
+class BracketToken(SpecificVHDLToken):
+	"""Base-class for all bracket tokens: ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, ``<`` and ``>``."""
 
 # Round bracket / parenthesis / ()
+# ----------------------------------------------------------
 @Export
 class RoundBracketToken(BracketToken):
-	pass
+	"""Base-class for all round bracket tokens: ``(`` and ``)``."""
+
 @Export
 class OpeningRoundBracketToken(RoundBracketToken):
-	pass
+	"""Token representing an opening round bracket: ``(``."""
+
 @Export
 class ClosingRoundBracketToken(RoundBracketToken):
-	pass
+	"""Token representing a closing round bracket: ``)``."""
 
 # Square bracket / []
+# ----------------------------------------------------------
 @Export
 class SquareBracketToken(BracketToken):
-	pass
+	"""Base-class for all square bracket tokens: ``[`` and ``]``."""
+
 @Export
 class OpeningSquareBracketToken(SquareBracketToken):
-	pass
+	"""Token representing an square round bracket: ``[``."""
+
 @Export
 class ClosingSquareBracketToken(SquareBracketToken):
-	pass
+	"""Token representing a closing square bracket: ``]``."""
 
 # Curly bracket / brace / curved bracket / {}
+# ----------------------------------------------------------
 @Export
 class CurlyBracketToken(BracketToken):
-	pass
+	"""Base-class for all curly bracket tokens: ``{`` and ``}``."""
+
 @Export
 class OpeningCurlyBracketToken(CurlyBracketToken):
-	pass
+	"""Token representing an opening curly bracket: ``{``."""
+
 @Export
 class ClosingCurlyBracketToken(CurlyBracketToken):
-	pass
+	"""Token representing a closing curly bracket: ``}``."""
 
 # Angle bracket / arrow bracket / <>
+# ----------------------------------------------------------
 @Export
 class AngleBracketToken(BracketToken):
-	pass
+	"""Base-class for all angle bracket tokens: ``<`` and ``>``."""
+
 @Export
 class OpeningAngleBracketToken(AngleBracketToken):
-	pass
+	"""Token representing an opening angle bracket: ``<``."""
+
 @Export
 class ClosingAngleBracketToken(AngleBracketToken):
-	pass
+	"""Token representing a closing angle bracket: ``>``."""
 
-
+# ==============================================================================
+# Operator tokens: +, -, *, /, **, &
+# ==============================================================================
 @Export
-class OperatorToken(VHDLToken):
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
-
+class OperatorToken(SpecificVHDLToken):
+	"""Base-class for all operator tokens."""
 
 @Export
 class PlusOperator(OperatorToken):
-	pass
-@Export
-class MinusOperator(OperatorToken):
-	pass
-@Export
-class MultiplyOperator(OperatorToken):
-	pass
-@Export
-class DivideOperator(OperatorToken):
-	pass
-@Export
-class PowerOperator(OperatorToken):
-	pass
-@Export
-class ConcatOperator(OperatorToken):
-	pass
+	"""Token representing a plus operator: ``+``."""
+	__KEYWORD__ = "+"
 
 @Export
+class MinusOperator(OperatorToken):
+	"""Token representing a minus operator: ``-``."""
+	__KEYWORD__ = "-"
+
+@Export
+class MultiplyOperator(OperatorToken):
+	"""Token representing a multiply operator: ``*``."""
+	__KEYWORD__ = "*"
+
+@Export
+class DivideOperator(OperatorToken):
+	"""Token representing a divide operator: ``/``."""
+	__KEYWORD__ = "/"
+
+@Export
+class PowerOperator(OperatorToken):
+	"""Token representing a power operator: ``**``."""
+	__KEYWORD__ = "**"
+
+@Export
+class ConcatOperator(OperatorToken):
+	"""Token representing a concat operator: ``&``."""
+	__KEYWORD__ = "&"
+
+# Relational operatrors
+# ----------------------------------------------------------
+@Export
 class RelationalOperator(OperatorToken):
-	pass
+	"""Base-class for all relational operator tokens."""
+
 @Export
 class EqualOperator(RelationalOperator):
 	__KEYWORD__ = "="
@@ -161,21 +207,22 @@ class MatchingGreaterThanOrEqualOperator(RelationalOperator):
 
 
 @Export
-class DelimiterToken(VHDLToken):
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
+class DelimiterToken(SpecificVHDLToken):
+	"""
+	Token representing a delimiter sign in between list items.
+
+	This token is usually created from a :class:`CharacterToken` with values ``,``
+	or ``;``.
+	"""
 
 
 @Export
-class EndToken(VHDLToken):
-	def __init__(self, characterToken):
-		super().__init__(characterToken.PreviousToken, characterToken.Value, characterToken.Start, characterToken.End)
-
+class EndToken(SpecificVHDLToken):
+	pass
 
 @Export
-class IdentifierToken(VHDLToken):
-	def __init__(self, stringToken):
-		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
+class IdentifierToken(SpecificVHDLToken):
+	pass
 
 
 @Export
@@ -184,15 +231,13 @@ class RepeatedIdentifierToken(IdentifierToken):
 
 
 @Export
-class SimpleNameToken(VHDLToken):
-	def __init__(self, stringToken):
-		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
+class SimpleNameToken(SpecificVHDLToken):
+	pass
 
 
 @Export
-class LabelToken(VHDLToken):
-	def __init__(self, stringToken):
-		super().__init__(stringToken.PreviousToken, stringToken.Value, stringToken.Start, stringToken.End)
+class LabelToken(SpecificVHDLToken):
+	pass
 
 
 @Export
