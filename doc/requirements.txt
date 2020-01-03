@@ -7,4 +7,5 @@ sphinxcontrib-autoprogram>=0.1.5
 # sphinxcontrib-textstyle>=0.2.1
 # sphinxcontrib-spelling>=2.2.0
 autoapi
+sphinx_fontawesome>=0.0.6
 # changelog>=0.3.5

@@ -218,16 +218,29 @@ class DelimiterToken(SpecificVHDLToken):
 
 @Export
 class EndToken(SpecificVHDLToken):
-	pass
+	"""
+	Token representing an end of a statement.
+
+	This token is usually created from a :class:`CharacterToken` with value ``;``.
+	"""
+
 
 @Export
 class IdentifierToken(SpecificVHDLToken):
-	pass
+	"""
+	Token representing an identifier.
+
+	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	"""
 
 
 @Export
 class RepeatedIdentifierToken(IdentifierToken):
-	pass
+	"""
+	Token representing a repeated identifier.
+
+	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	"""
 
 
 @Export
@@ -237,12 +250,20 @@ class SimpleNameToken(SpecificVHDLToken):
 
 @Export
 class LabelToken(SpecificVHDLToken):
-	pass
+	"""
+	Token representing a label.
+
+	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	"""
 
 
 @Export
 class RepeatedLabelToken(LabelToken):
-	pass
+	"""
+	Token representing a repeated label.
+
+	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	"""
 
 
 @Export
@@ -262,28 +283,38 @@ class MultiCharKeyword(VHDLToken):
 
 @Export
 class CommentKeyword(MultiCharKeyword):
-	pass
+	"""Base-class for all comment keywords: ``--``, ``/*`` and ``*/``."""
+
 @Export
 class SingleLineCommentKeyword(CommentKeyword):
+	"""Token representing a starting sequence for a single-line comment: ``--``."""
 	__KEYWORD__ = "--"
+
 @Export
 class MultiLineCommentKeyword(CommentKeyword):
-	pass
+	"""Base-class for all tokens related to multi-line comments: ``/*`` and ``*/``."""
+
 @Export
 class MultiLineCommentStartKeyword(MultiLineCommentKeyword):
+	"""Token representing a starting sequence for a multi-line comment: ``/*``."""
 	__KEYWORD__ = "/*"
 @Export
 class MultiLineCommentEndKeyword(MultiLineCommentKeyword):
+	"""Token representing a closing sequence for a multi-line comment: ``*/``."""
 	__KEYWORD__ = "*/"
 
 @Export
 class AssignmentKeyword(MultiCharKeyword):
-	pass
+	"""Base-class for all assignment keywords: ``:=`` and ``<=``."""
+
 @Export
 class VariableAssignmentKeyword(AssignmentKeyword):
+	"""Token representing a variable assignment: ``:=``."""
 	__KEYWORD__ = ":="
+
 @Export
 class SignalAssignmentKeyword(AssignmentKeyword):
+	"""Token representing a signal assignment: ``<=``."""
 	__KEYWORD__ = "<="
 
 @Export

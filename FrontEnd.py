@@ -353,20 +353,23 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		try:
 			for vhdlBlock in vhdlBlockStream:
 				if isinstance(vhdlBlock, (LinebreakBlock, IndentationBlock)):
-					print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, CommentBlock):
-					print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.NameBlock, Entity.EndBlock)):
-					print("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, (GenericList.OpenBlock, GenericList.DelimiterBlock, GenericList.CloseBlock)):
-					print("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
-					print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, (pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock,
 				                            pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)):
-					print("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				else:
-					print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+					self.WriteNormal("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
+
+				for token in vhdlBlock:
+					self.WriteVerbose(str(token))
 
 		except ParserException as ex:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))

@@ -180,6 +180,7 @@ extensions = [
 
 # Other extensions
 #	'DocumentMember',
+	'sphinx_fontawesome',
 # local extensions (patched)
 
 # local extensions (patched)
