@@ -202,8 +202,8 @@ This library is licensed under **Apache License 2.0**.
    TokenStream/index
    BlockStream/index
    GroupStream/index
-   DocumentObjectModel/index
    LanguageModel/index
+   DocumentObjectModel/index
 
 .. #
    SimulationModel/index

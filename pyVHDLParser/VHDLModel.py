@@ -30,6 +30,7 @@
 #
 # load dependencies
 from enum                     import Enum
+from typing                   import List
 
 from pyVHDLParser.Decorators  import Export
 
@@ -68,9 +69,13 @@ class LabledEntity:
 
 
 @Export
-class Model(ModelEntity):
+class Design(ModelEntity):
+	_libraries :  List =  []    #: List of all libraries defined for a design
+	_documents :  List =  []    #: List of all documents loaded for a design
+
 	def __init__(self):
 		super().__init__()
+
 		self._libraries = []
 		self._documents = []
 
@@ -85,8 +90,13 @@ class Model(ModelEntity):
 
 @Export
 class Library(ModelEntity):
+	_configurations : List =  []    #: List of all configurations defined in a library.
+	_entities :       List =  []    #: List of all entities defined in a library.
+	_packages :       List =  []    #: List of all packages defined in a library.
+
 	def __init__(self):
 		super().__init__()
+
 		self._configurations =  []
 		self._entities =        []
 		self._packages =        []
@@ -106,9 +116,18 @@ class Library(ModelEntity):
 
 @Export
 class Document(ModelEntity):
+	_contexts :       List =  []    #: List of all contexts defined in a document.
+	_configurations : List =  []    #: List of all configurations defined in a document.
+	_entities :       List =  []    #: List of all entities defined in a document.
+	_architectures :  List =  []    #: List of all architectures defined in a document.
+	_packages :       List =  []    #: List of all packages defined in a document.
+	_packageBodies :  List =  []    #: List of all package bodies defined in a document.
+
 	def __init__(self):
 		super().__init__()
+
 		self._contexts =        []
+		self._configurations =  []
 		self._entities =        []
 		self._architectures =   []
 		self._packages =        []
@@ -116,6 +135,8 @@ class Document(ModelEntity):
 
 	@property
 	def Contexts(self):       return self._contexts
+	@property
+	def Configurations(self): return self._configurations
 	@property
 	def Entities(self):       return self._entities
 	@property
@@ -548,7 +569,7 @@ class SubType(BaseType):
 	def __init__(self):
 		super().__init__()
 		self._type = None
-		
+
 	@property
 	def Type(self):
 		return self._type
@@ -579,7 +600,7 @@ class EnumeratedType(ScalarType):
 	def __init__(self):
 		super().__init__()
 		self._elements = []
-		
+
 	@property
 	def Elements(self):
 		return self._elements

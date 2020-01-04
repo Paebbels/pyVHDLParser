@@ -73,6 +73,9 @@ exclude_patterns = [
 	".DS_Store"
 ]
 
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'stata-dark'
+
 
 # ==============================================================================
 # Restructured Text settings

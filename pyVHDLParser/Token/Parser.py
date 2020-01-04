@@ -57,6 +57,8 @@ class TokenizerException(ParserException):
 @Export
 class Tokenizer:
 	class TokenKind(Enum):
+		"""Enumeration of all Tokenizer states."""
+
 		SpaceChars =                      0   #: Last char was a space
 		NumberChars =                     1   #: Last char was a digit
 		AlphaChars =                      2   #: Last char was a letter
