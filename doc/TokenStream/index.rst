@@ -1,4 +1,4 @@
-.. _tokenize:
+.. _tokstm:
 
 Stream of Tokens
 ################
@@ -11,6 +11,7 @@ token creation, the start and end position of a token is preserved as a
 In contrast to ordinary parsers, pyVHDLParser preserves cases, whitespaces (space,
 tab, ...), linebreaks and comments.
 
+
 **Condensed definition of class** :class:`~pyVHDLParser.SourceCodePosition`:
 
 .. code-block:: Python
@@ -21,6 +22,7 @@ tab, ...), linebreaks and comments.
      Row :       int = None    #: Row in the source code file
      Column :    int = None    #: Column (character) in the source code file's line
      Absolute :  int = None    #: Absolute character position regardless of linebreaks.
+
 
 **Condensed definition of class** :class:`~pyVHDLParser.Token.Token`:
 
@@ -42,7 +44,7 @@ tab, ...), linebreaks and comments.
 
 
 
-.. _tokenize-metatoken:
+.. _tokstm-metatoken:
 
 Meta Tokens
 ***********
@@ -53,7 +55,7 @@ a start and end of a token stream. These tokens have a length of ``0`` character
 
 
 
-.. _tokenize-sodt:
+.. _tokstm-sodt:
 
 StartOfDocumentToken
 ====================
@@ -65,12 +67,12 @@ and mixin :class:`~pyVHDLParser.StartOfDocument`.
 
 **Interitance diagram:**
 
-.. inheritance-diagram:: pyVHDLParser.Token.Parser.StartOfDocumentToken
+.. inheritance-diagram:: pyVHDLParser.Token.StartOfDocumentToken
    :parts: 1
 
 
 
-.. _tokenize-eodt:
+.. _tokstm-eodt:
 
 EndOfDocumentToken
 ==================
@@ -82,17 +84,17 @@ and mixin :class:`~pyVHDLParser.EndOfDocument`.
 
 **Interitance diagram:**
 
-.. inheritance-diagram:: pyVHDLParser.Token.Parser.EndOfDocumentToken
+.. inheritance-diagram:: pyVHDLParser.Token.EndOfDocumentToken
    :parts: 1
 
 
 
-.. _tokenize-simpletoken:
+.. _tokstm-simpletoken:
 
 Simple Tokens
 *************
 
-Simple tokens, are tokens created by the :ref:`tokenize-tokenizer`.
+Simple tokens, are tokens created by the :ref:`tokstm-tokenizer`.
 
 The tokenizer has no deep knowledge of the VHDL language, thus it can only detect
 a limited number of distinct tokens. These token require only a context of up to
@@ -171,9 +173,9 @@ two characters while parsing.
      node [shape=box];
 
      n1 [label="StartOfDocumentToken\n"];
-     n2 [label="StringToken\n'entity'"];
+     n2 [label="WordToken\n'entity'"];
      n3 [label="SpaceToken\n' '"];
-     n4 [label="StringToken\n'myEntity'"];
+     n4 [label="WordToken\n'myEntity'"];
      n5 [label="..."];
      n6 [label="EndOfDocumentToken\n"];
 
@@ -182,7 +184,7 @@ two characters while parsing.
 
 
 
-.. _tokenize-specifictoken:
+.. _tokstm-specifictoken:
 
 Specific Tokens
 ***************
@@ -193,7 +195,7 @@ Specific Tokens
 
 
 
-.. _tokenize-tokenizer:
+.. _tokstm-tokenizer:
 
 Tokenizer
 *********
