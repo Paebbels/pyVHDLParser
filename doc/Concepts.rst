@@ -5,8 +5,8 @@ Concepts
 
 .. _concept-passes:
 
-Passes
-******
+Multiple Passes
+***************
 
 The parser is implemented as a multiple-pass parser, so the gained knowledge is
 deepened pass-by-pass. More over, the parser is implemented as a
@@ -66,17 +66,88 @@ streaming-parser implemented with Python generators.
    * :fa:`square-o` Create statistics (SLoC, Comments vs. Code, ...)
 
 
+Object-Oriented Programming
+***************************
+
+Data Structures
+===============
+
+All internal data structures are implemented as classes with fields (Python
+calls it attributes), methods, properties (getter and setters) and references
+(pointers) to other instances of classes.
+
+All data is accompanied by its modification procedures in form of methods. New
+instances of a class can be created by calling the class and implicitly
+executing its initializer method ``__init__`` or by calling a classmethod to
+help constructing that instance.
+
+Inheritance
+===========
+
+pyVHDLParser makes heavy use of inheritance to share implementations and to
+allow other classes or a user to modify the behavior of all derived classes by
+modifying a single point.
+
+
+Multiple Inheritance (Mixins)
+=============================
+
+pyVHDLParser uses multiple inheritance via mixin classes. This allows e.g. an
+abstract definition of data models, which are later combined with a parser.
+
+
+Properties
+==========
+
+Instead of individual getter and setter methods, pyVHDLParser user Python
+properties.
+
+
+Overwriting
+===========
+
+.. todo::
+
+   Concepts -> OOP -> Overwriting
+
+Overloading
+===========
+
+.. todo::
+
+   Concepts -> OOP -> Overloading
+
+Meta-Classes
+============
+
+Some additional behaviour can be easier implemented by modifying the class
+constructing other classes. Python calls this a meta-class. One prominent
+example is :class:`type`.
+
+Type Annotations
+================
+
+pyVHDLParser uses type annotations in method parameter definitions and in
+class field declarations to give hints in IDEs and documentation, what objects
+of which types are expected.
+
 
 Double-Linked Lists
 *******************
 
-.. todo::
+Data structures with direct references (pointers) in general and double linked
+lists in specific are approaches to implement fast and typed navigation from
+object to object. If a reference has multiple endpoints, it is either an
+order-preserving :class:`list` or :class:`OrderedDict`.
 
-   Describe why pyVHDLParser uses double-linked lists.
+Many parts in pyVHDLParser form a chain of double-linked objects like tokens,
+blocks and groups. These object chains (or linked lists) can easily be
+:term:`iterated <iterator>`. Iterators can consume such  and reemit the content
+in a modified way.
 
-   * fast navigation
-   * iterable
-   * generator
+More over, such iterators can be packaged into Python generators.
+
+Iterators and generators can be used in Python's ``for`` [1]_ loops.
 
 
 
@@ -127,3 +198,8 @@ Code-DOM
    Describe what a Code-DOM is.
 
 
+------------------------
+
+.. rubric:: Footnotes:
+
+.. [1] Actually, Python's ``for``-loop is a ``foreach``-loop.

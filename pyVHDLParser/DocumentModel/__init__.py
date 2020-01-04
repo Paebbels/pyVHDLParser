@@ -30,6 +30,7 @@
 #
 from pathlib                         import Path
 
+from pyVHDLParser.Decorators         import Export
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Token.Parser       import Tokenizer
 from pyVHDLParser.Blocks             import TokenToBlockParser
@@ -38,18 +39,24 @@ from pyVHDLParser.Groups.DesignUnit  import EntityGroup, ArchitectureGroup, Pack
 from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel          import Document as DocumentModel
 
+__all__ = []
+__api__ = __all__
 
+
+@Export
 class DOMParserException(ParserException):
 	def __init__(self, message, group):
 		super().__init__(message)
 		self._group = group
 
 
+@Export
 class Document(DocumentModel):
 	def __init__(self, file):
 		from pyVHDLParser.DocumentModel.Reference import Use, Library
 
 		super().__init__()
+
 		self.__libraries  : list[Library] = []
 		self.__uses       : list[Use] =     []
 
