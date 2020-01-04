@@ -5,7 +5,7 @@ Stream of Blocks
 
 In the :ref:`second pass <concept-passes>` a stream of double-linked
 :class:`~pyVHDLParser.Token.Token` objects is read and grouped in another Python
-:term:`generator` to :term:`block`s. Blocks are again a chain of double-linked
+:term:`generator` to blocks. Blocks are again a chain of double-linked
 objects of base-class :class:`~pyVHDLParser.Blocks.Block`.
 
 
