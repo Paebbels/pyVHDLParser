@@ -45,7 +45,7 @@ class Token:
 	Start :           SourceCodePosition =  None    #: Position for the token start
 	End :             SourceCodePosition =  None    #: Position for the token end
 
-	def __init__(self, previousToken, start, end=None):
+	def __init__(self, previousToken : 'Token', start : SourceCodePosition, end :SourceCodePosition = None):
 		"""
 		Initializes a token object.
 
@@ -272,7 +272,7 @@ class VHDLToken(ValuedToken):
 
 @Export
 class CommentToken(VHDLToken):
-	"""Token representing a comment in VHDL."""
+	"""Base-class for comment tokens."""
 
 	def __str__(self):
 		value = self.Value

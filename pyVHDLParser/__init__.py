@@ -44,7 +44,15 @@ __api__ = __all__
 
 @Export
 class SourceCodePosition:
-	def __init__(self, row, column, absolute):
+	"""Represent a position (row, column, absolute) in a source code file."""
+
+	Row :       int = None    #: Row in the source code file
+	Column :    int = None    #: Column (character) in the source code file's line
+	Absolute :  int = None    #: Absolute character position regardless of linebreaks.
+
+	def __init__(self, row : int, column : int, absolute : int):
+		"""Initializes a SourceCodePosition object."""
+
 		self.Row =       row
 		self.Column =    column
 		self.Absolute =  absolute
@@ -58,24 +66,24 @@ class SourceCodePosition:
 
 @Export
 class StartOf:
-	pass
+	"""Base-class (mixin) for all StartOf*** classes."""
 
 @Export
 class StartOfDocument(StartOf):
-	pass
+	"""Base-class (mixin) for all StartOf***Document classes."""
 
 @Export
 class StartOfSnippet(StartOf):
-	pass
+	"""Base-class (mixin) for all StartOf***Snippet classes."""
 
 @Export
 class EndOf:
-	pass
+	"""Base-class (mixin) for all EndOf*** classes."""
 
 @Export
 class EndOfDocument(EndOf):
-	pass
+	"""Base-class (mixin) for all EndOf***Document classes."""
 
 @Export
 class EndOfSnippet(EndOf):
-	pass
+	"""Base-class (mixin) for all EndOf***Snippet classes."""
