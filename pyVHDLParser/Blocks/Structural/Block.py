@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators               import Export
-from pyVHDLParser.Token                    import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token                    import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords           import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, AssertKeyword, BlockKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
@@ -127,7 +127,7 @@ class NameBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateBlockName
 			return
@@ -199,7 +199,7 @@ class NameBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion

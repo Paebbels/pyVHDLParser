@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -158,7 +158,7 @@ class OpenBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     ItemBlock.stateItemRemainder
@@ -215,7 +215,7 @@ class DelimiterBlock(SkipableBlock):
 		elif isinstance(token, SpaceToken):
 			parserState.NextState =     OpenBlock.stateOpeningParenthesis
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     ItemBlock.stateItemRemainder

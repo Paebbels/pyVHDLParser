@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
+from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
@@ -59,7 +59,7 @@ class ArrowBlock(SequentialBeginBlock):
 	@classmethod
 	def stateSequentialRegion(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "when")):
+		if (isinstance(token, WordToken) and (token <= "when")):
 			newToken =                WhenKeyword(token)
 			parserState.NewToken =    newToken
 			parserState.TokenMarker = newToken
@@ -166,7 +166,7 @@ class IsBlock(SequentialBeginBlock):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == "when"):
 				newToken =                WhenKeyword(token)

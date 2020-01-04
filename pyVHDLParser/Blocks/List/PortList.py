@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators              import Export
-from pyVHDLParser.Token                   import CharacterToken, StringToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
@@ -53,7 +53,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			if (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
 				parserState.PushState =   PortListInterfaceSignalBlock.stateSignalKeyword
@@ -163,7 +163,7 @@ class OpenBlock(Block):
 			parserState.Pop()
 			parserState.TokenMarker = token
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			if (token <= "signal"):
 				parserState.NewToken =    SignalKeyword(token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter

@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
+from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Blocks                    import Block, CommentBlock, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -116,7 +116,7 @@ class OpenBlock(Block):
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
@@ -166,7 +166,7 @@ class OpenBlock2(Block):
 	@classmethod
 	def stateAfterSensitivityList(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in OpenBlock2.KEYWORDS:
@@ -207,7 +207,7 @@ class OpenBlock2(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:

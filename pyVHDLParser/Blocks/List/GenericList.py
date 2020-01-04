@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators              import Export
 from pyVHDLParser.Token                   import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, ConstantKeyword, TypeKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
-from pyVHDLParser.Token.Parser            import SpaceToken, StringToken
+from pyVHDLParser.Token.Parser            import SpaceToken, WordToken
 from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
@@ -54,7 +54,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
@@ -181,7 +181,7 @@ class OpenBlock(Block):
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
 			parserState.Pop(1, token)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter

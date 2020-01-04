@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import LinebreakToken, StringToken, SpaceToken, CommentToken, IndentationToken
+from pyVHDLParser.Token           import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
@@ -86,7 +86,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:
@@ -179,7 +179,7 @@ class ConcurrentBeginBlock(BeginBlock):
 			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:
@@ -252,7 +252,7 @@ class SequentialBeginBlock(BeginBlock):
 			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:

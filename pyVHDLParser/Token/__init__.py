@@ -249,7 +249,7 @@ class SpaceToken(ValuedToken):
 
 
 @Export
-class StringToken(ValuedToken):
+class WordToken(ValuedToken):
 	"""Token representing a string."""
 
 	def __eq__(self, other : str):  return self.Value == other

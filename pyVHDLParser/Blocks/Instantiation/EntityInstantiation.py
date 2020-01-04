@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, FinalBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
@@ -103,7 +103,7 @@ class EntityInstantiationBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateEntityInstantiationName
 			return

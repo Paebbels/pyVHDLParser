@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
+from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, ProcedureKeyword, ReportKeyword
 from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, ParserState
@@ -101,7 +101,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace0(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateFunctionName
 			return
@@ -146,7 +146,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateFunctionName
 			return
@@ -209,7 +209,7 @@ class NameBlock(Block):
 			parserState.PushState =   ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter =     1
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "return"):
 				parserState.NewToken =    ReturnKeyword(token)
@@ -256,7 +256,7 @@ class ReturnTypeBlock(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			if (token <= "return"):
 				parserState.NewToken =    ReturnKeyword(token)
 				# parserState.NewBlock =    NameBlock2(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
@@ -278,7 +278,7 @@ class ReturnTypeBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "return")):
+		if (isinstance(token, WordToken) and (token <= "return")):
 			parserState.NewToken =      ReturnKeyword(token)
 			parserState.NextState =     cls.stateReturnKeyword
 			return
@@ -328,7 +328,7 @@ class ReturnTypeBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateReturnType
 			return
@@ -384,7 +384,7 @@ class ReturnTypeBlock(Block):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion

@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import SpaceToken, LinebreakToken, StringToken, IndentationToken, CharacterToken
+from pyVHDLParser.Token           import SpaceToken, LinebreakToken, WordToken, IndentationToken, CharacterToken
 from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, EndToken, SeverityKeyword
 from pyVHDLParser.Blocks          import Block, CommentBlock, ParserState, BlockParserException
@@ -62,7 +62,7 @@ class ReportBlock(Block):
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateMessage
 			return
@@ -119,7 +119,7 @@ class ReportBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif (isinstance(token, StringToken) and (token <= "severity")):
+		elif (isinstance(token, WordToken) and (token <= "severity")):
 			parserState.NewToken =    SeverityKeyword(token)
 			parserState.NextState =   cls.stateSeverityKeyword
 			return
@@ -166,7 +166,7 @@ class ReportBlock(Block):
 	@classmethod
 	def stateWhitespace5(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateSeverityLevel
 			return

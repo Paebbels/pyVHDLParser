@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators                import Export
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
-from pyVHDLParser.Token.Keywords            import StringToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, ImpureKeyword, PureKeyword
+from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
 from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -84,7 +84,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateProcedureName
 			return
@@ -147,7 +147,7 @@ class NameBlock(Block):
 			parserState.PushState =     ParameterList.OpenBlock.stateOpeningParenthesis
 			parserState.Counter =       1
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "is"):
 				parserState.NewToken =    IsKeyword(token)
@@ -200,7 +200,7 @@ class VoidBlock(Block):
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			if (token <= "is"):
 				parserState.NewToken =    IsKeyword(token)
 				parserState.NewBlock =    VoidBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
@@ -222,7 +222,7 @@ class VoidBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "is")):
+		if (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion
 			return

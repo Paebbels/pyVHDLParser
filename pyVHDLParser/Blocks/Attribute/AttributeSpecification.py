@@ -37,7 +37,7 @@ from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommen
 __all__ = []
 __api__ = __all__
 
-from pyVHDLParser.Token import CharacterToken, LinebreakToken, SpaceToken, StringToken
+from pyVHDLParser.Token import CharacterToken, LinebreakToken, SpaceToken, WordToken
 from pyVHDLParser.Token.Keywords import BoundaryToken, IdentifierToken, VariableAssignmentKeyword, EndToken
 
 
@@ -104,7 +104,7 @@ class AttributeSpecificationBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateAttributeSpecificationName
 			return
@@ -184,7 +184,7 @@ class AttributeSpecificationBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken = IdentifierToken(token)
 			parserState.NextState = cls.stateColon1()
 			return
@@ -227,7 +227,7 @@ class AttributeSpecificationBlock(Block):
 			parserState.NewToken =      BoundaryToken(token)
 			parserState.NextState =     cls.stateWhitespace3
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateTypeMarkName
 			return
@@ -261,7 +261,7 @@ class AttributeSpecificationBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken = IdentifierToken(token)
 			parserState.NextState = cls.stateTypeMarkName
 			return
@@ -420,7 +420,7 @@ class AttributeSpecificationBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NextState = cls.stateExpressionEnd
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):

@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators                import Export
-from pyVHDLParser.Token                     import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token                     import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
@@ -109,7 +109,7 @@ class IfConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
@@ -181,7 +181,7 @@ class IfConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      IfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -216,7 +216,7 @@ class IfConditionBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
 				newToken =              GenericKeyword(token)
@@ -267,7 +267,7 @@ class BeginBlock(Block):
 		# 	parserState.NewToken = IndentationToken(token)
 		# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 		# 	return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "process"):
 				newToken =                ProcessKeyword(token)
@@ -351,7 +351,7 @@ class ElsIfConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
@@ -423,7 +423,7 @@ class ElsIfConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ElsIfConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -458,7 +458,7 @@ class ElsIfConditionBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
 				newToken =              GenericKeyword(token)
@@ -509,7 +509,7 @@ class ElsIfBeginBlock(Block):
 		# 	parserState.NewToken = IndentationToken(token)
 		# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 		# 	return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "process"):
 				newToken =                ProcessKeyword(token)
@@ -593,7 +593,7 @@ class ElseGenerateBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
@@ -665,7 +665,7 @@ class ElseGenerateBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ElseGenerateBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -700,7 +700,7 @@ class ElseGenerateBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
 				newToken =              GenericKeyword(token)
@@ -751,7 +751,7 @@ class ElseGenerateBeginBlock(Block):
 		# 	parserState.NewToken = IndentationToken(token)
 		# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 		# 	return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "process"):
 				newToken =                ProcessKeyword(token)

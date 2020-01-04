@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
-from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
+from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
 from pyVHDLParser.Blocks              import Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
@@ -59,7 +59,7 @@ class ThenBlock(SequentialBeginBlock):
 	@classmethod
 	def stateSequentialRegion(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			if (tokenValue == "elsif"):

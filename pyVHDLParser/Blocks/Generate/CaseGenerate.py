@@ -32,7 +32,7 @@
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, BeginKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks              import Block, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
@@ -106,7 +106,7 @@ class CaseBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateGenerateName
 			return
@@ -178,7 +178,7 @@ class CaseBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -213,7 +213,7 @@ class CaseBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
 				newToken =              GenericKeyword(token)

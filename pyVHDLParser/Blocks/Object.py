@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators        import Export
-from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken, CommentToken, SpaceToken, CharacterToken, FusedCharacterToken
+from pyVHDLParser.Token             import WordToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken, CommentToken, SpaceToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords    import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
 from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
@@ -50,7 +50,7 @@ class ObjectDeclarationBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateObjectName
 			return
@@ -128,7 +128,7 @@ class ObjectDeclarationBlock(Block):
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateSubtypeIndication
 			return
@@ -149,7 +149,7 @@ class ObjectDeclarationBlock(Block):
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateSubtypeIndication
 			return
@@ -348,7 +348,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	@classmethod
 	def stateWhitespace0(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateVariableKeyword
 			return

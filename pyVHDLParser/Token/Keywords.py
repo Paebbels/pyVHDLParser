@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators    import Export
-from pyVHDLParser.Token         import Token, StringToken, VHDLToken
+from pyVHDLParser.Token         import Token, WordToken, VHDLToken
 from pyVHDLParser.Token.Parser  import TokenizerException
 
 __all__ = []
@@ -230,7 +230,7 @@ class IdentifierToken(SpecificVHDLToken):
 	"""
 	Token representing an identifier.
 
-	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.
 	"""
 
 
@@ -239,7 +239,7 @@ class RepeatedIdentifierToken(IdentifierToken):
 	"""
 	Token representing a repeated identifier.
 
-	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.
 	"""
 
 
@@ -253,7 +253,7 @@ class LabelToken(SpecificVHDLToken):
 	"""
 	Token representing a label.
 
-	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.
 	"""
 
 
@@ -262,7 +262,7 @@ class RepeatedLabelToken(LabelToken):
 	"""
 	Token representing a repeated label.
 
-	This token is usually created from a :class:`StringToken` or :class:`ExtendedIdentifierToken`.
+	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.
 	"""
 
 
@@ -332,10 +332,10 @@ class SignalAssociationKeyword(AssociationKeyword):
 class KeywordToken(VHDLToken):
 	__KEYWORD__ = None
 
-	def __init__(self, stringToken):
-		if (not (isinstance(stringToken, StringToken) and (stringToken <= self.__KEYWORD__))):
-			raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), stringToken)
-		super().__init__(stringToken.PreviousToken, self.__KEYWORD__, stringToken.Start, stringToken.End)
+	def __init__(self, wordToken : WordToken):
+		if (not (isinstance(wordToken, WordToken) and (wordToken <= self.__KEYWORD__))):
+			raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), wordToken)
+		super().__init__(wordToken.PreviousToken, self.__KEYWORD__, wordToken.Start, wordToken.End)
 
 	def __str__(self):
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(

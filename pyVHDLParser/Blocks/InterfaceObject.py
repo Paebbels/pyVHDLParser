@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import SpaceToken, LinebreakToken, CommentToken, StringToken, ExtendedIdentifier, MultiLineCommentToken
+from pyVHDLParser.Token               import SpaceToken, LinebreakToken, CommentToken, WordToken, ExtendedIdentifier, MultiLineCommentToken
 from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
 from pyVHDLParser.Token.Keywords      import IdentifierToken, BoundaryToken, DelimiterToken
@@ -52,7 +52,7 @@ class InterfaceObjectBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateObjectName
 			return
@@ -134,7 +134,7 @@ class InterfaceObjectBlock(Block):
 	@classmethod
 	def stateColon1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			try:
 				parserState.NewToken =    cls.MODES[token.Value.lower()](token)
 				parserState.NextState =   cls.stateModeKeyword
@@ -160,7 +160,7 @@ class InterfaceObjectBlock(Block):
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			try:
 				parserState.NewToken =    cls.MODES[tokenValue](token)
@@ -214,7 +214,7 @@ class InterfaceObjectBlock(Block):
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateSubtypeIndication
 			return
@@ -313,7 +313,8 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      CommentBlock(parserState.LastBlock, token)
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
@@ -428,7 +429,7 @@ class InterfaceTypeBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateTypeName
 			return

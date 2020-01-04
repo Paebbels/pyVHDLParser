@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, DelimiterToken, EndToken, AllKeyword
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
@@ -63,7 +63,7 @@ class StartBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     ReferenceNameBlock.stateLibraryName
@@ -117,7 +117,7 @@ class ReferenceNameBlock(Block):
 			parserState.NewToken =      DelimiterToken(token)
 			parserState.NextState =     cls.stateDot1
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateDot1
@@ -147,7 +147,7 @@ class ReferenceNameBlock(Block):
 	@classmethod
 	def stateDot1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.statePackageName
 			return
@@ -175,7 +175,7 @@ class ReferenceNameBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.statePackageName
 			return
@@ -186,7 +186,7 @@ class ReferenceNameBlock(Block):
 			parserState.NewToken =      DelimiterToken(token)
 			parserState.NextState =     cls.stateDot1
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.statePackageName
@@ -238,7 +238,7 @@ class ReferenceNameBlock(Block):
 			parserState.NewToken =      DelimiterToken(token)
 			parserState.NextState =     cls.stateDot2
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     cls.stateDot2
@@ -268,7 +268,7 @@ class ReferenceNameBlock(Block):
 	@classmethod
 	def stateDot2(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			if (token <= "all"):
 				parserState.NewToken =  AllKeyword(token)
 			else:
@@ -299,7 +299,7 @@ class ReferenceNameBlock(Block):
 			parserState.NewToken =      DelimiterToken(token)
 			parserState.NextState =     cls.stateDot1
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			if (token <= "all"):
 				parserState.NewToken =    AllKeyword(token)
 			else:
@@ -402,7 +402,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     ReferenceNameBlock.stateLibraryName
 			parserState.TokenMarker =   parserState.NewToken
@@ -430,7 +430,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     ReferenceNameBlock.stateLibraryName
 			return

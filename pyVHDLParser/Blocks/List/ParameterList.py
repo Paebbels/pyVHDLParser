@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators              import Export
-from pyVHDLParser.Token                   import CharacterToken, StringToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
 from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
@@ -102,7 +102,7 @@ class OpenBlock(Block):
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			if (token <= "constant"):
 				parserState.NewToken =    ConstantKeyword(token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
@@ -184,7 +184,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == "constant"):
 				parserState.NewToken =    ConstantKeyword(token)

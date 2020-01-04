@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CommentToken, SpaceToken, LinebreakToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords      import StringToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
+from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
 from pyVHDLParser.Blocks              import Block, CommentBlock, BlockParserException, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
@@ -73,7 +73,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateContextName
 			return
@@ -122,7 +122,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "is")):
+		if (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -162,7 +162,7 @@ class NameBlock(Block):
 			parserState.NewBlock =      block(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):

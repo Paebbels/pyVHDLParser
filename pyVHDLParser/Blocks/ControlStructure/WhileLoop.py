@@ -33,7 +33,7 @@ from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Token.Parser        import SpaceToken, StringToken
+from pyVHDLParser.Token.Parser        import SpaceToken, WordToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
@@ -107,7 +107,7 @@ class ConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateWhileName
 			return
@@ -179,7 +179,7 @@ class ConditionBlock(Block):
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, StringToken) and (token <= "is")):
+		elif (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
@@ -214,7 +214,7 @@ class ConditionBlock(Block):
 			parserState.NewToken =      IndentationToken(token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
 				newToken =              GenericKeyword(token)

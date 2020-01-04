@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import LinebreakToken, StringToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token               import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import ArchitectureKeyword, IsKeyword, OfKeyword, BoundaryToken, IdentifierToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
@@ -81,7 +81,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateArchitectureName
 			return
@@ -131,7 +131,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "of")):
+		if (isinstance(token, WordToken) and (token <= "of")):
 			parserState.NewToken =      OfKeyword(token)
 			parserState.NextState =     cls.stateOfKeyword
 			return
@@ -178,7 +178,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateEntityName
 			return
@@ -228,7 +228,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "is")):
+		if (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.TokenMarker =   None

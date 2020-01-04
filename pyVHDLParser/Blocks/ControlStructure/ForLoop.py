@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators          import Export
 from pyVHDLParser.Token               import LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier, CharacterToken, SpaceToken
-from pyVHDLParser.Token.Keywords      import InKeyword, ForKeyword, LoopKeyword, BoundaryToken, IdentifierToken, StringToken
+from pyVHDLParser.Token.Keywords      import InKeyword, ForKeyword, LoopKeyword, BoundaryToken, IdentifierToken, WordToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
@@ -64,7 +64,7 @@ class IteratorBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateIteratorName
 			return
@@ -114,7 +114,7 @@ class IteratorBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "in")):
+		if (isinstance(token, WordToken) and (token <= "in")):
 			parserState.NewToken =      InKeyword(token)
 			# parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			# parserState.TokenMarker =   None

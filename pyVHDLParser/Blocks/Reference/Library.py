@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators          import Export
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
@@ -63,7 +63,7 @@ class StartBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   LibraryNameBlock.stateLibraryName
@@ -160,7 +160,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     LibraryNameBlock.stateLibraryName
 			parserState.TokenMarker =   parserState.NewToken
@@ -189,7 +189,7 @@ class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     LibraryNameBlock.stateLibraryName
 			return

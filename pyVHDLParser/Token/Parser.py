@@ -36,7 +36,7 @@ from pyVHDLParser             import SourceCodePosition
 from pyVHDLParser.Base        import ParserException
 from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken
 from pyVHDLParser.Token       import CharacterLiteralToken, StringLiteralToken, ExtendedIdentifier, DirectiveToken, IntegerLiteralToken
-from pyVHDLParser.Token       import CharacterToken, SpaceToken, StringToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
+from pyVHDLParser.Token       import CharacterToken, SpaceToken, WordToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
 
 __all__ = []
 __api__ = __all__
@@ -166,7 +166,7 @@ class Tokenizer:
 				if ((char in __ALPHA_CHARACTERS__) or (char == "_")):
 					buffer += char
 				else:
-					previousToken = StringToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+					previousToken = WordToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
 					yield previousToken
 
 					start =   SourceCodePosition(row, column, absolute)

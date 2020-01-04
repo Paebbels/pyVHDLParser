@@ -127,7 +127,7 @@ two characters while parsing.
 +--------------------------+-------------------------+-------------------------------------------------------+
 | Extended identifiers     | ``\$cell35\``           | :class:`~pyVHDLParser.Token.ExtendedIdentifierToken`  |
 +--------------------------+-------------------------+-------------------------------------------------------+
-| Tool directives          | `` ` ``                 | :class:`~pyVHDLParser.Token.DirectiveToken`           |
+| Tool directives          |                         | :class:`~pyVHDLParser.Token.DirectiveToken`           |
 +--------------------------+-------------------------+-------------------------------------------------------+
 | Linebreak                | ``\n``                  | :class:`~pyVHDLParser.Token.LineBreakToken`           |
 +--------------------------+-------------------------+-------------------------------------------------------+

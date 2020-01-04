@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, StringToken, MultiLineCommentToken, IndentationToken
+from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, WordToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token           import SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EndToken, BoundaryToken, LabelToken, IdentifierToken
 from pyVHDLParser.Blocks          import FinalBlock, ParserState, CommentBlock, BlockParserException, Block
@@ -83,7 +83,7 @@ class EndBlock(FinalBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			IS_SINGLE_KEYWORD = isinstance(cls.KEYWORD, tuple)
 			KW = cls.KEYWORD[0] if IS_SINGLE_KEYWORD else cls.KEYWORD
 			if (token <= KW.__KEYWORD__):
@@ -168,7 +168,7 @@ class EndBlock(FinalBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-		elif (isinstance(token, StringToken) and (token <= cls.KEYWORD[1].__KEYWORD__)):
+		elif (isinstance(token, WordToken) and (token <= cls.KEYWORD[1].__KEYWORD__)):
 			parserState.NewToken =    cls.KEYWORD[1](token)
 			parserState.NextState =   cls.stateKeyword2
 			return
@@ -241,7 +241,7 @@ class EndBlock(FinalBlock):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(token)
 			parserState.NextState =   cls.stateSimpleName
 			return

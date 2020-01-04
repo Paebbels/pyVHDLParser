@@ -30,7 +30,7 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import LinebreakToken, StringToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token           import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EntityKeyword, IsKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken
 from pyVHDLParser.Blocks          import BlockParserException, Block, CommentBlock, ParserState
@@ -95,7 +95,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
-		if isinstance(token, StringToken):
+		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(token)
 			parserState.NextState =     cls.stateEntityName
 			return
@@ -145,7 +145,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, StringToken) and (token <= "is")):
+		if (isinstance(token, WordToken) and (token <= "is")):
 			parserState.NewToken =      IsKeyword(token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.TokenMarker =   None

@@ -31,7 +31,7 @@
 # load dependencies
 from pyVHDLParser.Decorators        import Export
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
-from pyVHDLParser.Token             import StringToken, ExtendedIdentifier, CharacterToken
+from pyVHDLParser.Token             import WordToken, ExtendedIdentifier, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken, WhenKeyword
 from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
@@ -86,7 +86,7 @@ class NextBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			if (token <= "when"):
 				parserState.NewToken =    WhenKeyword(token)
 				parserState.NextState =   cls.stateWhenKeyword
@@ -146,7 +146,7 @@ class NextBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif (isinstance(token, StringToken) and (token <= "when")):
+		elif (isinstance(token, WordToken) and (token <= "when")):
 			parserState.NewToken =    WhenKeyword(token)
 			parserState.NextState =   cls.stateWhenKeyword
 			return
