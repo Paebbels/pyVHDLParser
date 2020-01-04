@@ -74,7 +74,7 @@ exclude_patterns = [
 ]
 
 # The name of the Pygments (syntax highlighting) style to use.
-# pygments_style = 'stata-dark'
+pygments_style = 'stata-dark'
 
 
 # ==============================================================================
