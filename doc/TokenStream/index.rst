@@ -109,7 +109,7 @@ two characters while parsing.
 +--------------------------+-------------------------+-------------------------------------------------------+
 | Whitespace (space, tab)  |                         | :class:`~pyVHDLParser.Token.SpaceToken`               |
 +--------------------------+-------------------------+-------------------------------------------------------+
-| Word                     | ``entity``, ``xor``     | :class:`~pyVHDLParser.Token.StringToken`              |
+| Word                     | ``entity``, ``xor``     | :class:`~pyVHDLParser.Token.WordToken`                |
 +--------------------------+-------------------------+-------------------------------------------------------+
 | Single-line comment      | ``-- TODO``             | :class:`~pyVHDLParser.Token.SingleLineCommentToken`   |
 +--------------------------+-------------------------+-------------------------------------------------------+
