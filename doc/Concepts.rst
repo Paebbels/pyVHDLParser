@@ -151,12 +151,58 @@ Iterators and generators can be used in Python's ``for`` [1]_ loops.
 
 
 
+Python iterators
+****************
+
+A Python iterable is an object implementing a ``__iter__`` method returning an
+iterator. The iterator implements a ``__next__`` method. Usually, the iterator
+has some internal state, so it can compute the next element. At the end of an
+iteration, :exec:`StopIteration` is raised.
+
+.. code-block:: Python
+
+   class Data:
+     list : List = []
+
+     class Iterator:
+       obj :   Data = None
+       value : Int =  None
+
+       def __init__(self, obj):
+         self.obj =   obj
+         self.value = 1
+
+       def __next__(self):
+         x = self.value
+         try:
+           self.value += 1
+           return obj.list[x]
+         except KeyError:
+           raise StopIteration
+
+     def __iter__(self):
+       return Iterator(self)
+
+   myData = Data()
+
+   for x in myData:
+     print(x)
+
+
+
 Python generators
 *****************
 
-.. todo::
+A Python generator is a co-routine (function or method) that return execution
+flow from callee and in most cases with a return value to the caller. The state
+of the routine is preserved (e.g. local variables). When the execution in the
+co-routine is continued, it continues right after the ``yield`` statement.
 
-   Describe why pyVHDLParser uses Pythons generators, co-routines and ``yield``.
+It's also possible to send parameters from caller to callee, when continuing the
+co-routines execution. (use ``send`` method.)
+
+The generation of tokens, blocks and groups is implemented as a generator heavily
+using the ``yield`` statement.
 
 
 
