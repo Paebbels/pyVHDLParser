@@ -227,6 +227,15 @@ class MetaGroup(type):
 class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
+	_previousGroup :  'Group' =               None    #: Reference to the previous group.
+	NextGroup :       'Group' =               None    #: Reference to the next group.
+	InnerGroup :      'Group' =               None    #: Reference to the first inner group.
+	_subGroups :      {MetaGroup: 'Group'} =  {}      #: References to all inner groups by group type.
+
+	StartBlock :      Block =                 None    #: Reference to the first block in the scope of this group.
+	EndBlock :        Block =                 None    #: Reference to the last block in the scope of this group.
+	MultiPart :       bool =                  False   #: True, if this group has multiple parts.
+
 	def __init__(self, previousGroup, startBlock, endBlock=None):
 		previousGroup.NextGroup =               self
 		self._previousGroup =                   previousGroup

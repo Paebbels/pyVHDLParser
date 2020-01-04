@@ -200,13 +200,99 @@ Specific Tokens
 Tokenizer
 *********
 
-The :class:`~pyVHDLParser.Token.Parser.Tokenizer` is implemented as a Python
-:term:`generator` returning one token at a time.
-
-
 .. todo::
 
    Describe tokenizer and generators and co-routines/yield.
 
 
+The :class:`~pyVHDLParser.Token.Parser.Tokenizer` is implemented as a Python
+:term:`generator` returning one token at a time. It has 15 states defined in
+:class:`pyVHDLParser.Token.Parser.Tokenizer.TokenKind`.
+
+
+
+**Tokenizer States:**
+
+.. graphviz::
+   :caption: State Transitions of Tokenizer
+
+   digraph "State transitions of Tokenizer" {
+     rankdir=LR;
+
+     node [shape=box];
+
+     n00 [label="Start"];
+     n01 [label="SpaceChars"];
+     n02 [label="NumberChars"];
+     n03 [label="AlphaChars"];
+     n04 [label="DelimiterChars"];
+     n05 [label="PossibleSingleLineCommentStart"];
+     n06 [label="PossibleLinebreak"];
+     n07 [label="PossibleCharacterLiteral"];
+     n08 [label="PossibleStringLiteralStart"];
+     n09 [label="PossibleExtendedIdentifierStart"];
+     n10 [label="SingleLineComment"];
+     n11 [label="MultiLineComment"];
+     n12 [label="Linebreak"];
+     n13 [label="Directive"];
+     n14 [label="FuseableCharacter"];
+     n15 [label="OtherChars"];
+
+     n00 -> n15;
+
+     n01 -> n01 [label="WHITESPACE"];
+     n01 -> n02 [label="NUMBER"];
+     n01 -> n03 [label="ALPHA"];
+     n01 -> n07 [label="'"];
+     n01 -> n08 [label="\""];
+     n01 -> n05 [label="-"];
+     n01 -> n06 [label="\\r"];
+     n01 -> n15 [label="\\n"];
+     n01 -> n14 [label="FUSEABLE"];
+     n01 -> n09 [label="\\\\"];
+     n01 -> n13 [label="`"];
+     n01 -> n15 [label="else"];
+
+     n02 -> n02 [label="NUMBER"];
+     n02 -> n01 [label="WHITESPACE"];
+     n02 -> n03 [label="ALPHA"];
+     n02 -> n07 [label="'"];
+     n02 -> n08 [label="\""];
+     n02 -> n05 [label="-"];
+     n02 -> n06 [label="\\r"];
+     n02 -> n15 [label="\\n"];
+     n02 -> n14 [label="FUSEABLE"];
+     n02 -> n09 [label="\\\\"];
+     n02 -> n13 [label="`"];
+     n02 -> n15 [label="else"];
+
+     n03 -> n03 [label="ALPHA"];
+     n03 -> n01 [label="WHITESPACE"];
+     # n03 -> n02 [label="NUMBER"];
+     n03 -> n07 [label="'"];
+     n03 -> n08 [label="\""];
+     n03 -> n05 [label="-"];
+     n03 -> n06 [label="\\r"];
+     n03 -> n15 [label="\\n"];
+     n03 -> n14 [label="FUSEABLE"];
+     n03 -> n09 [label="\\\\"];
+     n03 -> n13 [label="`"];
+     n03 -> n15 [label="else"];
+
+     n05 -> n10 [label="-"];
+     n05 -> n01 [label="WHITESPACE"];
+     n05 -> n02 [label="NUMBER"];
+     n05 -> n03 [label="ALPHA"];
+     n05 -> n07 [label="'"];
+     n05 -> n08 [label="\""];
+     n05 -> n06 [label="\\r"];
+     n05 -> n15 [label="\\n"];
+     n05 -> n14 [label="FUSEABLE"];
+     n05 -> n09 [label="\\\\"];
+     n05 -> n13 [label="`"];
+     n05 -> n15 [label="else"];
+   }
+
+.. autoclass:: pyVHDLParser.Token.Parser.Tokenizer.TokenKind
+   :members:
 
