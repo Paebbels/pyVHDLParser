@@ -64,3 +64,66 @@ streaming-parser implemented with Python generators.
 9. Statistics
 
    * :fa:`square-o` Create statistics (SLoC, Comments vs. Code, ...)
+
+
+
+Double-Linked Lists
+*******************
+
+.. todo::
+
+   Describe why pyVHDLParser uses double-linked lists.
+
+   * fast navigation
+   * iterable
+   * generator
+
+
+
+Python generators
+*****************
+
+.. todo::
+
+   Describe why pyVHDLParser uses Pythons generators, co-routines and ``yield``.
+
+
+
+Parallelism
+***********
+
+.. todo::
+
+   Describe how to parallelize on multiple cores.
+
+
+Token replacement
+*****************
+
+.. todo::
+
+   Describe why and how tokens are replaced. Describe why this is not corrupting data.
+
+
+Classmethods as States
+**********************
+
+.. todo::
+
+   Describe why pyVHDLParser uses classmethods to represent parser states.
+
+Parser State Machine
+********************
+
+.. todo::
+
+   Describe how the parser works in pyVHDLParser.
+
+Code-DOM
+********
+
+.. todo::
+
+   Describe what a Code-DOM is.
+
+
