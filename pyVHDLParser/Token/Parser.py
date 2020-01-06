@@ -69,11 +69,11 @@ class Tokenizer:
 		PossibleStringLiteralStart =      7   #: Last char was a ``"``
 		PossibleExtendedIdentifierStart = 8   #: Last char was a ``\``
 		SingleLineComment =               9   #: Found ``--`` before
-		MultiLineComment =               10   #: Found ``/*`` before
-		Linebreak =                      11   #: Last char was a ``\n``
-		Directive =                      12   #: Last char was a `` ` ``
-		FuseableCharacter =              13   #: Last char was a character that could be fused
-		OtherChars =                     14   #: Any thing else
+		MultiLineComment =                10  #: Found ``/*`` before
+		Linebreak =                       11  #: Last char was a ``\n``
+		Directive =                       12  #: Last char was a `` ` ``
+		FuseableCharacter =               13  #: Last char was a character that could be fused
+		OtherChars =                      14  #: Any thing else
 
 
 	@classmethod

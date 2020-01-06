@@ -206,10 +206,10 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 			content = fileHandle.read()
 
 		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken
+		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
 		from pyVHDLParser.Token.Parser import Tokenizer
 
-		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **self.Foreground))
+
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 
 		try:
@@ -220,7 +220,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 					print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
 				elif isinstance(vhdlToken, CharacterToken):
 					print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
-				elif isinstance(vhdlToken, StringToken):
+				elif isinstance(vhdlToken, WordToken):
 					print("{WHITE}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
 				elif isinstance(vhdlToken, (StartOfDocumentToken, EndOfDocumentToken)):
 					print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
@@ -255,7 +255,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
 		from pyVHDLParser.Token.Parser import Tokenizer
 
-		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **self.Foreground))
+
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 
 		try:
@@ -348,7 +348,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		from pyVHDLParser.Blocks.List       import GenericList, PortList
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=self.Verbose)
+		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
 
 		try:
 			for vhdlBlock in vhdlBlockStream:
@@ -405,7 +405,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream, debug=True)
+		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
 
 		try:
 			blockIterator = iter(vhdlBlockStream)
@@ -506,7 +506,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 
 
 		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import CharacterToken, SpaceToken, StringToken, LinebreakToken, CommentToken, IndentationToken
+		from pyVHDLParser.Token import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
 		from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, KeywordToken, DelimiterToken
 		from pyVHDLParser.Token.Parser import Tokenizer
 		from pyVHDLParser.Blocks import TokenToBlockParser
@@ -521,7 +521,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 
-		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream, debug=True)
+		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
 
 		try:
 			for vhdlGroup in vhdlGroupStream:
@@ -533,7 +533,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
 					elif isinstance(block, KeywordToken):
 						print("{DARK_CYAN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
-					elif isinstance(block, (StringToken, SpaceToken, CharacterToken)):
+					elif isinstance(block, (WordToken, SpaceToken, CharacterToken)):
 						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
 					else:
 						print("{YELLOW}  {block}{NOCOLOR}".format(block=block, **self.Foreground))

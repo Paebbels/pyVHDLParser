@@ -363,49 +363,79 @@ class ShiftOperator(Operator):
 
 @Export
 class AbsKeyword(KeywordToken):
+	"""Reserved word 'abs' for unary operator *absolute value*."""
 	__KEYWORD__ = "abs"
+
 @Export
 class AccessKeyword(KeywordToken):
+	"""Reserved word 'access' to defined access types."""
 	__KEYWORD__ = "access"
+
 @Export
 class AfterKeyword(KeywordToken):
+	"""Reserved word 'after'."""
 	__KEYWORD__ = "after"
+
 @Export
 class AliasKeyword(KeywordToken):
+	"""Reserved word 'alias' to declare aliases."""
 	__KEYWORD__ = "alias"
+
 @Export
 class AllKeyword(KeywordToken):
+	"""Reserved word 'all'."""
 	__KEYWORD__ = "all"
+
 @Export
 class AndKeyword(LogicalOperator):
+	"""Reserved word 'and' for binary logical operator *and*."""
 	__KEYWORD__ = "and"
+
 @Export
 class ArchitectureKeyword(KeywordToken):
+	"""Reserved word 'architecture' to define architectures."""
 	__KEYWORD__ = "architecture"
+
 @Export
 class ArrayKeyword(KeywordToken):
+	"""Reserved word 'array' to define array types."""
 	__KEYWORD__ = "array"
+
 @Export
 class AssertKeyword(KeywordToken):
+	"""Reserved word 'assert' for *assert*-statements."""
 	__KEYWORD__ = "assert"
+
 @Export
 class AttributeKeyword(KeywordToken):
+	"""Reserved word 'attribute'."""
 	__KEYWORD__ = "attribute"
+
 @Export
 class BeginKeyword(KeywordToken):
+	"""Reserved word 'begin' to distinguish declarative regions from statements regions."""
 	__KEYWORD__ = "begin"
+
 @Export
 class BlockKeyword(KeywordToken):
+	"""Reserved word 'block' for *block*-statements."""
 	__KEYWORD__ = "block"
+
 @Export
 class BodyKeyword(KeywordToken):
+	"""Reserved word 'body' to distinguish declarations from implementations (bodies)."""
 	__KEYWORD__ = "body"
+
 @Export
 class BufferKeyword(KeywordToken):
+	"""Reserved word 'buffer' for mode *buffer*."""
 	__KEYWORD__ = "buffer"
+
 @Export
 class BusKeyword(KeywordToken):
+	"""Reserved word 'bus'."""
 	__KEYWORD__ = "bus"
+
 @Export
 class CaseKeyword(KeywordToken):
 	__KEYWORD__ = "case"

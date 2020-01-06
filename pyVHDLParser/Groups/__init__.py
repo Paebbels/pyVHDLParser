@@ -30,7 +30,7 @@
 #
 # load dependencies
 from types                                  import FunctionType
-from typing                                 import Iterator
+from typing                                 import Iterator, Callable, List
 
 from pyTerminalUI                           import LineTerminal
 
@@ -56,23 +56,14 @@ class GroupParserException(ParserException):
 
 @Export
 class BlockToGroupParser:
+	"""Wrapping class to offer some class methods."""
+
 	@staticmethod
-	def Transform(blockGenerator, debug=False):
-		return ParserState(blockGenerator, debug=debug).GetGenerator()
+	def Transform(blockGenerator):
+		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
 
-
-# @staticmethod
-# def _TokenGenerator(currentGroup, groupIterator):
-# 	groupType = type(currentGroup)
-#
-# 	for token in currentGroup:
-# 		yield token
-# 	for group in groupIterator:
-# 		if isinstance(group, groupType):
-# 			for token in group:
-# 				yield token
-# 			if (not group.MultiPart):
-# 				break
+		state = ParserState(blockGenerator)
+		return state.GetGenerator()
 
 
 @Export
@@ -93,23 +84,41 @@ class _BlockIterator:
 
 @Export
 class ParserState:
-	def __init__(self, blockGenerator, debug):
-		self.NextState =            StartOfDocumentGroup.stateDocument
-		self.ReIssue =              False
-		self.Block        : Block = None
-		self.NewBlock     : Block = None
-		self.LastGroup    : Group = None
+	"""Represents the current state of a block-to-group parser."""
 
-		self._stack =               []
-		self._iterator =            iter(_BlockIterator(self, blockGenerator))
-		self._blockMarker : Block = None
-		self.NextGroup    : Group = StartOfDocumentGroup(next(self._iterator))
-		self.NewGroup     : Group = None
+	_iterator :   Iterator =        None
+	_stack :      List[Callable] =  []
+	_blockMarker: Block =           None
 
-		self.debug        : bool =  debug
+	Block :       Block =           None
+	NextState :   Callable =        None
+	ReIssue :     bool =            None
 
-		if (not isinstance(self.NextGroup.StartBlock, StartOfDocumentBlock)):
-			raise GroupParserException("First block is not a StartOfDocumentBlock.", self.NextGroup.StartBlock)
+	NewBlock :    Block =           None
+	NewGroup :    'Group' =         None
+	LastGroup :   'Group' =         None
+	NextGroup :   'Group' =         None
+
+	def __init__(self, blockGenerator):
+		"""Initializes the parser state."""
+
+		self._iterator =    iter(_BlockIterator(self, blockGenerator))
+		self._stack =       []
+		self._blockMarker = None
+
+		startBlock =        next(self._iterator)
+		startGroup =        StartOfDocumentGroup(startBlock)
+
+		if (not isinstance(startBlock, StartOfDocumentBlock)):
+			raise GroupParserException("First block is not a StartOfDocumentBlock.", startBlock)
+
+		self.Block =        None
+		self.NextState =    StartOfDocumentGroup.stateDocument
+		self.ReIssue =      False
+		self.NewBlock =     None
+		self.NewGroup =     None
+		self.LastGroup =    None
+		self.NextGroup =    startGroup
 
 	@property
 	def PushState(self):

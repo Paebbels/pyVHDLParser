@@ -29,14 +29,15 @@
 # ==============================================================================
 #
 from types                          import FunctionType
-from typing                         import List
+from typing                         import List, Callable, Iterator
 
 from pyTerminalUI                   import LineTerminal
 
 from pyVHDLParser.Decorators        import Export
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, WordToken, EndOfDocumentToken
+from pyVHDLParser.Token import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, \
+	WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
 __all__ = []
@@ -64,10 +65,10 @@ class TokenToBlockParser:
 	"""Wrapping class to offer some class methods."""
 
 	@staticmethod
-	def Transform(tokenGenerator, debug=False):
+	def Transform(tokenGenerator):
 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
 
-		state = ParserState(tokenGenerator, debug=debug)
+		state = ParserState(tokenGenerator)
 		return state.GetGenerator()
 
 
@@ -75,21 +76,39 @@ class TokenToBlockParser:
 class ParserState:
 	"""Represents the current state of a token-to-block parser."""
 
-	def __init__(self, tokenGenerator, debug):
+	_iterator :     Iterator[Token] = None
+	_stack :        List[Callable] =  None
+	_tokenMarker :  Token =           None
+
+	Token :         Token =           None
+	NextState :     Callable =        None
+	ReIssue :       bool =            None
+	NewToken :      Token =           None
+	NewBlock :      'Block' =         None
+	LastBlock :     'Block' =         None
+	Counter :       int =             0
+
+	def __init__(self, tokenGenerator):
 		"""Initializes the parser state."""
 
-		self._stack =               []
-		self._iterator =            iter(tokenGenerator)
-		self._tokenMarker : Token = None
-		self.NextState =            StartOfDocumentBlock.stateDocument
-		self.ReIssue =              False
-		self.LastBlock    : Block = None
-		self.NewBlock     : Block = StartOfDocumentBlock(next(self._iterator))
-		self.Token        : Token = self.NewBlock.StartToken
-		self.NewToken     : Token = None
-		self.Counter =              0
+		self._iterator =    iter(tokenGenerator)
+		self._stack =       []
+		self._tokenMarker = None
 
-		self.debug        : bool =  debug
+		startToken =        next(self._iterator)
+		startBlock =        StartOfDocumentBlock(startToken)
+
+		if (not isinstance(startToken, StartOfDocumentToken)):
+			raise BlockParserException("First token is not a StartOfDocumentToken.", startToken)
+
+		self.Token =        startBlock.StartToken
+		self.NextState =    StartOfDocumentBlock.stateDocument
+		self.ReIssue =      False
+		self.NewToken =     None
+		self.NewBlock =     startBlock
+		self.LastBlock =    None
+		self.Counter =      0
+
 
 	@property
 	def PushState(self):
@@ -401,7 +420,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, StringToken):
+		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:
