@@ -1,0 +1,158 @@
+digraph "State transitions of Tokenizer" {
+	node [shape=record];
+	splines=line;
+
+	subgraph SimpleTokens {
+		rank=same;
+
+#		t_0  [label = "StartOfDocumentToken"];
+
+		t_1  [label = "WordToken\nentity"];
+		t_2  [label = "SpaceToken"];
+		t_3  [label = "WordToken\nmyEntity"];
+		t_4  [label = "SpaceToken"];
+		t_5  [label = "WordToken\nis"];
+		t_6  [label = "LineBreakToken"];
+		t_7  [label = "IndentationToken"];
+		t_8  [label = "WordToken\nport"];
+		t_9  [label = "SpaceToken"];
+		t_10 [label = "CharacterToken\n("];
+		t_11 [label = "LineBreakToken"];
+		t_12 [label = "IndentationToken"];
+
+#		t_00 [label = "EndOfDocumentToken"];
+
+#		t_1  -> t_0;
+		t_1  -> t_2  [dir=both];
+		t_2  -> t_3  [dir=both];
+		t_3  -> t_4  [dir=both];
+		t_4  -> t_5  [dir=both];
+		t_5  -> t_6  [dir=both];
+		t_6  -> t_7  [dir=both];
+		t_7  -> t_8  [dir=both];
+		t_8  -> t_9  [dir=both];
+		t_9  -> t_10 [dir=both];
+		t_10 -> t_11 [dir=both];
+		t_11 -> t_12 [dir=both];
+#		t_12 -> t_00;
+	}
+
+	subgraph Tokens {
+		rank=same;
+
+		T_0  [label = "StartOfDocumentToken"];
+
+		T_1  [label = "EntityKeyword\nentity"];
+		T_2  [label = "BoundaryToken"];
+		T_3  [label = "IdentifierToken\nmyEntity"];
+		T_4  [label = "BoundaryToken"];
+		T_5  [label = "IsKeyword\nis"];
+		T_6  [label = "LineBreakToken"];
+		T_7  [label = "IndentationToken"];
+		T_8  [label = "PortKeyword\nport"];
+		T_9  [label = "BoundaryToken"];
+		T_10 [label = "CharacterToken\n("];
+		T_11 [label = "LineBreakToken"];
+		T_12 [label = "IndentationToken"];
+
+		T_00 [label = "EndOfDocumentToken"];
+
+		T_0  -> T_1  [dir=both];
+		T_1  -> T_2  [dir=both];
+		T_2  -> T_3  [dir=both];
+		T_3  -> T_4  [dir=both];
+		T_4  -> T_5  [dir=both];
+		T_5  -> T_6  [dir=both];
+		T_6  -> T_7  [dir=both];
+		T_7  -> T_8  [dir=both];
+		T_8  -> T_9  [dir=both];
+		T_9  -> T_10 [dir=both];
+		T_10 -> T_11 [dir=both];
+		T_11 -> T_12 [dir=both];
+		T_12 -> T_00 [dir=both];
+	}
+
+#	t_1  -> T_0;
+#	t_12 -> T_00;
+
+#	T_1  -> t_0  [dir=both];
+	T_1  -> t_1  [style=dashed, color=grey];
+	T_2  -> t_2  [style=dashed, color=grey];
+	T_3  -> t_3  [style=dashed, color=grey];
+	T_4  -> t_4  [style=dashed, color=grey];
+	T_5  -> t_5  [style=dashed, color=grey];
+	T_6  -> t_6  [style=dashed, color=grey];
+	T_7  -> t_7  [style=dashed, color=grey];
+	T_8  -> t_8  [style=dashed, color=grey];
+	T_9  -> t_9  [style=dashed, color=grey];
+	T_10 -> t_10 [style=dashed, color=grey];
+	T_11 -> t_11 [style=dashed, color=grey];
+	T_12 -> t_12 [style=dashed, color=grey];
+#	T_12 -> t_00 [dir=both];
+
+	subgraph Blocks {
+		rank=same;
+
+		b_0  [label = "StartOfDocumentBlock"];
+		b_1  [label = "EntityBlock\nentity myEntity is"];
+		b_2  [label = "LinebreakBlock"];
+		b_3  [label = "IndentationBlock"];
+		b_4  [label = "Port\nport ("];
+		b_5  [label = "LinebreakBlock"];
+		b_6  [label = "IndentationBlock"];
+
+		b_00 [label = "EndOfDocumentBlock"];
+
+		b_0  -> b_1  [dir=both];
+		b_1  -> b_2  [dir=both];
+		b_2  -> b_3  [dir=both];
+		b_3  -> b_4  [dir=both];
+		b_4  -> b_5  [dir=both];
+		b_5  -> b_6  [dir=both];
+		b_6  -> b_00 [dir=both];
+	}
+
+	b_0  -> T_0;
+	b_1  -> T_1;
+	b_1  -> T_5;
+	b_2  -> T_6;
+	b_3  -> T_7;
+	b_4  -> T_8;
+	b_4  -> T_10;
+	b_5  -> T_11;
+	b_6  -> T_12;
+	b_00 -> T_00;
+
+	subgraph Groups {
+		rank=same;
+
+		g_0  [label = "StartOfDocumentGroup"];
+		g_1  [label = "EntityGroup\nentity myEntity is"];
+#		g_2  [label = "LinebreakBlock"];
+#		g_3  [label = "IndentationBlock"];
+#		g_4  [label = "Port\nport ("];
+#		g_5  [label = "LinebreakBlock"];
+#		g_6  [label = "IndentationBlock"];
+
+		g_00 [label = "EndOfDocumentBlock"];
+
+		g_0  -> g_1  [dir=both];
+#		g_1  -> g_2  [dir=both];
+#		g_2  -> g_3  [dir=both];
+#		g_3  -> g_4  [dir=both];
+#		g_4  -> g_5  [dir=both];
+#		g_5  -> g_6  [dir=both];
+		g_1  -> g_00 [dir=both];
+	}
+
+	g_0  -> b_0;
+	g_1  -> b_1;
+#	g_1  -> b_5;
+#	g_2  -> b_6;
+#	g_3  -> b_7;
+#	g_4  -> b_8;
+#	g_4  -> b_10;
+#	g_5  -> b_11;
+#	g_6  -> b_12;
+	g_00 -> b_00;
+}

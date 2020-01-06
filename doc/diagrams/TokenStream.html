@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="svg-pan-zoom.js"></script>
+	</head>
+	<body>
+		<h1>TokenStream</h1>
+		<object id="svg-box1" type="image/svg+xml" data="Tokenizer.svg" style="width: 1600px; height: 800px; border:1px solid black;">
+		</object>
+		<br />
+
+		<object id="svg-box2" type="image/svg+xml" data="TokenStream.svg" style="width: 1600px; height: 800px; border:1px solid black;">
+		</object>
+
+    <script>
+			// Don't use window.onLoad like this in production, because it can only listen to one function.
+			window.onload = function() {
+				svgPanZoom('#svg-box1', {
+					zoomEnabled: true,
+					controlIconsEnabled: true
+				});
+
+				svgPanZoom('#svg-box2', {
+					zoomEnabled: true,
+					controlIconsEnabled: true
+				});
+			};
+		</script>
+	</body>
+</html>
