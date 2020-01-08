@@ -52,3 +52,5 @@ objects of base-class :class:`~pyVHDLParser.Blocks.Block`.
    CommonBlocks
    SpecificBlocks
    BlockGenerator
+   Usage
+   Examples

@@ -40,10 +40,8 @@ from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBl
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Sequential                 import Function as FunctionBlock
 from pyVHDLParser.VHDLModel                         import Function as FunctionModel
-from pyVHDLParser.DocumentModel                     import DEBUG
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import Library, Use
-from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting
 ParserState = GroupToModelParser.GroupParserState

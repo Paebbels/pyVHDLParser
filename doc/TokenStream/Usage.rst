@@ -2,8 +2,8 @@ Usage
 #####
 
 The following shows two code examples on how to use the Tokenizer. The first is
-generated based. the second one retrieves an iterator from the generator and
-allows a low-level access to the chain of tokens.
+generator-based. The second one retrieves an iterator from the generator and
+uses low-level access to the chain of tokens.
 
 Token Generator
 ***************
@@ -12,7 +12,7 @@ At first, a file is opened and the file content is read into a string buffer
 called ``content``. Strings are iterable, thus a string can be an input for the
 Tokenizer.
 
-At second, a generator object is created by ``GetVHDLTokenizer``.
+At second, a generator object is created by ``GetVHDLTokenizer(...)``.
 
 Finally, a *for*-loop can process each token from :class:`~pyVHDLParser.Token.StartOfDocumentToken`
 to :class:`~pyVHDLParser.Token.EndOfDocumentToken`.
@@ -48,7 +48,7 @@ generator. This time, iteration is manually implemented with a *while*-loop. The
 function :func:`iter` creates an iterator object from a generator object. At
 next, calling :func:`next` returns a new token for each call.
 
-The example wants to print the end objects (first and last) of the token chain.
+The example wants to print the outer objects (first and last) of the token chain.
 So at first, :func:`next` is called once to get the first element. Then an
 endless loop is used to generate all tokens. If the generator ends, it raises
 a :exec:`StopIteration` exception. The last token will be stored in variable
