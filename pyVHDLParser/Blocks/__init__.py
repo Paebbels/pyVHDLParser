@@ -36,8 +36,8 @@ from pyTerminalUI                   import LineTerminal
 from pyVHDLParser.Decorators        import Export
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, \
-	WordToken, EndOfDocumentToken, StartOfDocumentToken
+from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken
+from pyVHDLParser.Token             import WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
 __all__ = []

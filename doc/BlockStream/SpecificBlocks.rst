@@ -2,6 +2,7 @@ Specific Blocks
 ###############
 
 .. toctree::
+   :maxdepth: 2
 
    Assignments/index
    Attributes/index

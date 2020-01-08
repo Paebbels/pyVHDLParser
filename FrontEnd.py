@@ -426,7 +426,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 			lastToken : Token = startToken
 
 			for vhdlBlock in blockIterator:
-				self.WriteVerbose(str(vhdlBlock))
+				self.WriteNormal(str(vhdlBlock))
 
 				if isinstance(vhdlBlock, EndOfDocumentBlock):
 					self.WriteDebug("{GREEN}Found EndOfDocumentBlock...{NOCOLOR}".format(**self.Foreground))
@@ -436,7 +436,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 				tokenIterator = iter(vhdlBlock)
 
 				for token in tokenIterator:
-					self.WriteDebug(str(token))
+					self.WriteVerbose(str(token))
 
 					if (token.NextToken is None):
 						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))

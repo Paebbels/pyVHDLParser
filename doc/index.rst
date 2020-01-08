@@ -199,11 +199,12 @@ This library is licensed under **Apache License 2.0**.
    :caption: Main Documentation
    :hidden:
 
+   Preprocessing/index
    TokenStream/index
    BlockStream/index
    GroupStream/index
-   LanguageModel/index
    DocumentObjectModel/index
+   LanguageModel/index
 
 .. #
    SimulationModel/index
