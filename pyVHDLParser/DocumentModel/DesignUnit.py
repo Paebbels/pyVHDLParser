@@ -35,7 +35,7 @@ import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock, PackageBody as PackageBodyBlock
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks, Architecture as ArchitectureBlocks
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup

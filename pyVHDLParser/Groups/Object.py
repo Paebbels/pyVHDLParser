@@ -30,7 +30,9 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators                import Export
-from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, SignalDeclarationBlock, VariableDeclarationBlock
+from pyVHDLParser.Blocks.Object.Variable    import VariableDeclarationBlock
+from pyVHDLParser.Blocks.Object.Signal      import SignalDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
 from pyVHDLParser.Groups                    import ParserState, GroupParserException, Group

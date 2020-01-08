@@ -36,7 +36,8 @@ from pyVHDLParser.Decorators                  import Export
 from pyVHDLParser.Blocks                      import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List                 import GenericList, ParameterList, PortList
-from pyVHDLParser.Blocks.Object               import ConstantDeclarationBlock, SignalDeclarationBlock
+from pyVHDLParser.Blocks.Object.Signal        import SignalDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant      import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference            import Context, Library, Use
 from pyVHDLParser.Blocks.Reporting.Assert     import AssertBlock
 from pyVHDLParser.Blocks.Sequential           import Package, PackageBody, Function, Procedure, Process

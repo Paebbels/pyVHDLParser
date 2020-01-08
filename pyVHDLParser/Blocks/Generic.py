@@ -29,15 +29,15 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
-from pyVHDLParser.Token.Keywords  import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
-from pyVHDLParser.Token.Keywords  import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
-from pyVHDLParser.Token.Keywords  import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
-from pyVHDLParser.Blocks          import BlockParserException, CommentBlock, ParserState, MetaBlock
-from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock, IndentationBlock
-from pyVHDLParser.Blocks.Object   import VariableDeclarationBlock
-from pyVHDLParser.Blocks.Generic1 import EndBlock, BeginBlock
+from pyVHDLParser.Decorators              import Export
+from pyVHDLParser.Token                   import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
+from pyVHDLParser.Token.Keywords          import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
+from pyVHDLParser.Token.Keywords          import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
+from pyVHDLParser.Token.Keywords          import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
+from pyVHDLParser.Blocks                  import BlockParserException, CommentBlock, ParserState, MetaBlock
+from pyVHDLParser.Blocks.Common           import LinebreakBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Object.Variable  import VariableDeclarationBlock
+from pyVHDLParser.Blocks.Generic1         import EndBlock, BeginBlock
 
 __all__ = []
 __api__ = __all__
@@ -54,9 +54,9 @@ class DeclarativeRegion(metaclass=MetaBlock):
 
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.Reference  import Use
-		from pyVHDLParser.Blocks.Object     import ConstantDeclarationBlock
-		from pyVHDLParser.Blocks.Sequential import Procedure, Function
+		from pyVHDLParser.Blocks.Reference        import Use
+		from pyVHDLParser.Blocks.Object.Constant  import ConstantDeclarationBlock
+		from pyVHDLParser.Blocks.Sequential       import Procedure, Function
 
 		cls.KEYWORDS = {
 			# Keyword         Transition
@@ -124,7 +124,8 @@ class ConcurrentDeclarativeRegion(DeclarativeRegion):
 	def __cls_init__(cls):
 		super().__cls_init__()
 
-		from pyVHDLParser.Blocks.Object import SharedVariableDeclarationBlock, SignalDeclarationBlock
+		from pyVHDLParser.Blocks.Object.Signal         import SignalDeclarationBlock
+		from pyVHDLParser.Blocks.Object.SharedVariable import SharedVariableDeclarationBlock
 
 		cls.KEYWORDS.update({
 			# Keyword         Transition

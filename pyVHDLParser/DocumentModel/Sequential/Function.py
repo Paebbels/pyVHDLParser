@@ -36,7 +36,7 @@ from pyTerminalUI                                   import LineTerminal
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.List                       import GenericList as GenericListBlocks
-from pyVHDLParser.Blocks.Object                     import ConstantDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBlock
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Sequential                 import Function as FunctionBlock
 from pyVHDLParser.VHDLModel                         import Function as FunctionModel

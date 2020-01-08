@@ -147,7 +147,8 @@ class OpenBlock2(Block):
 	# TODO: Merge with OpenBlock.KEYWORDS ??
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.Object             import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock, VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
+		from pyVHDLParser.Blocks.Object.Variable    import VariableDeclarationBlock, VariableDeclarationEndMarkerBlock
+		from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock, ConstantDeclarationEndMarkerBlock
 		from pyVHDLParser.Blocks.Reference          import Use
 		from pyVHDLParser.Blocks.Reporting          import Report
 		from pyVHDLParser.Blocks.Sequential         import Procedure, Function

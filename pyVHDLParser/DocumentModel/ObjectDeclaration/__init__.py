@@ -33,7 +33,7 @@ from pyTerminalUI                                   import LineTerminal
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
-from pyVHDLParser.Blocks.Object                     import ConstantDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBlock
 from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 

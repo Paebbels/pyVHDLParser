@@ -37,7 +37,8 @@ from pyVHDLParser.Token.Keywords          import EndToken
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
-from pyVHDLParser.Blocks.Object           import ConstantDeclarationBlock, VariableDeclarationBlock
+from pyVHDLParser.Blocks.Object.Variable  import VariableDeclarationBlock
+from pyVHDLParser.Blocks.Object.Constant  import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Function
