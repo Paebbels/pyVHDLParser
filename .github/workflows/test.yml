@@ -1,0 +1,24 @@
+name: 'test'
+
+on: [ push, pull_request ]
+
+env:
+  CI: true
+  # https://github.com/tox-dev/tox/issues/1468
+  PY_COLORS: 1
+
+jobs:
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: install dependencies
+      run: |
+        pip install -U pip --progress-bar off
+        pip install -U virtualenv tox --progress-bar off
+    - name: run 'black'
+      run: tox -e py37-fmt -- --check
