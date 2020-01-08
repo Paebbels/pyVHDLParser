@@ -51,6 +51,8 @@ tab, ...), linebreaks and comments.
    SimpleTokens
    SpecificTokens
    Tokenizer
+   Usage
+   Examples
 
 
 .. rubric:: Example of a VHDL Entity
