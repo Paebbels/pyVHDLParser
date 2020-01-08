@@ -50,3 +50,5 @@ objects of base-class :class:`~pyVHDLParser.Groups.Group`.
 
    MetaGroups
    GroupGenerator
+   Usage
+   Examples
