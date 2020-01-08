@@ -30,8 +30,8 @@
 #
 # load dependencies
 from pyVHDLParser.Decorators      import Export
-from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, WordToken, LiteralToken, SpaceToken, LinebreakToken, CommentToken
-from pyVHDLParser.Token           import MultiLineCommentToken, IndentationToken, SingleLineCommentToken
+from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, WordToken, LiteralToken, SpaceToken, LinebreakToken
+from pyVHDLParser.Token           import CommentToken, Token, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords  import EqualOperator, PlusOperator, MinusOperator, MultiplyOperator, DivideOperator, ConcatOperator, LessThanOperator
 from pyVHDLParser.Token.Keywords  import GreaterThanOperator, DelimiterToken, PowerOperator, UnequalOperator, LessThanOrEqualOperator
 from pyVHDLParser.Token.Keywords  import GreaterThanOrEqualOperator, MatchingEqualOperator, MatchingUnequalOperator, MatchingLessThanOperator
@@ -92,9 +92,9 @@ class ExpressionBlock(Block):
 
 @Export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
-	EXIT_CHAR =   None
-	EXIT_TOKEN =  None
-	EXIT_BLOCK =  None
+	EXIT_CHAR  :  str =   None
+	EXIT_TOKEN :  Token = None
+	EXIT_BLOCK :  Block = None
 
 
 	@classmethod
