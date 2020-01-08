@@ -1,0 +1,7 @@
+Types
+#####
+
+.. toctree::
+
+   Subtype
+   Type
