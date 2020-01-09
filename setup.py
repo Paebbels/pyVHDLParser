@@ -34,16 +34,23 @@
 # ============================================================================
 #
 import setuptools
+from os.path import join, dirname, isfile
 
 with open("README.md", "r") as file:
-	long_description = file.read()
-
-requirements = []
-with open("requirements.txt") as file:
-	for line in file.readlines():
-		requirements.append(line)
+    long_description = file.read()
 
 projectName = "pyVHDLParser"
+
+rfile = "requirements.txt"
+if not isfile(rfile):
+	rfile = join(dirname(__file__), projectName + ".egg-info", "requires.txt")
+	if not isfile(rfile):
+		exit(1)
+
+requirements = []
+with open(rfile) as file:
+	for line in file.readlines():
+		requirements.append(line)
 
 github_url =  "https://github.com/Paebbels/" + projectName
 rtd_url =     "https://" + projectName + ".readthedocs.io/en/latest/"
