@@ -34,17 +34,18 @@
 # ============================================================================
 #
 import setuptools
-from os.path import join, dirname, isfile
+from pathlib import Path, PurePath
 
 with open("README.md", "r") as file:
 	long_description = file.read()
 
 projectName = "pyVHDLParser"
 
-rfile = "requirements.txt"
-if not isfile(rfile):
-	rfile = join(dirname(__file__), projectName + ".egg-info", "requires.txt")
-	if not isfile(rfile):
+rfile = Path("requirements.txt")
+root = PurePath(__file__)
+if not Path.is_file(rfile):
+	rfile = Path(root.parent, projectName + ".egg-info", "requires.txt")
+	if not Path.is_file(rfile):
 		exit(1)
 
 requirements = []
