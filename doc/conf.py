@@ -176,6 +176,7 @@ extensions = [
 
 # SphinxContrib extensions
 # 'sphinxcontrib.actdiag',
+	'sphinxcontrib.autoprogram',
 # 'sphinxcontrib.seqdiag',
 # 'sphinxcontrib.textstyle',
 # 'sphinxcontrib.spelling',
