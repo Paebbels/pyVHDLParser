@@ -3,7 +3,9 @@
 Installation/Updates
 ####################
 
-.. _installation:pip:
+
+
+.. _installation-pip:
 
 Using PIP
 *********
@@ -23,3 +25,25 @@ Updating using PIP
 
    pip3 install -U pyVHDLParser
 
+
+
+.. _installation-setup:
+
+Using setup.py
+**************
+
+.. todo::
+
+   Describe setup procedure using ``setup.py``
+
+
+
+.. _dependency:
+
+Dependencies
+************
+
+.. toctree::
+   :hidden:
+
+   Dependencies

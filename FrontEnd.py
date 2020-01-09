@@ -56,6 +56,7 @@ __api__ = [
 ]
 __all__ = __api__
 
+
 def printImportError(ex):
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
@@ -88,7 +89,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 	__PLATFORM =              platform_system()
 
 
-	def __init__(self, debug, verbose, quiet, sphinx=False):
+	def __init__(self, debug=False, verbose=False, quiet=False, sphinx=False):
 		super().__init__(verbose, debug, quiet)
 
 		Singleton.Register(LineTerminal, self)
@@ -339,13 +340,14 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
-		from pyVHDLParser.Token.Parser      import Tokenizer
-		from pyVHDLParser.Blocks            import TokenToBlockParser
-		from pyVHDLParser.Base              import ParserException
-		from pyVHDLParser.Blocks            import CommentBlock
-		from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
-		from pyVHDLParser.Blocks.Structural import Entity
-		from pyVHDLParser.Blocks.List       import GenericList, PortList
+		from pyVHDLParser.Token.Parser            import Tokenizer
+		from pyVHDLParser.Blocks                  import TokenToBlockParser
+		from pyVHDLParser.Base                    import ParserException
+		from pyVHDLParser.Blocks                  import CommentBlock
+		from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
+		from pyVHDLParser.Blocks.List             import GenericList, PortList
+		from pyVHDLParser.Blocks.InterfaceObject  import InterfaceConstantBlock, InterfaceSignalBlock
+		from pyVHDLParser.Blocks.Structural       import Entity
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
@@ -362,8 +364,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 					self.WriteNormal("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
 					self.WriteNormal("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, (pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock,
-				                            pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)):
+				elif isinstance(vhdlBlock, (InterfaceConstantBlock, InterfaceSignalBlock)):
 					self.WriteNormal("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 				else:
 					self.WriteNormal("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))

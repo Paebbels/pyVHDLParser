@@ -1,7 +1,8 @@
-.. _dependency:
+.. #
+   _dependency:
 
-Dependencies
-############
+   Dependencies
+   ############
 
 pyVHDLParser Package
 ********************

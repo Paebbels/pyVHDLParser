@@ -188,8 +188,8 @@ This library is licensed under **Apache License 2.0**.
    ProjectGoals
    UseCases
    Concepts
-   Installation
-   Dependencies
+   Installation/index
+   TestApplication/index
 
 .. raw:: latex
 
@@ -220,6 +220,7 @@ This library is licensed under **Apache License 2.0**.
    :hidden:
 
    pyVHDLParser/index
+   References/index
 
 .. raw:: latex
 
