@@ -37,7 +37,7 @@ import setuptools
 from os.path import join, dirname, isfile
 
 with open("README.md", "r") as file:
-    long_description = file.read()
+	long_description = file.read()
 
 projectName = "pyVHDLParser"
 
