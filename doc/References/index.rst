@@ -16,6 +16,4 @@ The main program :file:`Frontend.py` ...
 .. autoprogram:: Frontend-AutoProgram:parser
    :prog: Frontend.py
    :groups:
-
-.. #
-   :label: CMDREF:
+   :label: CmdRef:FE:

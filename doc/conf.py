@@ -176,11 +176,13 @@ extensions = [
 
 # SphinxContrib extensions
 # 'sphinxcontrib.actdiag',
-	'sphinxcontrib.autoprogram',
 # 'sphinxcontrib.seqdiag',
 # 'sphinxcontrib.textstyle',
 # 'sphinxcontrib.spelling',
 # 'changelog',
+
+# BuildTheDocs extensions
+	'btd.sphinx.autoprogram',
 
 # Other extensions
 #	'DocumentMember',
@@ -189,7 +191,6 @@ extensions = [
 
 # local extensions (patched)
 	'autoapi.sphinx',
-#	'autoprogram',               #'sphinxcontrib.autoprogram',
 
 # local extensions
 #	'DocumentMember'
