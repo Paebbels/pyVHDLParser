@@ -262,11 +262,21 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		try:
 			tokenIterator = iter(vhdlTokenStream)
 			firstToken = next(tokenIterator)
-			if (not isinstance(firstToken, StartOfDocumentToken)):
-				print("{RED}First block is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.Foreground))
 
-			lastToken = None
-			vhdlToken = firstToken
+			try:
+				while next(tokenIterator):
+					pass
+			except StopIteration:
+				pass
+
+			if (not isinstance(firstToken, StartOfDocumentToken)):
+				print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.Foreground))
+			if (firstToken.NextToken is None):
+				print("{RED}First token has an open end.{NOCOLOR}".format(**self.Foreground))
+
+			tokenIterator = iter(firstToken)
+			lastToken =     None
+			vhdlToken =     firstToken
 
 			for newToken in tokenIterator:
 				if (vhdlToken.NextToken is None):
