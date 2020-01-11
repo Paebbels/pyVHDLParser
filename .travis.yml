@@ -2,12 +2,22 @@ language: python
 
 install:
   - pip3 install -U -r requirements.txt
+  - pip3 install -U Coverage
+  - pip3 install -U codacy-coverage
 
 # if: tag IS present
 
+before_script:
+  - export CODACY_PROJECT_TOKEN=$CODACY_TOKEN
+
 script:
   - python -m unittest tests.unit.Entity
-#  - python3 ./test/Application.py
+  - coverage run --branch --append tests.unit.Tokens
+  - coverage run --branch --append tests.unit.Entity
+  - coverage run --branch --append tests.unit.Architecture
+  - coverage report --skip-covered --skip-empty
+  - coverage xml -o coverage.xml
+  - python-codacy-coverage -r coverage.xml
 
 deploy:
   provider: pypi

@@ -1,4 +1,3 @@
-from pyVHDLParser.Base import ParserException
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural import Entity
@@ -7,8 +6,7 @@ from unittest   import TestCase
 from tests.unit import Result, Initializer, Struct1, Struct2, Struct3, LinkingTests, TokenSequence, BlockSequence
 
 
-class TestSimpleArchitecture(TestCase, Struct3, LinkingTests, TokenSequence, BlockSequence):
-	name = "Simple:Architecture: one line; only end"
+class SimpleArchitecture_OneLine_OnlyEnd(TestCase, Struct3, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture a of e is begin end;"
 	tokenstream = Struct1(
 		tokenList=[

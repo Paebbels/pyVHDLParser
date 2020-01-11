@@ -7,7 +7,8 @@ from pyMetaClasses import Singleton
 from pyVHDLParser.Base import ParserException
 from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token
 from pyVHDLParser.Token.Parser import Tokenizer, TokenizerException
-from pyVHDLParser.Blocks        import StartOfDocumentBlock, EndOfDocumentBlock, TokenToBlockParser, MetaBlock, Block
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, TokenToBlockParser, MetaBlock, Block, \
+	BlockParserException
 
 
 class Initializer(metaclass=Singleton):
@@ -104,8 +105,10 @@ class TokenSequence(tc_dummy): #, Struct3):
 
 		except TokenizerException as ex:
 			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
-		except (StopIteration, AssertionError) as ex:
+		except StopIteration:
 			pass
+		except AssertionError:
+			raise
 		except Exception as ex:
 			self.fail(msg="Unexpected exception '{exname}' := {ex!s}.".format(ex=ex, exname=ex.__class__.__qualname__))
 
@@ -174,8 +177,12 @@ class BlockSequence(tc_dummy): #, Struct3):
 
 		except TokenizerException as ex:
 			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
-		except (StopIteration, AssertionError) as ex:
+		except BlockParserException as ex:
+			self.fail(msg="Unexpected 'BlockParserException' at {pos}".format(pos=ex.Position))
+		except StopIteration:
 			pass
+		except AssertionError:
+			raise
 		except Exception as ex:
 			self.fail(msg="Unexpected exception '{exname}' := {ex!s}.".format(ex=ex, exname=ex.__class__.__qualname__))
 
