@@ -3,7 +3,7 @@ from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBl
 from pyVHDLParser.Blocks.Common     import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural import Entity
 
-from tests.unit                     import StreamingTests, Result
+from tests.unit import StreamingTests, Result, Initializer
 
 
 TESTCASES = [
@@ -253,6 +253,9 @@ TESTCASES = [
 		}
 	}
 ]
+
+def setUpModule():
+	i = Initializer()
 
 
 class SimpleEntities(StreamingTests):

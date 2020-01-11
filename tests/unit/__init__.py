@@ -1,18 +1,20 @@
 from unittest                   import TestCase
 
 from flags                      import Flags
+from pyMetaClasses import Singleton
 
 from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token
 from pyVHDLParser.Token.Parser  import Tokenizer
 from pyVHDLParser.Blocks        import StartOfDocumentBlock, EndOfDocumentBlock, TokenToBlockParser, MetaBlock, Block
 
 
-def setUpModule():
-	for block in MetaBlock.BLOCKS:
-		try:
-			block.__cls_init__()
-		except AttributeError:
-			pass
+class Initializer(metaclass=Singleton):
+	def __init__(self):
+		for block in MetaBlock.BLOCKS:
+			try:
+				block.__cls_init__()
+			except AttributeError:
+				pass
 
 
 class Result(Flags):
@@ -24,7 +26,7 @@ class StreamingTests(TestCase):
 	_TESTCASES = []
 
 	def setUp(self):
-		self.skipTest()
+		self.skipTest("This is a base-class.")
 
 	def test_TokenSequence(self) -> None:
 		for test in self._TESTCASES:
