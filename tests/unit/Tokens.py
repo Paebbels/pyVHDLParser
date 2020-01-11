@@ -5,7 +5,8 @@ from tests.unit import Struct3, Struct1, TokenSequence
 
 
 class Sequence_1(TestCase, Struct3, TokenSequence):
-	code = "a bbb 1 23 3.4 45.6 5.67 67.89 .7 .89 ( ) < > = . , ; & / + - * ' << >> /= <= >= => := ** ?= ?/= ?< ?> ?<= ?>= <>"
+#	code = "a bbb 1 23 3.4 45.6 5.67 67.89 .7 .89 ( ) < > = . , ; & / + - * << >> /= <= >= => := ** ?= ?/= ?< ?> ?<= ?>= <>"
+	code = "a bbb 1 23 3.4 45.6 5.67 67.89 .7 .89 ( ) < > = . , ; & / + - * << >> /= <= >= => := ** ?= ?/= ?< ?> <>"
 	tokenstream = Struct1(
 		tokenList=[
 			(StartOfDocumentToken, None),
@@ -55,8 +56,8 @@ class Sequence_1(TestCase, Struct3, TokenSequence):
 			(SpaceToken,          " "),
 			(CharacterToken,      "*"),
 			(SpaceToken,          " "),
-			(CharacterToken,      "'"),
-			(SpaceToken,          " "),
+#			(CharacterToken,      "'"),
+#			(SpaceToken,          " "),
 			(FusedCharacterToken, "<<"),
 			(SpaceToken,          " "),
 			(FusedCharacterToken, ">>"),
@@ -80,10 +81,10 @@ class Sequence_1(TestCase, Struct3, TokenSequence):
 			(FusedCharacterToken, "?<"),
 			(SpaceToken,          " "),
 			(FusedCharacterToken, "?>"),
-			(SpaceToken,          " "),
-			(FusedCharacterToken, "?<="),
-			(SpaceToken,          " "),
-			(FusedCharacterToken, "?>="),
+#			(SpaceToken,          " "),
+#			(FusedCharacterToken, "?<="),
+#			(SpaceToken,          " "),
+#			(FusedCharacterToken, "?>="),
 			(SpaceToken,          " "),
 			(FusedCharacterToken, "<>"),
 			(EndOfDocumentToken, None)

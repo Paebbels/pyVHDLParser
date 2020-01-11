@@ -13,7 +13,7 @@ class SimpleArchitecture_OneLine_OnlyEnd(TestCase, Struct3, LinkingTests, TokenS
 			(StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(SpaceToken,           " "),
-			(WordToken,            "b"),
+			(WordToken,            "a"),
 			(SpaceToken,           " "),
 			(WordToken,            "of"),
 			(SpaceToken,           " "),

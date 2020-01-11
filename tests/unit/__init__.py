@@ -104,7 +104,7 @@ class TokenSequence(tc_dummy): #, Struct3):
 						)
 
 		except TokenizerException as ex:
-			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
+			self.fail(msg="Unexpected 'TokenizerException' ({ex!s}) at {pos}".format(ex=ex, pos=ex.Position))
 		except StopIteration:
 			pass
 		except AssertionError:
