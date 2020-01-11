@@ -37,6 +37,52 @@ __api__ = __all__
 
 
 @Export
+class TokenIterator:
+	startToken:   'Token' = None
+	currentToken: 'Token' = None
+	stopToken:    'Token' = None
+
+	def __init__(self, startToken: 'Token', stopToken: 'Token'=None):
+		self.startToken =   startToken
+		self.currentToken = startToken.NextToken
+		self.stopToken =    stopToken
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		token = self.currentToken
+		if (token is None):
+			raise StopIteration
+
+		self.currentToken = token.NextToken
+		return token
+
+
+@Export
+class TokenReverseIterator:
+	startToken:   'Token' = None
+	currentToken: 'Token' = None
+	stopToken:    'Token' = None
+
+	def __init__(self, startToken: 'Token', stopToken: 'Token'=None):
+		self.startToken =   startToken
+		self.currentToken = startToken.PreviousToken
+		self.stopToken =    stopToken
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		token = self.currentToken
+		if (token is None):
+			raise StopIteration
+
+		self.currentToken = token.PreviousToken
+		return token
+
+
+@Export
 class Token:
 	"""Base-class for all token classes."""
 
@@ -63,6 +109,15 @@ class Token:
 
 	def __len__(self):
 		return self.End.Absolute - self.Start.Absolute + 1
+
+	def __iter__(self):
+		return TokenIterator(self)
+
+	def GetIterator(self, stopToken:'Token'):
+		return TokenIterator(self, stopToken)
+
+	def GetReverseIterator(self, stopToken:'Token'):
+		return TokenReverseIterator(self, stopToken)
 
 	@property
 	def PreviousToken(self):
