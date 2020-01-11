@@ -6,7 +6,7 @@ install:
 # if: tag IS present
 
 script:
-  - echo "No test application yet."
+  - cd tests/unit; python -m unittest Entity.SimpleEntities
 #  - python3 ./test/Application.py
 
 deploy:
