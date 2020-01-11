@@ -167,10 +167,11 @@ class BlockSequence(tc_dummy): #, Struct3):
 				  )
 				)
 				if item[1] is not None:
-					if block != item[1]:
+					blockValue = repr(block)
+					if blockValue != item[1]:
 						self.fail(
 							msg="The token's value does not match.\n  Actual:   {actual}\n  Expected: {expected}".format(
-								actual=block.Value,
+								actual=blockValue,
 								expected=item[1]
 							)
 						)

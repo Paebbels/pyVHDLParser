@@ -1,6 +1,6 @@
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock
-from pyVHDLParser.Blocks.Structural import Entity
+from pyVHDLParser.Blocks.Structural import Architecture
 from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from unittest   import TestCase
 from tests.unit import Result, Initializer, Struct1, Struct2, Struct3, LinkingTests, TokenSequence, BlockSequence
@@ -30,13 +30,13 @@ class SimpleArchitecture_OneLine_OnlyEnd(TestCase, Struct3, LinkingTests, TokenS
 	)
 	blockstream = Struct2(
 		blockList=[
-			(StartOfDocumentBlock, None),
-			(Entity.NameBlock,     "architecture a of e is"),
-			(WhitespaceBlock,      " "),
-			(Entity.BeginBlock,    "begin"),
-			(WhitespaceBlock,      " "),
-			(Entity.EndBlock,      "end;"),
-			(EndOfDocumentBlock,   None)
+			(StartOfDocumentBlock,    None),
+			(Architecture.NameBlock,  "architecture a of e is"),
+			(WhitespaceBlock,         " "),
+			(Architecture.BeginBlock, "begin"),
+			(WhitespaceBlock,         " "),
+			(Architecture.EndBlock,   "end;"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
 
