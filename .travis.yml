@@ -11,13 +11,13 @@ before_script:
   - export CODACY_PROJECT_TOKEN=$CODACY_TOKEN
 
 script:
-  - python -m unittest tests.unit.Entity
   - coverage run --branch --append tests.unit.Tokens
   - coverage run --branch --append tests.unit.Entity
   - coverage run --branch --append tests.unit.Architecture
   - coverage report --skip-covered --skip-empty
   - coverage xml -o coverage.xml
   - python-codacy-coverage -r coverage.xml
+  - python -m unittest tests.unit.Entity
 
 deploy:
   provider: pypi
