@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import WhitespaceBlock
@@ -222,6 +224,270 @@ TESTCASES = [
 	},{
 		'name': "Simple:Entity: one line; ends with keyword and name; but wrong name",
 		'code': "entity e is end entity a;",
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form",
+		'code': dedent("""\
+			entity e is
+			end	entity e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: all lines; long form",
+		'code': dedent("""\
+			entity
+			e
+			is
+			end
+			entity
+			e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form; with single generic",
+		'code': dedent("""\
+			entity e is
+				generic (
+					G : integer
+				);
+			end	entity e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form; with single generic; no generic",
+		'code': dedent("""\
+			entity e is
+				(
+					G : integer
+				);
+			end	entity e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form; with single generic; no (",
+		'code': dedent("""\
+			entity e is
+				generic
+					G : integer
+				);
+			end	entity e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form; with single generic; no )",
+		'code': dedent("""\
+			entity e is
+				generic (
+					G : integer
+				;
+			end	entity e;
+			"""),
+		'tokenstream': {
+			'tokens': [
+				(StartOfDocumentToken, None),      #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "e"),       # e
+				(SpaceToken,           " "),       #
+				(WordToken,            "is"),      # is
+				(SpaceToken,           " "),       #
+				(WordToken,            "end"),     # end
+				(SpaceToken,           " "),       #
+				(WordToken,            "entity"),  # entity
+				(SpaceToken,           " "),       #
+				(WordToken,            "a"),       # a
+				(CharacterToken,       ";"),       # ;
+				(EndOfDocumentToken,   None)       #
+			],
+			'result': Result.Pass
+		},
+	  'blockstream': {
+			'blocks': [
+				(StartOfDocumentBlock, None),             #
+				(Entity.NameBlock,     "entity e is"),    # entity e is
+				(WhitespaceBlock,      " "),              #
+				(Entity.EndBlock,      "end entity a;"),  # end entity a;
+				(EndOfDocumentBlock,   None)              #
+			],
+		  'result':     Result.Pass
+		}
+	},{
+		'name': "Simple:Entity: multi line; long form; with single generic; typo in generic",
+		'code': dedent("""\
+			entity e is
+				generi (
+					G : integer
+				;
+			end	entity e;
+			"""),
 		'tokenstream': {
 			'tokens': [
 				(StartOfDocumentToken, None),      #
