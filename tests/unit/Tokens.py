@@ -110,3 +110,110 @@ class Sequence_2(TestCase, Struct3, TokenSequence):
 			(EndOfDocumentToken, None)
 		]
 	)
+
+class Sequence_3(TestCase, Struct3, TokenSequence):
+	code = """abc\n123\n456.789\n'Z'\n"Hallo"\n\\foo\\\n-- comment\n/* comment */\n;\n  \nabc\r\n123\r\n456.789\r\n'Z'\r\n"Hallo"\r\n\\foo\\\r\n-- comment\r\n/* comment */\r\n;\r\n  \r\n\tabc """
+	tokenstream = Struct1(
+		tokenList=[
+			(StartOfDocumentToken, None),
+			(WordToken,               "abc"),
+			(LinebreakToken,          None),
+			(IntegerLiteralToken,     "123"),
+			(LinebreakToken,          None),
+			(RealLiteralToken,        "456.789"),
+			(LinebreakToken,          None),
+			(CharacterLiteralToken,   "Z"),
+			(LinebreakToken,          None),
+			(StringLiteralToken,      "Hallo"),
+			(LinebreakToken,          None),
+			(ExtendedIdentifier,      "\\foo\\"),
+			(LinebreakToken,          None),
+			(SingleLineCommentToken,  "-- comment\n"),
+#			(LinebreakToken,          None),
+			(MultiLineCommentToken,   "/* comment */"),
+			(LinebreakToken,          None),
+			(CharacterToken,          ";"),
+			(LinebreakToken,          None),
+			(IndentationToken,        "  "),
+			(LinebreakToken,          None),
+			(WordToken,               "abc"),
+			(LinebreakToken,          None),
+			(IntegerLiteralToken,     "123"),
+			(LinebreakToken,          None),
+			(RealLiteralToken,        "456.789"),
+			(LinebreakToken,          None),
+			(CharacterLiteralToken,   "Z"),
+			(LinebreakToken,          None),
+			(StringLiteralToken,      "Hallo"),
+			(LinebreakToken,          None),
+			(ExtendedIdentifier,      "\\foo\\"),
+			(LinebreakToken,          None),
+			(SingleLineCommentToken,  "-- comment\r\n"),
+#			(LinebreakToken,          None),
+			(MultiLineCommentToken,   "/* comment */"),
+			(LinebreakToken,          None),
+			(CharacterToken,          ";"),
+			(LinebreakToken,          None),
+			(IndentationToken,        "  "),
+			(LinebreakToken,          None),
+			(IndentationToken,        "\t"),
+			(WordToken,               "abc"),
+			(EndOfDocumentToken, None)
+		]
+	)
+
+class Sequence_4(TestCase, Struct3, TokenSequence):
+	code = """abc-- comment\n123-- comment\n456.789-- comment\n'Z'-- comment\n"Hallo"-- comment\n\\foo\\-- comment\n-- comment\n/* comment */-- comment\n;-- comment\n  -- comment\n"""
+	tokenstream = Struct1(
+		tokenList=[
+			(StartOfDocumentToken,    None),
+			(WordToken,               "abc"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(IntegerLiteralToken,     "123"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(RealLiteralToken,        "456.789"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(CharacterLiteralToken,   "Z"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(StringLiteralToken,      "Hallo"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(ExtendedIdentifier,      "\\foo\\"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(MultiLineCommentToken,   "/* comment */"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(CharacterToken,          ";"),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(IndentationToken,        "  "),
+			(SingleLineCommentToken,  "-- comment\n"),
+			(EndOfDocumentToken,      None)
+		]
+	)
+
+class Sequence_5(TestCase, Struct3, TokenSequence):
+	code = """abc/* comment */123/* comment */456.789/* comment */'Z'/* comment */"Hallo"/* comment */\\foo\\/* comment */-- comment\n/* comment *//* comment */;/* comment */  /* comment */"""
+	tokenstream = Struct1(
+		tokenList=[
+			(StartOfDocumentToken,   None),
+			(WordToken,              "abc"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(IntegerLiteralToken,    "123"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(RealLiteralToken,       "456.789"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(CharacterLiteralToken,  "Z"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(StringLiteralToken,     "Hallo"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(ExtendedIdentifier,     "\\foo\\"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(SingleLineCommentToken, "-- comment\n"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(CharacterToken,         ";"),
+			(MultiLineCommentToken,  "/* comment */"),
+			(SpaceToken,             "  "),
+			(MultiLineCommentToken,  "/* comment */"),
+			(EndOfDocumentToken,     None)
+		]
+	)

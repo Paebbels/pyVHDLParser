@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Any
 from unittest                   import TestCase
 
 from flags                      import Flags
@@ -29,19 +29,22 @@ class Result(Flags):
 class tc_dummy:
 	def skipTest(self, reason=None):
 		pass
-	def fail(self, msg=""):
+	def fail(self, msg: str=""):
 		pass
-	def assertEqual(self, left, right, msg=""):
+	def failIf(self, expr: bool, msg: str=""):
+		if expr:
+			self.fail(msg=msg)
+	def assertEqual(self, left: Any, right: Any, msg: str=""):
 		pass
-	def assertIsInstance(self, obj, typ, msg=""):
+	def assertIsInstance(self, obj: Any, typ, msg: str=""):
 		pass
-	def assertIsNotInstance(self, obj, typ, msg=""):
+	def assertIsNotInstance(self, obj: Any, typ, msg: str=""):
 		pass
-	def assertTrue(self, obj, msg=""):
+	def assertTrue(self, obj: bool, msg: str=""):
 		pass
-	def assertIsNone(self, obj, msg=""):
+	def assertIsNone(self, obj: Any, msg: str=""):
 		pass
-	def assertIsNotNone(self, obj, msg=""):
+	def assertIsNotNone(self, obj: Any, msg: str=""):
 		pass
 
 
@@ -89,19 +92,20 @@ class TokenSequence(tc_dummy): #, Struct3):
 
 				self.assertIsInstance(
 					token, item[0],
-					msg="Token has not expected type.\n  Actual:   {actual}\n  Expected: {expected}".format(
+					msg="Token has not expected type.\n  Actual:   {actual}     pos={pos!s}\n  Expected: {expected}".format(
 						actual=token.__class__.__qualname__,
+						pos=token.Start,
 						expected=item[0].__qualname__
 					)
 				)
 				if item[1] is not None:
-					if token != item[1]:
-						self.fail(
-							msg="The token's value does not match.\n  Actual:   {actual}\n  Expected: {expected}".format(
-								actual=token.Value,
-								expected=item[1]
-							)
+					super().failIf(
+						token != item[1],
+						msg="The token's value does not match.\n  Actual:   {actual}\n  Expected: {expected}".format(
+							actual=token.Value,
+							expected=item[1]
 						)
+					)
 
 		except TokenizerException as ex:
 			self.fail(msg="Unexpected 'TokenizerException' ({ex!s}) at {pos}".format(ex=ex, pos=ex.Position))
@@ -161,20 +165,21 @@ class BlockSequence(tc_dummy): #, Struct3):
 
 				self.assertIsInstance(
 					block, item[0],
-				  msg="Block has not expected type.\n  Actual:   {actual}\n  Expected: {expected}".format(
-						actual=block.__class__.__qualname__,
+				  msg="Block has not expected type.\n  Actual:   {actual!s}\n  Expected: {expected}".format(
+#						actual=block.__class__.__qualname__,
+						actual=block,
 						expected=item[0].__qualname__
 				  )
 				)
 				if item[1] is not None:
 					blockValue = repr(block)
-					if blockValue != item[1]:
-						self.fail(
-							msg="The token's value does not match.\n  Actual:   {actual}\n  Expected: {expected}".format(
-								actual=blockValue,
-								expected=item[1]
-							)
+					super().failIf(
+						blockValue != item[1],
+						msg="The blocks's value does not match.\n  Actual:   '{actual}'\n  Expected: '{expected}'".format(
+							actual=blockValue,
+							expected=item[1]
 						)
+					)
 
 		except TokenizerException as ex:
 			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
