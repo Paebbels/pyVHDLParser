@@ -29,7 +29,7 @@
 # ==============================================================================
 #
 from types                          import FunctionType
-from typing                         import List, Callable, Iterator
+from typing import List, Callable, Iterator, Iterable
 
 from pyTerminalUI                   import LineTerminal
 
@@ -228,6 +228,52 @@ class MetaBlock(type):
 
 
 @Export
+class BlockIterator:
+	startBlock:   'Block' = None
+	currentBlock: 'Block' = None
+	stopBlock:    'Block' = None
+
+	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
+		self.startBlock =   startBlock
+		self.currentBlock = startBlock.NextBlock
+		self.stopBlock =    stopBlock
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		block = self.currentBlock
+		if (block is None):
+			raise StopIteration
+
+		self.currentBlock = block.NextBlock
+		return block
+
+
+@Export
+class BlockReverseIterator:
+	startBlock:   'Block' = None
+	currentBlock: 'Block' = None
+	stopBlock:    'Block' = None
+
+	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
+		self.startBlock =   startBlock
+		self.currentBlock = startBlock.PreviousToken
+		self.stopBlock =    stopBlock
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		block = self.currentBlock
+		if (block is None):
+			raise StopIteration
+
+		self.currentBlock = block.PreviousBlock
+		return block
+
+
+@Export
 class Block(metaclass=MetaBlock):
 	"""
 	Base-class for all :term:`block` classes.
@@ -271,6 +317,12 @@ class Block(metaclass=MetaBlock):
 			token = token.NextToken
 
 		yield self.EndToken
+
+	def GetIterator(self, stopBlock: 'Block') -> Iterable:
+		return BlockIterator(self, stopBlock)
+
+	def GetReverseIterator(self, stopBlock: 'Block') -> Iterable:
+		return BlockReverseIterator(self, stopBlock)
 
 	def __repr__(self):
 		buffer = ""
