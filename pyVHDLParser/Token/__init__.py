@@ -29,6 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
+from typing import Iterable
+
 from pyVHDLParser.Decorators  import Export
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 
@@ -110,13 +112,10 @@ class Token:
 	def __len__(self):
 		return self.End.Absolute - self.Start.Absolute + 1
 
-	def __iter__(self):
-		return TokenIterator(self)
-
-	def GetIterator(self, stopToken:'Token'):
+	def GetIterator(self, stopToken:'Token') -> Iterable:
 		return TokenIterator(self, stopToken)
 
-	def GetReverseIterator(self, stopToken:'Token'):
+	def GetReverseIterator(self, stopToken:'Token') -> Iterable:
 		return TokenReverseIterator(self, stopToken)
 
 	@property
@@ -150,6 +149,9 @@ class ValuedToken(Token):
 
 		super().__init__(previousToken, start, end)
 		self.Value : str =  value
+
+	def __iter__(self):
+		return iter(self.Value)
 
 	def __eq__(self, other : str):
 		"""Return true if the internal value is equal to the second operand."""
