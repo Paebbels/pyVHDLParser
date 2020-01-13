@@ -11,9 +11,10 @@ before_script:
   - export CODACY_PROJECT_TOKEN=$CODACY_TOKEN
 
 script:
-  - coverage run --append tests.unit.Tokens
-  - coverage run --append tests.unit.Entity
-  - coverage run --append tests.unit.Architecture
+  - echo $TRAVIS_BRANCH $TRAVIS_COMMIT
+  - coverage run --append -m tests.unit.Tokens
+  - coverage run --append -m tests.unit.Entity
+  - coverage run --append -m tests.unit.Architecture
   - coverage report
   - coverage xml
   - python-codacy-coverage -r coverage.xml
