@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                import Export
+from pydecor.decorators                     import export
+
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken, BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
@@ -45,7 +46,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class RangeBlock(Block):
 	@classmethod
 	def stateGenerateKeyword(cls, parserState: ParserState):
@@ -241,7 +242,7 @@ class RangeBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class BeginBlock(Block):
 	@classmethod
 	def stateBeginKeyword(cls, parserState: ParserState):
@@ -287,6 +288,6 @@ class BeginBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class EndGenerateBlock(EndGenerateBlockBase):
 	pass

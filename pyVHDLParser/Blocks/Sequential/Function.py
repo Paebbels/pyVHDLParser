@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                import Export
+from pydecor.decorators                     import export
+
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IdentifierToken, PureKeyword, ImpureKeyword
 from pyVHDLParser.Token.Keywords            import ReturnKeyword, GenericKeyword, ParameterKeyword, FunctionKeyword, EndKeyword
@@ -44,25 +45,25 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndBlock(EndBlockBase):
 	KEYWORD =             FunctionKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
-@Export
+@export
 class BeginBlock(SequentialBeginBlock):
 	END_BLOCK =   EndBlock
 
 
-@Export
+@export
 class DeclarativeRegion(SequentialDeclarativeRegion):
 	BEGIN_BLOCK = BeginBlock
 	END_BLOCK =   EndBlock
 
 
-@Export
+@export
 class NameBlock(Block):
 	@classmethod
 	def statePureKeyword(cls, parserState: ParserState):
@@ -251,7 +252,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected '(' or keywords GENERIC, PARAMETER or RETURN after function name.", token)
 
 
-@Export
+@export
 class ReturnTypeBlock(Block):
 	@classmethod
 	def stateAfterParameterList(cls, parserState: ParserState):

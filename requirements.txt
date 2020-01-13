@@ -1,5 +1,6 @@
 colorama>=0.4.3
 py-flags>=1.1.3
+pydecor>=2.0.0
 
 pyExceptions>=1.0.0
 pyAttributes>=1.0.1

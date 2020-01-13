@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, WordToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token           import SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EndToken, BoundaryToken, LabelToken, IdentifierToken
@@ -40,7 +41,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndBlock(FinalBlock):
 	KEYWORD =             None
 	KEYWORD_IS_OPTIONAL = False
@@ -330,7 +331,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';'.", token)
 
 
-@Export
+@export
 class BeginBlock(Block):
 	END_BLOCK : EndBlock = None
 
@@ -341,7 +342,7 @@ class BeginBlock(Block):
 		pass
 
 
-@Export
+@export
 class CloseBlock(Block):
 	@classmethod
 	def stateClosingParenthesis(cls, parserState: ParserState):
@@ -392,6 +393,6 @@ class CloseBlock(Block):
 		raise BlockParserException("Expected ';'.", token)
 
 
-@Export
+@export
 class EndOfStatementBlock(Block):
 	pass

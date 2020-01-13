@@ -29,13 +29,13 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pyVHDLParser.Decorators import Export
+from pydecor.decorators import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ExceptionBase(Exception):
 	def __init__(self, message):
 		self._message = message
@@ -44,6 +44,6 @@ class ExceptionBase(Exception):
 		return self._message
 
 
-@Export
+@export
 class ParserException(ExceptionBase):
 	pass

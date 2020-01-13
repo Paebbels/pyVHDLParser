@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, WordToken, LiteralToken, SpaceToken, LinebreakToken
 from pyVHDLParser.Token           import CommentToken, Token, MultiLineCommentToken, IndentationToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords  import EqualOperator, PlusOperator, MinusOperator, MultiplyOperator, DivideOperator, ConcatOperator, LessThanOperator
@@ -46,7 +47,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ExpressionBlock(Block):
 	CHARACTER_TRANSLATION = {
 		"=":    EqualOperator,
@@ -90,7 +91,7 @@ class ExpressionBlock(Block):
 	}
 
 
-@Export
+@export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 	EXIT_CHAR  :  str =   None
 	EXIT_TOKEN :  Token = None
@@ -287,7 +288,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		raise BlockParserException("Expected ????????????.", token)
 
 
-@Export
+@export
 class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	EXIT_KEYWORD =  None
 	EXIT_BLOCK =    None
@@ -404,7 +405,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 		raise BlockParserException("Expected ????????????.", token)
 
 
-@Export
+@export
 class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 	EXIT_KEYWORD =  None
 	EXIT_BLOCK =    None
@@ -555,7 +556,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 		raise BlockParserException("Expected ????????????.", token)
 
 
-@Export
+@export
 class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 	END_BLOCK = None
 

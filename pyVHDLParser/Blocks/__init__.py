@@ -31,9 +31,9 @@
 from types                          import FunctionType
 from typing import List, Callable, Iterator, Iterable
 
+from pydecor.decorators             import export
 from pyTerminalUI                   import LineTerminal
 
-from pyVHDLParser.Decorators        import Export
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken
@@ -44,7 +44,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class BlockParserException(ParserException):
 	"""Base-class for exceptions when reading tokens and generating blocks."""
 
@@ -60,7 +60,7 @@ class BlockParserException(ParserException):
 		return self._token
 
 
-@Export
+@export
 class TokenToBlockParser:
 	"""Wrapping class to offer some class methods."""
 
@@ -72,7 +72,7 @@ class TokenToBlockParser:
 		return state.GetGenerator()
 
 
-@Export
+@export
 class ParserState:
 	"""Represents the current state of a token-to-block parser."""
 
@@ -199,7 +199,7 @@ class ParserState:
 				raise BlockParserException("Unexpected end of document.", self.Token)
 
 
-@Export
+@export
 class MetaBlock(type):
 	"""
 	A :term:`meta-class` to construct *Block* classes.
@@ -227,7 +227,7 @@ class MetaBlock(type):
 		return block
 
 
-@Export
+@export
 class BlockIterator:
 	startBlock:   'Block' = None
 	currentBlock: 'Block' = None
@@ -250,7 +250,7 @@ class BlockIterator:
 		return block
 
 
-@Export
+@export
 class BlockReverseIterator:
 	startBlock:   'Block' = None
 	currentBlock: 'Block' = None
@@ -273,7 +273,7 @@ class BlockReverseIterator:
 		return block
 
 
-@Export
+@export
 class Block(metaclass=MetaBlock):
 	"""
 	Base-class for all :term:`block` classes.
@@ -372,23 +372,23 @@ class Block(metaclass=MetaBlock):
 		raise BlockParserException("Reached unreachable state!")
 
 
-@Export
+@export
 class SkipableBlock(Block):
 	"""Base-class for blocks that can be skipped in fast-forward scanning."""
 	pass
 
-@Export
+@export
 class FinalBlock(Block):
 	"""Base-class for blocks that are final in a fast-forward scanning."""
 	pass
 
-@Export
+@export
 class CommentBlock(SkipableBlock):
 	"""Base-class for all comment blocks."""
 	pass
 
 
-@Export
+@export
 class StartOfBlock(Block):
 	"""Base-class for a first block in a sequence of double-linked blocks."""
 
@@ -411,7 +411,7 @@ class StartOfBlock(Block):
 			)
 
 
-@Export
+@export
 class EndOfBlock(Block):
 	"""Base-class for a last block in a sequence of double-linked blocks."""
 
@@ -434,7 +434,7 @@ class EndOfBlock(Block):
 			)
 
 
-@Export
+@export
 class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 	"""First block in a sequence of double-linked blocks."""
 
@@ -496,15 +496,15 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			), token)
 
 
-@Export
+@export
 class EndOfDocumentBlock(EndOfBlock, EndOfDocument):
 	"""Last block in a sequence of double-linked blocks."""
 	pass
 
-@Export
+@export
 class StartOfSnippetBlock(StartOfBlock, StartOfSnippet):
 	pass
 
-@Export
+@export
 class EndOfSnippetBlock(EndOfBlock, EndOfSnippet):
 	pass

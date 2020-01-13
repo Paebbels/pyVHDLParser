@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators  import Export
+from pydecor.decorators       import export
+
 from pyVHDLParser.Token       import SpaceToken, IndentationToken
 from pyVHDLParser.Blocks      import ParserState, SkipableBlock
 
@@ -37,7 +38,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class WhitespaceBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -51,7 +52,7 @@ class WhitespaceBlock(SkipableBlock):
 		)
 
 
-@Export
+@export
 class LinebreakBlock(WhitespaceBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState: ParserState):
@@ -70,12 +71,12 @@ class LinebreakBlock(WhitespaceBlock):
 			parserState.NextState(parserState)
 
 
-@Export
+@export
 class EmptyLineBlock(LinebreakBlock):
 	pass
 
 
-@Export
+@export
 class IndentationBlock(WhitespaceBlock):
 	__TABSIZE__ = 2
 

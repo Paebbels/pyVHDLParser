@@ -29,24 +29,25 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                  import Export
+from pydecor.decorators                       import export
+
 from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform, Scheduler, Event
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class Simulation:
 	def __init__(self):
 		self._signals =     []
 		self._processes =   []
 		self._scheduler =   Scheduler()
-	
+
 	def AddSignal(self, signal):
 		self._signals.append(signal)
 		signal.Simulator = self
-	
+
 	def AddProcess(self, process):
 		self._processes.append(process)
 
@@ -55,48 +56,48 @@ class Simulation:
 			signal.Initialize()
 		for process in self._processes:
 			process.Initialize()
-	
+
 	def Run(self):
 		iterators = [(p,iter(p._generator())) for p in self._processes]
-		
+
 		for process,iterator in iterators:
 			signalChanges,time = next(iterator)
 			for signal,value in signalChanges:
 				signal.SetValue(value)
-			
+
 			self._scheduler.AddEvent(Event(self._scheduler._now + time, process))
-			
-			
+
+
 			print(time)
-		
-		
-		
+
+
+
 		for signal in self._signals:
 			print("{signal!s}: {wave}".format(signal=signal, wave=signal._waveform._transactions))
-	
+
 	@property
 	def Now(self):
 		return self._scheduler._now
-		
-		
+
+
 	def ExportVCD(self, filename):
 		pass
 
 
-@Export
+@export
 class Path:
 	def __init__(self, name, path):
 		self._name =    name
 		self._path =    path
-	
+
 	def __repr__(self):
 		return self._path
-	
+
 	def __str__(self):
 		return self._name
 
 
-@Export
+@export
 class Signal:
 	def __init__(self, path, subType, initializer=None):
 		self._path =              path
@@ -106,25 +107,25 @@ class Signal:
 		self._projectedWaveform = ProjectedWaveform(self)
 		self._waveform =          Waveform(self)
 		self.Simulator =          None
-	
+
 	def Initialize(self):
 		if (self._initializer is not None):
 			result = self._initializer()
 		else:
 			result = self._subType.Attributes.Low()
 		self._waveform.Initialize(result)
-	
+
 	def SetValue(self, value):
 		self._waveform.AddEvent(self.Simulator.Now, value)
-	
+
 	def __repr__(self):
 		return "{path!r}: {value}".format(path=self._path, value="------")
-	
+
 	def __str__(self):
 		return "{path!s}: {value}".format(path=self._path, value="------")
 
 
-@Export
+@export
 class Process:
 	def __init__(self, path, generator, sensitivityList=None):
 		self._path =            path
@@ -134,27 +135,27 @@ class Process:
 		self._variables =       []
 		self._outputs =         []
 		self._instructions =    []
-	
+
 	def Initialize(self):
 		pass
 
 
-@Export
+@export
 class Source:
 	pass
 
 
-@Export
+@export
 class Driver(Source):
 	pass
 
 
-@Export
+@export
 class ResolutionFunction:
 	def __init__(self):
 		self._function =  None
 
 
-@Export
+@export
 class DrivingValue:
 	pass

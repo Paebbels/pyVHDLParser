@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token.Keywords  import GenerateKeyword
 from pyVHDLParser.Blocks.Generic  import EndBlock
 
@@ -37,7 +38,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndGenerateBlock(EndBlock):
 	KEYWORD =             GenerateKeyword
 	KEYWORD_IS_OPTIONAL = True

@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, FinalBlock, SkipableBlock
@@ -40,7 +41,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EntityInstantiationBlock(Block):
 	@classmethod
 	def stateEntityInstantiationKeyword(cls, parserState: ParserState):
@@ -194,38 +195,38 @@ class EntityInstantiationBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class GenericMapBeginBlock(Block):
 	pass
 
-@Export
+@export
 class GenericMapItemBlock(Block):
 	pass
 
-@Export
+@export
 class GenericMapDelimiterBlock(SkipableBlock):
 	pass
 
-@Export
+@export
 class GenericMapEndBlock(FinalBlock):
 	pass
 
-@Export
+@export
 class PortMapBeginBlock(Block):
 	pass
 
-@Export
+@export
 class PortMapItemBlock(Block):
 	pass
 
-@Export
+@export
 class PortMapDelimiterBlock(SkipableBlock):
 	pass
 
-@Export
+@export
 class PortMapEndBlock(FinalBlock):
 	pass
 
-@Export
+@export
 class EndBlock(FinalBlock):
 	pass

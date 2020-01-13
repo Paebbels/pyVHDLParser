@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from pyVHDLParser.Blocks              import CommentBlock, ParserState
@@ -39,7 +40,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class SingleLineCommentBlock(CommentBlock):
 	@classmethod
 	def statePossibleCommentStart(cls, parserState: ParserState):
@@ -78,7 +79,7 @@ class SingleLineCommentBlock(CommentBlock):
 			parserState.NextState(parserState)
 
 
-@Export
+@export
 class MultiLineCommentBlock(CommentBlock):
 	@classmethod
 	def statePossibleCommentStart(cls, parserState: ParserState):

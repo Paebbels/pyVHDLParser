@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators    import Export
+from pydecor.decorators         import export
+
 from pyVHDLParser.Token         import Token, WordToken, VHDLToken
 from pyVHDLParser.Token.Parser  import TokenizerException
 
@@ -37,7 +38,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class SpecificVHDLToken(VHDLToken):
 	"""Base-class for all specific tokens.
 
@@ -53,7 +54,7 @@ class SpecificVHDLToken(VHDLToken):
 		super().__init__(token.PreviousToken, token.Value, token.Start, token.End)
 
 
-@Export
+@export
 class BoundaryToken(SpecificVHDLToken):
 	"""
 	Token representing a boundary between (reserved) words.
@@ -65,148 +66,148 @@ class BoundaryToken(SpecificVHDLToken):
 # ==============================================================================
 # Bracket tokens: (), [], {}, <>
 # ==============================================================================
-@Export
+@export
 class BracketToken(SpecificVHDLToken):
 	"""Base-class for all bracket tokens: ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, ``<`` and ``>``."""
 
 # Round bracket / parenthesis / ()
 # ----------------------------------------------------------
-@Export
+@export
 class RoundBracketToken(BracketToken):
 	"""Base-class for all round bracket tokens: ``(`` and ``)``."""
 
-@Export
+@export
 class OpeningRoundBracketToken(RoundBracketToken):
 	"""Token representing an opening round bracket: ``(``."""
 
-@Export
+@export
 class ClosingRoundBracketToken(RoundBracketToken):
 	"""Token representing a closing round bracket: ``)``."""
 
 # Square bracket / []
 # ----------------------------------------------------------
-@Export
+@export
 class SquareBracketToken(BracketToken):
 	"""Base-class for all square bracket tokens: ``[`` and ``]``."""
 
-@Export
+@export
 class OpeningSquareBracketToken(SquareBracketToken):
 	"""Token representing an square round bracket: ``[``."""
 
-@Export
+@export
 class ClosingSquareBracketToken(SquareBracketToken):
 	"""Token representing a closing square bracket: ``]``."""
 
 # Curly bracket / brace / curved bracket / {}
 # ----------------------------------------------------------
-@Export
+@export
 class CurlyBracketToken(BracketToken):
 	"""Base-class for all curly bracket tokens: ``{`` and ``}``."""
 
-@Export
+@export
 class OpeningCurlyBracketToken(CurlyBracketToken):
 	"""Token representing an opening curly bracket: ``{``."""
 
-@Export
+@export
 class ClosingCurlyBracketToken(CurlyBracketToken):
 	"""Token representing a closing curly bracket: ``}``."""
 
 # Angle bracket / arrow bracket / <>
 # ----------------------------------------------------------
-@Export
+@export
 class AngleBracketToken(BracketToken):
 	"""Base-class for all angle bracket tokens: ``<`` and ``>``."""
 
-@Export
+@export
 class OpeningAngleBracketToken(AngleBracketToken):
 	"""Token representing an opening angle bracket: ``<``."""
 
-@Export
+@export
 class ClosingAngleBracketToken(AngleBracketToken):
 	"""Token representing a closing angle bracket: ``>``."""
 
 # ==============================================================================
 # Operator tokens: +, -, *, /, **, &
 # ==============================================================================
-@Export
+@export
 class OperatorToken(SpecificVHDLToken):
 	"""Base-class for all operator tokens."""
 
-@Export
+@export
 class PlusOperator(OperatorToken):
 	"""Token representing a plus operator: ``+``."""
 	__KEYWORD__ = "+"
 
-@Export
+@export
 class MinusOperator(OperatorToken):
 	"""Token representing a minus operator: ``-``."""
 	__KEYWORD__ = "-"
 
-@Export
+@export
 class MultiplyOperator(OperatorToken):
 	"""Token representing a multiply operator: ``*``."""
 	__KEYWORD__ = "*"
 
-@Export
+@export
 class DivideOperator(OperatorToken):
 	"""Token representing a divide operator: ``/``."""
 	__KEYWORD__ = "/"
 
-@Export
+@export
 class PowerOperator(OperatorToken):
 	"""Token representing a power operator: ``**``."""
 	__KEYWORD__ = "**"
 
-@Export
+@export
 class ConcatOperator(OperatorToken):
 	"""Token representing a concat operator: ``&``."""
 	__KEYWORD__ = "&"
 
 # Relational operatrors
 # ----------------------------------------------------------
-@Export
+@export
 class RelationalOperator(OperatorToken):
 	"""Base-class for all relational operator tokens."""
 
-@Export
+@export
 class EqualOperator(RelationalOperator):
 	__KEYWORD__ = "="
-@Export
+@export
 class UnequalOperator(RelationalOperator):
 	__KEYWORD__ = "/="
-@Export
+@export
 class LessThanOperator(RelationalOperator):
 	__KEYWORD__ = "<"
-@Export
+@export
 class LessThanOrEqualOperator(RelationalOperator):
 	__KEYWORD__ = "<="
-@Export
+@export
 class GreaterThanOperator(RelationalOperator):
 	__KEYWORD__ = ">"
-@Export
+@export
 class GreaterThanOrEqualOperator(RelationalOperator):
 	__KEYWORD__ = ">="
-@Export
+@export
 class MatchingEqualOperator(RelationalOperator):
 	__KEYWORD__ = "?="
-@Export
+@export
 class MatchingUnequalOperator(RelationalOperator):
 	__KEYWORD__ = "?/="
-@Export
+@export
 class MatchingLessThanOperator(RelationalOperator):
 	__KEYWORD__ = "?<"
-@Export
+@export
 class MatchingLessThanOrEqualOperator(RelationalOperator):
 	__KEYWORD__ = "?<="
-@Export
+@export
 class MatchingGreaterThanOperator(RelationalOperator):
 	__KEYWORD__ = "?>"
-@Export
+@export
 class MatchingGreaterThanOrEqualOperator(RelationalOperator):
 	__KEYWORD__ = "?>="
 
 
-@Export
+@export
 class DelimiterToken(SpecificVHDLToken):
 	"""
 	Token representing a delimiter sign in between list items.
@@ -216,7 +217,7 @@ class DelimiterToken(SpecificVHDLToken):
 	"""
 
 
-@Export
+@export
 class EndToken(SpecificVHDLToken):
 	"""
 	Token representing an end of a statement.
@@ -225,7 +226,7 @@ class EndToken(SpecificVHDLToken):
 	"""
 
 
-@Export
+@export
 class IdentifierToken(SpecificVHDLToken):
 	"""
 	Token representing an identifier.
@@ -234,7 +235,7 @@ class IdentifierToken(SpecificVHDLToken):
 	"""
 
 
-@Export
+@export
 class RepeatedIdentifierToken(IdentifierToken):
 	"""
 	Token representing a repeated identifier.
@@ -243,12 +244,12 @@ class RepeatedIdentifierToken(IdentifierToken):
 	"""
 
 
-@Export
+@export
 class SimpleNameToken(SpecificVHDLToken):
 	pass
 
 
-@Export
+@export
 class LabelToken(SpecificVHDLToken):
 	"""
 	Token representing a label.
@@ -257,7 +258,7 @@ class LabelToken(SpecificVHDLToken):
 	"""
 
 
-@Export
+@export
 class RepeatedLabelToken(LabelToken):
 	"""
 	Token representing a repeated label.
@@ -266,7 +267,7 @@ class RepeatedLabelToken(LabelToken):
 	"""
 
 
-@Export
+@export
 class MultiCharKeyword(VHDLToken):
 	__KEYWORD__ = None
 
@@ -281,54 +282,54 @@ class MultiCharKeyword(VHDLToken):
 		)
 
 
-@Export
+@export
 class CommentKeyword(MultiCharKeyword):
 	"""Base-class for all comment keywords: ``--``, ``/*`` and ``*/``."""
 
-@Export
+@export
 class SingleLineCommentKeyword(CommentKeyword):
 	"""Token representing a starting sequence for a single-line comment: ``--``."""
 	__KEYWORD__ = "--"
 
-@Export
+@export
 class MultiLineCommentKeyword(CommentKeyword):
 	"""Base-class for all tokens related to multi-line comments: ``/*`` and ``*/``."""
 
-@Export
+@export
 class MultiLineCommentStartKeyword(MultiLineCommentKeyword):
 	"""Token representing a starting sequence for a multi-line comment: ``/*``."""
 	__KEYWORD__ = "/*"
-@Export
+@export
 class MultiLineCommentEndKeyword(MultiLineCommentKeyword):
 	"""Token representing a closing sequence for a multi-line comment: ``*/``."""
 	__KEYWORD__ = "*/"
 
-@Export
+@export
 class AssignmentKeyword(MultiCharKeyword):
 	"""Base-class for all assignment keywords: ``:=`` and ``<=``."""
 
-@Export
+@export
 class VariableAssignmentKeyword(AssignmentKeyword):
 	"""Token representing a variable assignment: ``:=``."""
 	__KEYWORD__ = ":="
 
-@Export
+@export
 class SignalAssignmentKeyword(AssignmentKeyword):
 	"""Token representing a signal assignment: ``<=``."""
 	__KEYWORD__ = "<="
 
-@Export
+@export
 class AssociationKeyword(MultiCharKeyword):
 	pass
-@Export
+@export
 class MapAssociationKeyword(AssociationKeyword):
 	__KEYWORD__ = "=>"
-@Export
+@export
 class SignalAssociationKeyword(AssociationKeyword):
 	__KEYWORD__ = "<=>"
 
 
-@Export
+@export
 class KeywordToken(VHDLToken):
 	__KEYWORD__ = None
 
@@ -344,362 +345,362 @@ class KeywordToken(VHDLToken):
 				pos=self.Start
 			)
 
-@Export
+@export
 class DirectionKeyword(KeywordToken):
 	pass
 
-@Export
+@export
 class Operator(KeywordToken):
 	pass
-@Export
+@export
 class LogicalOperator(Operator):
 	pass
-@Export
+@export
 class MiscellaneousOperator(Operator):
 	pass
-@Export
+@export
 class ShiftOperator(Operator):
 	pass
 
-@Export
+@export
 class AbsKeyword(KeywordToken):
 	"""Reserved word 'abs' for unary operator *absolute value*."""
 	__KEYWORD__ = "abs"
 
-@Export
+@export
 class AccessKeyword(KeywordToken):
 	"""Reserved word 'access' to defined access types."""
 	__KEYWORD__ = "access"
 
-@Export
+@export
 class AfterKeyword(KeywordToken):
 	"""Reserved word 'after'."""
 	__KEYWORD__ = "after"
 
-@Export
+@export
 class AliasKeyword(KeywordToken):
 	"""Reserved word 'alias' to declare aliases."""
 	__KEYWORD__ = "alias"
 
-@Export
+@export
 class AllKeyword(KeywordToken):
 	"""Reserved word 'all'."""
 	__KEYWORD__ = "all"
 
-@Export
+@export
 class AndKeyword(LogicalOperator):
 	"""Reserved word 'and' for binary logical operator *and*."""
 	__KEYWORD__ = "and"
 
-@Export
+@export
 class ArchitectureKeyword(KeywordToken):
 	"""Reserved word 'architecture' to define architectures."""
 	__KEYWORD__ = "architecture"
 
-@Export
+@export
 class ArrayKeyword(KeywordToken):
 	"""Reserved word 'array' to define array types."""
 	__KEYWORD__ = "array"
 
-@Export
+@export
 class AssertKeyword(KeywordToken):
 	"""Reserved word 'assert' for *assert*-statements."""
 	__KEYWORD__ = "assert"
 
-@Export
+@export
 class AttributeKeyword(KeywordToken):
 	"""Reserved word 'attribute'."""
 	__KEYWORD__ = "attribute"
 
-@Export
+@export
 class BeginKeyword(KeywordToken):
 	"""Reserved word 'begin' to distinguish declarative regions from statements regions."""
 	__KEYWORD__ = "begin"
 
-@Export
+@export
 class BlockKeyword(KeywordToken):
 	"""Reserved word 'block' for *block*-statements."""
 	__KEYWORD__ = "block"
 
-@Export
+@export
 class BodyKeyword(KeywordToken):
 	"""Reserved word 'body' to distinguish declarations from implementations (bodies)."""
 	__KEYWORD__ = "body"
 
-@Export
+@export
 class BufferKeyword(KeywordToken):
 	"""Reserved word 'buffer' for mode *buffer*."""
 	__KEYWORD__ = "buffer"
 
-@Export
+@export
 class BusKeyword(KeywordToken):
 	"""Reserved word 'bus'."""
 	__KEYWORD__ = "bus"
 
-@Export
+@export
 class CaseKeyword(KeywordToken):
 	__KEYWORD__ = "case"
-@Export
+@export
 class ComponentKeyword(KeywordToken):
 	__KEYWORD__ = "component"
-@Export
+@export
 class ConfigurationKeyword(KeywordToken):
 	__KEYWORD__ = "configuration"
-@Export
+@export
 class ConstantKeyword(KeywordToken):
 	__KEYWORD__ = "constant"
-@Export
+@export
 class ContextKeyword(KeywordToken):
 	__KEYWORD__ = "context"
-@Export
+@export
 class DefaultKeyword(KeywordToken):
 	__KEYWORD__ = "default"
-@Export
+@export
 class DisconnectKeyword(KeywordToken):
 	__KEYWORD__ = "disconnect"
-@Export
+@export
 class DowntoKeyword(DirectionKeyword):
 	__KEYWORD__ = "downto"
-@Export
+@export
 class ElseKeyword(KeywordToken):
 	__KEYWORD__ = "else"
-@Export
+@export
 class ElsIfKeyword(KeywordToken):
 	__KEYWORD__ = "elsif"
-@Export
+@export
 class EndKeyword(KeywordToken):
 	__KEYWORD__ = "end"
-@Export
+@export
 class EntityKeyword(KeywordToken):
 	__KEYWORD__ = "entity"
-@Export
+@export
 class ExitKeyword(KeywordToken):
 	__KEYWORD__ = "exit"
-@Export
+@export
 class FileKeyword(KeywordToken):
 	__KEYWORD__ = "file"
-@Export
+@export
 class ForKeyword(KeywordToken):
 	__KEYWORD__ = "for"
-@Export
+@export
 class ForceKeyword(KeywordToken):
 	__KEYWORD__ = "force"
-@Export
+@export
 class FunctionKeyword(KeywordToken):
 	__KEYWORD__ = "function"
-@Export
+@export
 class GenerateKeyword(KeywordToken):
 	__KEYWORD__ = "generate"
-@Export
+@export
 class GenericKeyword(KeywordToken):
 	__KEYWORD__ = "generic"
-@Export
+@export
 class GroupKeyword(KeywordToken):
 	__KEYWORD__ = "group"
-@Export
+@export
 class GuardedKeyword(KeywordToken):
 	__KEYWORD__ = "guarded"
-@Export
+@export
 class IfKeyword(KeywordToken):
 	__KEYWORD__ = "if"
-@Export
+@export
 class IsKeyword(KeywordToken):
 	__KEYWORD__ = "is"
-@Export
+@export
 class InKeyword(KeywordToken):
 	__KEYWORD__ = "in"
-@Export
+@export
 class InoutKeyword(KeywordToken):
 	__KEYWORD__ = "inout"
-@Export
+@export
 class ImpureKeyword(KeywordToken):
 	__KEYWORD__ = "impure"
-@Export
+@export
 class InertialKeyword(KeywordToken):
 	__KEYWORD__ = "inertial"
-@Export
+@export
 class LableKeyword(KeywordToken):
 	__KEYWORD__ = "lable"
-@Export
+@export
 class LibraryKeyword(KeywordToken):
 	__KEYWORD__ = "library"
-@Export
+@export
 class LinkageKeyword(KeywordToken):
 	__KEYWORD__ = "linkage"
-@Export
+@export
 class LiteralKeyword(KeywordToken):
 	__KEYWORD__ = "literal"
-@Export
+@export
 class LoopKeyword(KeywordToken):
 	__KEYWORD__ = "loop"
-@Export
+@export
 class MapKeyword(KeywordToken):
 	__KEYWORD__ = "map"
-@Export
+@export
 class NandKeyword(LogicalOperator):
 	__KEYWORD__ = "nand"
-@Export
+@export
 class NewKeyword(KeywordToken):
 	__KEYWORD__ = "new"
-@Export
+@export
 class NextKeyword(KeywordToken):
 	__KEYWORD__ = "next"
-@Export
+@export
 class NorKeyword(LogicalOperator):
 	__KEYWORD__ = "nor"
-@Export
+@export
 class NotKeyword(KeywordToken):
 	__KEYWORD__ = "not"
-@Export
+@export
 class NullKeyword(KeywordToken):
 	__KEYWORD__ = "null"
-@Export
+@export
 class OfKeyword(KeywordToken):
 	__KEYWORD__ = "of"
-@Export
+@export
 class OnKeyword(KeywordToken):
 	__KEYWORD__ = "on"
-@Export
+@export
 class OpenKeyword(KeywordToken):
 	__KEYWORD__ = "open"
-@Export
+@export
 class OrKeyword(LogicalOperator):
 	__KEYWORD__ = "or"
-@Export
+@export
 class OthersKeyword(KeywordToken):
 	__KEYWORD__ = "others"
-@Export
+@export
 class OutKeyword(KeywordToken):
 	__KEYWORD__ = "out"
-@Export
+@export
 class PackageKeyword(KeywordToken):
 	__KEYWORD__ = "package"
-@Export
+@export
 class ParameterKeyword(KeywordToken):
 	__KEYWORD__ = "parameter"
-@Export
+@export
 class PortKeyword(KeywordToken):
 	__KEYWORD__ = "port"
-@Export
+@export
 class PostponendKeyword(KeywordToken):
 	__KEYWORD__ = "postponend"
-@Export
+@export
 class ProcedureKeyword(KeywordToken):
 	__KEYWORD__ = "procedure"
-@Export
+@export
 class ProcessKeyword(KeywordToken):
 	__KEYWORD__ = "process"
-@Export
+@export
 class PropertyKeyword(KeywordToken):
 	__KEYWORD__ = "property"
-@Export
+@export
 class ProtectedKeyword(KeywordToken):
 	__KEYWORD__ = "protected"
-@Export
+@export
 class PureKeyword(KeywordToken):
 	__KEYWORD__ = "pure"
-@Export
+@export
 class RangeKeyword(KeywordToken):
 	__KEYWORD__ = "range"
-@Export
+@export
 class RecordKeyword(KeywordToken):
 	__KEYWORD__ = "record"
-@Export
+@export
 class RegisterKeyword(KeywordToken):
 	__KEYWORD__ = "register"
-@Export
+@export
 class RejectKeyword(KeywordToken):
 	__KEYWORD__ = "reject"
-@Export
+@export
 class ReleaseKeyword(KeywordToken):
 	__KEYWORD__ = "release"
-@Export
+@export
 class ReportKeyword(KeywordToken):
 	__KEYWORD__ = "report"
-@Export
+@export
 class ReturnKeyword(KeywordToken):
 	__KEYWORD__ = "return"
-@Export
+@export
 class RolKeyword(ShiftOperator):
 	__KEYWORD__ = "rol"
-@Export
+@export
 class RorKeyword(ShiftOperator):
 	__KEYWORD__ = "ror"
-@Export
+@export
 class SelectKeyword(KeywordToken):
 	__KEYWORD__ = "select"
-@Export
+@export
 class SequenceKeyword(KeywordToken):
 	__KEYWORD__ = "sequence"
-@Export
+@export
 class SeverityKeyword(KeywordToken):
 	__KEYWORD__ = "severity"
-@Export
+@export
 class SharedKeyword(KeywordToken):
 	__KEYWORD__ = "shared"
-@Export
+@export
 class SignalKeyword(KeywordToken):
 	__KEYWORD__ = "signal"
-@Export
+@export
 class SlaKeyword(ShiftOperator):
 	__KEYWORD__ = "sla"
-@Export
+@export
 class SllKeyword(ShiftOperator):
 	__KEYWORD__ = "sll"
-@Export
+@export
 class SraKeyword(ShiftOperator):
 	__KEYWORD__ = "sra"
-@Export
+@export
 class SrlKeyword(ShiftOperator):
 	__KEYWORD__ = "srl"
-@Export
+@export
 class SubtypeKeyword(KeywordToken):
 	__KEYWORD__ = "subtype"
-@Export
+@export
 class ThenKeyword(KeywordToken):
 	__KEYWORD__ = "then"
-@Export
+@export
 class ToKeyword(DirectionKeyword):
 	__KEYWORD__ = "to"
-@Export
+@export
 class TransportKeyword(KeywordToken):
 	__KEYWORD__ = "transport"
-@Export
+@export
 class TypeKeyword(KeywordToken):
 	__KEYWORD__ = "type"
-@Export
+@export
 class UnitsKeyword(KeywordToken):
 	__KEYWORD__ = "units"
-@Export
+@export
 class UntilKeyword(KeywordToken):
 	__KEYWORD__ = "until"
-@Export
+@export
 class UseKeyword(KeywordToken):
 	__KEYWORD__ = "use"
-@Export
+@export
 class UnbufferedKeyword(KeywordToken):
 	__KEYWORD__ = "unbuffered"
-@Export
+@export
 class VariableKeyword(KeywordToken):
 	__KEYWORD__ = "variable"
-@Export
+@export
 class VunitKeyword(KeywordToken):
 	__KEYWORD__ = "vunit"
-@Export
+@export
 class WaitKeyword(KeywordToken):
 	__KEYWORD__ = "wait"
-@Export
+@export
 class WhenKeyword(KeywordToken):
 	__KEYWORD__ = "when"
-@Export
+@export
 class WhileKeyword(KeywordToken):
 	__KEYWORD__ = "while"
-@Export
+@export
 class WithKeyword(KeywordToken):
 	__KEYWORD__ = "with"
-@Export
+@export
 class XorKeyword(LogicalOperator):
 	__KEYWORD__ = "xor"
-@Export
+@export
 class XnorKeyword(LogicalOperator):
 	__KEYWORD__ = "xnor"

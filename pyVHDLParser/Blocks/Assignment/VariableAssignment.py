@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators           import Export
+from pydecor.decorators                import export
+
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Blocks               import BlockParserException, Block, ParserState
@@ -40,7 +41,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class SignalAssignmentBlock(Block):
 	@classmethod
 	def stateSignalAssignmentKeyword(cls, parserState: ParserState):

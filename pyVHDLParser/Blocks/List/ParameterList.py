@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators              import Export
+from pydecor.decorators                   import export
+
 from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
@@ -42,7 +43,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class OpenBlock(Block):
 	@classmethod
 	def stateParameterKeyword(cls, parserState: ParserState):
@@ -146,7 +147,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected interface element name (identifier).", token)
 
 
-@Export
+@export
 class ItemBlock(Block):
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
@@ -176,7 +177,7 @@ class ItemBlock(Block):
 					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
-@Export
+@export
 class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -240,21 +241,21 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected parameter name (identifier).", token)
 
 
-@Export
+@export
 class CloseBlock(CloseBlockBase):
 	pass
 
 
-@Export
+@export
 class ParameterListInterfaceConstantBlock(InterfaceConstantBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 
 
-@Export
+@export
 class ParameterListInterfaceVariableBlock(InterfaceVariableBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 
 
-@Export
+@export
 class ParameterListInterfaceSignalBlock(InterfaceSignalBlock):
 	DELIMITER_BLOCK = DelimiterBlock

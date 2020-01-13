@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
 from pyVHDLParser.Blocks              import Block, CommentBlock, ParserState
@@ -42,13 +43,13 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndBlock(EndBlockBase):
 	KEYWORD =       IfKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__
 
 
-@Export
+@export
 class ThenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -79,7 +80,7 @@ class ThenBlock(SequentialBeginBlock):
 		super().stateSequentialRegion(parserState)
 
 
-@Export
+@export
 class ElseBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
@@ -88,13 +89,13 @@ class ElseBlock(SequentialBeginBlock):
 		cls.stateSequentialRegion(parserState)
 
 
-@Export
+@export
 class ExpressionBlockEndedByThen(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 	EXIT_KEYWORD = ThenKeyword
 	EXIT_BLOCK =   ThenBlock
 
 
-@Export
+@export
 class IfConditionBlock(Block):
 	@classmethod
 	def stateIfKeyword(cls, parserState: ParserState):
@@ -157,7 +158,7 @@ class IfConditionBlock(Block):
 			return
 
 
-@Export
+@export
 class ElsIfConditionBlock(Block):
 	@classmethod
 	def stateElsIfKeyword(cls, parserState: ParserState):

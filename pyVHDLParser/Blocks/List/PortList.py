@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators              import Export
+from pydecor.decorators                   import export
+
 from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
@@ -43,12 +44,12 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class CloseBlock(CloseBlockBase):
 	pass
 
 
-@Export
+@export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
@@ -85,20 +86,20 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected port name (identifier).", token)
 
 
-@Export
+@export
 class DefaultValueExpressionBlock(ExpressionBlockEndedByCharORClosingRoundBracket):
 	EXIT_CHAR =  ";"
 	EXIT_TOKEN = DelimiterToken
 	EXIT_BLOCK = DelimiterBlock
 
 
-@Export
+@export
 class PortListInterfaceSignalBlock(InterfaceSignalBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 	EXPRESSION =      DefaultValueExpressionBlock
 
 
-@Export
+@export
 class OpenBlock(Block):
 	@classmethod
 	def statePortKeyword(cls, parserState: ParserState):

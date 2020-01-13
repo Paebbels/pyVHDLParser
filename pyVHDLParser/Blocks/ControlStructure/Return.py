@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CommentToken, CharacterToken, SpaceToken, LinebreakToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, EndToken
 from pyVHDLParser.Blocks              import Block, ParserState, BlockParserException, CommentBlock
@@ -41,17 +42,17 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndBlock(EndOfStatementBlock):
 	pass
 
 
-@Export
+@export
 class ReturnExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = EndBlock
 
 
-@Export
+@export
 class ReturnBlock(Block):
 	@classmethod
 	def stateReturnKeyword(cls, parserState: ParserState):

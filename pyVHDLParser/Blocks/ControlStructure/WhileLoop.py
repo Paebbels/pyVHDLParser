@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
@@ -44,7 +45,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ConditionBlock(Block):
 	@classmethod
 	def stateWhileKeyword(cls, parserState: ParserState):
@@ -235,7 +236,7 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class EndBlock(EndBlockBase):
 	KEYWORD =       LoopKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__

@@ -29,7 +29,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
+from pyVHDLParser.Token           import CharacterToken, LinebreakToken, SpaceToken, WordToken
+from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, VariableAssignmentKeyword, EndToken
 from pyVHDLParser.Blocks          import Block, ParserState
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommentBlock
@@ -37,11 +40,9 @@ from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommen
 __all__ = []
 __api__ = __all__
 
-from pyVHDLParser.Token import CharacterToken, LinebreakToken, SpaceToken, WordToken
-from pyVHDLParser.Token.Keywords import BoundaryToken, IdentifierToken, VariableAssignmentKeyword, EndToken
 
 
-@Export
+@export
 class AttributeSpecificationBlock(Block):
 	@classmethod
 	def stateAttributeSpecificationKeyword(cls, parserState: ParserState):

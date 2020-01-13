@@ -29,18 +29,18 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class Scheduler:
 	def __init__(self):
 		self._now =             0
 		self._globalTimeLine =  TimeLine()
-	
+
 	def AddEvent(self, relTime):
 		pass
 
@@ -48,53 +48,53 @@ class Scheduler:
 		return None
 
 
-@Export
+@export
 class Event:
 	def __init__(self, time, process):
 		self._previous =  None
 		self._next =      None
 		self._time =      time
 		self.WakeList =   [process]
-	
+
 	def AddProcess(self, process):
 		self.WakeList.append(process)
-	
 
-@Export
+
+@export
 class Transaction:
 	def __init__(self, time, value):
 		self._time =  time
 		self._value = value
-	
+
 	def __str__(self):
 		return "({time}, {value})".format(time=self._time, value=self._value)
-	
-	__repr__ = __str__
-		
 
-@Export
+	__repr__ = __str__
+
+
+@export
 class TimeLine:
 	def __init__(self):
 		self._transactions =    []
-	
+
 	def AddTransaction(self, transaction):
 		pass
 
 
-@Export
+@export
 class Waveform:
 	def __init__(self, signal):
 		self._signal =          signal
 		self._transactions =    []
-	
+
 	def Initialize(self, value):
 		self._transactions.append(Transaction(0, value))
-	
+
 	def AddEvent(self, time, value):
 		self._transactions.append(Transaction(time, value))
-	
 
-@Export
+
+@export
 class ProjectedWaveform(TimeLine):
 	def __init__(self, signal):
 		self._signal =          signal

@@ -187,6 +187,8 @@ extensions = [
 # Other extensions
 #	'DocumentMember',
 	'sphinx_fontawesome',
+	'sphinx_autodoc_typehints',
+
 # local extensions (patched)
 
 # local extensions (patched)

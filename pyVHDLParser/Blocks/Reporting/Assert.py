@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token           import SpaceToken, LinebreakToken, WordToken, IndentationToken, CharacterToken
 from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, ReportKeyword, EndToken, SeverityKeyword
@@ -40,7 +41,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class AssertBlock(Block):
 	@classmethod
 	def stateAssertKeyword(cls, parserState: ParserState):

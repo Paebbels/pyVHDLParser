@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import SpaceToken, LinebreakToken, CommentToken, WordToken, ExtendedIdentifier, MultiLineCommentToken
 from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
@@ -42,7 +43,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class InterfaceObjectBlock(Block):
 	OBJECT_KIND =     ""
 	MODES =           {}
@@ -328,7 +329,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected ';' or ':='.", token)
 
 
-@Export
+@export
 class InterfaceConstantBlock(InterfaceObjectBlock):
 	OBJECT_KIND = "constant"
 	MODES =       {
@@ -352,7 +353,7 @@ class InterfaceConstantBlock(InterfaceObjectBlock):
 		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 
-@Export
+@export
 class InterfaceVariableBlock(InterfaceObjectBlock):
 	OBJECT_KIND = "variable"
 	MODES =       {
@@ -378,7 +379,7 @@ class InterfaceVariableBlock(InterfaceObjectBlock):
 		raise BlockParserException("Expected whitespace after keyword VARIABLE.", token)
 
 
-@Export
+@export
 class InterfaceSignalBlock(InterfaceObjectBlock):
 	OBJECT_KIND = "signal"
 	MODES =       {
@@ -406,7 +407,7 @@ class InterfaceSignalBlock(InterfaceObjectBlock):
 		raise BlockParserException("Expected whitespace after keyword SIGNAL.", token)
 
 
-@Export
+@export
 class InterfaceTypeBlock(Block):
 	DELIMITER_BLOCK = None
 
