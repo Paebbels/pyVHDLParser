@@ -36,13 +36,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class SourceCodePosition:
 	"""Represent a position (row, column, absolute) in a source code file."""
 
@@ -64,26 +64,26 @@ class SourceCodePosition:
 		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
 
 
-@Export
+@export
 class StartOf:
 	"""Base-class (mixin) for all StartOf*** classes."""
 
-@Export
+@export
 class StartOfDocument(StartOf):
 	"""Base-class (mixin) for all StartOf***Document classes."""
 
-@Export
+@export
 class StartOfSnippet(StartOf):
 	"""Base-class (mixin) for all StartOf***Snippet classes."""
 
-@Export
+@export
 class EndOf:
 	"""Base-class (mixin) for all EndOf*** classes."""
 
-@Export
+@export
 class EndOfDocument(EndOf):
 	"""Base-class (mixin) for all EndOf***Document classes."""
 
-@Export
+@export
 class EndOfSnippet(EndOf):
 	"""Base-class (mixin) for all EndOf***Snippet classes."""

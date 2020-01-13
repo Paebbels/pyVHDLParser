@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators              import Export
+from pydecor.decorators                   import export
+
 from pyVHDLParser.Token                   import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords          import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords          import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
@@ -43,7 +44,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class DeclarativeRegion(metaclass=MetaBlock):
 	"""Base-class for all declarative region blocks."""
 
@@ -116,7 +117,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 			), token)
 
 
-@Export
+@export
 class ConcurrentDeclarativeRegion(DeclarativeRegion):
 	"""Base-class for all concurrent declarative region blocks."""
 
@@ -134,7 +135,7 @@ class ConcurrentDeclarativeRegion(DeclarativeRegion):
 		})
 
 
-@Export
+@export
 class SequentialDeclarativeRegion(DeclarativeRegion):
 	"""Base-class for all sequential declarative region blocks."""
 
@@ -149,7 +150,7 @@ class SequentialDeclarativeRegion(DeclarativeRegion):
 		})
 
 
-@Export
+@export
 class ConcurrentBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):
@@ -205,7 +206,7 @@ class ConcurrentBeginBlock(BeginBlock):
 			), token)
 
 
-@Export
+@export
 class SequentialBeginBlock(BeginBlock):
 	@classmethod
 	def __cls_init__(cls):

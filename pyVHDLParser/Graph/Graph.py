@@ -30,20 +30,21 @@
 #
 # load dependencies
 from enum                     import Enum
-from pyVHDLParser.Decorators  import Export
+
+from pydecor.decorators       import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class NodeColors(Enum):
 	Black = 0
 	Gray = 1
 	White = 2
 
 
-@Export
+@export
 class EdgeKinds(Enum):
 	Unknown =  0
 	Forward =  1
@@ -51,7 +52,7 @@ class EdgeKinds(Enum):
 	Sideward = 3
 
 
-@Export
+@export
 class Graph:
 	def __init__(self):
 		self._nodes =           []
@@ -117,7 +118,7 @@ class Graph:
 			node.Weight = 0
 
 
-@Export
+@export
 class Node:
 	def __init__(self):
 		self.Graph =          None
@@ -132,7 +133,7 @@ class Node:
 		node._incomingEdges.append(edge)
 
 
-@Export
+@export
 class Edge:
 	def __init__(self, graph, start, end):
 		self.Graph =    graph

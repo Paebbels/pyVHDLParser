@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators              import Export
+from pydecor.decorators                   import export
+
 from pyVHDLParser.Token                   import CharacterToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, ConstantKeyword, TypeKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
@@ -44,12 +45,12 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class CloseBlock(CloseBlockBase):
 	pass
 
 
-@Export
+@export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateItemDelimiter(cls, parserState: ParserState):
@@ -99,25 +100,25 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected generic name (identifier).", token)
 
 
-@Export
+@export
 class DefaultValueExpressionBlock(ExpressionBlockEndedByCharORClosingRoundBracket):
 	EXIT_CHAR =  ";"
 	EXIT_TOKEN = DelimiterToken
 	EXIT_BLOCK = DelimiterBlock
 
 
-@Export
+@export
 class GenericListInterfaceConstantBlock(InterfaceConstantBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 	EXPRESSION =      DefaultValueExpressionBlock
 
 
-@Export
+@export
 class GenericListInterfaceTypeBlock(InterfaceTypeBlock):
 	DELIMITER_BLOCK = DelimiterBlock
 
 
-@Export
+@export
 class OpenBlock(Block):
 	@classmethod
 	def stateGenericKeyword(cls, parserState: ParserState):

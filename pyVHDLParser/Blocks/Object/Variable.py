@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser                   import Export
+from pydecor.decorators             import export
+
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken
 from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
@@ -41,17 +42,17 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class VariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
 	pass
 
 
-@Export
+@export
 class VariableDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = VariableDeclarationEndMarkerBlock
 
 
-@Export
+@export
 class VariableDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND =       "variable"
 	EXPRESSION_BLOCK =  VariableDeclarationDefaultExpressionBlock

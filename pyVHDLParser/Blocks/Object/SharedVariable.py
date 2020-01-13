@@ -29,7 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser                   import Export
+from pydoc.Dec                   import export
 from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
@@ -41,12 +41,12 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class SharedVariableDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
 	pass
 
 
-@Export
+@export
 class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND = "variable"
 	END_BLOCK =   SharedVariableDeclarationEndMarkerBlock

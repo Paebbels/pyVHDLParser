@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                import Export
+from pydecor.decorators                     import export
+
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import BeginKeyword, ProcessKeyword, AssertKeyword
@@ -46,7 +47,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class IfConditionBlock(Block):
 	@classmethod
 	def stateGenerateKeyword(cls, parserState: ParserState):
@@ -242,7 +243,7 @@ class IfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class BeginBlock(Block):
 	@classmethod
 	def stateBeginKeyword(cls, parserState: ParserState):
@@ -288,7 +289,7 @@ class BeginBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class ElsIfConditionBlock(Block):
 	@classmethod
 	def stateGenerateKeyword(cls, parserState: ParserState):
@@ -484,7 +485,7 @@ class ElsIfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class ElsIfBeginBlock(Block):
 	@classmethod
 	def stateBeginKeyword(cls, parserState: ParserState):
@@ -530,7 +531,7 @@ class ElsIfBeginBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class ElseGenerateBlock(Block):
 	@classmethod
 	def stateGenerateKeyword(cls, parserState: ParserState):
@@ -726,7 +727,7 @@ class ElseGenerateBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class ElseGenerateBeginBlock(Block):
 	@classmethod
 	def stateBeginKeyword(cls, parserState: ParserState):
@@ -772,6 +773,6 @@ class ElseGenerateBeginBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 
-@Export
+@export
 class EndGenerateBlock(EndGenerateBlockBase):
 	pass

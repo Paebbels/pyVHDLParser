@@ -30,7 +30,8 @@
 #
 from pathlib                         import Path
 
-from pyVHDLParser.Decorators         import Export
+from pydecor.decorators              import export
+
 from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.Token.Parser       import Tokenizer
 from pyVHDLParser.Blocks             import TokenToBlockParser
@@ -43,14 +44,14 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class DOMParserException(ParserException):
 	def __init__(self, message, group):
 		super().__init__(message)
 		self._group = group
 
 
-@Export
+@export
 class Document(DocumentModel):
 	def __init__(self, file):
 		from pyVHDLParser.DocumentModel.Reference import Use, Library

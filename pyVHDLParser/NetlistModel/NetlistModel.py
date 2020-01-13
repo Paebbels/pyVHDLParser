@@ -29,27 +29,27 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ModelBase:
 	pass
 
 
-@Export
+@export
 class Netlist(ModelBase):
 	pass
 
 
-@Export
+@export
 class Wire(ModelBase):
 	pass
 
 
-@Export
+@export
 class Primitive(ModelBase):
 	pass

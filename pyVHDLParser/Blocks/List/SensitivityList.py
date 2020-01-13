@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators      import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token           import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, ExtendedIdentifier
 from pyVHDLParser.Token           import CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
@@ -41,7 +42,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class OpenBlock(Block):
 	@classmethod
 	def stateOpeningParenthesis(cls, parserState: ParserState):
@@ -78,7 +79,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected keyword ALL or signal name (identifier).", token)
 
 
-@Export
+@export
 class ItemBlock(Block):
 	@classmethod
 	def stateItemRemainder(cls, parserState: ParserState):
@@ -106,7 +107,7 @@ class ItemBlock(Block):
 					raise BlockParserException("Mismatch in opening and closing parenthesis: open={0}".format(parserState.Counter), token)
 
 
-@Export
+@export
 class DelimiterBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
@@ -139,7 +140,7 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected signal name (identifier).", token)
 
 
-@Export
+@export
 class CloseBlock(Block):
 	@classmethod
 	def stateAllKeyword(cls, parserState: ParserState):

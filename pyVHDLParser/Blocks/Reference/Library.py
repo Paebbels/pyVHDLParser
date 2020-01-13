@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
@@ -39,7 +40,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class StartBlock(Block):
 	@classmethod
 	def stateLibraryKeyword(cls, parserState: ParserState):
@@ -87,7 +88,7 @@ class StartBlock(Block):
 		raise BlockParserException("Expected library name (identifier).", token)
 
 
-@Export
+@export
 class LibraryNameBlock(Block):
 	@classmethod
 	def stateLibraryName(cls, parserState: ParserState):
@@ -155,7 +156,7 @@ class LibraryNameBlock(Block):
 		raise BlockParserException("Expected ';'.", token)
 
 
-@Export
+@export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
 	def stateDelimiter(cls, parserState: ParserState):
@@ -213,6 +214,6 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected library name (identifier).", token)
 
 
-@Export
+@export
 class EndBlock(FinalBlock):
 	pass

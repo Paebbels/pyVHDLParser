@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators                import Export
+from pydecor.decorators                     import export
+
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
@@ -44,25 +45,25 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class EndBlock(EndBlockBase):
 	KEYWORD =             ProcessKeyword
 	KEYWORD_IS_OPTIONAL = True
 	EXPECTED_NAME =       KEYWORD.__KEYWORD__
 
 
-@Export
+@export
 class BeginBlock(SequentialBeginBlock):
 	END_BLOCK =   EndBlock
 
 
-@Export
+@export
 class DeclarativeRegion(SequentialDeclarativeRegion):
 	BEGIN_BLOCK = BeginBlock
 	END_BLOCK =   EndBlock
 
 
-@Export
+@export
 class OpenBlock(Block):
 	@classmethod
 	def stateProcessKeyword(cls, parserState: ParserState):
@@ -140,7 +141,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' after keyword PROCESS.", token)
 
 # TODO: Find a better name
-@Export
+@export
 class OpenBlock2(Block):
 	KEYWORDS = None
 

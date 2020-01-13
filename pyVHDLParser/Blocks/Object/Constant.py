@@ -29,29 +29,30 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser                   import Export
+from pydecor.decorators             import export
+
+from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
+from pyVHDLParser.Token.Keywords    import BoundaryToken
 from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
-from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
-from pyVHDLParser.Token.Keywords    import BoundaryToken
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ConstantDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
 	pass
 
 
-@Export
+@export
 class ConstantDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
 	END_BLOCK = ConstantDeclarationEndMarkerBlock
 
 
-@Export
+@export
 class ConstantDeclarationBlock(ObjectDeclarationBlock):
 	OBJECT_KIND =       "constant"
 	EXPRESSION_BLOCK =  ConstantDeclarationDefaultExpressionBlock

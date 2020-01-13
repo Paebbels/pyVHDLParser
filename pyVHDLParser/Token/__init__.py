@@ -31,14 +31,15 @@
 # load dependencies
 from typing import Iterable
 
-from pyVHDLParser.Decorators  import Export
+from pydecor.decorators       import export
+
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class TokenIterator:
 	startToken:   'Token' = None
 	currentToken: 'Token' = None
@@ -61,7 +62,7 @@ class TokenIterator:
 		return token
 
 
-@Export
+@export
 class TokenReverseIterator:
 	startToken:   'Token' = None
 	currentToken: 'Token' = None
@@ -84,7 +85,7 @@ class TokenReverseIterator:
 		return token
 
 
-@Export
+@export
 class Token:
 	"""Base-class for all token classes."""
 
@@ -134,7 +135,7 @@ class Token:
 		return repr(self) + " at " + str(self.Start)
 
 
-@Export
+@export
 class ValuedToken(Token):
 	"""
 	Base-class for all *valued* token.
@@ -171,8 +172,11 @@ class ValuedToken(Token):
 				pos=self.Start
 			)
 
+	def __repr__(self):
+		return self.Value
 
-@Export
+
+@export
 class StartOfToken(Token):
 	"""Base-class for meta-tokens representing the start of a token stream."""
 
@@ -194,7 +198,7 @@ class StartOfToken(Token):
 			)
 
 
-@Export
+@export
 class EndOfToken(Token):
 	"""Base-class for meta-tokens representing the end of a token stream."""
 
@@ -217,24 +221,24 @@ class EndOfToken(Token):
 			)
 
 
-@Export
+@export
 class StartOfDocumentToken(StartOfToken, StartOfDocument):
 	pass
 
-@Export
+@export
 class EndOfDocumentToken(EndOfToken, EndOfDocument):
 	pass
 
-@Export
+@export
 class StartOfSnippetToken(StartOfToken, StartOfSnippet):
 	pass
 
-@Export
+@export
 class EndOfSnippetToken(EndOfToken, EndOfSnippet):
 	pass
 
 
-@Export
+@export
 class CharacterToken(ValuedToken):
 	"""Token representing a single character."""
 
@@ -270,7 +274,7 @@ class CharacterToken(ValuedToken):
 			return self.Value
 
 
-@Export
+@export
 class FusedCharacterToken(CharacterToken):
 	"""Token representing a double (or triple) character."""
 
@@ -294,7 +298,7 @@ class FusedCharacterToken(CharacterToken):
 		return self.Value
 
 
-@Export
+@export
 class SpaceToken(ValuedToken):
 	"""Token representing a space (space or tab)."""
 	def __str__(self):
@@ -305,7 +309,7 @@ class SpaceToken(ValuedToken):
 		)
 
 
-@Export
+@export
 class WordToken(ValuedToken):
 	"""Token representing a string."""
 
@@ -323,11 +327,11 @@ class WordToken(ValuedToken):
 		)
 
 
-@Export
+@export
 class VHDLToken(ValuedToken):
 	"""Base-class for all VHDL specific tokens."""
 
-@Export
+@export
 class CommentToken(VHDLToken):
 	"""Base-class for comment tokens."""
 
@@ -343,17 +347,17 @@ class CommentToken(VHDLToken):
 			)
 
 
-@Export
+@export
 class SingleLineCommentToken(CommentToken):
 	"""Token representing a single-line comment."""
 
 
-@Export
+@export
 class MultiLineCommentToken(CommentToken):
 	"""Token representing a multi-line comment."""
 
 
-@Export
+@export
 class LiteralToken(VHDLToken):
 	"""base-class for all literals in VHDL."""
 
@@ -369,16 +373,16 @@ class LiteralToken(VHDLToken):
 		)
 
 
-@Export
+@export
 class IntegerLiteralToken(LiteralToken):
 	"""Token representing an integer literal."""
 
-@Export
+@export
 class RealLiteralToken(LiteralToken):
 	"""Token representing a real literal."""
 
 
-@Export
+@export
 class CharacterLiteralToken(LiteralToken):
 	"""Token representing a character literal in VHDL."""
 
@@ -398,7 +402,7 @@ class CharacterLiteralToken(LiteralToken):
 		)
 
 
-@Export
+@export
 class StringLiteralToken(LiteralToken):
 	"""Token representing a string literal in VHDL."""
 
@@ -418,7 +422,7 @@ class StringLiteralToken(LiteralToken):
 		)
 
 
-@Export
+@export
 class BitStringLiteralToken(LiteralToken):
 	"""Token representing a bit-string literal in VHDL."""
 
@@ -438,17 +442,17 @@ class BitStringLiteralToken(LiteralToken):
 		)
 
 
-@Export
+@export
 class ExtendedIdentifier(VHDLToken):
 	"""Token representing an extended identifier in VHDL."""
 
 
-@Export
+@export
 class DirectiveToken(CommentToken):
 	pass
 
 
-@Export
+@export
 class LinebreakToken(VHDLToken):
 	"""Token representing a linebreak in the source code file."""
 
@@ -459,7 +463,7 @@ class LinebreakToken(VHDLToken):
 			)
 
 
-@Export
+@export
 class IndentationToken(SpaceToken):
 	"""Token representing an indentation in a source code line."""
 

@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
+
 from pyVHDLParser.Blocks.Reference    import Library, Use
 from pyVHDLParser.Groups              import ParserState, GroupParserException, Group
 
@@ -37,7 +38,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class LibraryGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -50,7 +51,7 @@ class LibraryGroup(Group):
 		raise GroupParserException("End of library clause not found.", block)
 
 
-@Export
+@export
 class UseGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

@@ -29,7 +29,8 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser                 import Export
+from pydecor.decorators           import export
+
 from pyVHDLParser.Token           import WordToken, ExtendedIdentifier, LinebreakToken, MultiLineCommentToken
 from pyVHDLParser.Token           import CommentToken, SpaceToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords  import IdentifierToken, BoundaryToken, VariableAssignmentKeyword, EndToken
@@ -41,7 +42,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ObjectDeclarationBlock(Block):
 	OBJECT_KIND =       ""
 	EXPRESSION_BLOCK =  None
@@ -239,6 +240,6 @@ class ObjectDeclarationBlock(Block):
 		raise BlockParserException("Expected ':=' or ';' after subtype indication.", token)
 
 
-@Export
+@export
 class ObjectDeclarationEndMarkerBlock(EndOfStatementBlock):
 	pass

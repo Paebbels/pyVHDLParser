@@ -31,20 +31,20 @@
 # load dependencies
 from enum                     import Enum
 
-from pyVHDLParser.Decorators  import Export
+from pydecor.decorators       import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class VHDLVersion(Enum):
 	Any =       0
 	VHDL87 =    87
 	VHDL93 =    93
 	VHDL2002 =  2002
 	VHDL2008 =  2008
-	
+
 	__VHDL_VERSION_MAPPINGS__ = {
 		87:     VHDL87,
 		93:     VHDL93,
@@ -63,7 +63,7 @@ class VHDLVersion(Enum):
 		"2002": VHDL2002,
 		"2008": VHDL2008
 	}
-	
+
 	def __init__(self, *_):
 		"""Patch the embedded MAP dictionary"""
 		for k, v in self.__class__.__VHDL_VERSION_MAPPINGS__.items():
@@ -80,13 +80,13 @@ class VHDLVersion(Enum):
 	def __le__(self, other):  return self.value <= other.value
 	def __gt__(self, other):  return self.value >  other.value
 	def __ge__(self, other):  return self.value >= other.value
-	
+
 	def __str__(self):
 		return "VHDL'" + str(self.value)[-2:]
-	
+
 	def __repr__(self):
 		return str(self.value)
-	
+
 	@classmethod
 	def Parse(cls, value):
 		try:

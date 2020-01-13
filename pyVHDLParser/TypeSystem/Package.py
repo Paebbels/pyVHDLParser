@@ -29,72 +29,72 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Decorators          import Export
+from pydecor.decorators               import export
 
 __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class Parameter:
 	def __init__(self, name, subType):
 		self._name = name
 		self._subType = subType
 
 
-@Export
+@export
 class SubProgramDeclaration:
 	def __init__(self, name, parameters):
 		self._name = name
 		self._parameters = parameters
 
 
-@Export
+@export
 class ProcedureDeclaration(SubProgramDeclaration):
 	pass
 
-@Export
+@export
 class FunctionDeclaration(SubProgramDeclaration):
 	def __init__(self, name, parameters, returnType):
 		super().__init__(name, parameters)
 		self._returnType = returnType
 
 
-@Export
+@export
 class SubProgram:
 	def __init__(self, subprogramDeclaration):
 		self._subprogramDeclaration = subprogramDeclaration
 
 
-@Export
+@export
 class Procedure(SubProgram):
 	def __init__(self, procedureDeclaration):
 		super().__init__(procedureDeclaration)
 
 
-@Export
+@export
 class Function(SubProgram):
 	def __init__(self, functionDeclaration, function):
 		super().__init__(functionDeclaration)
 		self._function = function
-	
+
 	def Call(self, arguments):
 		return self._function(arguments)
-	
 
-@Export
+
+@export
 class PackageDeclation:
 	def __init__(self, name, publicMembers):
 		self._name =            name
 		self._publicMembers =   publicMembers
 
-@Export
+@export
 class PackageBody:
 	def __init__(self, declaration, privateMembers):
 		self._declaration =     declaration
 		self._privateMembers =  privateMembers
 
-@Export
+@export
 class Package:
 	def __init__(self, declaration, body):
 		self._declaration =     declaration

@@ -32,7 +32,8 @@
 from collections                          import ChainMap
 from itertools                            import chain
 
-from pyVHDLParser.Decorators              import Export
+from pydecor.decorators                   import export
+
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import SensitivityList, GenericList, ParameterList
@@ -51,7 +52,7 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class ProcessGroup(Group):
 	DECLARATION_SIMPLE_BLOCKS = {
 		Use.StartBlock:           UseGroup,
@@ -220,7 +221,7 @@ class ProcessGroup(Group):
 
 
 
-@Export
+@export
 class IfGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -229,7 +230,7 @@ class IfGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class IfBranchGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -238,7 +239,7 @@ class IfBranchGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ElsIfBranchGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -247,7 +248,7 @@ class ElsIfBranchGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ElseBranchGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -256,7 +257,7 @@ class ElseBranchGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class CaseGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -265,7 +266,7 @@ class CaseGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ChoiceGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -274,7 +275,7 @@ class ChoiceGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ForLoopGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -283,7 +284,7 @@ class ForLoopGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class WhileLoopGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -292,7 +293,7 @@ class WhileLoopGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class NextGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -301,7 +302,7 @@ class NextGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ExitGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -310,7 +311,7 @@ class ExitGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class ReturnGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -319,7 +320,7 @@ class ReturnGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class VariableAssignmentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
@@ -328,7 +329,7 @@ class VariableAssignmentGroup(Group):
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
 
 
-@Export
+@export
 class SignalAssignmentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):

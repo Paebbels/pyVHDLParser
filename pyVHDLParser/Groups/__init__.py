@@ -34,7 +34,8 @@ from typing                                 import Iterator, Callable, List
 
 from pyTerminalUI                           import LineTerminal
 
-from pyVHDLParser.Decorators                import Export
+from pydecor.decorators                     import export
+
 from pyVHDLParser                           import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base                      import ParserException
 from pyVHDLParser.Blocks                    import Block, CommentBlock, StartOfDocumentBlock, EndOfDocumentBlock
@@ -47,14 +48,14 @@ __all__ = []
 __api__ = __all__
 
 
-@Export
+@export
 class GroupParserException(ParserException):
 	def __init__(self, message, block):
 		super().__init__(message)
 		self._block = block
 
 
-@Export
+@export
 class BlockToGroupParser:
 	"""Wrapping class to offer some class methods."""
 
@@ -66,7 +67,7 @@ class BlockToGroupParser:
 		return state.GetGenerator()
 
 
-@Export
+@export
 class _BlockIterator:
 	def __init__(self, parserState, blockGenerator: Iterator):
 		self._parserState : ParserState = parserState
@@ -82,7 +83,7 @@ class _BlockIterator:
 		return nextBlock
 
 
-@Export
+@export
 class ParserState:
 	"""Represents the current state of a block-to-group parser."""
 
@@ -219,7 +220,7 @@ class ParserState:
 			raise GroupParserException("Unexpected end of document.", self.Block)
 
 
-@Export
+@export
 class MetaGroup(type):
 	"""Register all state*** methods in an array called '__STATES__'"""
 	def __new__(cls, className, baseClasses, classMembers : dict):
@@ -232,7 +233,7 @@ class MetaGroup(type):
 		return super().__new__(cls, className, baseClasses, classMembers)
 
 
-@Export
+@export
 class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
@@ -309,7 +310,7 @@ class Group(metaclass=MetaGroup):
 		return self.__STATES__
 
 
-@Export
+@export
 class StartOfGroup(Group):
 	def __init__(self, startBlock):
 		self._previousGroup =                   None
@@ -337,7 +338,7 @@ class StartOfGroup(Group):
 		)
 
 
-@Export
+@export
 class EndOfGroup(Group):
 	def __init__(self, endBlock):
 		self._previousGroup =     None
@@ -362,7 +363,7 @@ class EndOfGroup(Group):
 		)
 
 
-@Export
+@export
 class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 	def __init__(self, startBlock):
 		from pyVHDLParser.Groups.Comment      import CommentGroup, WhitespaceGroup
@@ -445,14 +446,14 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		), currentBlock)
 
 
-@Export
+@export
 class EndOfDocumentGroup(EndOfGroup, EndOfDocument):
 	pass
 
-@Export
+@export
 class StartOfSnippetGroup(StartOfGroup, StartOfSnippet):
 	pass
 
-@Export
+@export
 class EndOfSnippetGroup(EndOfGroup, EndOfSnippet):
 	pass
