@@ -29,7 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pydoc.Dec                   import export
+from pydecor.decorators             import export
 from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock

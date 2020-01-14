@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 
+# Coverage.py
+.coverage
+.cov
+coverage.xml
+
 # Sphinx
 doc/_build/
 doc/pyVHDLParser/**/*.*

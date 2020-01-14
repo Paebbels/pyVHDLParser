@@ -1,13 +1,23 @@
 language: python
 
 install:
-  - pip3 install -U -r requirements.txt
+  - pip3 install -U -r tests/requirements.txt
 
 # if: tag IS present
 
+before_script:
+  - export CODACY_PROJECT_TOKEN=$CODACY_TOKEN
+
 script:
-  - echo "No test application yet."
-#  - python3 ./test/Application.py
+  - echo $TRAVIS_BRANCH $TRAVIS_COMMIT
+  - coverage run --append -m tests.unit.Tokens
+  - coverage run --append -m tests.unit.Entity
+  - coverage run --append -m tests.unit.Architecture
+  - coverage report
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
+  - codecov
+  - python -m unittest tests.unit.Entity
 
 deploy:
   provider: pypi

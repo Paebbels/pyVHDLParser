@@ -106,7 +106,7 @@ class Tokenizer:
 					buffer += char
 				else:
 					end = SourceCodePosition(row, column - 1, absolute - 1)
-					if isinstance(previousToken, (LinebreakToken, SingleLineCommentToken)):
+					if isinstance(previousToken, (LinebreakToken, SingleLineCommentToken, StartOfDocumentToken)):
 						previousToken = IndentationToken(previousToken, buffer, start, end)
 					else:
 						previousToken = SpaceToken(previousToken, buffer, start, end)

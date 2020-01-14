@@ -90,7 +90,7 @@ class Token:
 	"""Base-class for all token classes."""
 
 	_previousToken :  'Token' =             None    #: Reference to the previous token
-	_NextToken :      'Token' =             None    #: Reference to the next token
+	NextToken :       'Token' =             None    #: Reference to the next token
 	Start :           SourceCodePosition =  None    #: Position for the token start
 	End :             SourceCodePosition =  None    #: Position for the token end
 
