@@ -38,6 +38,47 @@ from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfD
 __all__ = []
 __api__ = __all__
 
+__CHARACTER_TRANSLATION = {
+	"\r": "«\\r»",
+	"\n": "«\\n»",
+	"\t": "«\\t»",
+#	" ":  "« »"
+}
+
+@export
+def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
+	buffer = ""
+	charIterator = iter(value)
+	try:
+		while char := next(charIterator):
+			if (char == "\r"):
+				nextChar = next(charIterator)
+				if (nextChar == "\n"):
+					buffer += "«\\r\\n»"
+					if not oneLiner:
+						buffer += "\n"
+				else:
+					buffer += "«\\n»"
+					if not oneLiner:
+						buffer += "\n"
+
+					if (nextChar == "\t"):
+						buffer += "«\\n»"
+					else:
+						buffer += nextChar
+			elif (char == "\n"):
+				buffer += "«\\n»"
+				if not oneLiner:
+					buffer += "\n"
+			elif (char == "\t"):
+				buffer += "«\\t»"
+			else:
+				buffer += char
+	except StopIteration:
+		pass
+
+	return buffer
+
 
 @export
 class TokenIterator:
@@ -173,7 +214,7 @@ class ValuedToken(Token):
 			)
 
 	def __repr__(self):
-		return self.Value
+		return CharacterTranslation(self.Value)
 
 
 @export
@@ -253,13 +294,6 @@ class CharacterToken(ValuedToken):
 	def __len__(self):
 		return 1
 
-	__CHARACTER_TRANSLATION__ = {
-		"\r":    "\\r",
-		"\n":    "\\n",
-		"\t":    "\\t",
-		" ":     "SPACE"
-	}
-
 	def __str__(self):
 		return "<{name: <50}  {char:.<59} at {pos!r}>".format(
 			name=self.__class__.__name__,
@@ -268,10 +302,7 @@ class CharacterToken(ValuedToken):
 		)
 
 	def __repr__(self):
-		if (self.Value in self.__CHARACTER_TRANSLATION__):
-			return self.__CHARACTER_TRANSLATION__[self.Value]
-		else:
-			return self.Value
+		return CharacterTranslation(self.Value)
 
 
 @export
