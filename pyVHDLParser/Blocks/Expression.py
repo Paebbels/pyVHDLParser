@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,9 +93,9 @@ class ExpressionBlock(Block):
 
 @export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
-	EXIT_CHAR  :  str =   None
-	EXIT_TOKEN :  Token = None
-	EXIT_BLOCK :  Block = None
+	EXIT_CHAR:  str =   None
+	EXIT_TOKEN: Token = None
+	EXIT_BLOCK: Block = None
 
 
 	@classmethod

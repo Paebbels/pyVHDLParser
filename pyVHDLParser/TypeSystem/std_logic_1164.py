@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,9 +83,9 @@ def Resolution(arguments):
 			idx2 =   source.Pos
 			# idx2 =   Std_ULogic.Attributes.Pos(source)
 			result = RESOLUTION_TABLE[result][idx2]
-			
+
 		return Std_Logic.Attributes.Val(result)
-	
+
 
 Func_Resolved =           Function(Func_Resolved_Decl, Resolution)
 

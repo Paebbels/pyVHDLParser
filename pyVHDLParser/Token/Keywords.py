@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ class SpecificVHDLToken(VHDLToken):
 	The internal data is copied, and the original token is replaced by this token.
 	"""
 
-	def __init__(self, token : Token):
+	def __init__(self, token: Token):
 		"""
 		Initialize a specific token, by copying the simple token's data and link
 		this new token to the previous token as a replacement.
@@ -333,7 +333,7 @@ class SignalAssociationKeyword(AssociationKeyword):
 class KeywordToken(VHDLToken):
 	__KEYWORD__ = None
 
-	def __init__(self, wordToken : WordToken):
+	def __init__(self, wordToken: WordToken):
 		if (not (isinstance(wordToken, WordToken) and (wordToken <= self.__KEYWORD__))):
 			raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), wordToken)
 		super().__init__(wordToken.PreviousToken, self.__KEYWORD__, wordToken.Start, wordToken.End)

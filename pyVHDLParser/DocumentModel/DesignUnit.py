@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -504,13 +504,13 @@ class PackageBody(PackageBodyVHDLModel):
 
 		parserState.CurrentNode.AddPort(portName)
 
-	def AddLibraries(self, libraries : List[Library]):
+	def AddLibraries(self, libraries: List[Library]):
 		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraries.append(library._library)
 
-	def AddUses(self, uses : List[Use]):
+	def AddUses(self, uses: List[Use]):
 		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))

@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ class TestSuite:
 		ArchitectureTest.TestCase,
 		ProcessTest.TestCase
 	]
-	
+
 	__ALPHA_CHARACTERS__ = Tokenizer.__ALPHA_CHARS__ + "_" + Tokenizer.__NUMBER_CHARS__
 
 	def __init__(self, vhdlDirectory):
@@ -63,31 +63,31 @@ class TestSuite:
 		runExpectedBlocks =           True
 		runExpectedBlocksAfterStrip = True
 		runConnectivity =             True
-		
+
 		for testCase in self.__TESTCASES__:
 			print("  Testcase: {DARK_CYAN}{name}.{NOCOLOR}".format(name=testCase.__NAME__, **Console.Foreground))
-		
+
 			file = self._vhdlDirectory / testCase.__FILENAME__
-		
+
 			if (not file.exists()):
 				print("    {RED}File '{0!s}' does not exist.{NOCOLOR}".format(file, **Console.Foreground))
 				continue
-		
+
 			with file.open('r') as fileHandle:
 				content = fileHandle.read()
-			
+
 			if runExpectedBlocks:
 				self._RunExpectedBlocks(testCase, content)
-			
+
 			if runExpectedBlocksAfterStrip:
 				self._RunExpectedBlocksAfterStrip(testCase, content)
-			
+
 			if runConnectivity:
 				self._RunConnectivityCheck(testCase, content)
-		
+
 			print("  Testcase: {DARK_CYAN}{name} COMPLETED.{NOCOLOR}".format(name=testCase.__NAME__, **Console.Foreground))
-			
-			
+
+
 	def _RunExpectedBlocks(self, testCase, content):
 		# History check
 		counter =         testCase.GetExpectedBlocks()
@@ -106,10 +106,10 @@ class TestSuite:
 
 		except ParserException as ex:     print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 		except NotImplementedError as ex: print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-		
+
 	def _RunExpectedBlocksAfterStrip(self, testCase, content):
 		# History check
-		
+
 		counter =             testCase.GetExpectedBlocksAfterStrip()
 		wordTokenStream =     Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
 		vhdlBlockStream =     TokenToBlockParser.Transform(wordTokenStream)
@@ -124,11 +124,11 @@ class TestSuite:
 			else:
 				print("    Expected blocks after strip check - {RED}FAILED{NOCOLOR}".format(**Console.Foreground))
 				counter.PrintReport()
-		
-		
+
+
 		except ParserException as ex:     print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 		except NotImplementedError as ex: print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
-		
+
 	def _RunConnectivityCheck(self, testCase, content):
 		# Connectivity check
 		wordTokenStream = Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
