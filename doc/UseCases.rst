@@ -83,6 +83,26 @@ exported in various documentation format like JSON, XML, Restructured Text, ...
    A VHDL domain for Sphinx: `sphinxcontrib-vhdldomain <https://github.com/Paebbels/sphinxcontrib-vhdldomain>`_
 
 
+.. _usecase-doccov:
+
+Documentation Coverage Collection
+*********************************
+
+Simulators and frameworks like `OSVVM <https://github.com/OSVVM/OSVVM>`_ are
+collecting statement, branch and even functional coverage, but non of the tools
+is collecting documentation coverage.
+
+* Are all Source files equipped with a file header?
+
+  * Does the file header match the style/pattern?
+  * Does the file header include necessary information (e.g. license)?
+
+* Are all entities documented?
+* Are all public functions/procedures in a package documented?
+* Are all user-defined types documented?
+* Are all ports documented?
+
+
 .. _usecase-analysis:
 
 Static Code Analysis
