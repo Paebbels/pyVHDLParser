@@ -305,7 +305,7 @@ class Block(metaclass=MetaBlock):
 		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return TokenIterator(self.StartToken, self.EndToken)
 
-	def GetIterator(self, stopBlock: 'Block') -> BlockIterator:
+	def GetIterator(self, stopBlock: 'Block'=None) -> BlockIterator:
 		return BlockIterator(self, stopBlock)
 
 	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
