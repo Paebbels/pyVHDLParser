@@ -10,9 +10,9 @@ before_script:
 
 script:
   - echo $TRAVIS_BRANCH $TRAVIS_COMMIT
-  - coverage run --append -m tests.unit.Tokens
-  - coverage run --append -m tests.unit.Entity
-  - coverage run --append -m tests.unit.Architecture
+  - coverage run --append -m unittest tests.unit.Tokens
+  - coverage run --append -m unittest tests.unit.Entity
+  - coverage run --append -m unittest tests.unit.Architecture
   - coverage report
   - coverage xml
   - python-codacy-coverage -r coverage.xml
