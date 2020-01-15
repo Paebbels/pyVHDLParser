@@ -32,5 +32,5 @@
 from pyVHDLParser.Common.Common import VHDLVersion
 
 
-vhdlVersion = VHDLVersion.VHDL93
+vhdlVersion: VHDLVersion = VHDLVersion.VHDL93
 # vhdlVersion = VHDLVersion.VHDL2008

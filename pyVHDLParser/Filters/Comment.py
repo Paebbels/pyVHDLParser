@@ -29,12 +29,15 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks           import BlockParserException, CommentBlock
+from collections import Generator
+from typing import Any
+
+from pyVHDLParser.Blocks           import BlockParserException, CommentBlock, Block
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.Document  import CommentBlock
 
 
-def StripAndFuse(generator):
+def StripAndFuse(generator: Generator[Block, Any, None]) -> Generator[Block, Any, None]:
 	iterator =  iter(generator)
 	lastBlock = next(iterator)
 
@@ -63,7 +66,7 @@ def StripAndFuse(generator):
 			yield block
 			lastBlock = block
 
-def FastForward(generator):
+def FastForward(generator: Generator[Block, Any, None]) -> Generator[Block, Any, None]:
 	iterator =  iter(generator)
 	# don't filter the first block
 	yield next(iterator)

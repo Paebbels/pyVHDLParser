@@ -30,7 +30,7 @@
 #
 # load dependencies
 from types                                  import FunctionType
-from typing                                 import Iterator, Callable, List
+from typing import Iterator, Callable, List, Generator, Any, Dict
 
 from pyTerminalUI                           import LineTerminal
 
@@ -50,7 +50,7 @@ __api__ = __all__
 
 @export
 class GroupParserException(ParserException):
-	def __init__(self, message, block):
+	def __init__(self, message: str, block: Block):
 		super().__init__(message)
 		self._block = block
 
@@ -60,7 +60,7 @@ class BlockToGroupParser:
 	"""Wrapping class to offer some class methods."""
 
 	@staticmethod
-	def Transform(blockGenerator):
+	def Transform(blockGenerator: Generator[Block, Any, None]) -> Generator['Group', Any, None]:
 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
 
 		state = ParserState(blockGenerator)
@@ -68,16 +68,16 @@ class BlockToGroupParser:
 
 
 @export
-class _BlockIterator:
+class BlockIterator:
 	def __init__(self, parserState, blockGenerator: Iterator):
-		self._parserState : ParserState = parserState
+		self._parserState: ParserState = parserState
 		#self._blockIterator             = iter(FastForward(groupGenerator))
 		self._blockIterator             = iter(blockGenerator)
 
-	def __iter__(self):
+	def __iter__(self) -> 'BlockIterator':
 		return self
 
-	def __next__(self):
+	def __next__(self) -> 'Block':
 		nextBlock = self._blockIterator.__next__()
 		self._parserState.Block = nextBlock
 		return nextBlock
@@ -87,23 +87,23 @@ class _BlockIterator:
 class ParserState:
 	"""Represents the current state of a block-to-group parser."""
 
-	_iterator :   Iterator =        None
-	_stack :      List[Callable] =  []
-	_blockMarker: Block =           None
+	_iterator:   Iterator
+	_stack:      List[Callable]
+	_blockMarker: Block
 
-	Block :       Block =           None
-	NextState :   Callable =        None
-	ReIssue :     bool =            None
+	Block:       Block
+	NextState:   Callable
+	ReIssue:     bool
 
-	NewBlock :    Block =           None
-	NewGroup :    'Group' =         None
-	LastGroup :   'Group' =         None
-	NextGroup :   'Group' =         None
+	NewBlock:    Block
+	NewGroup:    'Group'
+	LastGroup:   'Group'
+	NextGroup:   'Group'
 
-	def __init__(self, blockGenerator):
+	def __init__(self, blockGenerator: Generator[Block, Any, None]):
 		"""Initializes the parser state."""
 
-		self._iterator =    iter(_BlockIterator(self, blockGenerator))
+		self._iterator =    iter(BlockIterator(self, blockGenerator))   # XXX: review iterator vs. generator
 		self._stack =       []
 		self._blockMarker = None
 
@@ -122,10 +122,10 @@ class ParserState:
 		self.NextGroup =    startGroup
 
 	@property
-	def PushState(self):
+	def PushState(self) -> 'Group':
 		return self.NextState
 	@PushState.setter
-	def PushState(self, value):
+	def PushState(self, value: Callable):
 		assert (self.NextGroup is not None)
 		self._stack.append((
 			self.NextState,
@@ -137,9 +137,10 @@ class ParserState:
 		self.NextGroup =    None
 
 	@property
-	def GetBlockIterator(self):
+	def GetBlockIterator(self):    # FIXME: what return type?
 		return self._iterator
 
+	# XXX: implement this method
 	# def __iter__(self):
 	# 	return self._iterator
 
@@ -150,23 +151,24 @@ class ParserState:
 	# 		return iter(self.Block)
 
 	@property
-	def BlockMarker(self):
+	def BlockMarker(self) -> 'Block':
 		if ((self.NewBlock is not None) and (self._blockMarker is self.Block)):
 			# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
 			self._blockMarker = self.NewBlock
 		return self._blockMarker
 	@BlockMarker.setter
-	def BlockMarker(self, value):
+	def BlockMarker(self, value: Block):
 		# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} --> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, value, **Console.Foreground))
 		self._blockMarker = value
 
-	def __eq__(self, other):
+	def __eq__(self, other: Callable) -> bool:
+		"""Return true if parser state is equal to the second operand."""
 		return self.NextState is other
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.NextState.__func__.__qualname__
 
-	def Pop(self, n=1):
+	def Pop(self, n: int=1):
 		self.NewGroup =     self.NextGroup
 
 		top = None
@@ -186,7 +188,7 @@ class ParserState:
 
 		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
-	def GetGenerator(self):
+	def GetGenerator(self):  # XXX: return type
 		from pyVHDLParser.Groups            import GroupParserException
 
 		# yield StartOfDocumentGroup
@@ -223,7 +225,7 @@ class ParserState:
 @export
 class MetaGroup(type):
 	"""Register all state*** methods in an array called '__STATES__'"""
-	def __new__(cls, className, baseClasses, classMembers : dict):
+	def __new__(cls, className, baseClasses, classMembers: dict):
 		states = []
 		for memberName, memberObject in classMembers.items():
 			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
@@ -237,30 +239,30 @@ class MetaGroup(type):
 class Group(metaclass=MetaGroup):
 	__STATES__ = None
 
-	_previousGroup :  'Group' =               None    #: Reference to the previous group.
-	NextGroup :       'Group' =               None    #: Reference to the next group.
-	InnerGroup :      'Group' =               None    #: Reference to the first inner group.
-	_subGroups :      {MetaGroup: 'Group'} =  {}      #: References to all inner groups by group type.
+	_previousGroup:  'Group'                   #: Reference to the previous group.
+	NextGroup:       'Group'                   #: Reference to the next group.
+	InnerGroup:      'Group'                   #: Reference to the first inner group.
+	_subGroups:      Dict[MetaGroup, 'Group']  #: References to all inner groups by group type.
 
-	StartBlock :      Block =                 None    #: Reference to the first block in the scope of this group.
-	EndBlock :        Block =                 None    #: Reference to the last block in the scope of this group.
-	MultiPart :       bool =                  False   #: True, if this group has multiple parts.
+	StartBlock:      Block                     #: Reference to the first block in the scope of this group.
+	EndBlock:        Block                     #: Reference to the last block in the scope of this group.
+	MultiPart:       bool                      #: True, if this group has multiple parts.
 
-	def __init__(self, previousGroup, startBlock, endBlock=None):
-		previousGroup.NextGroup =               self
-		self._previousGroup =                   previousGroup
-		self.NextGroup  : Group =               None
-		self.InnerGroup : Group =               None
-		self._subGroups : {MetaGroup: Group} =  {}
+	def __init__(self, previousGroup: 'Group', startBlock: Block, endBlock: Block=None):
+		previousGroup.NextGroup = self
+		self._previousGroup =     previousGroup
+		self.NextGroup =          None
+		self.InnerGroup =         None
+		self._subGroups =         {}
 
-		self.StartBlock : Block =               startBlock
-		self.EndBlock   : Block =               startBlock if (endBlock is None) else endBlock
-		self.MultiPart =                        False
+		self.StartBlock =         startBlock
+		self.EndBlock =           startBlock if (endBlock is None) else endBlock
+		self.MultiPart =          False
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return self.EndBlock.EndToken.End.Absolute - self.StartBlock.StartToken.Start.Absolute + 1
 
-	def __iter__(self):
+	def __iter__(self):   # XXX: return type; iterator vs. generator
 		block = self.StartBlock
 		print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartBlock.StartToken, self.EndBlock.EndToken))
 		while (block is not self.EndBlock):
@@ -271,13 +273,13 @@ class Group(metaclass=MetaGroup):
 
 		yield self.EndBlock
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		buffer = "undefined block content"
 		# buffer = buffer.replace("\t", "\\t")
 		# buffer = buffer.replace("\n", "\\n")
 		return buffer
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "{{{groupName:.<156s}  at {start!s} .. {end!s}}}".format(
 			groupName="{module}.{classname}  ".format(
 				module=self.__module__.rpartition(".")[2],
@@ -287,48 +289,49 @@ class Group(metaclass=MetaGroup):
 			end=self.EndBlock.EndToken.End
 		)
 
-	def GetSubGroups(self, groupTypes=None):
+	def GetSubGroups(self, groupTypes=None):  # XXX: return type
 		group = self.InnerGroup
 		while (group is not None):
 			yield group
 			group = group.NextGroup
 
 	@property
-	def PreviousGroup(self):
+	def PreviousGroup(self) -> 'Group':
 		return self._previousGroup
 	@PreviousGroup.setter
-	def PreviousGroup(self, value):
+	def PreviousGroup(self, value: 'Group'):
 		self._previousGroup = value
 		value.NextGroup = self
 
 	@property
-	def Length(self):
+	def Length(self) -> int:
 		return len(self)
 
 	@property
-	def States(self):
+	def States(self) -> List[Callable]:
 		return self.__STATES__
 
 
 @export
 class StartOfGroup(Group):
-	def __init__(self, startBlock):
-		self._previousGroup =                   None
-		self.NextGroup  : Group =               None
-		self.InnerGroup : Group =               None
-		self._subGroups : {MetaGroup: Group} =  {}
+	def __init__(self, startBlock: Block):
+		self._previousGroup = None
+		self.NextGroup =      None
+		self.InnerGroup =     None
+		self._subGroups =     {}
 
-		self.StartBlock : Block =               startBlock
-		self.EndBlock   : Block =               None
-		self.MultiPart =                        False
+		self.StartBlock =     startBlock
+		self.EndBlock =       None
+		self.MultiPart =      False
 
+	# TODO: needs review: should TokenIterator be used?
 	def __iter__(self):
 		yield self.StartBlock
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return 0
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "{{{groupName:.<156s}  at {start!s}}}".format(
 			groupName="{module}.{classname}  ".format(
 				module=self.__module__.rpartition(".")[2],
@@ -340,20 +343,21 @@ class StartOfGroup(Group):
 
 @export
 class EndOfGroup(Group):
-	def __init__(self, endBlock):
-		self._previousGroup =     None
-		self.NextGroup =          None
-		self.StartBlock : Block = None
-		self.EndBlock   : Block = endBlock
-		self.MultiPart  =         False
+	def __init__(self, endBlock: Block):
+		self._previousGroup = None
+		self.NextGroup =      None
+		self.StartBlock =     None
+		self.EndBlock =       endBlock
+		self.MultiPart =      False
 
+	# TODO: needs review: should TokenIterator be used?
 	def __iter__(self):
 		yield self.EndBlock
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return 0
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "{{{groupName:.<156s}  at                      .. {end!s}}}".format(
 			groupName="{module}.{classname}  ".format(
 				module=self.__module__.rpartition(".")[2],
@@ -365,7 +369,7 @@ class EndOfGroup(Group):
 
 @export
 class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
-	def __init__(self, startBlock):
+	def __init__(self, startBlock: Block):
 		from pyVHDLParser.Groups.Comment      import CommentGroup, WhitespaceGroup
 		from pyVHDLParser.Groups.DesignUnit   import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
 		from pyVHDLParser.Groups.Reference    import LibraryGroup, UseGroup
@@ -386,7 +390,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		}
 
 	@classmethod
-	def stateDocument(cls, parserState : ParserState):
+	def stateDocument(cls, parserState: ParserState):
 		from pyVHDLParser.Groups.DesignUnit     import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
 		from pyVHDLParser.Groups.Reference      import LibraryGroup, UseGroup
 		from pyVHDLParser.Groups.Comment import CommentGroup, WhitespaceGroup

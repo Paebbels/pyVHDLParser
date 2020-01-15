@@ -44,34 +44,38 @@ class ModelEntity:
 		self._parent = None
 
 	@property
-	def Parent(self):
+	def Parent(self) -> 'ModelEntity':
 		return self._parent
 
 
 @export
 class NamedEntity:
-	def __init__(self):
-		self._name = None
+	_name: str
+
+	def __init__(self, name: str):
+		self._name = name
 
 	@property
-	def Name(self):
+	def Name(self) -> str:
 		return self._name
 
 
 @export
 class LabledEntity:
-	def __init__(self):
-		self._label = None
+	_label: str
+
+	def __init__(self, label: str):
+		self._label = label
 
 	@property
-	def Label(self):
+	def Label(self) -> str:
 		return self._label
 
 
 @export
 class Design(ModelEntity):
-	_libraries :  List =  []    #: List of all libraries defined for a design
-	_documents :  List =  []    #: List of all documents loaded for a design
+	_libraries:  List['Library']  #: List of all libraries defined for a design
+	_documents:  List['Document'] #: List of all documents loaded for a design
 
 	def __init__(self):
 		super().__init__()
@@ -80,20 +84,20 @@ class Design(ModelEntity):
 		self._documents = []
 
 	@property
-	def Libraries(self):
+	def Libraries(self) -> List['Library']:
 		return self._libraries
 
 	@property
-	def Documents(self):
+	def Documents(self) -> List['Document']:
 		return self._documents
 
 
 @export
 class Library(ModelEntity):
-	_contexts :       List =  None    #: List of all contexts defined in a library.
-	_configurations : List =  None    #: List of all configurations defined in a library.
-	_entities :       List =  None    #: List of all entities defined in a library.
-	_packages :       List =  None    #: List of all packages defined in a library.
+	_contexts:       List['Context']        #: List of all contexts defined in a library.
+	_configurations: List['Configuration']  #: List of all configurations defined in a library.
+	_entities:       List['Entity']         #: List of all entities defined in a library.
+	_packages:       List['Package']        #: List of all packages defined in a library.
 
 	def __init__(self):
 		super().__init__()
@@ -104,30 +108,30 @@ class Library(ModelEntity):
 		self._packages =        []
 
 	@property
-	def Contexts(self):
+	def Contexts(self) -> List['Context']:
 		return self._contexts
 
 	@property
-	def Configurations(self):
+	def Configurations(self) -> List['Configuration']:
 		return self._configurations
 
 	@property
-	def Entities(self):
+	def Entities(self) -> List['Entity']:
 		return self._entities
 
 	@property
-	def Packages(self):
+	def Packages(self) -> List['Package']:
 		return self._packages
 
 
 @export
 class Document(ModelEntity):
-	_contexts :       List =  None    #: List of all contexts defined in a document.
-	_configurations : List =  None    #: List of all configurations defined in a document.
-	_entities :       List =  None    #: List of all entities defined in a document.
-	_architectures :  List =  None    #: List of all architectures defined in a document.
-	_packages :       List =  None    #: List of all packages defined in a document.
-	_packageBodies :  List =  None    #: List of all package bodies defined in a document.
+	_contexts:       List['Context']        #: List of all contexts defined in a document.
+	_configurations: List['Configuration']  #: List of all configurations defined in a document.
+	_entities:       List['Entity']         #: List of all entities defined in a document.
+	_architectures:  List['Architecture']   #: List of all architectures defined in a document.
+	_packages:       List['Package']        #: List of all packages defined in a document.
+	_packageBodies:  List['PackageBody']    #: List of all package bodies defined in a document.
 
 	def __init__(self):
 		super().__init__()
@@ -140,27 +144,27 @@ class Document(ModelEntity):
 		self._packageBodies =   []
 
 	@property
-	def Contexts(self):
+	def Contexts(self) -> List['Context']:
 		return self._contexts
 
 	@property
-	def Configurations(self):
+	def Configurations(self) -> List['Configuration']:
 		return self._configurations
 
 	@property
-	def Entities(self):
+	def Entities(self) -> List['Entity']:
 		return self._entities
 
 	@property
-	def Architectures(self):
+	def Architectures(self) -> List['Architecture']:
 		return self._architectures
 
 	@property
-	def Packages(self):
+	def Packages(self) -> List['Package']:
 		return self._packages
 
 	@property
-	def PackageBodies(self):
+	def PackageBodies(self) -> List['PackageBody']:
 		return self._packageBodies
 
 
@@ -210,17 +214,15 @@ class ParameterInterfaceItem(InterfaceItem):
 
 @export
 class GenericConstantInterfaceItem(GenericInterfaceItem):
-	def __init__(self):
-		super().__init__()
-		self._subType =           None
-		self._defaultExpression = None
+	_subtype:           SubType   # FIXME: add documentation
+	_defaultExpression: Expression   # FIXME: add documentation
 
 	@property
-	def SubType(self):
+	def SubType(self) -> SubType:
 		return self._subType
 
 	@property
-	def DefaultExpression(self):
+	def DefaultExpression(self) -> Expression:
 		return self._defaultExpression
 
 @export
@@ -238,22 +240,23 @@ class GenericPackageInterfaceItem(GenericInterfaceItem):
 
 @export
 class PortSignalInterfaceItem(PortInterfaceItem):
+	_subType:           SubType
+	_mode:              Modes
+	_defaultExpression: Expression
+
 	def __init__(self):
 		super().__init__()
-		self._subType =           None
-		self._mode =              None
-		self._defaultExpression = None
 
 	@property
-	def SubType(self):
+	def SubType(self) -> SubType:
 		return self._subType
 
 	@property
-	def Mode(self):
+	def Mode(self) -> Modes:
 		return self._mode
 
 	@property
-	def DefaultExpression(self):
+	def DefaultExpression(self) -> Expression:
 		return self._defaultExpression
 
 
@@ -264,11 +267,12 @@ class ParameterConstantInterfaceItem(ParameterInterfaceItem):
 
 @export
 class ParameterVariableInterfaceItem(ParameterInterfaceItem):
+	_subType:           SubType
+	_mode:              Modes
+	_defaultExpression: Expression
+
 	def __init__(self):
 		super().__init__()
-		self._subType =           None
-		self._mode =              None
-		self._defaultExpression = None
 
 	@property
 	def SubType(self):
@@ -312,106 +316,120 @@ class ParameterFileInterfaceItem(ParameterInterfaceItem):
 
 @export
 class PrimaryUnit(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		NamedEntity.__init__(self)
+		NamedEntity.__init__(self, name)
 
 
 @export
 class SecondaryUnit(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		NamedEntity.__init__(self)
+		NamedEntity.__init__(self, name)
 
 
 @export
 class Context(PrimaryUnit):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
-		self._uses =            []
+	_uses: List[Use]
+
+	def __init__(self, name):
+		super().__init__(name)
+
+		self._uses = []
 
 	@property
-	def Uses(self):
+	def Uses(self) -> List[Use]:
 		return self._uses
 
 
 @export
 class Entity(PrimaryUnit):
-	def __init__(self):
-		super().__init__()
-		self._libraryReferences = []
-		self._uses =              []
-		self._genericItems =      []
-		self._portItems =         []
-		self._declaredItems =     []
-		self._bodyItems =         []
+	_libraryReferences: List[LibraryReference]
+	_uses:              List[Use]
+	_genericItems:      List[GenericInterfaceItem]
+	_portItems:         List[PortInterfaceItem]
+	_declaredItems:     List[]   # FIXME: define liste element type e.g. via Union
+	_bodyItems:         List[]   # FIXME: define liste element type e.g. via Union
+
+	def __init__(self, name):
+		super().__init__(name)
 
 	@property
-	def LibraryReferences(self):
+	def LibraryReferences(self) -> List[LibraryReference]:
 		return self._libraryReferences
 
 	@property
-	def Uses(self):
+	def Uses(self) -> List[Use]:
 		return self._uses
 
 	@property
-	def GenericItems(self):
+	def GenericItems(self) -> List[GenericInterfaceItem]:
 		return self._genericItems
 
 	@property
-	def DeclaredItems(self):
+	def PortItems(self) -> List[PortInterfaceItem]:
+		return self._portItems
+
+	@property
+	def DeclaredItems(self) -> List:   # FIXME: define liste element type e.g. via Union
 		return self._declaredItems
 
 	@property
-	def BodyItems(self):
+	def BodyItems(self) -> List:    # FIXME: define liste element type e.g. via Union
 		return self._bodyItems
 
 
 @export
 class Architecture(SecondaryUnit):
-	def __init__(self):
-		super().__init__()
-		self._entity =            None
+	_entity:            Entity
+	_libraryReferences: List[LibraryReference]
+	_uses:              List[Use]
+	_declaredItems:     List[]   # FIXME: define liste element type e.g. via Union
+	_bodyItems:         List[]   # FIXME: define liste element type e.g. via Union
+
+	def __init__(self, name):
+		super().__init__(name)
+
 		self._libraryReferences = []
 		self._uses =              []
 		self._declaredItems =     []
 		self._bodyItems =         []
 
 	@property
-	def Entity(self):
+	def Entity(self) -> Entity:
 		return self._entity
 
 	@property
-	def LibraryReferences(self):
+	def LibraryReferences(self) -> List[LibraryReference]:
 		return self._libraryReferences
 
 	@property
-	def Uses(self):
+	def Uses(self) -> List[Use]:
 		return self._uses
 
 	@property
-	def DeclaredItems(self):
+	def DeclaredItems(self) -> List:   # FIXME: define liste element type e.g. via Union
 		return self._declaredItems
 
 	@property
-	def BodyItems(self):
+	def BodyItems(self) -> List:   # FIXME: define liste element type e.g. via Union
 		return self._bodyItems
 
 
 @export
 class AssociationItem(ModelEntity):
+	_formal: str    # FIXME: defined type
+	_actual: str    # FIXME: defined type
+
 	def __init__(self):
 		super().__init__()
-		self._formal = None
-		self._actual = None
 
 	@property
-	def Formal(self):
+	def Formal(self):    # FIXME: defined return type
 		return self._formal
 
 	@property
-	def Actual(self):
+	def Actual(self):    # FIXME: defined return type
 		return self._actual
 
 

@@ -29,14 +29,14 @@
 # ==============================================================================
 #
 from types                          import FunctionType
-from typing import List, Callable, Iterator, Iterable
+from typing                         import List, Callable, Iterator, Generator
 
 from pydecor.decorators             import export
 from pyTerminalUI                   import LineTerminal
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken
+from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
 from pyVHDLParser.Token             import WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
@@ -55,7 +55,7 @@ class BlockParserException(ParserException):
 		self._token = token
 
 	@property
-	def Token(self):
+	def Token(self) -> Token:
 		"""Returns the token involved in an exception situation."""
 		return self._token
 
@@ -65,7 +65,7 @@ class TokenToBlockParser:
 	"""Wrapping class to offer some class methods."""
 
 	@staticmethod
-	def Transform(tokenGenerator):
+	def Transform(tokenGenerator: Iterator[Token]) -> Generator['Block', Token, None]:
 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
 
 		state = ParserState(tokenGenerator)
@@ -76,17 +76,17 @@ class TokenToBlockParser:
 class ParserState:
 	"""Represents the current state of a token-to-block parser."""
 
-	_iterator :     Iterator[Token] = None
-	_stack :        List[Callable] =  None
-	_tokenMarker :  Token =           None
+	_iterator:     Iterator[Token]
+	_stack:        List[Callable]
+	_tokenMarker:  Token
 
-	Token :         Token =           None
-	NextState :     Callable =        None
-	ReIssue :       bool =            None
-	NewToken :      Token =           None
-	NewBlock :      'Block' =         None
-	LastBlock :     'Block' =         None
-	Counter :       int =             0
+	Token:         Token
+	NextState:     Callable
+	ReIssue:       bool
+	NewToken:      Token
+	NewBlock:      'Block'
+	LastBlock:     'Block'
+	Counter:       int
 
 	def __init__(self, tokenGenerator):
 		"""Initializes the parser state."""
@@ -111,7 +111,7 @@ class ParserState:
 
 
 	@property
-	def PushState(self):
+	def PushState(self) -> Callable:
 		return self.NextState
 	@PushState.setter
 	def PushState(self, value):
@@ -124,7 +124,7 @@ class ParserState:
 		self._tokenMarker =  None
 
 	@property
-	def TokenMarker(self):
+	def TokenMarker(self) -> Token:
 		if ((self.NewToken is not None) and (self._tokenMarker is self.Token)):
 			LineTerminal().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **LineTerminal.Foreground))
 			self._tokenMarker = self.NewToken
@@ -133,11 +133,11 @@ class ParserState:
 	def TokenMarker(self, value):
 		self._tokenMarker = value
 
-	def __eq__(self, other):
+	def __eq__(self, other) -> bool:
 		"""Implement a '==' operator for the current state."""
 		return self.NextState is other
 
-	def __str__(self):
+	def __str__(self) -> str:
 		"""Returns the current state (function name) as str."""
 		return self.NextState.__func__.__qualname__
 
@@ -151,7 +151,7 @@ class ParserState:
 		self._tokenMarker = tokenMarker
 
 
-	def GetGenerator(self):
+	def GetGenerator(self) -> Generator['Block', Token, None]:
 		from pyVHDLParser.Token             import EndOfDocumentToken
 		from pyVHDLParser.Blocks            import BlockParserException, EndOfDocumentBlock
 		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
@@ -210,9 +210,9 @@ class MetaBlock(type):
 	* Register all method of name `state....` in the constructed class' attribute :attr:`Block.__STATES__`.
 	"""
 
-	BLOCKS = []     #: List of all classes of type :class:`Block` or derived variants
+	BLOCKS: List['Block'] = []     #: List of all classes of type :class:`Block` or derived variants
 
-	def __new__(cls, className, baseClasses, classMembers : dict):
+	def __new__(cls, className, baseClasses, classMembers: dict):
 		# """Register all state*** methods in a list called `__STATES__`."""
 
 		states = []
@@ -229,19 +229,19 @@ class MetaBlock(type):
 
 @export
 class BlockIterator:
-	startBlock:   'Block' = None
-	currentBlock: 'Block' = None
-	stopBlock:    'Block' = None
+	startBlock:   'Block'
+	currentBlock: 'Block'
+	stopBlock:    'Block'
 
 	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
 		self.startBlock =   startBlock
 		self.currentBlock = startBlock.NextBlock
 		self.stopBlock =    stopBlock
 
-	def __iter__(self):
+	def __iter__(self) -> 'BlockIterator':
 		return self
 
-	def __next__(self):
+	def __next__(self) -> 'Block':
 		block = self.currentBlock
 		if (block is None):
 			raise StopIteration
@@ -252,19 +252,19 @@ class BlockIterator:
 
 @export
 class BlockReverseIterator:
-	startBlock:   'Block' = None
-	currentBlock: 'Block' = None
-	stopBlock:    'Block' = None
+	startBlock:   'Block'
+	currentBlock: 'Block'
+	stopBlock:    'Block'
 
 	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
 		self.startBlock =   startBlock
 		self.currentBlock = startBlock.PreviousToken
 		self.stopBlock =    stopBlock
 
-	def __iter__(self):
+	def __iter__(self) -> 'BlockReverseIterator':
 		return self
 
-	def __next__(self):
+	def __next__(self) -> 'Block':
 		block = self.currentBlock
 		if (block is None):
 			raise StopIteration
@@ -279,29 +279,29 @@ class Block(metaclass=MetaBlock):
 	Base-class for all :term:`block` classes.
 	"""
 
-	__STATES__ :      List =   None   #: List of all `state...` methods in this class.
+	__STATES__:      List =   None   #: List of all `state...` methods in this class.
 
-	_previousBlock : 'Block' = None   #: Reference to the previous block.
-	NextBlock :      'Block' = None   #: Reference to the next block.
-	StartToken :     Token =   None   #: Reference to the first token in the scope of this block.
-	EndToken :       Token =   None   #: Reference to the last token in the scope of this block.
-	MultiPart :      bool =    None   #: True, if this block has multiple parts.
+	_previousBlock: 'Block' = None   #: Reference to the previous block.
+	NextBlock:      'Block' = None   #: Reference to the next block.
+	StartToken:     Token =   None   #: Reference to the first token in the scope of this block.
+	EndToken:       Token =   None   #: Reference to the last token in the scope of this block.
+	MultiPart:      bool =    None   #: True, if this block has multiple parts.
 
 	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
 		"""Base-class constructor for a new block instance."""
 
 		previousBlock.NextBlock =       self
-		self._previousBlock : 'Block' = previousBlock
-		self.NextBlock      : 'Block' = None
-		self.StartToken     : Token =   startToken
-		self.EndToken       : Token =   startToken if (endToken is None) else endToken
-		self.MultiPart =                multiPart
+		self._previousBlock = previousBlock
+		self.NextBlock =      None
+		self.StartToken =     startToken
+		self.EndToken =       startToken if (endToken is None) else endToken
+		self.MultiPart =      multiPart
 
-	def __len__(self):
+	def __len__(self) -> int:
 		"""Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return self.EndToken.End.Absolute - self.StartToken.Start.Absolute + 1
 
-	def __iter__(self):
+	def __iter__(self) -> TokenIterator:
 		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 
 		token = self.StartToken
@@ -321,10 +321,10 @@ class Block(metaclass=MetaBlock):
 	def GetIterator(self, stopBlock: 'Block') -> Iterable:
 		return BlockIterator(self, stopBlock)
 
-	def GetReverseIterator(self, stopBlock: 'Block') -> Iterable:
+	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
 		return BlockReverseIterator(self, stopBlock)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		buffer = ""
 		for token in self:
 			if isinstance(token, CharacterToken):
@@ -336,7 +336,7 @@ class Block(metaclass=MetaBlock):
 		buffer = buffer.replace("\n", "\\n")
 		return buffer
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "[{blockName: <50s} {stream: <62s} at {start!s} .. {end!s}]".format(
 			blockName="{module}.{classname}{multiparted}".format(
 				module=self.__module__.rpartition(".")[2],
@@ -349,20 +349,20 @@ class Block(metaclass=MetaBlock):
 		)
 
 	@property
-	def PreviousBlock(self):
+	def PreviousBlock(self) -> 'Block':
 		return self._previousBlock
 	@PreviousBlock.setter
-	def PreviousBlock(self, value):
+	def PreviousBlock(self, value: 'Block'):
 		self._previousBlock = value
 		value.NextBlock = self
 
 	@property
-	def Length(self):
+	def Length(self) -> int:
 		"""Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return len(self)
 
 	@property
-	def States(self):
+	def States(self) -> List[Callable]:
 		"""Returns a list of all `state...` methods in this class."""
 		return self.__STATES__
 
@@ -399,13 +399,14 @@ class StartOfBlock(Block):
 		self.EndToken =           None
 		self.MultiPart =          False
 
+	# TODO: needs review: should TokenIterator be used?
 	def __iter__(self):
 		yield self.StartToken
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return 0
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "[{name}]".format(
 				name=self.__class__.__name__
 			)
@@ -422,13 +423,14 @@ class EndOfBlock(Block):
 		self.EndToken =           endToken
 		self.MultiPart =          False
 
+	# TODO: needs review: should TokenIterator be used?
 	def __iter__(self):
 		yield self.EndToken
 
-	def __len__(self):
+	def __len__(self) -> int:
 		return 0
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "[{name}]".format(
 				name=self.__class__.__name__
 			)

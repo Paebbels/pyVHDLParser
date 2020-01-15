@@ -46,21 +46,21 @@ __api__ = __all__
 class SourceCodePosition:
 	"""Represent a position (row, column, absolute) in a source code file."""
 
-	Row :       int = None    #: Row in the source code file
-	Column :    int = None    #: Column (character) in the source code file's line
-	Absolute :  int = None    #: Absolute character position regardless of linebreaks.
+	Row:       int    #: Row in the source code file
+	Column:    int    #: Column (character) in the source code file's line
+	Absolute:  int    #: Absolute character position regardless of linebreaks.
 
-	def __init__(self, row : int, column : int, absolute : int):
+	def __init__(self, row: int, column: int, absolute: int):
 		"""Initializes a SourceCodePosition object."""
 
-		self.Row =       row
-		self.Column =    column
-		self.Absolute =  absolute
+		self.Row =      row
+		self.Column =   column
+		self.Absolute = absolute
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return "{0}:{1}".format(self.Row, self.Column)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
 
 

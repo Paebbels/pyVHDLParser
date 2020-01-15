@@ -29,13 +29,15 @@
 # ==============================================================================
 #
 from pathlib                         import Path
+from typing import List
 
 from pydecor.decorators              import export
 
 from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.DocumentModel.Reference import Library, Use
 from pyVHDLParser.Token.Parser       import Tokenizer
 from pyVHDLParser.Blocks             import TokenToBlockParser
-from pyVHDLParser.Groups             import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser
+from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
 from pyVHDLParser.Groups.DesignUnit  import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel          import Document as DocumentModel
@@ -53,13 +55,14 @@ class DOMParserException(ParserException):
 
 @export
 class Document(DocumentModel):
-	def __init__(self, file):
-		from pyVHDLParser.DocumentModel.Reference import Use, Library
+	__libraries:  List[Library]
+	__uses:       List[Use]
 
+	def __init__(self, file):  # FIXME: parameter type
 		super().__init__()
 
-		self.__libraries  : list[Library] = []
-		self.__uses       : list[Use] =     []
+		self.__libraries =  []
+		self.__uses  =      []
 
 		if isinstance(file, Path):
 			self._filePath = file
@@ -68,7 +71,7 @@ class Document(DocumentModel):
 		else:
 			raise ValueError("Unsoppurted type for parameter type.")
 
-	def Parse(self, content=None):
+	def Parse(self, content=None):  # FIXME: parameter type
 		if (content is None):
 			if (not self._filePath.exists()):
 				raise DOMParserException("File '{0!s}' does not exist.".format(self._filePath))
@@ -92,7 +95,7 @@ class Document(DocumentModel):
 		self.stateParse(self, firstGroup)
 
 	@classmethod
-	def stateParse(cls, document, startOfDocumentGroup):
+	def stateParse(cls, document, startOfDocumentGroup: Group):
 		from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
 		# from pyVHDLParser.DocumentModel.DesignUnit  import Context as ContextModel
 		from pyVHDLParser.DocumentModel.DesignUnit  import Entity as EntityModel, Architecture as ArchitectureModel
@@ -116,10 +119,10 @@ class Document(DocumentModel):
 					GROUP_TO_MODEL[group].stateParse(document, subGroup)
 					break
 
-	def AddLibrary(self, library):
+	def AddLibrary(self, library):  # FIXME: parameter type
 		self.__libraries.append(library)
 
-	def AddUse(self, use):
+	def AddUse(self, use):  # FIXME: parameter type
 		self.__uses.append(use)
 
 	@property
@@ -130,19 +133,19 @@ class Document(DocumentModel):
 	def Uses(self):
 		return self.__uses
 
-	def AddEntity(self, entity):
+	def AddEntity(self, entity):  # FIXME: parameter type
 		self._entities.append(entity)
 
-	def AddArchitecture(self, architecture):
+	def AddArchitecture(self, architecture):  # FIXME: parameter type
 		self._architectures.append(architecture)
 
-	def AddPackage(self, package):
+	def AddPackage(self, package):  # FIXME: parameter type
 		self._packages.append(package)
 
-	def AddPackageBody(self, packageBody):
+	def AddPackageBody(self, packageBody):  # FIXME: parameter type
 		self._packageBodies.append(packageBody)
 
-	def Print(self, indent=0):
+	def Print(self, indent: int=0):
 		_indent = "  " * indent
 		if (len(self.__libraries) > 0):
 			for library in self.__libraries:
@@ -162,40 +165,3 @@ class Document(DocumentModel):
 		print()
 		for packageBody in self._packageBodies:
 			packageBody.Print()
-
-#
-# class _GroupIterator:
-# 	def __init__(self, parserState, groupGenerator: Iterator):
-# 		self._parserState =     parserState
-# 		self._groupIterator =   iter(FastForward(groupGenerator))
-#
-# 	def __iter__(self):
-# 		return self
-#
-# 	def __next__(self):
-# 		nextGroup = self._groupIterator.__next__()
-# 		self._parserState.CurrentGroup = nextGroup
-# 		return nextGroup
-#
-# class GroupToModelParser:
-#
-#
-# 	@staticmethod
-# 	def _TokenGenerator(currentGroup, groupIterator):
-# 		groupType = type(currentGroup)
-#
-# 		for token in currentGroup:
-# 			yield token
-# 		for group in groupIterator:
-# 			if isinstance(group, groupType):
-# 				for token in group:
-# 					yield token
-# 				if (not group.MultiPart):
-# 					break
-#
-# 		def __iter__(self):
-# 			if self.CurrentGroup.MultiPart:
-# 				return iter(GroupToModelParser._TokenGenerator(self.CurrentGroup, self.GroupIterator))
-# 			else:
-# 				return iter(self.CurrentGroup)
-

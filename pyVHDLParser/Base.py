@@ -37,10 +37,10 @@ __api__ = __all__
 
 @export
 class ExceptionBase(Exception):
-	def __init__(self, message):
+	def __init__(self, message: str):
 		self._message = message
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self._message
 
 

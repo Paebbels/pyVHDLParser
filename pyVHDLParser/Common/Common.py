@@ -70,25 +70,42 @@ class VHDLVersion(Enum):
 			if ((not isinstance(v, self.__class__)) and (v == self.value)):
 				self.__class__.__VHDL_VERSION_MAPPINGS__[k] = self
 
-	def __eq__(self, other):
+	def __eq__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is equal to the second operand."""
 		if ((self is VHDLVersion.Any) or (other is VHDLVersion.Any)):
 			return True
 		else:
 			return (self.value == other.value)
-	def __ne__(self, other):  return self.value != other.value
-	def __lt__(self, other):  return self.value <  other.value
-	def __le__(self, other):  return self.value <= other.value
-	def __gt__(self, other):  return self.value >  other.value
-	def __ge__(self, other):  return self.value >= other.value
 
-	def __str__(self):
+	def __ne__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is unequal to the second operand."""
+		return self.value != other.value
+
+	def __lt__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is less than to the second operand."""
+		return self.value <  other.value
+
+	def __le__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is less than or equal to the second operand."""
+		return self.value <= other.value
+
+	def __gt__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is greater than to the second operand."""
+		return self.value >  other.value
+
+	def __ge__(self, other: 'VHDLVersion') -> bool:
+		"""Return true if the internal value is greater than or equal to the second operand."""
+		return self.value >= other.value
+
+
+	def __str__(self) -> str:
 		return "VHDL'" + str(self.value)[-2:]
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return str(self.value)
 
 	@classmethod
-	def Parse(cls, value):
+	def Parse(cls, value) -> 'VHDLVersion':
 		try:
 			return cls.__VHDL_VERSION_MAPPINGS__[value]
 		except KeyError:

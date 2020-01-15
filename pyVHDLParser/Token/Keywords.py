@@ -31,7 +31,7 @@
 # load dependencies
 from pydecor.decorators         import export
 
-from pyVHDLParser.Token         import Token, WordToken, VHDLToken
+from pyVHDLParser.Token import Token, WordToken, VHDLToken, CharacterToken
 from pyVHDLParser.Token.Parser  import TokenizerException
 
 __all__ = []
@@ -271,10 +271,10 @@ class RepeatedLabelToken(LabelToken):
 class MultiCharKeyword(VHDLToken):
 	__KEYWORD__ = None
 
-	def __init__(self, characterToken):
+	def __init__(self, characterToken: CharacterToken):
 		super().__init__(characterToken.PreviousToken, self.__KEYWORD__, characterToken.Start, characterToken.End)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "<{name: <50} '{value}' at {pos!r}>".format(
 			name=self.__class__.__name__[:-7],
 			value=self.__KEYWORD__,
@@ -338,7 +338,7 @@ class KeywordToken(VHDLToken):
 			raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), wordToken)
 		super().__init__(wordToken.PreviousToken, self.__KEYWORD__, wordToken.Start, wordToken.End)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 				name=self.__class__.__name__,
 				value="'" + self.Value + "'  ",
