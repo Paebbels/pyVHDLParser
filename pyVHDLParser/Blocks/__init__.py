@@ -233,20 +233,35 @@ class BlockIterator:
 	currentBlock: 'Block'
 	stopBlock:    'Block'
 
-	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
+	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
+
+	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, stopBlock: 'Block'=None):
 		self.startBlock =   startBlock
-		self.currentBlock = startBlock.NextBlock
+		self.currentBlock = startBlock if inclusiveStartBlock else startBlock.NextBlock
 		self.stopBlock =    stopBlock
+
+		self.state =        0
 
 	def __iter__(self) -> 'BlockIterator':
 		return self
 
 	def __next__(self) -> 'Block':
-		block = self.currentBlock
-		if (block is None):
-			raise StopIteration
+		# in last call of '__next__', the last block in the sequence was returned
+		if (self.state > 0):
+			raise StopIteration(self.state)
 
-		self.currentBlock = block.NextBlock
+		block = self.currentBlock
+		if block is self.stopToken:
+			self.currentBlock = None
+			self.state =        1
+		elif isinstance(self.currentBlock, EndOfBlock):
+			self.currentBlock = None
+			self.state =        2
+		else:
+			self.currentBlock = block.NextBlock
+			if (self.currentBlock is None):
+				raise ParserException("Found open end while iterating block sequence.")  # FIXME: how to append last block?
+
 		return block
 
 
@@ -256,20 +271,35 @@ class BlockReverseIterator:
 	currentBlock: 'Block'
 	stopBlock:    'Block'
 
-	def __init__(self, startBlock: 'Block', stopBlock: 'Block'=None):
+	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
+
+	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, stopBlock: 'Block'=None):
 		self.startBlock =   startBlock
-		self.currentBlock = startBlock.PreviousToken
+		self.currentBlock = startBlock if inclusiveStartBlock else startBlock.NextBlock
 		self.stopBlock =    stopBlock
+
+		self.state =        0
 
 	def __iter__(self) -> 'BlockReverseIterator':
 		return self
 
 	def __next__(self) -> 'Block':
-		block = self.currentBlock
-		if (block is None):
-			raise StopIteration
+		# in last call of '__next__', the last block in the sequence was returned
+		if (self.state > 0):
+			raise StopIteration(self.state)
 
-		self.currentBlock = block.PreviousBlock
+		block = self.currentBlock
+		if block is self.stopToken:
+			self.currentBlock = None
+			self.state =        1
+		elif isinstance(self.currentBlock, EndOfBlock):
+			self.currentBlock = None
+			self.state =        2
+		else:
+			self.currentBlock = block.PreviousBlock
+			if (self.currentBlock is None):
+				raise ParserException("Found open end while iterating block sequence.")  # FIXME: how to append last block?
+
 		return block
 
 
@@ -303,13 +333,13 @@ class Block(metaclass=MetaBlock):
 
 	def __iter__(self) -> TokenIterator:
 		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
-		return TokenIterator(self.StartToken, self.EndToken)
+		return TokenIterator(self.StartToken, inclusiveStartToken=True, stopToken=self.EndToken)
 
 	def GetIterator(self, stopBlock: 'Block'=None) -> BlockIterator:
-		return BlockIterator(self, stopBlock)
+		return BlockIterator(self, stopBlock=stopBlock)
 
 	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
-		return BlockReverseIterator(self, stopBlock)
+		return BlockReverseIterator(self, stopBlock=stopBlock)
 
 	def __repr__(self) -> str:
 		buffer = ""

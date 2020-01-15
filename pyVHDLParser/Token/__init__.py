@@ -34,9 +34,12 @@ from typing import Iterator
 from pydecor.decorators       import export
 
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
+from pyVHDLParser.Base        import ParserException
 
 __all__ = []
 __api__ = __all__
+
+
 
 __CHARACTER_TRANSLATION = {
 	"\r": "«\\r»",
@@ -86,23 +89,34 @@ class TokenIterator:
 	currentToken: 'Token'
 	stopToken:    'Token'
 
-	def __init__(self, startToken: 'Token', stopToken: 'Token'=None):
+	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+
+	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, stopToken: 'Token'=None):
 		self.startToken =   startToken
-		self.currentToken = startToken.NextToken
+		self.currentToken = startToken if inclusiveStartToken else startToken.NextToken
 		self.stopToken =    stopToken
+
+		self.state =        0
 
 	def __iter__(self) -> 'TokenIterator':
 		return self
 
 	def __next__(self) -> 'Token':
-		token = self.currentToken
-		if (token is None):
-			raise StopIteration
+		# in last call of '__next__', the last token in the sequence was returned
+		if (self.state > 0):
+			raise StopIteration(self.state)
 
-		if isinstance(self.currentToken, EndOfDocumentToken):
+		token = self.currentToken
+		if token is self.stopToken:
 			self.currentToken = None
+			self.state =        1
+		elif isinstance(self.currentToken, EndOfToken):
+			self.currentToken = None
+			self.state =        2
 		else:
 			self.currentToken = token.NextToken
+			if (self.currentToken is None):
+				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
 
 		return token
 
@@ -113,20 +127,35 @@ class TokenReverseIterator:
 	currentToken: 'Token'
 	stopToken:    'Token'
 
-	def __init__(self, startToken: 'Token', stopToken: 'Token'=None):
+	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+
+	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, stopToken: 'Token'=None):
 		self.startToken =   startToken
-		self.currentToken = startToken.PreviousToken
+		self.currentToken = startToken if inclusiveStartToken else startToken.PreviousToken
 		self.stopToken =    stopToken
+
+		self.state =        0
 
 	def __iter__(self) -> 'TokenReverseIterator':
 		return self
 
 	def __next__(self) -> 'Token':
-		token = self.currentToken
-		if (token is None):
-			raise StopIteration
+		# in last call of '__next__', the last token in the sequence was returned
+		if (self.state > 0):
+			raise StopIteration(self.state)
 
-		self.currentToken = token.PreviousToken
+		token = self.currentToken
+		if token is self.stopToken:
+			self.currentToken = None
+			self.state =        1
+		elif isinstance(self.currentToken, EndOfToken):
+			self.currentToken = None
+			self.state =        2
+		else:
+			self.currentToken = token.PreviousToken
+			if (self.currentToken is None):
+				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
+
 		return token
 
 
