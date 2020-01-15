@@ -9,7 +9,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ from pyVHDLParser.Blocks              import MetaBlock
 
 
 __author__ =      "Patrick Lehmann"
-__copyright__ =   "Copyright 2017-2019 Patrick Lehmann - Boetzingen, Germany\n" + \
+__copyright__ =   "Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany\n" + \
                   "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __maintainer__ =  "Patrick Lehmann"
 __email__ =       "Patrick.Lehmann@plc2.de"
@@ -432,9 +432,9 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 				self.WriteError("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
 				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
 
-			lastBlock : Block = firstBlock
-			endBlock :  Block = None
-			lastToken : Token = startToken
+			lastBlock: Block = firstBlock
+			endBlock:  Block = None
+			lastToken: Token = startToken
 
 			for vhdlBlock in blockIterator:
 				self.WriteNormal(str(vhdlBlock))

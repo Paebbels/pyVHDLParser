@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../pyVHDLParser'))
 # Project information
 # ==============================================================================
 project =   "pyVHDLParser"
-copyright = "2016-2019 Patrick Lehmann - Boetzingen, Germany"
+copyright = "2016-2020 Patrick Lehmann - Boetzingen, Germany"
 author =    "Patrick Lehmann"
 
 
