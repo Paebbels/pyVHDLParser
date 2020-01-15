@@ -274,7 +274,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 			if (firstToken.NextToken is None):
 				print("{RED}First token has an open end.{NOCOLOR}".format(**self.Foreground))
 
-			tokenIterator = iter(firstToken)
+			tokenIterator = firstToken.GetIterator()
 			lastToken =     None
 			vhdlToken =     firstToken
 
@@ -449,10 +449,11 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 				for token in tokenIterator:
 					self.WriteVerbose(str(token))
 
-					if (token.NextToken is None):
-						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))
-						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
-					elif (lastToken.NextToken is not token):
+#					if (token.NextToken is None):
+#						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))
+#						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
+#					el
+					if (lastToken.NextToken is not token):
 						self.WriteError("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
 						self.WriteError("{YELLOW}  Last:   {token!s}{NOCOLOR}".format(token=lastToken, **self.Foreground))
 						self.WriteError("{YELLOW}    Next: {token!s}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))

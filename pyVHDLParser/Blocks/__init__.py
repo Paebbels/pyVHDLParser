@@ -303,20 +303,7 @@ class Block(metaclass=MetaBlock):
 
 	def __iter__(self) -> TokenIterator:
 		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
-
-		token = self.StartToken
-		while (token is not self.EndToken):
-			yield token
-			if (token.NextToken is None):
-				print("block={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartToken, self.EndToken))
-				t = self.StartToken
-				while ((t is not None) and (t is not self.EndToken)):
-					print("  " + str(t))
-					t = t.NextToken
-				raise BlockParserException("Token after '{2!r}' is empty (None).\n ||  {0!s}\n ||  {1!s}\n ||  {2!s}\n VV  == None ==".format(token.PreviousToken.PreviousToken, token.PreviousToken, token), token)
-			token = token.NextToken
-
-		yield self.EndToken
+		return TokenIterator(self.StartToken, self.EndToken)
 
 	def GetIterator(self, stopBlock: 'Block') -> BlockIterator:
 		return BlockIterator(self, stopBlock)

@@ -99,7 +99,11 @@ class TokenIterator:
 		if (token is None):
 			raise StopIteration
 
-		self.currentToken = token.NextToken
+		if isinstance(self.currentToken, EndOfDocumentToken):
+			self.currentToken = None
+		else:
+			self.currentToken = token.NextToken
+
 		return token
 
 
