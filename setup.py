@@ -34,7 +34,7 @@
 # ============================================================================
 #
 import setuptools
-from pathlib import Path, PurePath
+from pathlib import Path
 
 with open("README.md", "r") as file:
 	long_description = file.read()
@@ -42,14 +42,14 @@ with open("README.md", "r") as file:
 projectName = "pyVHDLParser"
 
 rfile = Path("requirements.txt")
-root = PurePath(__file__)
-if not Path.is_file(rfile):
-	rfile = Path(root.parent, projectName + ".egg-info", "requires.txt")
-	if not Path.is_file(rfile):
+root = Path(__file__)
+if not rfile.is_file():
+	rfile = root.parent / (projectName + ".egg-info") / "requires.txt"
+	if not rfile.is_file():
 		exit(1)
 
 requirements = []
-with open(rfile) as file:
+with rfile.open() as file:
 	for line in file.readlines():
 		requirements.append(line)
 
