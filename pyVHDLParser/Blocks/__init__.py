@@ -318,7 +318,7 @@ class Block(metaclass=MetaBlock):
 
 		yield self.EndToken
 
-	def GetIterator(self, stopBlock: 'Block') -> Iterable:
+	def GetIterator(self, stopBlock: 'Block') -> BlockIterator:
 		return BlockIterator(self, stopBlock)
 
 	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
