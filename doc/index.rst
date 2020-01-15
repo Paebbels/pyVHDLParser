@@ -51,6 +51,14 @@ The pyVHDLParser Documentation
 
 This is a token-stream based parser for VHDL-2008.
 
+.. important:: **This package requires Python 3.8+**, because it uses some of the latest Python feature for effective code writing:
+
+   * `Pathlib <https://docs.python.org/3/library/pathlib.html>`_ (Python 3.4)
+   * `Type hints <https://docs.python.org/3/library/typing.html#module-typing>`_ (Python 3.5) and for `variables <https://docs.python.org/3/whatsnew/3.6.html#pep-526-syntax-for-variable-annotations>`_ (Python 3.6)
+   * `Data classes <https://docs.python.org/3/library/dataclasses.html>`_ (Python 3.7)
+   * `Assignment expressions <https://docs.python.org/3/whatsnew/3.8.html#assignment-expressions>`_ (Python 3.8)
+
+
 Main Goals
 **********
 
