@@ -1,13 +1,20 @@
 from textwrap import dedent
 from unittest import TestCase
 
+from pyVHDLParser.Blocks.List import GenericList
 from pyVHDLParser.Token import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
 	LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock, BlockParserException
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, BlockParserException, InterfaceObject
+from pyVHDLParser.Blocks.Common import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Structural import Entity
 
 from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+
+
+if __name__ == "__main__":
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
 
 
 def setUpModule():
@@ -15,7 +22,7 @@ def setUpModule():
 
 class SimpleEntity_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -28,7 +35,7 @@ class SimpleEntity_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, To
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
 			(Entity.NameBlock,     "entity e is"),  # entity e is
 			(WhitespaceBlock,      " "),            #
@@ -39,7 +46,7 @@ class SimpleEntity_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, To
 
 class SimpleEntity_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -54,7 +61,7 @@ class SimpleEntity_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTe
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
 			(Entity.NameBlock,     "entity e is"),  # entity e is
 			(WhitespaceBlock,      " "),            #
@@ -66,7 +73,7 @@ class SimpleEntity_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTe
 
 class SimpleEntity_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end e;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -81,7 +88,7 @@ class SimpleEntity_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
 			(Entity.NameBlock,     "entity e is"),  # entity e is
 			(WhitespaceBlock,      " "),            #
@@ -93,7 +100,7 @@ class SimpleEntity_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests
 
 class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity e;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -110,7 +117,7 @@ class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, Li
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -122,7 +129,7 @@ class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, Li
 
 class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity is end entity e;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -137,7 +144,7 @@ class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMi
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity is"),      # entity is
 			(WhitespaceBlock,      " "),              #
@@ -149,7 +156,7 @@ class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMi
 
 class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e end entity e;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -164,7 +171,7 @@ class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixi
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e"),       # entity e
 			(WhitespaceBlock,      " "),              #
@@ -176,7 +183,7 @@ class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixi
 
 class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is entity e;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -191,7 +198,7 @@ class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMix
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -203,7 +210,7 @@ class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMix
 
 class SimpleEntity_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity a;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
 			(WordToken,            "entity"),  # entity
 			(SpaceToken,           " "),       #
@@ -220,7 +227,7 @@ class SimpleEntity_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDat
 			(EndOfDocumentToken,   None)       #
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -235,7 +242,7 @@ class SimpleEntity_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests,
 		entity e is
 		end entity e ;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -254,27 +261,20 @@ class SimpleEntity_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests,
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+	blockStream = ExpectedBlockStream(
+		[ (StartOfDocumentBlock, None),
+			(Entity.NameBlock,     "entity e is"),
+			(LinebreakBlock,       "\\n"),
+			(Entity.EndBlock,      "end entity e ;"),
+			(LinebreakBlock,       "\\n"),
+			(EndOfDocumentBlock,   None)
 		]
 	)
 
 
 class SimpleEntity_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = dedent("""\
-		entity
-		e
-		is
-		end
-		entity
-		e
-		;
-		""")
-	tokenstream = ExpectedTokenStream(
+	code = "entity\ne\nis\nend\nentity\ne\n;\n"
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(LinebreakToken,       "\n"),
@@ -293,12 +293,24 @@ class SimpleEntity_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, T
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+	blockStream = ExpectedBlockStream(
+		[ (StartOfDocumentBlock,  None),
+			(Entity.NameBlock,      "entity"),
+			(LinebreakBlock,        "\\n"),
+#			(IndentationBlock,      "\\t"),
+			(Entity.NameBlock,      "e"),
+			(LinebreakBlock,        "\\n"),
+			(Entity.NameBlock,      "is"),
+			(LinebreakBlock,        "\\n"),
+			(Entity.EndBlock,       "end\\n"),
+#			(LinebreakBlock,        "\\n"),
+			(Entity.EndBlock,       "entity\\n"),
+#			(LinebreakBlock,        "\\n"),
+			(Entity.EndBlock,       "e\\n"),
+#			(LinebreakBlock,        "\\n"),
+			(Entity.EndBlock,       ";"),
+			(LinebreakBlock,        "\\n"),
+			(EndOfDocumentBlock,    None)
 		]
 	)
 
@@ -311,7 +323,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			);
 		end	entity e;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -344,12 +356,21 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+	blockStream = ExpectedBlockStream(
+		[ (StartOfDocumentBlock,    None),
+			(Entity.NameBlock,        "entity e is"),
+			(LinebreakBlock,          "\\n"),
+			(IndentationBlock,        "\\t"),
+			(GenericList.OpenBlock,   "generic ("),
+			(LinebreakBlock,          "\\n"),
+			(IndentationBlock,        "\\t\\t"),
+			(GenericList.GenericListInterfaceConstantBlock, "G : integer"),
+			(LinebreakBlock,          "\\n"),
+			(GenericList.GenericListInterfaceConstantBlock, "\\t"),
+			(GenericList.CloseBlock,  ");"),
+			(LinebreakBlock,          "\\n"),
+			(Entity.EndBlock,         "end entity e;"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
 
@@ -362,7 +383,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 			);
 		end	entity e;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -393,7 +414,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -411,7 +432,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 			);
 		end	entity e;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -442,7 +463,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -460,7 +481,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(Te
 			;
 		end	entity e;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -492,7 +513,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(Te
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #
@@ -510,7 +531,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, 
 			;
 		end	entity e;
 		""")
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
@@ -543,7 +564,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, 
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
 			(Entity.NameBlock,     "entity e is"),    # entity e is
 			(WhitespaceBlock,      " "),              #

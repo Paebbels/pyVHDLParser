@@ -4,10 +4,16 @@ from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, Line
 from tests.unit import ExpectedDataMixin, ExpectedTokenStream, TokenSequence
 
 
+if __name__ == "__main__":
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
+
+
 class Sequence_1(TestCase, ExpectedDataMixin, TokenSequence):
 #	code = "a bbb 1 23 3.4 45.6 5.67 67.89 .7 .89 ( ) < > = . , ; & / + - * << >> /= <= >= => := ** ?= ?/= ?< ?> ?<= ?>= <>"
 	code = "a bbb 1 23 3.4 45.6 5.67 67.89 .7 .89 ( ) < > = . , ; & / + - * << >> /= <= >= => := ** ?= ?/= ?< ?> <>"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,           "a"),
 			(SpaceToken,          " "),
@@ -92,7 +98,7 @@ class Sequence_1(TestCase, ExpectedDataMixin, TokenSequence):
 
 class Sequence_2(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """abc   \def\ \t 'a' "abc" /* help */ -- foo\n"""
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,               "abc"),
 			(SpaceToken,              "   "),
@@ -111,7 +117,7 @@ class Sequence_2(TestCase, ExpectedDataMixin, TokenSequence):
 
 class Sequence_3(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """abc\n123\n456.789\n'Z'\n"Hallo"\n\\foo\\\n-- comment\n/* comment */\n;\n  \nabc\r\n123\r\n456.789\r\n'Z'\r\n"Hallo"\r\n\\foo\\\r\n-- comment\r\n/* comment */\r\n;\r\n  \r\n\tabc """
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,               "abc"),
 			(LinebreakToken,          None),
@@ -161,7 +167,7 @@ class Sequence_3(TestCase, ExpectedDataMixin, TokenSequence):
 
 class Sequence_4(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """abc-- comment\n123-- comment\n456.789-- comment\n'Z'-- comment\n"Hallo"-- comment\n\\foo\\-- comment\n-- comment\n/* comment */-- comment\n;-- comment\n  -- comment\n"""
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken,    None),
 			(WordToken,               "abc"),
 			(SingleLineCommentToken,  "-- comment\n"),
@@ -188,7 +194,7 @@ class Sequence_4(TestCase, ExpectedDataMixin, TokenSequence):
 
 class Sequence_5(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """abc/* comment */123/* comment */456.789/* comment */'Z'/* comment */"Hallo"/* comment */\\foo\\/* comment */-- comment\n/* comment *//* comment */;/* comment */  /* comment */"""
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken,   None),
 			(WordToken,              "abc"),
 			(MultiLineCommentToken,  "/* comment */"),

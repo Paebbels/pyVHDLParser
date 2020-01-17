@@ -1,6 +1,5 @@
 from dataclasses                import dataclass
 from typing                     import List, Tuple, Any
-from unittest                   import TestCase
 
 from flags                      import Flags
 from pyMetaClasses              import Singleton
@@ -10,7 +9,7 @@ from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken,
 from pyVHDLParser.Token.Parser  import Tokenizer, TokenizerException
 from pyVHDLParser.Blocks        import StartOfDocumentBlock, EndOfDocumentBlock, TokenToBlockParser, MetaBlock, Block, BlockParserException
 
-
+# XXX: move to pyVHDLParser.Blocks; call it from frontend
 class Initializer(metaclass=Singleton):
 	def __init__(self):
 		print("Init all blocks.")
@@ -63,10 +62,17 @@ class ExpectedBlockStream:
 
 
 class ExpectedDataMixin:
-	name: str = None
-	code: str = None
-	tokenstream: ExpectedTokenStream = None
-	blockstream: ExpectedBlockStream = None
+	name:         str =                 None
+	code:         str =                 None
+	tokenStream:  ExpectedTokenStream = None
+	blockStream:  ExpectedBlockStream = None
+
+	@classmethod
+	def setUpClass(cls):
+		print("Starting testcases in {}.".format(cls.__qualname__))
+
+	def setUp(self):
+		print("Starting another test.")
 
 
 
@@ -76,7 +82,7 @@ class TokenSequence(ITestcase): #, ExpectedDataMixin):
 		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
 
 		tokenIterator = iter(tokenStream)
-		listIterator = iter(self.tokenstream.tokens)
+		listIterator = iter(self.tokenStream.tokens)
 
 		try:
 			while True:
@@ -117,13 +123,13 @@ class TokenLinking(ITestcase): #, ExpectedDataMixin):
 		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
 
 		tokenIterator = iter(tokenStream)
-		startToken = next(tokenIterator)
+		startToken =    next(tokenIterator)
 
 		self.assertIsInstance(startToken, StartOfDocumentToken, msg="First token is not StartOfDocumentToken: {token}".format(token=startToken))
 		self.assertIsNone(startToken.PreviousToken, msg="First token has no open start.")
 
 		lastToken: Token = startToken
-		endToken: Token = None
+		endToken:  Token = None
 
 		for token in tokenIterator:
 			if isinstance(token, EndOfDocumentToken):
@@ -150,7 +156,7 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 		blockStream = TokenToBlockParser.Transform(tokenStream)
 
 		blockIterator = iter(blockStream)
-		listIterator =  iter(self.blockstream.blocks)
+		listIterator =  iter(self.blockStream.blocks)
 
 		try:
 			while True:

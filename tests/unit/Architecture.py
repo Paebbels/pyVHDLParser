@@ -7,13 +7,19 @@ from unittest   import TestCase
 from tests.unit import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
 
+if __name__ == "__main__":
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
+
+
 def setUpModule():
 	Initializer()
 
 
 class SimpleArchitecture_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture a of e is begin end;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(SpaceToken,           " "),
@@ -32,7 +38,7 @@ class SimpleArchitecture_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTes
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
 			(WhitespaceBlock,         " "),
@@ -46,7 +52,7 @@ class SimpleArchitecture_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTes
 
 class SimpleArchitecture_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture a of e is begin end architecture;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(SpaceToken,           " "),
@@ -67,7 +73,7 @@ class SimpleArchitecture_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, Lin
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
 			(WhitespaceBlock,         " "),
@@ -80,7 +86,7 @@ class SimpleArchitecture_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, Lin
 
 class SimpleArchitecture_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture a of e is begin end a;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(SpaceToken,           " "),
@@ -101,7 +107,7 @@ class SimpleArchitecture_OneLine_EndWithName(TestCase, ExpectedDataMixin, Linkin
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
 			(WhitespaceBlock,         " "),
@@ -114,7 +120,7 @@ class SimpleArchitecture_OneLine_EndWithName(TestCase, ExpectedDataMixin, Linkin
 
 class SimpleArchitecture_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture a of e is begin end architecture a;"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(SpaceToken,           " "),
@@ -137,7 +143,7 @@ class SimpleArchitecture_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMix
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
 			(WhitespaceBlock,         " "),
@@ -150,7 +156,7 @@ class SimpleArchitecture_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMix
 
 class SimpleArchitecture_MultiLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture\na\nof\ne\nis\nbegin\nend\narchitecture\na\n;\n"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
 			(LinebreakToken,       None),
@@ -175,7 +181,7 @@ class SimpleArchitecture_MultiLine_EndWithKeywordAndName(TestCase, ExpectedDataM
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture"),
 			(LinebreakBlock,          "\\n"),
@@ -204,7 +210,7 @@ class SimpleArchitecture_MultiLine_EndWithKeywordAndName(TestCase, ExpectedDataM
 
 class SimpleArchitecture_MultiLineIndented_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "\tarchitecture\n\ta\n\tof\n\te\n\tis\n\tbegin\n\tend\n\tarchitecture\n\ta\n\t;\n"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "architecture"),
@@ -239,7 +245,7 @@ class SimpleArchitecture_MultiLineIndented_EndWithKeywordAndName(TestCase, Expec
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(IndentationBlock,        "\\t"),
 			(Architecture.NameBlock,  "architecture"),
@@ -271,7 +277,7 @@ class SimpleArchitecture_MultiLineIndented_EndWithKeywordAndName(TestCase, Expec
 
 class SimpleArchitecture_MultilineComments_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture/* comment */a/* comment */of/* comment */e/* comment */is/* comment */begin/* comment */end/* comment */architecture/* comment */a/* comment */;/* comment */"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,             "architecture"),
 			(MultiLineCommentToken, "/* comment */"),
@@ -296,7 +302,7 @@ class SimpleArchitecture_MultilineComments_EndWithKeywordAndName(TestCase, Expec
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture"),
 			(CommentBlock,            "/* comment */"),
@@ -324,7 +330,7 @@ class SimpleArchitecture_MultilineComments_EndWithKeywordAndName(TestCase, Expec
 
 class SimpleArchitecture_SingleLineComments_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture-- comment\na-- comment\nof-- comment\ne-- comment\nis-- comment\nbegin-- comment\nend-- comment\narchitecture-- comment\na-- comment\n;-- comment\n"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,               "architecture"),
 			(SingleLineCommentToken,  "-- comment\n"),
@@ -349,7 +355,7 @@ class SimpleArchitecture_SingleLineComments_EndWithKeywordAndName(TestCase, Expe
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture"),
 			(CommentBlock,            "-- comment\\n"),
@@ -377,7 +383,7 @@ class SimpleArchitecture_SingleLineComments_EndWithKeywordAndName(TestCase, Expe
 
 class SimpleArchitecture_SpacePlusSingleLineComments_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "architecture -- comment\na -- comment\nof -- comment\ne -- comment\nis -- comment\nbegin -- comment\nend -- comment\narchitecture -- comment\na -- comment\n; -- comment\n"
-	tokenstream = ExpectedTokenStream(
+	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,               "architecture"),
 			(SpaceToken,              " "),
@@ -412,7 +418,7 @@ class SimpleArchitecture_SpacePlusSingleLineComments_EndWithKeywordAndName(TestC
 			(EndOfDocumentToken,   None)
 		]
 	)
-	blockstream = ExpectedBlockStream(
+	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture "),
 			(CommentBlock,            "-- comment\\n"),

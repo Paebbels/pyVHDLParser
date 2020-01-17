@@ -85,18 +85,20 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 
 @export
 class TokenIterator:
-	startToken:   'Token'
-	currentToken: 'Token'
-	stopToken:    'Token'
+	startToken:         'Token'
+	currentToken:       'Token'
+	stopToken:          'Token'
+	inclusiveStopToken: bool
 
 	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
 
-	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, stopToken: 'Token'=None):
-		self.startToken =   startToken
-		self.currentToken = startToken if inclusiveStartToken else startToken.NextToken
-		self.stopToken =    stopToken
+	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
+		self.startToken =         startToken
+		self.currentToken =       startToken if inclusiveStartToken else startToken.NextToken
+		self.stopToken =          stopToken
+		self.inclusiveStopToken = inclusiveStopToken
 
-		self.state =        0
+		self.state =              0
 
 	def __iter__(self) -> 'TokenIterator':
 		return self
@@ -108,11 +110,17 @@ class TokenIterator:
 
 		token = self.currentToken
 		if token is self.stopToken:
-			self.currentToken = None
-			self.state =        1
+			if not self.inclusiveStopToken:
+				raise StopIteration(1)
+			else:
+				self.currentToken = None
+				self.state = 1
 		elif isinstance(self.currentToken, EndOfToken):
-			self.currentToken = None
-			self.state =        2
+			if not self.inclusiveStopToken:
+				raise StopIteration(2)
+			else:
+				self.currentToken = None
+				self.state = 2
 		else:
 			self.currentToken = token.NextToken
 			if (self.currentToken is None):
@@ -129,12 +137,13 @@ class TokenReverseIterator:
 
 	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
 
-	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, stopToken: 'Token'=None):
-		self.startToken =   startToken
-		self.currentToken = startToken if inclusiveStartToken else startToken.PreviousToken
-		self.stopToken =    stopToken
+	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
+		self.startToken =         startToken
+		self.currentToken =       startToken if inclusiveStartToken else startToken.PreviousToken
+		self.stopToken =          stopToken
+		self.inclusiveStopToken = inclusiveStopToken
 
-		self.state =        0
+		self.state =              0
 
 	def __iter__(self) -> 'TokenReverseIterator':
 		return self
@@ -146,11 +155,17 @@ class TokenReverseIterator:
 
 		token = self.currentToken
 		if token is self.stopToken:
-			self.currentToken = None
-			self.state =        1
+			self.state = 1
+			if not self.inclusiveStopToken:
+				raise StopIteration(self.state)
+			else:
+				self.currentToken = None
 		elif isinstance(self.currentToken, EndOfToken):
-			self.currentToken = None
-			self.state =        2
+			self.state = 2
+			if not self.inclusiveStopToken:
+				raise StopIteration(self.state)
+			else:
+				self.currentToken = None
 		else:
 			self.currentToken = token.PreviousToken
 			if (self.currentToken is None):
@@ -187,11 +202,11 @@ class Token:
 	def __len__(self) -> int:
 		return self.End.Absolute - self.Start.Absolute + 1
 
-	def GetIterator(self, stopToken:'Token'=None) -> Iterator['Token']:
-		return TokenIterator(self, stopToken)
+	def GetIterator(self, inclusiveStartToken:bool=False, inclusiveStopToken:bool=True, stopToken:'Token'=None) -> Iterator['Token']:
+		return TokenIterator(self, inclusiveStartToken=inclusiveStartToken, inclusiveStopToken=inclusiveStopToken, stopToken=stopToken)
 
-	def GetReverseIterator(self, stopToken:'Token'=None) -> Iterator['Token']:
-		return TokenReverseIterator(self, stopToken)
+	def GetReverseIterator(self, inclusiveStartToken:bool=False, inclusiveStopToken:bool=True, stopToken:'Token'=None) -> Iterator['Token']:
+		return TokenReverseIterator(self, inclusiveStartToken=inclusiveStartToken, inclusiveStopToken=inclusiveStopToken, stopToken=stopToken)
 
 	@property
 	def PreviousToken(self) -> 'Token':
@@ -258,7 +273,7 @@ class StartOfToken(Token):
 		"""Initializes a StartOfToken object."""
 
 		self._previousToken = None
-		self._nextToken =     None
+		self.NextToken =      None
 		self.Start =          SourceCodePosition(1, 1, 1)
 		self.End =            None
 
@@ -278,12 +293,7 @@ class EndOfToken(Token):
 
 	def __init__(self, previousToken: Token, end: SourceCodePosition):
 		"""Initializes a EndOfToken object."""
-
-		previousToken.NextToken = self
-		self._previousToken =     previousToken
-		self._nextToken =         None
-		self.Start =              None
-		self.End =                end
+		super().__init__(previousToken, start=end, end=end)
 
 	def __len__(self) -> int:
 		"""Returns always 0."""

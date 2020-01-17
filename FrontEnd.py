@@ -211,22 +211,38 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		from pyVHDLParser.Token.Parser import Tokenizer
 
 
-		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
+		tokenStream =   Tokenizer.GetVHDLTokenizer(content)
+		tokenIterator = iter(tokenStream)
+		firstToken =    next(tokenIterator)
 
 		try:
-			for vhdlToken in vhdlTokenStream:
-				if isinstance(vhdlToken, (LinebreakToken, SpaceToken, IndentationToken)):
-					print("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
-				elif isinstance(vhdlToken, CommentToken):
-					print("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
-				elif isinstance(vhdlToken, CharacterToken):
-					print("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
-				elif isinstance(vhdlToken, WordToken):
-					print("{WHITE}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
-				elif isinstance(vhdlToken, (StartOfDocumentToken, EndOfDocumentToken)):
-					print("{YELLOW}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
+			while next(tokenIterator):
+				pass
+		except StopIteration:
+			pass
+
+		if isinstance(firstToken, StartOfDocumentToken):
+			print("{YELLOW}{block}{NOCOLOR}".format(block=firstToken, **self.Foreground))
+
+		try:
+			tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
+			for token in tokenIterator:
+				if isinstance(token, (LinebreakToken, SpaceToken, IndentationToken)):
+					print("{DARK_GRAY}{block}{NOCOLOR}".format(block=token, **self.Foreground))
+				elif isinstance(token, CommentToken):
+					print("{DARK_GREEN}{block}{NOCOLOR}".format(block=token, **self.Foreground))
+				elif isinstance(token, CharacterToken):
+					print("{DARK_CYAN}{block}{NOCOLOR}".format(block=token, **self.Foreground))
+				elif isinstance(token, WordToken):
+					print("{WHITE}{block}{NOCOLOR}".format(block=token, **self.Foreground))
 				else:
-					print("{RED}{block}{NOCOLOR}".format(block=vhdlToken, **self.Foreground))
+					print("{RED}{block}{NOCOLOR}".format(block=token, **self.Foreground))
+
+			tokenIterator = token.GetIterator()
+			lastToken = next(tokenIterator)
+			if isinstance(lastToken, EndOfDocumentToken):
+				print("{YELLOW}{block}{NOCOLOR}".format(block=lastToken, **self.Foreground))
+
 		except ParserException as ex:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		except NotImplementedError as ex:
