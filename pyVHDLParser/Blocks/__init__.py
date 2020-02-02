@@ -139,7 +139,17 @@ class ParserState:
 
 	def __str__(self) -> str:
 		"""Returns the current state (function name) as str."""
-		return self.NextState.__func__.__qualname__
+		return "{state}".format(state=self.NextState.__func__.__qualname__)
+
+	def __repr__(self) -> str:
+		"""Returns the current state (full) as str."""
+		return "{state}\n  token:   {token}\n  Marker: {marker}\n  NewToken: {newToken}\n  newBlock: {newBlock}".format(
+			state=self.NextState.__func__.__qualname__,
+			token=self.Token,
+			marker=self.TokenMarker,
+			newToken=self.NewToken,
+			newBlock=self.NewBlock,
+		)
 
 	def Pop(self, n=1, tokenMarker=None):
 		top = None
@@ -341,26 +351,27 @@ class Block(metaclass=MetaBlock):
 	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
 		return BlockReverseIterator(self, stopBlock=stopBlock)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		buffer = ""
 		for token in self:
 			if isinstance(token, CharacterToken):
 				buffer += repr(token)
 			else:
-				buffer += token.Value
+				try:
+					buffer += token.Value
+				except AttributeError:
+					pass
 
-		buffer = buffer.replace("\t", "\\t")
-		buffer = buffer.replace("\n", "\\n")
 		return buffer
 
-	def __str__(self) -> str:
+	def __repr__(self) -> str:
 		return "[{blockName: <50s} {stream: <62s} at {start!s} .. {end!s}]".format(
 			blockName="{module}.{classname}{multiparted}".format(
 				module=self.__module__.rpartition(".")[2],
 				classname=self.__class__.__name__,
 				multiparted=("*" if self.MultiPart else "")
 			),
-			stream="'" + repr(self) + "'",
+			stream="'" + self.__str__() + "'",
 			start=self.StartToken.Start,
 			end=self.EndToken.End
 		)
@@ -423,10 +434,10 @@ class StartOfBlock(Block):
 	def __len__(self) -> int:
 		return 0
 
-	def __str__(self) -> str:
+	def __repr__(self) -> str:
 		return "[{name}]".format(
-				name=self.__class__.__name__
-			)
+			name=self.__class__.__name__
+		)
 
 
 @export
@@ -447,10 +458,10 @@ class EndOfBlock(Block):
 	def __len__(self) -> int:
 		return 0
 
-	def __str__(self) -> str:
+	def __repr__(self) -> str:
 		return "[{name}]".format(
-				name=self.__class__.__name__
-			)
+			name=self.__class__.__name__
+		)
 
 
 @export

@@ -29,17 +29,19 @@ from pathlib        import Path
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
 
-from pyAttributes                     import Attribute
 from pyExceptions                     import ExceptionBase
-from pyAttributes.ArgParseAttributes  import ArgParseMixin, SwitchArgumentAttribute
+from pyAttributes.ArgParseAttributes  import ArgParseMixin
 from pyAttributes.ArgParseAttributes  import CommandAttribute, ArgumentAttribute, DefaultAttribute
 from pyAttributes.ArgParseAttributes  import CommonSwitchArgumentAttribute
 from pyMetaClasses                    import Singleton
 from pyTerminalUI                     import LineTerminal, Severity
 
-import pyVHDLParser
 from pyVHDLParser.Base                import ParserException
 from pyVHDLParser.Blocks              import MetaBlock
+
+from FrontendHandler                  import FilenameAttribute, WithTokensAttribute, WithBlocksAttribute
+from FrontendHandler.BlockStream      import BlockStreamHandlers
+from FrontendHandler.TokenStream      import TokenStreamHandlers
 
 
 __author__ =      "Patrick Lehmann"
@@ -57,6 +59,7 @@ __api__ = [
 __all__ = __api__
 
 
+
 def printImportError(ex):
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
@@ -66,23 +69,7 @@ def printImportError(ex):
 	exit(1)
 
 
-class FilenameAttribute(Attribute):
-	def __call__(self, func):
-		self._AppendAttribute(func, ArgumentAttribute(metavar="filename", dest="Filename", type=str, help="The filename to parse."))
-		return func
-
-class WithTokensAttribute(Attribute):
-	def __call__(self, func):
-		self._AppendAttribute(func, SwitchArgumentAttribute("-T", "--with-tokens",  dest="withTokens",    help="Display tokens in between."))
-		return func
-
-class WithBlocksAttribute(Attribute):
-	def __call__(self, func):
-		self._AppendAttribute(func, SwitchArgumentAttribute("-B", "--with-blocks",  dest="withBlocks",    help="Display blocks in between."))
-		return func
-
-
-class VHDLParser(LineTerminal, ArgParseMixin):
+class VHDLParser(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers):
 	HeadLine =                "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)
@@ -165,7 +152,10 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		elif (args.Command == "help"):
 			print("This is a recursion ...")
 		else:
-			self.SubParsers[args.Command].print_help()
+			try:
+				self.SubParsers[args.Command].print_help()
+			except KeyError:
+				print("Command {0} is unknown.".format(args.Command))
 		self.exit()
 
 	# ----------------------------------------------------------------------------
@@ -188,343 +178,18 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 		self.WriteNormal("Version:    {0}".format(__version__))
 		self.exit()
 
-	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "tokenize" command
-	# ----------------------------------------------------------------------------
-	@CommandAttribute("tokenize", help="Create a stream of token objects.", description=dedent("""\
-		Create a stream of token objects.
-		"""))
-	@FilenameAttribute()
-	def HandleTokenize(self, args):
-		self.PrintHeadline()
-
-		file =         Path(args.Filename)
-
-		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
-
-		with file.open('r') as fileHandle:
-			content = fileHandle.read()
-
-		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-		from pyVHDLParser.Token.Parser import Tokenizer
-
-
-		tokenStream =   Tokenizer.GetVHDLTokenizer(content)
-		tokenIterator = iter(tokenStream)
-		firstToken =    next(tokenIterator)
-
-		try:
-			while next(tokenIterator):
-				pass
-		except StopIteration:
-			pass
-
-		if isinstance(firstToken, StartOfDocumentToken):
-			print("{YELLOW}{block}{NOCOLOR}".format(block=firstToken, **self.Foreground))
-
-		try:
-			tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
-			for token in tokenIterator:
-				if isinstance(token, (LinebreakToken, SpaceToken, IndentationToken)):
-					print("{DARK_GRAY}{block}{NOCOLOR}".format(block=token, **self.Foreground))
-				elif isinstance(token, CommentToken):
-					print("{DARK_GREEN}{block}{NOCOLOR}".format(block=token, **self.Foreground))
-				elif isinstance(token, CharacterToken):
-					print("{DARK_CYAN}{block}{NOCOLOR}".format(block=token, **self.Foreground))
-				elif isinstance(token, WordToken):
-					print("{WHITE}{block}{NOCOLOR}".format(block=token, **self.Foreground))
-				else:
-					print("{RED}{block}{NOCOLOR}".format(block=token, **self.Foreground))
-
-			tokenIterator = token.GetIterator()
-			lastToken = next(tokenIterator)
-			if isinstance(lastToken, EndOfDocumentToken):
-				print("{YELLOW}{block}{NOCOLOR}".format(block=lastToken, **self.Foreground))
-
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-
-		self.exit()
-
-	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "check-tokenize" command
-	# ----------------------------------------------------------------------------
-	@CommandAttribute("check-tokenize", help="Check a stream of token objects.", description=dedent("""\
-		Generates and checks a stream of token objects for correct double-pointers.
-		"""))
-	@FilenameAttribute()
-	def HandleCheckTokenize(self, args):
-		self.PrintHeadline()
-
-		file =         Path(args.Filename)
-
-		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
-
-		with file.open('r') as fileHandle:
-			content = fileHandle.read()
-
-		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
-		from pyVHDLParser.Token.Parser import Tokenizer
-
-
-		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-
-		try:
-			tokenIterator = iter(vhdlTokenStream)
-			firstToken = next(tokenIterator)
-
-			try:
-				while next(tokenIterator):
-					pass
-			except StopIteration:
-				pass
-
-			if (not isinstance(firstToken, StartOfDocumentToken)):
-				print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.Foreground))
-			if (firstToken.NextToken is None):
-				print("{RED}First token has an open end.{NOCOLOR}".format(**self.Foreground))
-
-			tokenIterator = firstToken.GetIterator()
-			lastToken =     None
-			vhdlToken =     firstToken
-
-			for newToken in tokenIterator:
-				if (vhdlToken.NextToken is None):
-					print("{RED}Token has an open end.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Token:  {token}{NOCOLOR}".format(token=vhdlToken, **self.Foreground))
-				elif ((vhdlToken is not firstToken) and (lastToken.NextToken is not vhdlToken)):
-					print("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=vhdlToken, **self.Foreground))
-					print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=vhdlToken.PreviousToken, **self.Foreground))
-					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-					print("{RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-					if (lastToken.NextToken is None):
-						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
-					else:
-						print(
-							"{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken.NextToken, **self.Foreground))
-					if (vhdlToken.PreviousToken is None):
-						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
-					else:
-						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=vhdlToken.PreviousToken.PreviousToken,
-						                                                    **self.Foreground))
-				elif (vhdlToken.PreviousToken is not lastToken):
-					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=vhdlToken, **self.Foreground))
-					print("{RED}    Prev: {token}{NOCOLOR}".format(token=vhdlToken.PreviousToken, **self.Foreground))
-					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-					print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-
-				lastToken = vhdlToken
-				vhdlToken = newToken
-
-				if isinstance(newToken, EndOfDocumentToken):
-					print("{GREEN}No double-linking errors in token stream found.{NOCOLOR}".format(**self.Foreground))
-					break
-			else:
-				print("{RED}No EndOfDocumentToken found.{NOCOLOR}".format(**self.Foreground))
-
-			if (not isinstance(vhdlToken, EndOfDocumentToken)):
-				print(
-					"{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-			elif (vhdlToken.PreviousToken is not lastToken):
-				print("{RED}EndOfDocumentToken is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-				print("{RED}  Curr:   {token}{NOCOLOR}".format(token=vhdlToken, **self.Foreground))
-				print("{RED}    Prev: {token}{NOCOLOR}".format(token=vhdlToken.PreviousToken, **self.Foreground))
-				print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-				print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-
-		self.exit()
-
-	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "blockstreaming" command
-	# ----------------------------------------------------------------------------
-	@CommandAttribute("blockstreaming", help="Create a stream of block objects.", description=dedent("""\
-		Create a stream of block objects.
-		"""))
-	@WithTokensAttribute()
-	@FilenameAttribute()
-	def HandleBlockStreaming(self, args):
-		self.PrintHeadline()
-
-		file =         Path(args.Filename)
-
-		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
-
-		with file.open('r') as fileHandle:
-			content = fileHandle.read()
-
-		from pyVHDLParser.Token.Parser            import Tokenizer
-		from pyVHDLParser.Blocks                  import TokenToBlockParser
-		from pyVHDLParser.Base                    import ParserException
-		from pyVHDLParser.Blocks                  import CommentBlock
-		from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
-		from pyVHDLParser.Blocks.List             import GenericList, PortList
-		from pyVHDLParser.Blocks.InterfaceObject  import InterfaceConstantBlock, InterfaceSignalBlock
-		from pyVHDLParser.Blocks.Structural       import Entity
-
-		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
-
-		try:
-			for vhdlBlock in vhdlBlockStream:
-				if isinstance(vhdlBlock, (LinebreakBlock, IndentationBlock)):
-					self.WriteNormal("{DARK_GRAY}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, CommentBlock):
-					self.WriteNormal("{DARK_GREEN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, (Entity.NameBlock, Entity.NameBlock, Entity.EndBlock)):
-					self.WriteNormal("{DARK_RED}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, (GenericList.OpenBlock, GenericList.DelimiterBlock, GenericList.CloseBlock)):
-					self.WriteNormal("{DARK_BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, (PortList.OpenBlock, PortList.DelimiterBlock, PortList.CloseBlock)):
-					self.WriteNormal("{DARK_CYAN}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				elif isinstance(vhdlBlock, (InterfaceConstantBlock, InterfaceSignalBlock)):
-					self.WriteNormal("{BLUE}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-				else:
-					self.WriteNormal("{YELLOW}{block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-
-				for token in vhdlBlock:
-					self.WriteVerbose(str(token))
-
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-
-		self.exit()
-
-	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "check-blockstreaming" command
-	# ----------------------------------------------------------------------------
-	@CommandAttribute("check-blockstreaming", help="Check a stream of block objects.", description=dedent("""\
-		Check a stream of block objects.
-		"""))
-	@WithTokensAttribute()
-	@FilenameAttribute()
-	def HandleCheckBlockStreaming(self, args):
-		self.PrintHeadline()
-
-		file =         Path(args.Filename)
-
-		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
-
-		with file.open('r') as fileHandle:
-			content = fileHandle.read()
-
-		from pyVHDLParser.Base         import ParserException
-		from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, Token
-		from pyVHDLParser.Token.Parser import Tokenizer
-		from pyVHDLParser.Blocks       import Block, StartOfDocumentBlock, EndOfDocumentBlock
-		from pyVHDLParser.Blocks       import TokenToBlockParser
-
-
-		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
-
-		try:
-			blockIterator = iter(vhdlBlockStream)
-			firstBlock = next(blockIterator)
-			self.WriteVerbose(str(firstBlock))
-
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):
-				self.WriteError("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
-				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
-			startToken = firstBlock.StartToken
-			self.WriteDebug(str(startToken))
-			if (not isinstance(startToken, StartOfDocumentToken)):
-				self.WriteError("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
-				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
-
-			lastBlock: Block = firstBlock
-			endBlock:  Block = None
-			lastToken: Token = startToken
-
-			for vhdlBlock in blockIterator:
-				self.WriteNormal(str(vhdlBlock))
-
-				if isinstance(vhdlBlock, EndOfDocumentBlock):
-					self.WriteDebug("{GREEN}Found EndOfDocumentBlock...{NOCOLOR}".format(**self.Foreground))
-					endBlock = vhdlBlock
-					break
-
-				tokenIterator = iter(vhdlBlock)
-
-				for token in tokenIterator:
-					self.WriteVerbose(str(token))
-
-#					if (token.NextToken is None):
-#						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))
-#						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
-#					el
-					if (lastToken.NextToken is not token):
-						self.WriteError("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
-						self.WriteError("{YELLOW}  Last:   {token!s}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-						self.WriteError("{YELLOW}    Next: {token!s}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-						self.WriteError("")
-						self.WriteError("{YELLOW}  Cur.:   {token!s}{NOCOLOR}".format(token=token, **self.Foreground))
-						self.WriteError("")
-
-					if (token.PreviousToken is None):
-						self.WriteError("{RED}Token has an open end (PreviousToken).{NOCOLOR}".format(**self.Foreground))
-						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
-					elif (token.PreviousToken is not lastToken):
-						print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-						# print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
-						print("{YELLOW}  Cur.:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
-						print("{YELLOW}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
-						self.WriteError("")
-						print("{YELLOW}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-						print("{YELLOW}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-						self.WriteError("")
-
-					lastToken = token
-
-				lastBlock = vhdlBlock
-			else:
-				self.WriteError("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**self.Foreground))
-
-			if (not isinstance(endBlock, EndOfDocumentBlock)):
-				self.WriteError("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=endBlock, **self.Foreground))
-				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
-			elif (not isinstance(endBlock.EndToken, EndOfDocumentToken)):
-				self.WriteError("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
-				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
-
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-
-		self.WriteNormal("")
-		self.WriteNormal("{CYAN}All checks are done.{NOCOLOR}".format(**self.Foreground))
-		self.exit()
 
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "groupstreaming" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("groupstreaming", help="Create a stream of group objects.", description=dedent("""\
-		Create a stream of group objects.
-		"""))
+	@CommandAttribute("groupstreaming", help="Create a stream of group objects.", description="Create a stream of group objects.")
 	@WithTokensAttribute()
 	@WithBlocksAttribute()
 	@FilenameAttribute()
 	def HandleGroupStreaming(self, args):
 		self.PrintHeadline()
 
-		file =         Path(args.Filename)
+		file = Path(args.Filename)
 
 		if (not file.exists()):
 			print("File '{0!s}' does not exist.".format(file))
@@ -576,9 +241,7 @@ class VHDLParser(LineTerminal, ArgParseMixin):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "DOM" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("CodeDOM", help="Create a CodeDOM.", description=dedent("""\
-		Create a code document object model (CodeDOM).
-		"""))
+	@CommandAttribute("CodeDOM", help="Create a CodeDOM.", description="Create a code document object model (CodeDOM).")
 	@FilenameAttribute()
 	def HandleCodeDOM(self, args):
 		self.PrintHeadline()
@@ -652,5 +315,5 @@ def main(): # mccabe:disable=MC0001
 
 # entry point
 if __name__ == "__main__":
-	LineTerminal.versionCheck((3,5,0))
+	LineTerminal.versionCheck((3,8,0))
 	main()

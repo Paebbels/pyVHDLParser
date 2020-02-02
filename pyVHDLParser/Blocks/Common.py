@@ -43,7 +43,7 @@ class WhitespaceBlock(SkipableBlock):
 	def __init__(self, previousBlock, startToken):
 		super().__init__(previousBlock, startToken, startToken)
 
-	def __str__(self):
+	def __repr__(self):
 		return "[{blockName: <50s}  {stream} at {start!s} .. {end!s}]".format(
 			blockName=type(self).__name__,
 			stream=" "*61,
@@ -80,7 +80,7 @@ class EmptyLineBlock(LinebreakBlock):
 class IndentationBlock(WhitespaceBlock):
 	__TABSIZE__ = 2
 
-	def __str__(self):
+	def __repr__(self):
 		length = len(self.StartToken.Value)
 		actual = sum([(self.__TABSIZE__ if (c == "\t") else 1) for c in self.StartToken.Value])
 
