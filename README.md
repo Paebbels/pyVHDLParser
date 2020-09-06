@@ -1,16 +1,19 @@
-[![License](https://img.shields.io/badge/Apache%20License,%202.0-bd0000.svg?longCache=true&label=code%20license&logo=Apache&logoColor=D22128)](LICENSE.md)
+[![Sourcecode on GitHub](https://img.shields.io/badge/Paebbels-pyVHDLParser-323131.svg?logo=github&longCache=true)](https://github.com/Paebbels/pyVHDLParser)
+[![License](https://img.shields.io/badge/code%20license-Apache%20License%2C%202.0-lightgrey?logo=GitHub)](LICENSE.md)
 [![GitHub tag (latest SemVer incl. pre-release)](https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/tags)
 [![GitHub release (latest SemVer incl. including pre-releases)](https://img.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyVHDLParser/releases/latest)
-[![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub&)](https://github.com/Paebbels/pyVHDLParser/releases)
-[![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser)
-[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyVHDLParser)](https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master)  
-[![Travis](https://img.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis)](https://travis-ci.com/Paebbels/pyVHDLParser)
+[![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub&)](https://github.com/Paebbels/pyVHDLParser/releases)  
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Paebbels/pyVHDLParser/Test,%20Coverage%20and%20Release?label=Workflow&logo=GitHub)](https://github.com/Paebbels/pyVHDLParser/actions?query=workflow%3A%22Test%2C+Coverage+and+Release%22)
 [![PyPI](https://img.shields.io/pypi/v/pyVHDLParser?logo=PyPI)](https://pypi.org/project/pyVHDLParser/)
 ![PyPI - Status](https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser)](https://github.com/Paebbels/pyVHDLParser/network/dependents)  
-[![Codacy Badge](https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
-[![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank)
+[![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser)
+[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyVHDLParser)](https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master)  
+[![Codacy - Quality](https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
+[![Codacy - Coverage](https://img.shields.io/codacy/coverage/1155f244b6f54a3a95abdaa80d6771f8?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
+[![Codecov - Branch Coverage](https://img.shields.io/codecov/c/github/Paebbels/pyVHDLParser?logo=Codecov)](https://codecov.io/gh/Paebbels/pyVHDLParser)
+[![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank)  
 [![Read the Docs](https://img.shields.io/readthedocs/pyvhdlparser)](https://pyVHDLParser.readthedocs.io/en/latest/)
 
 # pyVHDLParser
@@ -490,6 +493,13 @@ And this is the filtered and fused result stream:
  [41]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1_Fused.png
 
 
-#### License
+## License
 
-Licensed under [Apache License 2.0](LICENSE.md).
+This Python package (source code) is licensed under [Apache License 2.0](LICENSE.md).
+
+<!-- The accompanying documentation is licensed under Creative Commons - Attribution-4.0 (CC-BY 4.0). -->
+
+
+-------------------------
+
+SPDX-License-Identifier: Apache-2.0

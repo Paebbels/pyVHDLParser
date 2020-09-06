@@ -74,10 +74,6 @@ setuptools.setup(
 		"License :: OSI Approved :: Apache Software License",
 		"Operating System :: OS Independent",
 		"Programming Language :: Python :: 3 :: Only",
-#		"Programming Language :: Python :: 3.4",
-#		"Programming Language :: Python :: 3.5",
-#		"Programming Language :: Python :: 3.6",
-#		"Programming Language :: Python :: 3.7",
 		"Programming Language :: Python :: 3.8",
 		"Development Status :: 2 - Pre-Alpha",
 #   "Development Status :: 3 - Alpha",
@@ -87,7 +83,7 @@ setuptools.setup(
 	],
 	keywords="Python3 Parser VHDL Streaming Documentation",
 
-	python_requires='>=3.4',
+	python_requires='>=3.8',
 	install_requires=requirements,
 	# provides=
 	# obsoletes=

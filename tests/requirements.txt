@@ -1,8 +1,4 @@
 -r ../requirements.txt
 
 # Coverage collection
-Coverage
-
-# Coverage upload tools
-codacy-coverage
-codecov
+Coverage>=5.2.1
