@@ -348,8 +348,8 @@ class Entity(PrimaryUnit):
 	_uses:              List[Use]
 	_genericItems:      List[GenericInterfaceItem]
 	_portItems:         List[PortInterfaceItem]
-	_declaredItems:     List[]   # FIXME: define liste element type e.g. via Union
-	_bodyItems:         List[]   # FIXME: define liste element type e.g. via Union
+	_declaredItems:     List   # FIXME: define liste element type e.g. via Union
+	_bodyItems:         List   # FIXME: define liste element type e.g. via Union
 
 	def __init__(self, name):
 		super().__init__(name)
@@ -384,8 +384,8 @@ class Architecture(SecondaryUnit):
 	_entity:            Entity
 	_libraryReferences: List[LibraryReference]
 	_uses:              List[Use]
-	_declaredItems:     List[]   # FIXME: define liste element type e.g. via Union
-	_bodyItems:         List[]   # FIXME: define liste element type e.g. via Union
+	_declaredItems:     List   # FIXME: define liste element type e.g. via Union
+	_bodyItems:         List   # FIXME: define liste element type e.g. via Union
 
 	def __init__(self, name):
 		super().__init__(name)

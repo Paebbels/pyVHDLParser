@@ -5,7 +5,7 @@ from flags                      import Flags
 from pyMetaClasses              import Singleton
 
 from pyVHDLParser.Base          import ParserException
-from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token
+from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token, CharacterTranslation
 from pyVHDLParser.Token.Parser  import Tokenizer, TokenizerException
 from pyVHDLParser.Blocks        import StartOfDocumentBlock, EndOfDocumentBlock, TokenToBlockParser, MetaBlock, Block, BlockParserException
 

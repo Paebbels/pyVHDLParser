@@ -239,10 +239,41 @@ Parser State Machine
 Code-DOM
 ********
 
+
+
 .. todo::
 
    Describe what a Code-DOM is.
 
+.. topic:: Design principles
+
+* Clearly named classes that model the semantics of VHDL.
+* All language constructs (statements, declarations, specifications, ...)
+  have their own classes. These classes are arranged in a logical hierarchy,
+  with a single common base-class.
+* Child objects shall have a reference to their parent.
+* Comments will be associated with a particular code object.
+* Easy modifications of the object tree.
+* Support formatting code objects as text for export and debugging.
+* Allow creating a CodeDOM from input file or via API calls.
+* Support resolving of symbolic references into direct references to other
+  objects.
+
+.. note::
+
+   CodeDOM is based on the ideas of `Project Roslyn <https://github.com/dotnet/roslyn>`_
+   and a series of `CodeProject <https://www.codeproject.com/>`_ articles
+   written by `Ken Beckett <https://www.codeproject.com/script/Membership/View.aspx?mid=473427>`_
+   in 2012.
+
+   * `The Future of Software Development: CodeDOMs (Part 1) <https://www.codeproject.com/Articles/488657/The-Future-of-Software-Development-CodeDOMs-Part-1>`_
+   * `Creating a CodeDOM: Modeling the Semantics of Code (Part 2) <https://www.codeproject.com/Articles/490184/Creating-a-CodeDOM-Modeling-the-Semantics-of-Code>`_
+   * `Displaying a CodeDOM using WPF (Part 3) <https://www.codeproject.com/Articles/491550/Displaying-a-CodeDOM-using-WPF-Part-3>`_
+   * `Object-Oriented Parsing: Breaking With Tradition (Part 4) <https://www.codeproject.com/Articles/492466/Object-Oriented-Parsing-Breaking-With-Tradition-Pa>`_
+   * `CodeDOM Classes for Solution and Project Files (Part 5) <https://www.codeproject.com/Articles/495311/CodeDOM-Classes-for-Solution-and-Project-Files-Par>`_
+   * `Accessing Assembly Metadata with Reflection or Mono Cecil (Part 6) <https://www.codeproject.com/Articles/499960/Accessing-Assembly-Metadata-with-Reflection-or-Mon>`_
+   * `Resolving Symbolic References in a CodeDOM (Part 7) <https://www.codeproject.com/Articles/502354/Resolving-Symbolic-References-in-a-CodeDOM-Part-7>`_
+   * `Calculating Metrics and Searching with a CodeDOM (Part 8) <https://www.codeproject.com/Articles/505579/Calculating-Metrics-and-Searching-with-a-CodeDOM-P>`_
 
 ------------------------
 
