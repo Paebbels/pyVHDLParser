@@ -32,6 +32,7 @@ jobs:
           python -m unittest tests.unit.Tokens
           python -m unittest tests.unit.Architecture
           python -m unittest tests.unit.Entity
+          python -m unittest tests.unit.PortList
 
       - name: Collect coverage
         if: ${{ always() }}
@@ -39,6 +40,7 @@ jobs:
           coverage run --append -m unittest tests.unit.Tokens
           coverage run --append -m unittest tests.unit.Architecture
           coverage run --append -m unittest tests.unit.Entity
+          coverage run --append -m unittest tests.unit.PortList
 
       - name: Report coverage
         if: ${{ always() }}

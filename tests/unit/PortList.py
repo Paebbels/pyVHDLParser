@@ -1,15 +1,14 @@
 from textwrap import dedent
-from unittest import TestCase
+from unittest                           import TestCase
 
-from pyVHDLParser.Blocks.List import GenericList, PortList
-from pyVHDLParser.Blocks.List.PortList import PortListInterfaceSignalBlock
-from pyVHDLParser.Token import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, BlockParserException, InterfaceObject
-from pyVHDLParser.Blocks.Common import WhitespaceBlock, LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Structural import Entity
+from pyVHDLParser.Blocks.List           import PortList
+from pyVHDLParser.Blocks.List.PortList  import PortListInterfaceSignalBlock
+from pyVHDLParser.Token                 import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Blocks                import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common         import WhitespaceBlock
+from pyVHDLParser.Blocks.Structural     import Entity
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                         import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
 
 
 if __name__ == "__main__":
@@ -51,8 +50,8 @@ class SimplePortList_OneLine_SinglePort(TestCase, ExpectedDataMixin, LinkingTest
 		[ (StartOfDocumentBlock,          None),           #
 			(Entity.NameBlock,              "entity e is"),  # entity e is
 			(WhitespaceBlock,               " "),            #
-			(PortList.OpenBlock,            "port ("),            # port (
-			(PortListInterfaceSignalBlock,  "port1 : bit"), # port1 : bit
+			(PortList.OpenBlock,            "port ("),       # port (
+			(PortListInterfaceSignalBlock,  "port1 : bit"),  # port1 : bit
 			(PortList.CloseBlock,           ");"),           # );
 			(WhitespaceBlock,               " "),            #
 			(Entity.EndBlock,               "end;"),         # end;
@@ -79,6 +78,7 @@ class SimplePortList_OneLine_DoublePort(TestCase, ExpectedDataMixin, LinkingTest
 			(SpaceToken,           " "),
 			(WordToken,            "bit"),
 			(CharacterToken,       ";"),
+			(SpaceToken,           " "),
 			(WordToken,            "port2"),
 			(SpaceToken,           " "),
 			(CharacterToken,       ":"),
@@ -100,7 +100,7 @@ class SimplePortList_OneLine_DoublePort(TestCase, ExpectedDataMixin, LinkingTest
 			(PortList.OpenBlock,            "port ("),           # port (
 			(PortListInterfaceSignalBlock,  "port1 : bit"),      # port1 : bit
 			(PortList.DelimiterBlock,       ";"),                # ;
-			(PortListInterfaceSignalBlock,  "port2 : boolean "), # port1 : bit
+			(PortListInterfaceSignalBlock,  "port2 : boolean "), # port2 : boolean
 			(PortList.CloseBlock,           ");"),               # );
 			(WhitespaceBlock,               " "),                #
 			(Entity.EndBlock,               "end;"),             # end;
