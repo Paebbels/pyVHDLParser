@@ -172,12 +172,12 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 				  )
 				)
 				if item[1] is not None:
-					blockValue = repr(block)
+					blockValue = str(block)
 					super().failIf(
 						blockValue != item[1],
 						msg="The blocks's value does not match.\n  Actual:   '{actual}'\n  Expected: '{expected}'".format(
-							actual=blockValue,
-							expected=item[1]
+							actual=CharacterTranslation(blockValue, oneLiner=True),
+							expected=CharacterTranslation(item[1], oneLiner=True)
 						)
 					)
 
