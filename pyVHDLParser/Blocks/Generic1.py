@@ -349,7 +349,7 @@ class CloseBlock(Block):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == ";")):
 			parserState.NewToken =    EndToken(token)
-			parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif isinstance(token, SpaceToken):

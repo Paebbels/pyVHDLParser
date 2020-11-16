@@ -321,7 +321,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			generic (
 				G : integer
 			);
-		end	entity e;
+		end entity e;
 		""")
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
@@ -370,6 +370,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			(GenericList.CloseBlock,  ");"),
 			(LinebreakBlock,          "\n"),
 			(Entity.EndBlock,         "end entity e;"),
+			(LinebreakBlock,          "\n"),
 			(EndOfDocumentBlock,      None)
 		]
 	)
