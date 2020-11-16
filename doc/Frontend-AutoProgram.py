@@ -31,7 +31,7 @@ from sys import path as sys_path
 
 sys_path.append("..")
 
-from FrontEnd import VHDLParser
+from pyVHDLParser.CLI.VHDLParser import Application
 
 # entry point
-parser = VHDLParser(sphinx=True).MainParser
+parser = Application(sphinx=True).MainParser

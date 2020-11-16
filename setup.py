@@ -50,7 +50,7 @@ rtd_url =     "https://" + projectName + ".readthedocs.io/en/latest/"
 
 setuptools.setup(
 	name=projectName,
-	version="0.4.5",
+	version="0.5.0",
 
 	author="Patrick Lehmann",
 	author_email="Paebbels@gmail.com",
@@ -70,6 +70,11 @@ setuptools.setup(
 	# download_url="https://github.com/Paebbels/pyVHDLParser/tarball/0.1.0",
 
 	packages=setuptools.find_packages(),
+	entry_points={
+		'console_scripts': [
+			"VHDLParser = pyVHDLParser.CLI.VHDLParser:main"
+		]
+	},
 	classifiers=[
 		"License :: OSI Approved :: Apache Software License",
 		"Operating System :: OS Independent",

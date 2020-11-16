@@ -1,20 +1,47 @@
-from pathlib import Path
-from textwrap import dedent
+# EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+#
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python frontend:    A streaming VHDL parser
+#
+# License:
+# ==============================================================================
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
+from pathlib        import Path
+from textwrap       import dedent
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
-from pyVHDLParser.Base import ParserException
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token import CharacterTranslation, SingleLineCommentToken
-from pyVHDLParser.Token.Parser import Tokenizer
-from FrontendHandler import FilenameAttribute, translate, FrontEndProtocol
+from ..Base         import ParserException
+from ..Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from ..Token        import CharacterTranslation, SingleLineCommentToken
+from ..Token.Parser import Tokenizer
+
+from .              import FrontEndProtocol, FilenameAttribute, translate
 
 
 class TokenStreamHandlers:
 	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "tokenize" command
+	# create the sub-parser for the "token-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("tokenize", help="Create a stream of token objects.", description="Create a stream of token objects.")
+	@CommandAttribute("token-stream", help="Create a stream of token objects.", description="Create a stream of token objects.")
 	@FilenameAttribute()
 	def HandleTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -26,8 +53,6 @@ class TokenStreamHandlers:
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
-
-
 
 		tokenStream =   Tokenizer.GetVHDLTokenizer(content)
 		tokenIterator = iter(tokenStream)
@@ -139,9 +164,9 @@ class TokenStreamHandlers:
 		self.exit()
 
 	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "check-tokenize" command
+	# create the sub-parser for the "token-check" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("check-tokenize", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
+	@CommandAttribute("token-check", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
 	@FilenameAttribute()
 	def HandleCheckTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()

@@ -1,11 +1,37 @@
-from typing                          import Protocol, Callable, Dict
+# EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+#
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python frontend:    A streaming VHDL parser
+#
+# License:
+# ==============================================================================
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
+from typing                           import Protocol, Callable, Dict
 
-from pyAttributes                    import Attribute
-from pyAttributes.ArgParseAttributes import ArgumentAttribute, SwitchArgumentAttribute
+from pyAttributes                     import Attribute
+from pyAttributes.ArgParseAttributes  import ArgumentAttribute, SwitchArgumentAttribute
 
-from pyVHDLParser.Token           import SingleLineCommentToken, CharacterTranslation, LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
-from pyVHDLParser.Token           import IntegerLiteralToken, WordToken, Token, SpaceToken, CharacterToken
-from pyVHDLParser.Token.Keywords  import KeywordToken
+from pyVHDLParser.Token               import LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
+from pyVHDLParser.Token               import IntegerLiteralToken, WordToken, Token, SpaceToken, CharacterToken
+from pyVHDLParser.Token.Keywords      import KeywordToken
 
 
 class FilenameAttribute(Attribute):
@@ -40,6 +66,7 @@ class FrontEndProtocol(Protocol):
 	# Frontend
 	PrintHeadline: Callable
 
+
 TOKENTYPE_TO_COLOR_TRANSLATION = {
 	LinebreakToken:       "black",
 	IndentationToken:     "grey",
@@ -51,6 +78,7 @@ TOKENTYPE_TO_COLOR_TRANSLATION = {
 	WordToken:            "aquamarine3",
 	KeywordToken:         "dodgerblue4",
 }
+
 
 def translate(token: Token) -> str:
 	if isinstance(token, Token):

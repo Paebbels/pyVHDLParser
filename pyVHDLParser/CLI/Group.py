@@ -1,0 +1,92 @@
+# EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+#
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python frontend:    A streaming VHDL parser
+#
+# License:
+# ==============================================================================
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
+from pathlib import Path
+
+from pyAttributes.ArgParseAttributes import CommandAttribute
+
+from .                        import FrontEndProtocol, WithTokensAttribute, WithBlocksAttribute, FilenameAttribute
+
+
+class GroupStreamHandlers:
+	# ----------------------------------------------------------------------------
+	# create the sub-parser for the "groupstreaming" command
+	# ----------------------------------------------------------------------------
+	@CommandAttribute("group-stream", help="Create a stream of group objects.", description="Create a stream of group objects.")
+	@WithTokensAttribute()
+	@WithBlocksAttribute()
+	@FilenameAttribute()
+	def HandleGroupStreaming(self : FrontEndProtocol, args):
+		self.PrintHeadline()
+
+		file = Path(args.Filename)
+
+		if (not file.exists()):
+			print("File '{0!s}' does not exist.".format(file))
+
+		with file.open('r') as fileHandle:
+			content = fileHandle.read()
+
+
+		from pyVHDLParser.Base import ParserException
+		from pyVHDLParser.Token import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+		from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, KeywordToken, DelimiterToken
+		from pyVHDLParser.Token.Parser import Tokenizer
+		from pyVHDLParser.Blocks import TokenToBlockParser
+		from pyVHDLParser.Groups import BlockToGroupParser
+
+		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **self.Foreground))
+		try:
+			vhdlTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
+			vhdlBlockStream = [block for block in TokenToBlockParser.Transform(vhdlTokenStream)]
+		except ParserException as ex:
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+		except NotImplementedError as ex:
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+
+		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
+
+		try:
+			for vhdlGroup in vhdlGroupStream:
+				print("{CYAN}{block}{NOCOLOR}".format(block=vhdlGroup, **self.Foreground))
+				for block in vhdlGroup:
+					if isinstance(block, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
+						print("{DARK_GRAY}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+					elif isinstance(block, (CommentToken)):
+						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+					elif isinstance(block, KeywordToken):
+						print("{DARK_CYAN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+					elif isinstance(block, (WordToken, SpaceToken, CharacterToken)):
+						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+					else:
+						print("{YELLOW}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+
+		except ParserException as ex:
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+		except NotImplementedError as ex:
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+
+		self.exit()

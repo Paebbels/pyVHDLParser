@@ -1,26 +1,50 @@
+# EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
+# vim: tabstop=2:shiftwidth=2:noexpandtab
+# kate: tab-width 2; replace-tabs off; indent-width 2;
+#
+# ==============================================================================
+# Authors:            Patrick Lehmann
+#
+# Python frontend:    A streaming VHDL parser
+#
+# License:
+# ==============================================================================
+# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+#
 from pathlib import Path
-from textwrap import dedent
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
-from pyVHDLParser.Base             import ParserException
-from pyVHDLParser.Token            import Token, StartOfDocumentToken, EndOfDocumentToken
-from pyVHDLParser.Token.Parser     import Tokenizer
-from pyVHDLParser.Blocks           import TokenToBlockParser, Block, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from pyVHDLParser.Blocks.Common    import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.List      import GenericList, PortList
-from pyVHDLParser.Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
-from pyVHDLParser.Blocks.Structural import Entity
+from ..Base                   import ParserException
+from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
+from ..Token.Parser           import Tokenizer
+from ..Blocks                 import TokenToBlockParser, Block, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
+from ..Blocks.Common          import LinebreakBlock, IndentationBlock
+from ..Blocks.List            import GenericList, PortList
+from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
+from ..Blocks.Structural      import Entity
 
-from FrontendHandler import FilenameAttribute, translate, FrontEndProtocol, WithTokensAttribute
+from .                        import FrontEndProtocol, FilenameAttribute, WithTokensAttribute
 
 
 class BlockStreamHandlers:
-
 	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "blockstreaming" command
+	# create the sub-parser for the "block-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("blockstreaming", help="Create a stream of block objects.", description="Create a stream of block objects.")
+	@CommandAttribute("block-stream", help="Create a stream of block objects.", description="Create a stream of block objects.")
 	@WithTokensAttribute()
 	@FilenameAttribute()
 	def HandleBlockStreaming(self: FrontEndProtocol, args):
@@ -65,9 +89,9 @@ class BlockStreamHandlers:
 		self.exit()
 
 	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "check-blockstreaming" command
+	# create the sub-parser for the "block-check" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("check-blockstreaming", help="Check a stream of block objects.", description="Check a stream of block objects.")
+	@CommandAttribute("block-check", help="Check a stream of block objects.", description="Check a stream of block objects.")
 	@WithTokensAttribute()
 	@FilenameAttribute()
 	def HandleCheckBlockStreaming(self: FrontEndProtocol, args):
