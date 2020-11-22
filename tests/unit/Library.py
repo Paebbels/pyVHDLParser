@@ -36,8 +36,8 @@ class Library_OneLine_SingleLibrary(TestCase, ExpectedDataMixin, LinkingTests, T
 		]
 	)
 
-class Library_OneLine_DoubleLibrary(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = "library lib0, lib1 ;"
+class Library_OneLine_TripleLibrary(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+	code = "library lib0, lib1 , lib2 ;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "library"),
@@ -46,6 +46,10 @@ class Library_OneLine_DoubleLibrary(TestCase, ExpectedDataMixin, LinkingTests, T
 			(CharacterToken,       ","),
 			(SpaceToken,           " "),
 			(WordToken,            "lib1"),
+			(SpaceToken,           " "),
+			(CharacterToken,       ","),
+			(SpaceToken,           " "),
+			(WordToken,            "lib2"),
 			(SpaceToken,           " "),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -57,6 +61,8 @@ class Library_OneLine_DoubleLibrary(TestCase, ExpectedDataMixin, LinkingTests, T
 			(Library.LibraryNameBlock,  "lib0"),      # lib0
 			(Library.DelimiterBlock,    ","),         # ,
 			(Library.LibraryNameBlock,  " lib1 "),    # lib1
+			(Library.DelimiterBlock,    ","),         # ,
+			(Library.LibraryNameBlock,  " lib2 "),    # lib1
 			(Library.EndBlock,          ";"),         # ;
 			(EndOfDocumentBlock,        None)         #
 		]

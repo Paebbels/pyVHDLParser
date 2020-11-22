@@ -66,7 +66,7 @@ class Use_OneLine_SinglePackage_Const0(TestCase, ExpectedDataMixin, LinkingTests
 	)
 
 class Use_OneLine_DoublePackage_All(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = "use lib0.pkg0.all, lib0.pkg1.all ;"
+	code = "use lib0.pkg0.all, lib0 . pkg1 . all ;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "use"),
@@ -79,9 +79,13 @@ class Use_OneLine_DoublePackage_All(TestCase, ExpectedDataMixin, LinkingTests, T
 			(CharacterToken,       ","),
 			(SpaceToken,           " "),
 			(WordToken,            "lib0"),
+			(SpaceToken,           " "),
 			(CharacterToken,       "."),
+			(SpaceToken,           " "),
 			(WordToken,            "pkg1"),
+			(SpaceToken,           " "),
 			(CharacterToken,       "."),
+			(SpaceToken,           " "),
 			(WordToken,            "all"),
 			(SpaceToken,           " "),
 			(CharacterToken,       ";"),
@@ -93,7 +97,7 @@ class Use_OneLine_DoublePackage_All(TestCase, ExpectedDataMixin, LinkingTests, T
 			(Use.StartBlock,          "use "),          # use
 			(Use.ReferenceNameBlock,  "lib0.pkg0.all"), # lib0.pkg0.all
 			(Use.DelimiterBlock,      ","),             # ,
-			(Use.ReferenceNameBlock,  " lib0.pkg1.all "), # lib0.pkg1.all
+			(Use.ReferenceNameBlock,  " lib0 . pkg1 . all "), # lib0.pkg1.all
 			(Use.EndBlock,            ";"),             # ;
 			(EndOfDocumentBlock,      None)             #
 		]
