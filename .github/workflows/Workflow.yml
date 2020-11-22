@@ -31,16 +31,22 @@ jobs:
         run: |
           python -m unittest tests.unit.Tokens
           python -m unittest tests.unit.Architecture
+          python -m unittest tests.unit.Context
           python -m unittest tests.unit.Entity
+          python -m unittest tests.unit.Library
           python -m unittest tests.unit.PortList
+          python -m unittest tests.unit.Use
 
       - name: Collect coverage
         if: ${{ always() }}
         run: |
           coverage run --append -m unittest tests.unit.Tokens
           coverage run --append -m unittest tests.unit.Architecture
+          coverage run --append -m unittest tests.unit.Context
           coverage run --append -m unittest tests.unit.Entity
+          coverage run --append -m unittest tests.unit.Library
           coverage run --append -m unittest tests.unit.PortList
+          coverage run --append -m unittest tests.unit.Use
 
       - name: Report coverage
         if: ${{ always() }}
