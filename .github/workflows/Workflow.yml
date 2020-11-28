@@ -34,6 +34,8 @@ jobs:
           python -m unittest tests.unit.Context
           python -m unittest tests.unit.Entity
           python -m unittest tests.unit.Library
+          python -m unittest tests.unit.Package
+          python -m unittest tests.unit.PackageBody
           python -m unittest tests.unit.PortList
           python -m unittest tests.unit.Use
 
@@ -45,6 +47,8 @@ jobs:
           coverage run --append -m unittest tests.unit.Context
           coverage run --append -m unittest tests.unit.Entity
           coverage run --append -m unittest tests.unit.Library
+          coverage run --append -m unittest tests.unit.Package
+          coverage run --append -m unittest tests.unit.PackageBody
           coverage run --append -m unittest tests.unit.PortList
           coverage run --append -m unittest tests.unit.Use
 
