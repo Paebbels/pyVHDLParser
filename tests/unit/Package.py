@@ -1,13 +1,13 @@
-from pyVHDLParser.Blocks.Sequential import Package
 from textwrap import dedent
 from unittest import TestCase
 
-from pyVHDLParser.Blocks.List     import GenericList
-from pyVHDLParser.Token           import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks          import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.List       import GenericList
+from pyVHDLParser.Blocks.Sequential import Package
 
-from tests.unit                   import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, BlockSequenceWithParserError, TokenLinking
 
 
 if __name__ == "__main__":
@@ -126,7 +126,7 @@ class SimplePackage_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, L
 	)
 
 
-class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package is end package p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -153,7 +153,7 @@ class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataM
 	)
 
 
-class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package p end package p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -180,7 +180,7 @@ class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMix
 	)
 
 
-class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package p is package p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -376,7 +376,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			(
@@ -425,7 +425,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			generic
@@ -474,7 +474,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			generic (
@@ -524,7 +524,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			gen (

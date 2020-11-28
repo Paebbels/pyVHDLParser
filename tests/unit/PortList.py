@@ -8,7 +8,7 @@ from pyVHDLParser.Blocks                import StartOfDocumentBlock, EndOfDocume
 from pyVHDLParser.Blocks.Common         import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural     import Entity
 
-from tests.unit                         import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                         import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, TokenLinking
 
 
 if __name__ == "__main__":
@@ -59,7 +59,7 @@ class SimplePortList_OneLine_SinglePort(TestCase, ExpectedDataMixin, LinkingTest
 		]
 	)
 
-class SimplePortList_OneLine_DoublePort(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePortList_OneLine_DoublePort(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequence):
 	code = "entity e is port (port1 : bit; port2 : boolean ); end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),

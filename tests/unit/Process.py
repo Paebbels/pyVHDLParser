@@ -1,12 +1,12 @@
+from unittest   import TestCase
+
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Structural import Architecture
 from pyVHDLParser.Blocks.Sequential import Process
 
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
-from pyVHDLParser.Blocks.Structural import Architecture
-from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
-from unittest   import TestCase
-from tests.unit import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
+from tests.unit                     import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
 
 if __name__ == "__main__":
@@ -59,6 +59,7 @@ class SimpleProcessInArchitecture_OneLine_NoIs(TestCase, ExpectedDataMixin, Link
 			(Process.BeginBlock,      "begin"),
 			(WhitespaceBlock,         " "),
 			(Process.EndBlock,        "end process;"),
+			(WhitespaceBlock,         " "),
 			(Architecture.EndBlock,   "end;"),
 			(EndOfDocumentBlock,      None)
 		]

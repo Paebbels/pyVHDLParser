@@ -1,13 +1,11 @@
-from pyVHDLParser.Blocks.Sequential import Package, Procedure
-from textwrap import dedent
 from unittest import TestCase
 
-from pyVHDLParser.Blocks.List     import GenericList
-from pyVHDLParser.Token           import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks          import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Sequential import Package, Procedure
 
-from tests.unit                   import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
 
 
 if __name__ == "__main__":
@@ -19,7 +17,7 @@ if __name__ == "__main__":
 def setUpModule():
 	i = Initializer()
 
-class SimpleprocedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleProcedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package p is procedure p; end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
@@ -44,6 +42,7 @@ class SimpleprocedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, 
 			(Package.NameBlock,    "package p is"), # package pis
 			(WhitespaceBlock,      " "),            #
 			(Procedure.NameBlock,  "procedure p;"),
+			(WhitespaceBlock,          " "),            #
 			(Package.EndBlock,     "end;"),         # end;
 			(EndOfDocumentBlock,   None)            #
 		]

@@ -1,13 +1,13 @@
-from pyVHDLParser.Blocks.Sequential import Package, PackageBody
 from textwrap import dedent
 from unittest import TestCase
 
-from pyVHDLParser.Blocks.List     import GenericList
-from pyVHDLParser.Token           import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks          import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.List       import GenericList
+from pyVHDLParser.Blocks.Sequential import PackageBody
 
-from tests.unit                   import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, TokenLinking, BlockSequenceWithParserError
 
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 def setUpModule():
 	i = Initializer()
 
-class SimplePackage_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package body p is end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
@@ -45,7 +45,7 @@ class SimplePackage_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, T
 		]
 	)
 
-class SimplePackage_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package body p is end package body;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -76,7 +76,7 @@ class SimplePackage_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingT
 	)
 
 
-class SimplePackage_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package body p is end p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -105,7 +105,7 @@ class SimplePackage_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTest
 	)
 
 
-class SimplePackage_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package body p is end package body p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -138,7 +138,7 @@ class SimplePackage_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, L
 	)
 
 
-class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package body is end package body p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -169,7 +169,7 @@ class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataM
 	)
 
 
-class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package body p end package body p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -200,7 +200,7 @@ class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMix
 	)
 
 
-class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package body p is package body p;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -231,7 +231,7 @@ class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMi
 	)
 
 
-class SimplePackage_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package body p is end package body a;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -264,7 +264,7 @@ class SimplePackage_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDa
 	)
 
 
-class SimplePackage_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = dedent("""\
 		package body p is
 		end package body p ;
@@ -303,7 +303,7 @@ class SimplePackage_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests
 	)
 
 
-class SimplePackage_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_AllLine_LongForm(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence):
 	code = "package\nbody\np\nis\nend\npackage\nbody\np\n;\n"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
@@ -354,7 +354,7 @@ class SimplePackage_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, 
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = dedent("""\
 		package body p is
 			generic (
@@ -396,12 +396,13 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 			(SpaceToken,           " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
+			(LinebreakToken,       None),
 			(EndOfDocumentToken,   None)
 		]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
-			(PackageBody.NameBlock,   "package p is"),
+			(PackageBody.NameBlock,   "package body p is"),
 			(LinebreakBlock,          "\n"),
 			(IndentationBlock,        "\t"),
 			(GenericList.OpenBlock,   "generic ("),
@@ -412,7 +413,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 			(GenericList.GenericListInterfaceConstantBlock, "\t"),
 			(GenericList.CloseBlock,  ");"),
 			(LinebreakBlock,          "\n"),
-			(PackageBody.EndBlock,    "end package p;"),
+			(PackageBody.EndBlock,    "end package body p;"),
 			(LinebreakBlock,          "\n"),
 			(EndOfDocumentBlock,      None)
 		]

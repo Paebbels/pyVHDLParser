@@ -175,7 +175,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateFunctionName(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "(")):
+		if (isinstance(token, CharacterToken) and (token == "(")):
 			parserState.NewToken =    BoundaryToken(token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ =                       ParameterList.OpenBlock(parserState.NewBlock, parserState.NewToken)

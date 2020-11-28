@@ -1,13 +1,11 @@
-from pyVHDLParser.Blocks.Sequential import Package, Function
-from textwrap import dedent
 from unittest import TestCase
 
-from pyVHDLParser.Blocks.List     import GenericList
-from pyVHDLParser.Token           import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks          import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Sequential import Package, Function
 
-from tests.unit                   import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
 
 
 if __name__ == "__main__":
@@ -49,6 +47,7 @@ class SimpleFunctionInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, L
 			(WhitespaceBlock,          " "),            #
 			(Function.NameBlock,       "function f "),
 			(Function.ReturnTypeBlock, "return bit;"),
+			(WhitespaceBlock,          " "),            #
 			(Package.EndBlock,         "end;"),         # end;
 			(EndOfDocumentBlock,       None)            #
 		]

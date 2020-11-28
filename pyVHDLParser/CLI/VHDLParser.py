@@ -44,7 +44,7 @@ __copyright__ =   "Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany\n" 
                   "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __maintainer__ =  "Patrick Lehmann"
 __email__ =       "Patrick.Lehmann@plc2.de"
-__version__ =     "0.5.3"
+__version__ =     "0.5.4"
 __status__ =      "Alpha"
 __license__ =     "Apache License 2.0"
 __api__ = [

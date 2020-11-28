@@ -1,14 +1,13 @@
 from textwrap import dedent
 from unittest import TestCase
 
-from pyVHDLParser.Blocks.List import GenericList
-from pyVHDLParser.Token import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, BlockParserException, InterfaceObject
-from pyVHDLParser.Blocks.Common import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Structural import Entity
+from pyVHDLParser.Blocks.List       import GenericList
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, BlockSequenceWithParserError, ExpectedTokenStream, ExpectedBlockStream, TokenLinking
 
 
 if __name__ == "__main__":
@@ -127,7 +126,7 @@ class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, Li
 	)
 
 
-class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity is end entity e;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -154,7 +153,7 @@ class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMi
 	)
 
 
-class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity e end entity e;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -181,7 +180,7 @@ class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixi
 	)
 
 
-class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity e is entity e;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),      #
@@ -315,7 +314,7 @@ class SimpleEntity_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, T
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMixin, LinkingTests, BlockSequence):
 	code = dedent("""\
 		entity e is
 			generic (
@@ -376,7 +375,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking, BlockSequenceWithParserError):
 	code = dedent("""\
 		entity e is
 			(
@@ -416,16 +415,26 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+		[ (StartOfDocumentBlock,    None),
+			(Entity.NameBlock,        "entity e is"),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t"),
+			(GenericList.OpenBlock,   "generic ("),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t\t"),
+			(GenericList.GenericListInterfaceConstantBlock, "G : integer"),
+			(LinebreakBlock,          "\n"),
+			(GenericList.GenericListInterfaceConstantBlock, "\t"),
+			(GenericList.CloseBlock,  ");"),
+			(LinebreakBlock,          "\n"),
+			(Entity.EndBlock,         "end entity e;"),
+			(LinebreakBlock,          "\n"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		entity e is
 			generic
@@ -465,16 +474,26 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+		[ (StartOfDocumentBlock,    None),
+			(Entity.NameBlock,        "entity e is"),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t"),
+			(GenericList.OpenBlock,   "generic ("),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t\t"),
+			(GenericList.GenericListInterfaceConstantBlock, "G : integer"),
+			(LinebreakBlock,          "\n"),
+			(GenericList.GenericListInterfaceConstantBlock, "\t"),
+			(GenericList.CloseBlock,  ");"),
+			(LinebreakBlock,          "\n"),
+			(Entity.EndBlock,         "end entity e;"),
+			(LinebreakBlock,          "\n"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		entity e is
 			generic (
@@ -515,16 +534,26 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(Te
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+		[ (StartOfDocumentBlock,    None),
+			(Entity.NameBlock,        "entity e is"),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t"),
+			(GenericList.OpenBlock,   "generic ("),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t\t"),
+			(GenericList.GenericListInterfaceConstantBlock, "G : integer"),
+			(LinebreakBlock,          "\n"),
+			(GenericList.GenericListInterfaceConstantBlock, "\t"),
+			(GenericList.CloseBlock,  ");"),
+			(LinebreakBlock,          "\n"),
+			(Entity.EndBlock,         "end entity e;"),
+			(LinebreakBlock,          "\n"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking, BlockSequenceWithParserError):
 	code = dedent("""\
 		entity e is
 			gen (
@@ -553,7 +582,6 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, 
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
-			(CharacterToken,       ")"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
@@ -566,10 +594,20 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, 
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),             #
-			(Entity.NameBlock,     "entity e is"),    # entity e is
-			(WhitespaceBlock,      " "),              #
-			(Entity.EndBlock,      "end entity a;"),  # end entity a;
-			(EndOfDocumentBlock,   None)              #
+		[ (StartOfDocumentBlock,    None),
+			(Entity.NameBlock,        "entity e is"),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t"),
+			(GenericList.OpenBlock,   "generic ("),
+			(LinebreakBlock,          "\n"),
+			(IndentationBlock,        "\t\t"),
+			(GenericList.GenericListInterfaceConstantBlock, "G : integer"),
+			(LinebreakBlock,          "\n"),
+			(GenericList.GenericListInterfaceConstantBlock, "\t"),
+			(GenericList.CloseBlock,  ");"),
+			(LinebreakBlock,          "\n"),
+			(Entity.EndBlock,         "end entity e;"),
+			(LinebreakBlock,          "\n"),
+			(EndOfDocumentBlock,      None)
 		]
 	)
