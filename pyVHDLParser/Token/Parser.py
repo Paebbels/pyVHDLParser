@@ -489,5 +489,30 @@ class Tokenizer:
 		if (tokenKind is cls.TokenKind.MultiLineComment):
 			raise TokenizerException("End of document before end of multi line comment.", SourceCodePosition(row, column, absolute))
 
+		# close open token when input stream is empty
+		if (tokenKind is cls.TokenKind.AlphaChars):
+			previousToken = WordToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+			yield previousToken
+		elif (tokenKind is cls.TokenKind.IntegerChars):
+			previousToken = IntegerLiteralToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+			yield previousToken
+		elif (tokenKind is cls.TokenKind.RealChars):
+			previousToken = RealLiteralToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+			yield previousToken
+		elif (tokenKind is cls.TokenKind.SpaceChars):
+			end = SourceCodePosition(row, column - 1, absolute - 1)
+			if isinstance(previousToken, (LinebreakToken, SingleLineCommentToken, StartOfDocumentToken)):
+				previousToken = IndentationToken(previousToken, buffer, start, end)
+			else:
+				previousToken = SpaceToken(previousToken, buffer, start, end)
+			yield previousToken
+		elif (tokenKind is cls.TokenKind.SingleLineComment):
+			previousToken = SingleLineCommentToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+			yield previousToken
+		elif (tokenKind in (cls.TokenKind.OtherChars, cls.TokenKind.DelimiterChars)):
+			pass
+		else:
+			raise TokenizerException("End of document before ...", SourceCodePosition(row, column, absolute))
+
 		# End of document
 		yield EndOfDocumentToken(previousToken, SourceCodePosition(row, column, absolute))
