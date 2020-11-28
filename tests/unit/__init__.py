@@ -109,8 +109,8 @@ class TokenSequence(ITestcase): #, ExpectedDataMixin):
 					)
 				)
 				if item[1] is not None:
-					super().failIf(
-						token != item[1],
+					self.assertTrue(
+						token == item[1],
 						msg="The token's value does not match.\n  Context:  {context}\n  Actual:   {actual}\n  Expected: {expected}".format(
 							context="at {pos!s}".format(pos=token.Start),
 							actual="'{token!r}' of {type}".format(token=token, type=token.__class__.__qualname__),

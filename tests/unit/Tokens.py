@@ -1,7 +1,10 @@
 from unittest import TestCase
 
-from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CharacterToken, CharacterLiteralToken, StringLiteralToken, BitStringLiteralToken, FusedCharacterToken, RealLiteralToken, IntegerLiteralToken, EndOfDocumentToken, ExtendedIdentifier, SingleLineCommentToken, MultiLineCommentToken
-from tests.unit import ExpectedDataMixin, ExpectedTokenStream, TokenSequence
+from pyVHDLParser.Token           import StartOfDocumentToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CharacterToken, CharacterLiteralToken, StringLiteralToken, BitStringLiteralToken, FusedCharacterToken, RealLiteralToken, IntegerLiteralToken, EndOfDocumentToken, ExtendedIdentifier, SingleLineCommentToken, MultiLineCommentToken
+from pyVHDLParser.Token.Keywords  import EntityKeyword
+from pyVHDLParser.Token.Parser    import Tokenizer, TokenizerException
+
+from tests.unit                   import ExpectedDataMixin, ExpectedTokenStream, TokenSequence
 
 
 if __name__ == "__main__":
@@ -233,3 +236,48 @@ class Tokenizer_ExceptionInKeyword(TestCase, ExpectedDataMixin, TokenSequence):
 		]
 	)
 
+	def test_KeywordToWordTokenMissmatch(self) -> None:
+		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
+		tokenIterator = iter(tokenStream)
+		token = next(tokenIterator)
+		self.assertIsInstance(
+			token, StartOfDocumentToken,
+			msg="Token has not expected type.\n  Actual:   {actual}     pos={pos!s}\n  Expected: {expected}".format(
+				actual=token.__class__.__qualname__,
+				pos=token.Start,
+				expected=StartOfDocumentToken.__qualname__
+			)
+		)
+
+		token = next(tokenIterator)
+		keywordToken = token
+		self.assertIsInstance(
+			token, WordToken,
+			msg="Token has not expected type.\n  Actual:   {actual}     pos={pos!s}\n  Expected: {expected}".format(
+				actual=token.__class__.__qualname__,
+				pos=token.Start,
+				expected=StartOfDocumentToken.__qualname__
+			)
+		)
+		self.assertTrue(
+			token == "keyword",
+			msg="The token's value does not match.\n  Context:  {context}\n  Actual:   {actual}\n  Expected: {expected}".format(
+				context="at {pos!s}".format(pos=token.Start),
+				actual="'{token!r}' of {type}".format(token=token, type=token.__class__.__qualname__),
+				expected="'{value}' of {type}".format(value="keyword", type=WordToken.__qualname__)
+			)
+		)
+
+		token = next(tokenIterator)
+		self.assertIsInstance(
+			token, EndOfDocumentToken,
+			msg="Token has not expected type.\n  Actual:   {actual}     pos={pos!s}\n  Expected: {expected}".format(
+				actual=token.__class__.__qualname__,
+				pos=token.Start,
+				expected=EndOfDocumentToken.__qualname__
+			)
+		)
+
+		with self.assertRaises(TokenizerException) as ex:
+			_ = EntityKeyword(keywordToken)
+		# TODO: check exception message
