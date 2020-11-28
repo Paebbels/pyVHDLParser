@@ -31,12 +31,18 @@ jobs:
         run: |
           python -m unittest tests.unit.Tokens
           python -m unittest tests.unit.Architecture
+          python -m unittest tests.unit.Assert
+          python -m unittest tests.unit.Constant
           python -m unittest tests.unit.Context
           python -m unittest tests.unit.Entity
+          python -m unittest tests.unit.Function
           python -m unittest tests.unit.Library
           python -m unittest tests.unit.Package
           python -m unittest tests.unit.PackageBody
           python -m unittest tests.unit.PortList
+          python -m unittest tests.unit.Procedure
+          python -m unittest tests.unit.Process
+          python -m unittest tests.unit.Signal
           python -m unittest tests.unit.Use
 
       - name: Collect coverage
@@ -44,12 +50,18 @@ jobs:
         run: |
           coverage run -m unittest tests.unit.Tokens
           coverage run --append -m unittest tests.unit.Architecture
+          coverage run --append -m unittest tests.unit.Assert
+          coverage run --append -m unittest tests.unit.Constant
           coverage run --append -m unittest tests.unit.Context
           coverage run --append -m unittest tests.unit.Entity
+          coverage run --append -m unittest tests.unit.Function
           coverage run --append -m unittest tests.unit.Library
           coverage run --append -m unittest tests.unit.Package
           coverage run --append -m unittest tests.unit.PackageBody
           coverage run --append -m unittest tests.unit.PortList
+          coverage run --append -m unittest tests.unit.Procedure
+          coverage run --append -m unittest tests.unit.Process
+          coverage run --append -m unittest tests.unit.Signal
           coverage run --append -m unittest tests.unit.Use
 
       - name: Report coverage
