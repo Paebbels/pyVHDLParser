@@ -1,3 +1,5 @@
+from pyVHDLParser.Blocks.Sequential import Process
+
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
 from pyVHDLParser.Blocks.Structural import Architecture
@@ -53,6 +55,10 @@ class SimpleProcessInArchitecture_OneLine_NoIs(TestCase, ExpectedDataMixin, Link
 			(WhitespaceBlock,         " "),
 			(Architecture.BeginBlock, "begin"),
 			(WhitespaceBlock,         " "),
+			(Process.OpenBlock,       "process "),
+			(Process.BeginBlock,      "begin"),
+			(WhitespaceBlock,         " "),
+			(Process.EndBlock,        "end process;"),
 			(Architecture.EndBlock,   "end;"),
 			(EndOfDocumentBlock,      None)
 		]

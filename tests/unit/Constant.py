@@ -1,3 +1,5 @@
+from pyVHDLParser.Blocks.Object import Constant
+
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
 from pyVHDLParser.Blocks.Structural import Architecture
@@ -53,6 +55,10 @@ class SimpleConstantInArchitecture_OneLine(TestCase, ExpectedDataMixin, LinkingT
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
+			(WhitespaceBlock,         " "),
+			(Constant.ConstantDeclarationBlock, "constant c : bit :="),
+			(Constant.ConstantDeclarationDefaultExpressionBlock, " 0"),
+			(Constant.ConstantDeclarationEndMarkerBlock,         ";"),
 			(WhitespaceBlock,         " "),
 			(Architecture.BeginBlock, "begin"),
 			(WhitespaceBlock,         " "),

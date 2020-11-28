@@ -134,7 +134,7 @@ class NameBlock(Block):
 			parserState.NextState =     cls.stateWhitespace2
 			return
 
-		raise BlockParserException("Expected '(' or whitespace after procedure name.", token)
+		raise BlockParserException("Expected ';', '(' or whitespace after procedure name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):

@@ -105,7 +105,7 @@ class AssertBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise BlockParserException("Expected whitespace after assertion.", token)
+		raise BlockParserException("Expected whitespace after assertion (expression).", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: ParserState):
@@ -135,7 +135,7 @@ class AssertBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected keyword REPORT after assertion.", token)
+		raise BlockParserException("Expected keyword REPORT after assertion (expression).", token)
 
 	@classmethod
 	def stateReportKeyword(cls, parserState: ParserState):
@@ -152,7 +152,7 @@ class AssertBlock(Block):
 			parserState.NextState =   cls.stateWhitespace3
 			return
 
-		raise BlockParserException("Expected whitespace after keyword ARCHITECTURE.", token)
+		raise BlockParserException("Expected whitespace after keyword REPORT.", token)
 
 	@classmethod
 	def stateWhitespace3(cls, parserState: ParserState):
@@ -182,7 +182,7 @@ class AssertBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected keyword REPORT after assertion.", token)
+		raise BlockParserException("Expected report message (expression) after keyword REPORT.", token)
 
 	@classmethod
 	def stateMessage(cls, parserState: ParserState):
@@ -204,7 +204,7 @@ class AssertBlock(Block):
 			parserState.NextState =   cls.stateWhitespace4
 			return
 
-		raise BlockParserException("Expected whitespace after assertion.", token)
+		raise BlockParserException("Expected whitespace after report message (expression).", token)
 
 	@classmethod
 	def stateWhitespace4(cls, parserState: ParserState):
@@ -239,7 +239,7 @@ class AssertBlock(Block):
 			parserState.TokenMarker = None
 			return
 
-		raise BlockParserException("Expected keyword SEVERITY after message.", token)
+		raise BlockParserException("Expected keyword SEVERITY after report message (expression).", token)
 
 	@classmethod
 	def stateSeverityKeyword(cls, parserState: ParserState):
@@ -286,7 +286,7 @@ class AssertBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected keyword REPORT after assertion.", token)
+		raise BlockParserException("Expected severity level (expression) after keyword SEVERITY.", token)
 
 	@classmethod
 	def stateSeverityLevel(cls, parserState: ParserState):
@@ -308,7 +308,7 @@ class AssertBlock(Block):
 			parserState.NextState =   cls.stateWhitespace6
 			return
 
-		raise BlockParserException("Expected ';' or whitespace after severity level.", token)
+		raise BlockParserException("Expected ';' or whitespace after severity level (expression).", token)
 
 	@classmethod
 	def stateWhitespace6(cls, parserState: ParserState):

@@ -1,5 +1,6 @@
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
+from pyVHDLParser.Blocks.Object import Signal
 from pyVHDLParser.Blocks.Structural import Architecture
 from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
 	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
@@ -50,6 +51,9 @@ class SimpleSignalInArchitecture_OneLine_OnlyDeclaration(TestCase, ExpectedDataM
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
+			(WhitespaceBlock,         " "),
+			(Signal.SignalDeclarationBlock,           "signal s : bit"),
+			(Signal.SignalDeclarationEndMarkerBlock,  ";"),
 			(WhitespaceBlock,         " "),
 			(Architecture.BeginBlock, "begin"),
 			(WhitespaceBlock,         " "),

@@ -1,4 +1,4 @@
-from pyVHDLParser.Blocks.Sequential import Package
+from pyVHDLParser.Blocks.Sequential import Package, Function
 from textwrap import dedent
 from unittest import TestCase
 
@@ -44,10 +44,12 @@ class SimpleFunctionInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, L
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),           #
-			(Package.NameBlock,    "package p is"), # package pis
-			(WhitespaceBlock,      " "),            #
-			(Package.EndBlock,     "end;"),         # end;
-			(EndOfDocumentBlock,   None)            #
+		[ (StartOfDocumentBlock,     None),           #
+			(Package.NameBlock,        "package p is"), # package pis
+			(WhitespaceBlock,          " "),            #
+			(Function.NameBlock,       "function f "),
+			(Function.ReturnTypeBlock, "return bit;"),
+			(Package.EndBlock,         "end;"),         # end;
+			(EndOfDocumentBlock,       None)            #
 		]
 	)

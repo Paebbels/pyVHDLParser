@@ -1,8 +1,9 @@
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
+from pyVHDLParser.Blocks.Reporting import Assert
 from pyVHDLParser.Blocks.Structural import Architecture
 from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
+	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken, StringLiteralToken
 from unittest   import TestCase
 from tests.unit import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
@@ -18,7 +19,7 @@ def setUpModule():
 
 
 class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = "architecture a of e is begin assert true; end;"
+	code = "architecture a of e is begin assert true report \"error\"; end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
@@ -36,6 +37,10 @@ class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin,
 			(WordToken,            "assert"),
 			(SpaceToken,           " "),
 			(WordToken,            "true"),
+			(SpaceToken,           " "),
+			(WordToken,            "report"),
+			(SpaceToken,           " "),
+			(StringLiteralToken,   "error"),
 			(CharacterToken,       ";"),
 			(SpaceToken,           " "),
 			(WordToken,            "end"),
@@ -49,6 +54,7 @@ class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin,
 			(WhitespaceBlock,         " "),
 			(Architecture.BeginBlock, "begin"),
 			(WhitespaceBlock,         " "),
+			(Assert.AssertBlock,      "assert true report \"error\";"),
 			(Architecture.EndBlock,   "end;"),
 			(EndOfDocumentBlock,      None)
 		]

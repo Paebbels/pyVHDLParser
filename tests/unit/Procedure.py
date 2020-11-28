@@ -1,4 +1,4 @@
-from pyVHDLParser.Blocks.Sequential import Package
+from pyVHDLParser.Blocks.Sequential import Package, Procedure
 from textwrap import dedent
 from unittest import TestCase
 
@@ -43,6 +43,7 @@ class SimpleprocedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, 
 		[ (StartOfDocumentBlock, None),           #
 			(Package.NameBlock,    "package p is"), # package pis
 			(WhitespaceBlock,      " "),            #
+			(Procedure.NameBlock,  "procedure p;"),
 			(Package.EndBlock,     "end;"),         # end;
 			(EndOfDocumentBlock,   None)            #
 		]
