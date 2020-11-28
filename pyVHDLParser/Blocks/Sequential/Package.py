@@ -57,6 +57,15 @@ class EndBlock(EndBlockBase):
 class DeclarativeRegion(SequentialDeclarativeRegion):
 	END_BLOCK = EndBlock
 
+	@classmethod
+	def __cls_init__(cls):
+		super().__cls_init__()
+
+		# TODO: use key assignment: a[b] = c
+		cls.KEYWORDS.update({
+			# Keyword         Transition
+			GenericKeyword:  GenericList.OpenBlock.stateGenericKeyword
+		})
 
 @export
 class NameBlock(Block):

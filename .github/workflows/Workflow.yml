@@ -42,7 +42,7 @@ jobs:
       - name: Collect coverage
         if: ${{ always() }}
         run: |
-          coverage run --append -m unittest tests.unit.Tokens
+          coverage run -m unittest tests.unit.Tokens
           coverage run --append -m unittest tests.unit.Architecture
           coverage run --append -m unittest tests.unit.Context
           coverage run --append -m unittest tests.unit.Entity

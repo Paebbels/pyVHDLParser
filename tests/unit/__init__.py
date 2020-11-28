@@ -25,28 +25,6 @@ class Result(Flags):
 	Fail = 2
 
 
-class ITestcase:
-	def skipTest(self, reason=None):
-		pass
-	def fail(self, msg: str=""):
-		pass
-	def failIf(self, expr: bool, msg: str=""):
-		if expr:
-			self.fail(msg=msg)
-	def assertEqual(self, left: Any, right: Any, msg: str=""):
-		pass
-	def assertIsInstance(self, obj: Any, typ, msg: str=""):
-		pass
-	def assertIsNotInstance(self, obj: Any, typ, msg: str=""):
-		pass
-	def assertTrue(self, obj: bool, msg: str=""):
-		pass
-	def assertIsNone(self, obj: Any, msg: str=""):
-		pass
-	def assertIsNotNone(self, obj: Any, msg: str=""):
-		pass
-
-
 @dataclass
 class ExpectedTokenStream:
 	tokens:     List[Tuple[Token, str]]
@@ -74,6 +52,39 @@ class ExpectedDataMixin:
 	def setUp(self):
 		print("Starting another test.")
 
+
+class ITestcase:
+	code: str
+	tokenStream: ExpectedTokenStream
+	blockStream: ExpectedBlockStream
+
+	def skipTest(self, reason=None):
+		pass
+
+	def fail(self, msg: str = ""):
+		pass
+
+	def failIf(self, expr: bool, msg: str = ""):
+		if expr:
+			self.fail(msg=msg)
+
+	def assertEqual(self, left: Any, right: Any, msg: str = ""):
+		pass
+
+	def assertIsInstance(self, obj: Any, typ, msg: str = ""):
+		pass
+
+	def assertIsNotInstance(self, obj: Any, typ, msg: str = ""):
+		pass
+
+	def assertTrue(self, obj: bool, msg: str = ""):
+		pass
+
+	def assertIsNone(self, obj: Any, msg: str = ""):
+		pass
+
+	def assertIsNotNone(self, obj: Any, msg: str = ""):
+		pass
 
 
 class TokenSequence(ITestcase): #, ExpectedDataMixin):
@@ -184,7 +195,7 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 		except TokenizerException as ex:
 			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
 		except BlockParserException as ex:
-			self.fail(msg="Unexpected 'BlockParserException' at {pos}".format(pos=ex.Position))
+			self.fail(msg="Unexpected 'BlockParserException' at {pos}".format(pos=ex.Token.Start))
 		except StopIteration:
 			pass
 		except AssertionError:

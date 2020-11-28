@@ -352,6 +352,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 			(SpaceToken,           " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
+			(LinebreakToken,       None),
 			(EndOfDocumentToken,   None)
 		]
 	)
