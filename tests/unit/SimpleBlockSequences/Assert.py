@@ -6,7 +6,7 @@ from pyVHDLParser.Blocks.Common     import WhitespaceBlock
 from pyVHDLParser.Blocks.Reporting  import Assert
 from pyVHDLParser.Blocks.Structural import Architecture
 
-from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
+from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequence
 
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ def setUpModule():
 	Initializer()
 
 
-class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence):
 	code = "architecture a of e is begin assert true report \"error\"; end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
