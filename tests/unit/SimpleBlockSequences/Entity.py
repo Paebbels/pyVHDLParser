@@ -350,8 +350,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			(SpaceToken,           " "),
 			(WordToken,            "entity"),
 			(SpaceToken,           " "),
-			(WordToken,            "a"),
+			(WordToken,            "e"),
 			(CharacterToken,       ";"),
+			(LinebreakToken,       None),
 			(EndOfDocumentToken,   None)
 		]
 	)
