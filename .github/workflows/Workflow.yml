@@ -45,6 +45,7 @@ jobs:
           python -m unittest tests.unit.SimpleBlockSequences.Process
           python -m unittest tests.unit.SimpleBlockSequences.Signal
           python -m unittest tests.unit.SimpleBlockSequences.Use
+          python -m unittest tests.unit.DocumentModel.Context
 
       - name: Collect coverage
         if: ${{ always() }}
@@ -65,6 +66,7 @@ jobs:
           coverage run --append -m unittest tests.unit.SimpleBlockSequences.Process
           coverage run --append -m unittest tests.unit.SimpleBlockSequences.Signal
           coverage run --append -m unittest tests.unit.SimpleBlockSequences.Use
+          coverage run --append -m unittest tests.unit.DocumentModel.Context
 
       - name: Report coverage
         if: ${{ always() }}

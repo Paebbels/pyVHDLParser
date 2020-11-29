@@ -70,7 +70,7 @@ class Document(DocumentModel):
 		elif isinstance(file, str):
 			self._filePath = Path(file)
 		else:
-			raise ValueError("Unsoppurted type for parameter type.")
+			raise ValueError("Unsupported type for parameter 'file'.")
 
 	def Parse(self, content=None):  # FIXME: parameter type
 		if (content is None):
@@ -87,11 +87,11 @@ class Document(DocumentModel):
 		try:
 			groups =          [group for group in vhdlGroupStream]
 		except BlockParserException as ex:
-			raise DOMParserException("Error while parsing and indexing the source code.") from ex
+			raise DOMParserException("Error while parsing and indexing the source code.", ex.Group) from ex
 		except ParserException as ex:
-			raise DOMParserException("Unexpected ParserException.") from ex
+			raise DOMParserException("Unexpected ParserException.", ex.Position) from ex
 		except Exception as ex:
-			raise DOMParserException("Unexpected exception.") from ex
+			raise DOMParserException("Unexpected exception.", None) from ex
 
 		firstGroup =      groups[0]
 		lastGroup =       groups[-1]

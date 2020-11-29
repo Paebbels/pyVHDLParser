@@ -46,7 +46,7 @@ class CodeDOMHandlers:
 		file =         Path(args.Filename)
 
 		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
+			print("File '{0!s}' does not exist.".format(file)) # raise error
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
