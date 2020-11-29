@@ -33,7 +33,6 @@ from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Library as LibraryBlocks, Use as UseBlocks
 from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
-from pyVHDLParser.DocumentModel             import DOMParserException
 
 
 class Library(LibraryReferenceModel):
@@ -43,6 +42,8 @@ class Library(LibraryReferenceModel):
 
 	@classmethod
 	def stateParse(cls, currentNode, group):
+		from pyVHDLParser.DocumentModel import DOMParserException
+
 		for block in group:
 			if isinstance(block, LibraryBlocks.StartBlock):
 				pass
@@ -51,6 +52,8 @@ class Library(LibraryReferenceModel):
 				library = cls(libraryName)
 				print("Found library '{0}'. Adding to current node '{1!s}'.".format(libraryName, currentNode))
 				currentNode.AddLibrary(library)
+			elif isinstance(block, LibraryBlocks.DelimiterBlock):
+				pass
 			elif isinstance(block, LibraryBlocks.EndBlock):
 				return
 			else:
@@ -71,6 +74,8 @@ class Use(UseModel):
 
 	@classmethod
 	def stateParse(cls, currentNode, group):
+		from pyVHDLParser.DocumentModel import DOMParserException
+
 		for block in group:
 			if isinstance(block, UseBlocks.StartBlock):
 				pass
@@ -82,14 +87,14 @@ class Use(UseModel):
 						libraryName = token.Value
 						break
 				else:
-					raise BlockParserException("", None)
+					raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 				for token in tokenIterator:
 					if isinstance(token, IdentifierToken):
 						packageName = token.Value
 						break
 				else:
-					raise BlockParserException("", None)
+					raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 				for token in tokenIterator:
 					if isinstance(token, IdentifierToken):
@@ -99,7 +104,7 @@ class Use(UseModel):
 						objectName = "ALL"
 						break
 				else:
-					raise BlockParserException("", None)
+					raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 				use = cls(libraryName, packageName, objectName)
 				currentNode.AddUse(use)

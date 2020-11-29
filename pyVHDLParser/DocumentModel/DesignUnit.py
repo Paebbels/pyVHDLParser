@@ -38,12 +38,13 @@ from pyVHDLParser.Blocks.List               import GenericList as GenericListBlo
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock, PackageBody as PackageBodyBlock
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks, Architecture as ArchitectureBlocks
+from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
 from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel, Architecture as ArchitectureModelModel
 from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel, PackageBody as PackageBodyVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
-from pyVHDLParser.DocumentModel             import GroupToModelParser
 
+DEBUG = True
 
 class Entity(EntityVHDLModel):
 	def __init__(self, entityName):
@@ -59,7 +60,7 @@ class Entity(EntityVHDLModel):
 						entityName = token.Value
 						break
 				else:
-					raise BlockParserException("EntityName not found.", None)
+					raise BlockParserException("EntityName not found.", None)  # FIXME: change to DOMParserException
 
 				entity = cls(entityName)
 				entity.AddLibraryReferences(document.Libraries)
@@ -103,7 +104,7 @@ class Entity(EntityVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 
@@ -118,7 +119,7 @@ class Entity(EntityVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -132,7 +133,7 @@ class Entity(EntityVHDLModel):
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 
@@ -147,7 +148,7 @@ class Entity(EntityVHDLModel):
 				portName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.CurrentNode.AddPort(portName)
 
@@ -215,19 +216,20 @@ class Architecture(ArchitectureModelModel):
 
 		tokenIterator = iter(parserState)
 
+		# iterate architetures NameBlock to find the architecture name
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				architectureName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		for token in tokenIterator:
 			if isinstance(token, IdentifierToken):
 				entityName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		oldNode = parserState.CurrentNode
 		architecture = cls(architectureName, entityName)
@@ -284,9 +286,9 @@ class Package(PackageVHDLModel):
 			elif isinstance(block, PackageBlock.EndBlock):
 				break
 			else:
-				raise BlockParserException("Block '{0!r}' not supported in a package.".format(block), block)
+				raise BlockParserException("Block '{0!r}' not supported in a package.".format(block), block)  # FIXME: change to DOMParserException
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -301,7 +303,7 @@ class Package(PackageVHDLModel):
 				packageName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		oldNode = parserState.CurrentNode
 		package = cls(packageName)
@@ -324,7 +326,7 @@ class Package(PackageVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 
@@ -338,7 +340,7 @@ class Package(PackageVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -415,9 +417,9 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, PackageBodyBlock.EndBlock):
 				break
 			else:
-				raise BlockParserException("Block '{0!r}' not supported in a package body.".format(block), block)
+				raise BlockParserException("Block '{0!r}' not supported in a package body.".format(block), block)  # FIXME: change to DOMParserException
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 		# parserState.CurrentBlock = None
@@ -433,7 +435,7 @@ class PackageBody(PackageBodyVHDLModel):
 				packageName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		oldNode = parserState.CurrentNode
 		packageBody = cls(packageName)
@@ -456,7 +458,7 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, GenericListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 
@@ -471,7 +473,7 @@ class PackageBody(PackageBodyVHDLModel):
 				genericName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
@@ -485,7 +487,7 @@ class PackageBody(PackageBodyVHDLModel):
 			elif isinstance(block, PortListBlocks.CloseBlock):
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.Pop()
 
@@ -500,7 +502,7 @@ class PackageBody(PackageBodyVHDLModel):
 				portName = token.Value
 				break
 		else:
-			raise BlockParserException("", None)
+			raise BlockParserException("", None)  # FIXME: change to DOMParserException
 
 		parserState.CurrentNode.AddPort(portName)
 

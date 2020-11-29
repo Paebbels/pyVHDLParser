@@ -28,19 +28,20 @@
 # limitations under the License.
 # ==============================================================================
 #
-from pathlib                         import Path
-from typing import List
+from pathlib                              import Path
+from typing                               import List
 
-from pydecor.decorators              import export
+from pydecor.decorators                   import export
 
-from pyVHDLParser.Base               import ParserException
+from pyVHDLParser.Base                    import ParserException
+from pyVHDLParser.Token.Parser            import Tokenizer
+from pyVHDLParser.Blocks                  import TokenToBlockParser, BlockParserException
+from pyVHDLParser.Groups                  import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
+from pyVHDLParser.Groups.Comment          import WhitespaceGroup
+from pyVHDLParser.Groups.DesignUnit       import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
+from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
+from pyVHDLParser.VHDLModel               import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference import Library, Use
-from pyVHDLParser.Token.Parser       import Tokenizer
-from pyVHDLParser.Blocks             import TokenToBlockParser
-from pyVHDLParser.Groups             import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
-from pyVHDLParser.Groups.DesignUnit  import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
-from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
-from pyVHDLParser.VHDLModel          import Document as DocumentModel
 
 __all__ = []
 __api__ = __all__
@@ -74,7 +75,8 @@ class Document(DocumentModel):
 	def Parse(self, content=None):  # FIXME: parameter type
 		if (content is None):
 			if (not self._filePath.exists()):
-				raise DOMParserException("File '{0!s}' does not exist.".format(self._filePath))
+				raise DOMParserException("File '{0!s}' does not exist.".format(self._filePath))\
+					from FileNotFoundError(str(self._filePath))
 
 			with self._filePath.open('r') as fileHandle:
 				content = fileHandle.read()
@@ -82,7 +84,15 @@ class Document(DocumentModel):
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
 		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
 		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
-		groups =          [group for group in vhdlGroupStream]
+		try:
+			groups =          [group for group in vhdlGroupStream]
+		except BlockParserException as ex:
+			raise DOMParserException("Error while parsing and indexing the source code.") from ex
+		except ParserException as ex:
+			raise DOMParserException("Unexpected ParserException.") from ex
+		except Exception as ex:
+			raise DOMParserException("Unexpected exception.") from ex
+
 		firstGroup =      groups[0]
 		lastGroup =       groups[-1]
 
@@ -113,8 +123,10 @@ class Document(DocumentModel):
 		}
 
 		for subGroup in startOfDocumentGroup.GetSubGroups():
+			if isinstance(subGroup, (WhitespaceGroup)):
+				pass
 			for group in GROUP_TO_MODEL:
-				# TODO: compare to a direct dictionar match with exception fallback on whitespace
+				# TODO: compare to a direct dictionary match with exception fallback on whitespace
 				if isinstance(subGroup, group):
 					GROUP_TO_MODEL[group].stateParse(document, subGroup)
 					break
