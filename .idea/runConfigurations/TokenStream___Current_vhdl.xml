@@ -12,8 +12,8 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Frontend.py" />
-    <option name="PARAMETERS" value="tokenize vhdl\_Current.vhdl" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pyVHDLParser/CLI/VHDLParser.py" />
+    <option name="PARAMETERS" value="token-stream vhdl\_Current.vhdl" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

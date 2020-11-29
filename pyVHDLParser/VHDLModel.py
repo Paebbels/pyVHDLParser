@@ -190,6 +190,110 @@ class Class(Enum):
 
 
 @export
+class BaseType(ModelEntity, NamedEntity):
+	def __init__(self):
+		super().__init__()
+		NamedEntity.__init__(self)
+
+
+@export
+class Type(BaseType):
+	pass
+
+@export
+class SubType(BaseType):
+	def __init__(self):
+		super().__init__()
+		self._type = None
+
+	@property
+	def Type(self):
+		return self._type
+
+
+@export
+class ScalarType(BaseType):
+	pass
+
+@export
+class CompositeType(BaseType):
+	pass
+
+@export
+class ProtectedType(BaseType):
+	pass
+
+@export
+class AccessType(BaseType):
+	pass
+
+@export
+class FileType(BaseType):
+	pass
+
+@export
+class EnumeratedType(ScalarType):
+	def __init__(self):
+		super().__init__()
+		self._elements = []
+
+	@property
+	def Elements(self):
+		return self._elements
+
+
+@export
+class IntegerType(ScalarType):
+	def __init__(self):
+		super().__init__()
+		self._leftBound = None
+		self._rightBound = None
+
+
+@export
+class RealType(ScalarType):
+	def __init__(self):
+		super().__init__()
+		self._leftBound = None
+		self._rightBound = None
+
+
+@export
+class ArrayType(CompositeType):
+	def __init__(self):
+		super().__init__()
+		self._dimensions =  []
+		self._baseType =    None
+
+
+@export
+class RecordType(BaseType):
+	def __init__(self):
+		super().__init__()
+		self._members =     []
+
+
+@export
+class RecordTypeMember(ModelEntity):
+	def __init__(self):
+		super().__init__()
+		self._name =        None
+		self._subType =     None
+
+
+@export
+class Expression:
+	pass
+
+@export
+class Range:
+	def __init__(self):
+		self._leftBound = None
+		self._rightBound = None
+		self._direction =  None
+
+
+@export
 class InterfaceItem(ModelEntity):
 	def __init__(self):
 		super().__init__()
@@ -312,6 +416,38 @@ class ParameterFileInterfaceItem(ParameterInterfaceItem):
 # 		self._init =        None
 # 		self._mode =        None
 # 		self._class =       None
+
+
+@export
+class LibraryReference(ModelEntity):
+	def __init__(self):
+		super().__init__()
+		self._library = None
+
+	@property
+	def Library(self):
+		return self._library
+
+
+@export
+class Use(ModelEntity):
+	def __init__(self):
+		super().__init__()
+		self._library = None
+		self._package = None
+		self._item =    None
+
+	@property
+	def Library(self):
+		return self._library
+
+	@property
+	def Package(self):
+		return self._package
+
+	@property
+	def Item(self):
+		return self._item
 
 
 @export
@@ -523,38 +659,6 @@ class PackageInstantiation(PrimaryUnit, Instantiation):
 
 
 @export
-class LibraryReference(ModelEntity):
-	def __init__(self):
-		super().__init__()
-		self._library = None
-
-	@property
-	def Library(self):
-		return self._library
-
-
-@export
-class Use(ModelEntity):
-	def __init__(self):
-		super().__init__()
-		self._library = None
-		self._package = None
-		self._item =    None
-
-	@property
-	def Library(self):
-		return self._library
-
-	@property
-	def Package(self):
-		return self._package
-
-	@property
-	def Item(self):
-		return self._item
-
-
-@export
 class Object(ModelEntity, NamedEntity):
 	def __init__(self):
 		super().__init__()
@@ -612,106 +716,6 @@ class Signal(Object):
 	@property
 	def DefaultExpression(self):
 		return self._defaultExpression
-
-
-@export
-class BaseType(ModelEntity, NamedEntity):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
-
-
-@export
-class Type(BaseType):
-	pass
-
-@export
-class SubType(BaseType):
-	def __init__(self):
-		super().__init__()
-		self._type = None
-
-	@property
-	def Type(self):
-		return self._type
-
-
-@export
-class ScalarType(BaseType):
-	pass
-
-@export
-class CompositeType(BaseType):
-	pass
-
-@export
-class ProtectedType(BaseType):
-	pass
-
-@export
-class AccessType(BaseType):
-	pass
-
-@export
-class FileType(BaseType):
-	pass
-
-@export
-class EnumeratedType(ScalarType):
-	def __init__(self):
-		super().__init__()
-		self._elements = []
-
-	@property
-	def Elements(self):
-		return self._elements
-
-
-@export
-class IntegerType(ScalarType):
-	def __init__(self):
-		super().__init__()
-		self._leftBound = None
-		self._rightBound = None
-
-
-@export
-class RealType(ScalarType):
-	def __init__(self):
-		super().__init__()
-		self._leftBound = None
-		self._rightBound = None
-
-
-@export
-class ArrayType(CompositeType):
-	def __init__(self):
-		super().__init__()
-		self._dimensions =  []
-		self._baseType =    None
-
-
-@export
-class RecordType(BaseType):
-	def __init__(self):
-		super().__init__()
-		self._members =     []
-
-
-@export
-class RecordTypeMember(ModelEntity):
-	def __init__(self):
-		super().__init__()
-		self._name =        None
-		self._subType =     None
-
-
-@export
-class Range:
-	def __init__(self):
-		self._leftBound = None
-		self._rightBound = None
-		self._direction =  None
 
 
 @export
