@@ -38,7 +38,7 @@ from pyVHDLParser.Token.Parser            import Tokenizer
 from pyVHDLParser.Blocks                  import TokenToBlockParser, BlockParserException
 from pyVHDLParser.Groups                  import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup
-from pyVHDLParser.Groups.DesignUnit       import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
+from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel               import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference import Library, Use
@@ -106,15 +106,17 @@ class Document(DocumentModel):
 
 	@classmethod
 	def stateParse(cls, document, startOfDocumentGroup: Group):
-		from pyVHDLParser.DocumentModel.Reference   import Library as LibraryModel, Use as UseModel
-		# from pyVHDLParser.DocumentModel.DesignUnit  import Context as ContextModel
-		from pyVHDLParser.DocumentModel.DesignUnit  import Entity as EntityModel, Architecture as ArchitectureModel
-		from pyVHDLParser.DocumentModel.DesignUnit  import Package as PackageModel, PackageBody as PackageBodyModel
+		from pyVHDLParser.DocumentModel.Reference               import Library as LibraryModel, Use as UseModel
+		from pyVHDLParser.DocumentModel.DesignUnit.Context      import Context as ContextModel
+		from pyVHDLParser.DocumentModel.DesignUnit.Entity       import Entity as EntityModel
+		from pyVHDLParser.DocumentModel.DesignUnit.Architecture import Architecture as ArchitectureModel
+		from pyVHDLParser.DocumentModel.DesignUnit.Package      import Package as PackageModel
+		from pyVHDLParser.DocumentModel.DesignUnit.PackageBody  import PackageBody as PackageBodyModel
 
 		GROUP_TO_MODEL = {
 			LibraryGroup:       LibraryModel,
 			UseGroup:           UseModel,
-			# ContextGroup:       ContextModel,
+			ContextGroup:       ContextModel,
 			EntityGroup:        EntityModel,
 			ArchitectureGroup:  ArchitectureModel,
 			PackageGroup:       PackageModel,
@@ -144,6 +146,9 @@ class Document(DocumentModel):
 	@property
 	def Uses(self):
 		return self.__uses
+
+	def AddContext(self, context):  # FIXME: parameter type
+		self._contexts.append(context)
 
 	def AddEntity(self, entity):  # FIXME: parameter type
 		self._entities.append(entity)

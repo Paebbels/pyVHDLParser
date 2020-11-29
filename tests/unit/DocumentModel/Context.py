@@ -29,7 +29,7 @@ class Context(TestCase):
 
 		self.assertTrue(len(document.Architectures) == 0,   "Document contains unexpected architectures.")
 		self.assertTrue(len(document.Configurations) == 0,  "Document contains unexpected configurations.")
-#		self.assertTrue(len(document.Contexts) == 1,        "Document doesn't contain the expected context.")
+		self.assertTrue(len(document.Contexts) == 1,        "Document doesn't contain the expected context.")
 		self.assertTrue(len(document.Entities) == 0,        "Document contains unexpected entities.")
 		self.assertTrue(len(document.Libraries) == 0,       "Document contains unexpected libraries.")
 		self.assertTrue(len(document.PackageBodies) == 0,   "Document contains unexpected packageBodies.")
