@@ -32,39 +32,39 @@ jobs:
         run: |
           python -m unittest tests.unit.Tokenizer.Tokens
           python -m unittest tests.unit.SimpleBlockSequences.Architecture
-          python -m unittest tests.unit.SimpleBlockSequencesAssert
-          python -m unittest tests.unit.SimpleBlockSequencesConstant
-          python -m unittest tests.unit.SimpleBlockSequencesContext
-          python -m unittest tests.unit.SimpleBlockSequencesEntity
-          python -m unittest tests.unit.SimpleBlockSequencesFunction
-          python -m unittest tests.unit.SimpleBlockSequencesLibrary
-          python -m unittest tests.unit.SimpleBlockSequencesPackage
-          python -m unittest tests.unit.SimpleBlockSequencesPackageBody
-          python -m unittest tests.unit.SimpleBlockSequencesPortList
-          python -m unittest tests.unit.SimpleBlockSequencesProcedure
-          python -m unittest tests.unit.SimpleBlockSequencesProcess
-          python -m unittest tests.unit.SimpleBlockSequencesSignal
-          python -m unittest tests.unit.SimpleBlockSequencesUse
+          python -m unittest tests.unit.SimpleBlockSequences.Assert
+          python -m unittest tests.unit.SimpleBlockSequences.Constant
+          python -m unittest tests.unit.SimpleBlockSequences.Context
+          python -m unittest tests.unit.SimpleBlockSequences.Entity
+          python -m unittest tests.unit.SimpleBlockSequences.Function
+          python -m unittest tests.unit.SimpleBlockSequences.Library
+          python -m unittest tests.unit.SimpleBlockSequences.Package
+          python -m unittest tests.unit.SimpleBlockSequences.PackageBody
+          python -m unittest tests.unit.SimpleBlockSequences.PortList
+          python -m unittest tests.unit.SimpleBlockSequences.Procedure
+          python -m unittest tests.unit.SimpleBlockSequences.Process
+          python -m unittest tests.unit.SimpleBlockSequences.Signal
+          python -m unittest tests.unit.SimpleBlockSequences.Use
 
       - name: Collect coverage
         if: ${{ always() }}
 #        run: coverage run -m unittest discover tests/unit *.py
         run: |
           coverage run -m unittest tests.unit.Tokenizer.Tokens
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesArchitecture
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesAssert
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesConstant
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesContext
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesEntity
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesFunction
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesLibrary
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesPackage
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesPackageBody
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesPortList
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesProcedure
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesProcess
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesSignal
-          coverage run --append -m unittest tests.unit.SimpleBlockSequencesUse
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Architecture
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Assert
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Constant
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Context
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Entity
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Function
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Library
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Package
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.PackageBody
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.PortList
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Procedure
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Process
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Signal
+          coverage run --append -m unittest tests.unit.SimpleBlockSequences.Use
 
       - name: Report coverage
         if: ${{ always() }}
