@@ -376,7 +376,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking, BlockSequenceWithParserError):
 	code = dedent("""\
 		entity e is
 			(
@@ -435,7 +435,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		entity e is
 			generic
@@ -494,7 +494,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		entity e is
 			generic (
@@ -554,7 +554,7 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(Te
 	)
 
 
-class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking, BlockSequenceWithParserError):
 	code = dedent("""\
 		entity e is
 			gen (

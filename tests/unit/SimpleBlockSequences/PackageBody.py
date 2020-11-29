@@ -303,7 +303,7 @@ class SimplePackageBody_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingT
 	)
 
 
-class SimplePackageBody_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+class SimplePackageBody_AllLine_LongForm(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence):
 	code = "package\nbody\np\nis\nend\npackage\nbody\np\n;\n"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),

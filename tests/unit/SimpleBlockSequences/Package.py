@@ -376,7 +376,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			(
@@ -425,7 +425,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			generic
@@ -474,7 +474,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			generic (
@@ -524,7 +524,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking):
 	code = dedent("""\
 		package p is
 			gen (
