@@ -37,7 +37,7 @@ from pyVHDLParser.Base               import ParserException
 from pyVHDLParser.DocumentModel.Reference import Library, Use
 from pyVHDLParser.Token.Parser       import Tokenizer
 from pyVHDLParser.Blocks             import TokenToBlockParser
-from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
+from pyVHDLParser.Groups             import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
 from pyVHDLParser.Groups.DesignUnit  import EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference   import LibraryGroup, UseGroup
 from pyVHDLParser.VHDLModel          import Document as DocumentModel

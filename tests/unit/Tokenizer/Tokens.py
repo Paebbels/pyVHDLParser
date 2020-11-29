@@ -4,7 +4,7 @@ from pyVHDLParser.Token           import StartOfDocumentToken, WordToken, SpaceT
 from pyVHDLParser.Token.Keywords  import EntityKeyword
 from pyVHDLParser.Token.Parser    import Tokenizer, TokenizerException
 
-from tests.unit                   import ExpectedDataMixin, ExpectedTokenStream, TokenSequence
+from tests.unit.Common            import ExpectedDataMixin, ExpectedTokenStream, TokenSequence
 
 
 if __name__ == "__main__":

@@ -28,6 +28,13 @@ from pathlib import Path
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
+from ..Base                   import ParserException
+from ..Token                  import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from ..Token.Parser           import Tokenizer
+from ..Token.Keywords         import BoundaryToken, EndToken, KeywordToken, DelimiterToken
+from ..Blocks                 import TokenToBlockParser
+from ..Groups                 import BlockToGroupParser
+
 from .                        import FrontEndProtocol, WithTokensAttribute, WithBlocksAttribute, FilenameAttribute
 
 
@@ -50,29 +57,34 @@ class GroupStreamHandlers:
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
+		buffered = True
+		if buffered:
+			self.WriteVerbose("Reading and buffering tokens...")
+			try:
+				tokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
+			except ParserException as ex:
+				self.WriteError("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			except NotImplementedError as ex:
+				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 
-		from pyVHDLParser.Base import ParserException
-		from pyVHDLParser.Token import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-		from pyVHDLParser.Token.Keywords import BoundaryToken, EndToken, KeywordToken, DelimiterToken
-		from pyVHDLParser.Token.Parser import Tokenizer
-		from pyVHDLParser.Blocks import TokenToBlockParser
-		from pyVHDLParser.Groups import BlockToGroupParser
+			self.WriteVerbose("Reading and buffering blocks...")
+			try:
+				blockStream = [block for block in TokenToBlockParser.Transform(tokenStream)]
+			except ParserException as ex:
+				print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			except NotImplementedError as ex:
+				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+		else:
+			tokenStream = Tokenizer.GetVHDLTokenizer(content)
+			blockStream = TokenToBlockParser.Transform(tokenStream)
 
-		print("{RED}{line}{NOCOLOR}".format(line="=" * 160, **self.Foreground))
+		self.WriteVerbose("Transforming blocks to groups...")
+		groupStream = BlockToGroupParser.Transform(blockStream)
+
 		try:
-			vhdlTokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
-			vhdlBlockStream = [block for block in TokenToBlockParser.Transform(vhdlTokenStream)]
-		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
-
-		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
-
-		try:
-			for vhdlGroup in vhdlGroupStream:
-				print("{CYAN}{block}{NOCOLOR}".format(block=vhdlGroup, **self.Foreground))
-				for block in vhdlGroup:
+			for group in groupStream:
+				print("{CYAN}{group}{NOCOLOR}".format(group=group, **self.Foreground))
+				for block in group:
 					if isinstance(block, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
 						print("{DARK_GRAY}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
 					elif isinstance(block, (CommentToken)):

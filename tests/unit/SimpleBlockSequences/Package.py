@@ -1,5 +1,5 @@
-from textwrap import dedent
-from unittest import TestCase
+from textwrap                       import dedent
+from unittest                       import TestCase
 
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
@@ -7,7 +7,7 @@ from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, Inde
 from pyVHDLParser.Blocks.List       import GenericList
 from pyVHDLParser.Blocks.Sequential import Package
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, BlockSequenceWithParserError, TokenLinking
+from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, BlockSequenceWithParserError, TokenLinking
 
 
 if __name__ == "__main__":
@@ -376,7 +376,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = dedent("""\
 		package p is
 			(
@@ -425,7 +425,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = dedent("""\
 		package p is
 			generic
@@ -474,7 +474,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = dedent("""\
 		package p is
 			generic (
@@ -524,7 +524,7 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(T
 	)
 
 
-class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking):
+class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = dedent("""\
 		package p is
 			gen (

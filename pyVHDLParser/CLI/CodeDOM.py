@@ -29,6 +29,7 @@ from pathlib import Path
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
 from ..Base                   import ParserException
+from ..DocumentModel          import Document
 
 from .                        import FrontEndProtocol, FilenameAttribute
 
@@ -49,8 +50,6 @@ class CodeDOMHandlers:
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
-
-		from pyVHDLParser.DocumentModel import Document, DOMParserException, DOMParserException
 
 		try:
 			document = Document(file)

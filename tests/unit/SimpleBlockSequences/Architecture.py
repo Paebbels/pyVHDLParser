@@ -1,10 +1,11 @@
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
+from unittest                       import TestCase
+
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock, IndentationBlock, LinebreakBlock
 from pyVHDLParser.Blocks.Structural import Architecture
-from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
-from unittest   import TestCase
-from tests.unit import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
+
+from tests.unit.Common              import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
 
 if __name__ == "__main__":

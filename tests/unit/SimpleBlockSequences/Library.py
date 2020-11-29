@@ -1,10 +1,10 @@
-from unittest import TestCase
+from unittest                       import TestCase
 
-from pyVHDLParser.Blocks.Reference import Use, Library
+from pyVHDLParser.Blocks.Reference  import Library
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
 
 
 if __name__ == "__main__":

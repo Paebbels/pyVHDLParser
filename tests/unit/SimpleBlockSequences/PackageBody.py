@@ -1,5 +1,5 @@
-from textwrap import dedent
-from unittest import TestCase
+from textwrap                       import dedent
+from unittest                       import TestCase
 
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
@@ -7,7 +7,7 @@ from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, Inde
 from pyVHDLParser.Blocks.List       import GenericList
 from pyVHDLParser.Blocks.Sequential import PackageBody
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, TokenLinking, BlockSequenceWithParserError
+from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream, TokenLinking, BlockSequenceWithParserError
 
 
 if __name__ == "__main__":
@@ -303,7 +303,7 @@ class SimplePackageBody_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingT
 	)
 
 
-class SimplePackageBody_AllLine_LongForm(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence):
+class SimplePackageBody_AllLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package\nbody\np\nis\nend\npackage\nbody\np\n;\n"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),

@@ -1,11 +1,11 @@
-from unittest import TestCase
+from unittest                       import TestCase
 
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import WhitespaceBlock
-from pyVHDLParser.Blocks.Sequential import Package, Procedure
+from pyVHDLParser.Blocks.Sequential import Package, Function
 
-from tests.unit                     import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
+from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
 
 
 if __name__ == "__main__":
@@ -17,8 +17,8 @@ if __name__ == "__main__":
 def setUpModule():
 	i = Initializer()
 
-class SimpleProcedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = "package p is procedure p; end;"
+class SimpleFunctionInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+	code = "package p is function f return bit; end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
@@ -27,9 +27,13 @@ class SimpleProcedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, 
 			(SpaceToken,           " "),
 			(WordToken,            "is"),
 			(SpaceToken,           " "),
-			(WordToken,            "procedure"),
+			(WordToken,            "function"),
 			(SpaceToken,           " "),
-			(WordToken,            "p"),
+			(WordToken,            "f"),
+			(SpaceToken,           " "),
+			(WordToken,            "return"),
+			(SpaceToken,           " "),
+			(WordToken,            "bit"),
 			(CharacterToken,       ";"),
 			(SpaceToken,           " "),
 			(WordToken,            "end"),
@@ -38,12 +42,13 @@ class SimpleProcedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, 
 		]
 	)
 	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock, None),           #
-			(Package.NameBlock,    "package p is"), # package pis
-			(WhitespaceBlock,      " "),            #
-			(Procedure.NameBlock,  "procedure p;"),
+		[ (StartOfDocumentBlock,     None),           #
+			(Package.NameBlock,        "package p is"), # package pis
 			(WhitespaceBlock,          " "),            #
-			(Package.EndBlock,     "end;"),         # end;
-			(EndOfDocumentBlock,   None)            #
+			(Function.NameBlock,       "function f "),
+			(Function.ReturnTypeBlock, "return bit;"),
+			(WhitespaceBlock,          " "),            #
+			(Package.EndBlock,         "end;"),         # end;
+			(EndOfDocumentBlock,       None)            #
 		]
 	)

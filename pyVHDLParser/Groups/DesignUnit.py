@@ -86,16 +86,16 @@ class ContextGroup(Group):
 			parserState.BlockMarker = None
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
-			parserState.PushState = WhitespaceGroup.stateParse
-			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
+			parserState.PushState =   WhitespaceGroup.stateParse
+			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
+			parserState.ReIssue =     True
 			return
 		elif isinstance(currentBlock, CommentBlock):
-			parserState.PushState = CommentGroup.stateParse
-			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
+			parserState.PushState =   CommentGroup.stateParse
+			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
+			parserState.ReIssue =     True
 			return
 		else:
 			for block in cls.SIMPLE_BLOCKS:

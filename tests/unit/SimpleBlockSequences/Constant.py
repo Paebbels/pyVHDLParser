@@ -1,11 +1,12 @@
-from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from pyVHDLParser.Blocks.Common import WhitespaceBlock, IndentationBlock, LinebreakBlock
-from pyVHDLParser.Blocks.Reporting import Assert
+from unittest                       import TestCase
+
+from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
+from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Object     import Constant
 from pyVHDLParser.Blocks.Structural import Architecture
-from pyVHDLParser.Token import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, \
-	LinebreakToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken, StringLiteralToken
-from unittest   import TestCase
-from tests.unit import Result, Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequence
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, IntegerLiteralToken
+
+from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
 
 if __name__ == "__main__":
@@ -18,8 +19,8 @@ def setUpModule():
 	Initializer()
 
 
-class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence):
-	code = "architecture a of e is begin assert true report \"error\"; end;"
+class SimpleConstantInArchitecture_OneLine(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
+	code = "architecture a of e is constant c : bit := 0; begin end;"
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
@@ -32,16 +33,20 @@ class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin,
 			(SpaceToken,           " "),
 			(WordToken,            "is"),
 			(SpaceToken,           " "),
-			(WordToken,            "begin"),
+			(WordToken,            "constant"),
 			(SpaceToken,           " "),
-			(WordToken,            "assert"),
+			(WordToken,            "c"),
 			(SpaceToken,           " "),
-			(WordToken,            "true"),
+			(CharacterToken,       ":"),
 			(SpaceToken,           " "),
-			(WordToken,            "report"),
+			(WordToken,            "bit"),
 			(SpaceToken,           " "),
-			(StringLiteralToken,   "error"),
+			(CharacterToken,       ":="),
+			(SpaceToken,           " "),
+			(IntegerLiteralToken,  "0"),
 			(CharacterToken,       ";"),
+			(SpaceToken,           " "),
+			(WordToken,            "begin"),
 			(SpaceToken,           " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
@@ -52,9 +57,12 @@ class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin,
 		[ (StartOfDocumentBlock,    None),
 			(Architecture.NameBlock,  "architecture a of e is"),
 			(WhitespaceBlock,         " "),
+			(Constant.ConstantDeclarationBlock, "constant c : bit :="),
+			(Constant.ConstantDeclarationDefaultExpressionBlock, " 0"),
+			(Constant.ConstantDeclarationEndMarkerBlock,         ";"),
+			(WhitespaceBlock,         " "),
 			(Architecture.BeginBlock, "begin"),
 			(WhitespaceBlock,         " "),
-			(Assert.AssertBlock,      "assert true report \"error\";"),
 			(Architecture.EndBlock,   "end;"),
 			(EndOfDocumentBlock,      None)
 		]

@@ -37,6 +37,8 @@ from pyVHDLParser.Blocks              import MetaBlock
 
 from pyVHDLParser.CLI.Token           import TokenStreamHandlers
 from pyVHDLParser.CLI.Block           import BlockStreamHandlers
+from pyVHDLParser.CLI.Group           import GroupStreamHandlers
+from pyVHDLParser.CLI.CodeDOM         import CodeDOMHandlers
 
 
 __author__ =      "Patrick Lehmann"
@@ -65,7 +67,7 @@ def printImportError(ex):
 	exit(1)
 
 
-class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers):
+class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)
