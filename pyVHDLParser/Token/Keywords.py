@@ -331,7 +331,7 @@ class SignalAssociationKeyword(AssociationKeyword):
 
 @export
 class KeywordToken(VHDLToken):
-	__KEYWORD__ = None
+	__KEYWORD__ : str
 
 	def __init__(self, wordToken: WordToken):
 		if (not (isinstance(wordToken, WordToken) and (wordToken <= self.__KEYWORD__))):

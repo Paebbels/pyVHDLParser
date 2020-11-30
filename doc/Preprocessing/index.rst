@@ -1,15 +1,13 @@
 0. Pass - Preprocessing
 #######################
 
-.. todo::
+Currently, pyVHDLParser doesn't implement any pre-processing steps. It accepts
+either an input filename or a string as content.
 
-   Explain main steps:
 
-   * file reading / encoding
+.. rubric:: Possible Use Cases
 
-.. todo::
+The following pre-processing steps could be envisions:
 
-   Possible preprocessinghs:
-
-   * conditional analysis (new since VHDL-2019)
-   * file decryption
+* Conditional analysis (new since VHDL-2019)
+* File decryption according to IEEE Std. 1735-2014

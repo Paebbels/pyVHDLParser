@@ -36,7 +36,7 @@ from pydecor.decorators                   import export
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer
 from pyVHDLParser.Blocks                  import TokenToBlockParser, BlockParserException
-from pyVHDLParser.Groups                  import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group
+from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group, GroupParserException
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup
 from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
@@ -88,6 +88,8 @@ class Document(DocumentModel):
 			groups =          [group for group in vhdlGroupStream]
 		except BlockParserException as ex:
 			raise DOMParserException("Error while parsing and indexing the source code.", ex.Group) from ex
+		except GroupParserException as ex:
+			raise DOMParserException("Unexpected ParserException.", ex.Block) from ex
 		except ParserException as ex:
 			raise DOMParserException("Unexpected ParserException.", ex.Position) from ex
 		except Exception as ex:

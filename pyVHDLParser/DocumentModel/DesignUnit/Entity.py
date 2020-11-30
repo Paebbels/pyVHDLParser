@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pydecor                                import export
 from typing                                 import List
 
 import pyVHDLParser.Blocks.InterfaceObject
@@ -42,8 +43,12 @@ from pyVHDLParser.Groups.List               import GenericListGroup, PortListGro
 from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
+__all__ = []
+__api__ = __all__
+
 DEBUG = True
 
+@export
 class Entity(EntityVHDLModel):
 	def __init__(self, entityName):
 		super().__init__()

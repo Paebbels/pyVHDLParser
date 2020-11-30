@@ -46,7 +46,7 @@ __copyright__ =   "Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany\n" 
                   "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __maintainer__ =  "Patrick Lehmann"
 __email__ =       "Patrick.Lehmann@plc2.de"
-__version__ =     "0.5.4"
+__version__ =     "0.6.0"
 __status__ =      "Alpha"
 __license__ =     "Apache License 2.0"
 __api__ = [
@@ -177,9 +177,9 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 		self.exit()
 
 	# ----------------------------------------------------------------------------
-	# create the sub-parser for the "info" command
+	# create the sub-parser for the "version" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("info", help="Display tool and version information.")
+	@CommandAttribute("version", help="Display tool and version information.")
 	def HandleInfo(self, args):
 		self.PrintHeadline()
 

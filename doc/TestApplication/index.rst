@@ -1,8 +1,10 @@
 Test Applications
 #################
 
-The repository contains a Python test application called ``Frontend.py``.
+The pyVHDLParser package comes with an executable registered by pip in the
+search path. ``VHDLParser`` is a wrapper for ``pyVHDLParser.CLI.VHDLParser:main``.
+
 
 .. toctree::
 
-   Frontend
+   VHDLParser

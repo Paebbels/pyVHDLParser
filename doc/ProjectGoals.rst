@@ -23,10 +23,10 @@ In contrast to ordinary parsers, pyVHDLParser preserves cases, whitespaces and
 comments.
 
 The finally generated Code-DOM offers an API for single file introspections. It
-can be used for static documentation generation or to do rule based coding style
-checks.
+can be used for static documentation generation or rule-based coding style
+checking.
 
-When multiple Code-DOMs are combined to a project, a Generic VHDL Language Model
+When multiple Code-DOMs are combined to a project, a *Generic VHDL Language Model*
 can be assembled. It's possible to implement two model flavors for simulation
 (full model) and synthesis (limited model). With such information, a
 documentation with detailed type information and cross-references can be

@@ -16,30 +16,30 @@ streaming-parser implemented with Python generators.
 
 0. VHDL file pre-processing - needed for tool directives:
 
-   * :fa:`square-o` file encryption
-   * :fa:`square-o` conditional analysis (new since VHDL-2019)
+   * :fa:`square-o` File decryption
+   * :fa:`square-o` Conditional analysis (new since VHDL-2019)
 
 1. Token generation
 
-   * :fa:`check-square-o` slice text file into character groups (tokens/words)
-   * :fa:`check-square-o` preserve whitespace (space, tab, linebreak)
-   * :fa:`check-square-o` preserved comments (single-/multi-line comments)
+   * :fa:`check-square-o` Slice a text file into character groups (tokens/words)
+   * :fa:`check-square-o` Preserve whitespace (space, tab, linebreak)
+   * :fa:`check-square-o` Preserved comments (single-/multi-line comments)
 
 2. Block generation
 
-   * :fa:`check-square-o` assemble tokens in blocks (snippets of a statements) for faster document
+   * :fa:`check-square-o` Assemble tokens in blocks (snippets of a statements) for faster document
      navigation
-   * :fa:`check-square-o` exchange simple tokens (e.g. string token) with specific tokens (e.g.
-     identifier)
+   * :fa:`check-square-o` Exchange simple tokens (e.g. string token) with specific tokens (e.g.
+     identifier or keyword)
 
 3. Group generation
 
-   * :fa:`check-square-o` assemble blocks in groups (statements)
+   * :fa:`check-square-o` Assemble blocks in groups (statements)
 
 4. Code-DOM generation
 
-   * :fa:`square-o` read stream of groups to assemble the Code-DOM
-   * :fa:`square-o` extract information from a group, their blocks or again their specific tokens
+   * :fa:`square-o` Consume a stream of groups to assemble the Code-DOM
+   * :fa:`square-o` Extract information from a group, their blocks or their specific tokens
 
 5. Comment annotation
 
@@ -81,12 +81,13 @@ instances of a class can be created by calling the class and implicitly
 executing its initializer method ``__init__`` or by calling a classmethod to
 help constructing that instance.
 
+
 Inheritance
 ===========
 
 pyVHDLParser makes heavy use of inheritance to share implementations and to
 allow other classes or a user to modify the behavior of all derived classes by
-modifying a single point.
+modifying a single source.
 
 
 Multiple Inheritance (Mixins)
@@ -110,12 +111,14 @@ Overwriting
 
    Concepts -> OOP -> Overwriting
 
+
 Overloading
 ===========
 
 .. todo::
 
    Concepts -> OOP -> Overloading
+
 
 Meta-Classes
 ============
@@ -124,12 +127,14 @@ Some additional behaviour can be easier implemented by modifying the class
 constructing other classes. Python calls this a meta-class. One prominent
 example is :class:`type`.
 
+
 Type Annotations
 ================
 
 pyVHDLParser uses type annotations in method parameter definitions and in
 class field declarations to give hints in IDEs and documentation, what objects
 of which types are expected.
+
 
 
 Double-Linked Lists
@@ -142,8 +147,8 @@ order-preserving :class:`list` or :class:`OrderedDict`.
 
 Many parts in pyVHDLParser form a chain of double-linked objects like tokens,
 blocks and groups. These object chains (or linked lists) can easily be
-:term:`iterated <iterator>`. Iterators can consume such  and reemit the content
-in a modified way.
+:term:`iterated <iterator>`. Iterators can consume such linked lists and reemit
+the content in a modified way.
 
 More over, such iterators can be packaged into Python generators.
 
@@ -154,10 +159,10 @@ Iterators and generators can be used in Python's ``for`` [1]_ loops.
 Python iterators
 ****************
 
-A Python iterable is an object implementing a ``__iter__`` method returning an
-iterator. The iterator implements a ``__next__`` method. Usually, the iterator
-has some internal state, so it can compute the next element. At the end of an
-iteration, :exec:`StopIteration` is raised.
+A Python iterable is an object implementing an ``__iter__`` method returning an
+iterator. The iterator implements a ``__next__`` method to return the next
+element in line. Usually, the iterator has some internal state, so it can compute
+the next element. At the end of an iteration, :exec:`StopIteration` is raised.
 
 .. code-block:: Python
 
@@ -214,12 +219,14 @@ Parallelism
    Describe how to parallelize on multiple cores.
 
 
+
 Token replacement
 *****************
 
 .. todo::
 
    Describe why and how tokens are replaced. Describe why this is not corrupting data.
+
 
 
 Classmethods as States
@@ -229,12 +236,16 @@ Classmethods as States
 
    Describe why pyVHDLParser uses classmethods to represent parser states.
 
+
+
 Parser State Machine
 ********************
 
 .. todo::
 
    Describe how the parser works in pyVHDLParser.
+
+
 
 Code-DOM
 ********

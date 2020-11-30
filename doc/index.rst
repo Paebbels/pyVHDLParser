@@ -4,52 +4,28 @@
 
    \part{Introduction}
 
---------------------------------------------------------------------------------
-
 .. only:: html
 
-   |SHIELD:svg:GH-Logo|
-
-.. #
-   |SHIELD:svg:Travis-CI|
-   |SHIELD:svg:AppVeyor|
-   |SHIELD:svg:Landscape|
-   |SHIELD:svg:Requirements|
-   |br|
-   |SHIELD:svg:Gitter:PoC|
-   |SHIELD:svg:Gitter:News|
-   |br|
-   |SHIELD:svg:GH-Tag|
-   |SHIELD:svg:GH-Release|
-   |SHIELD:svg:License-Code|
-   |SHIELD:svg:License-Docs|
-   |hr|
+   |SHIELD:svg:pyVHDLParser-github| |SHIELD:svg:pyVHDLParser-tag| |SHIELD:svg:pyVHDLParser-release| |SHIELD:svg:pyVHDLParser-date| |br|
+   |SHIELD:svg:pyVHDLParser-lib-status| |SHIELD:svg:pyVHDLParser-req-status| |SHIELD:svg:pyVHDLParser-lib-dep| |br|
+   |SHIELD:svg:pyVHDLParser-travis| |SHIELD:svg:pyVHDLParser-pypi-tag| |SHIELD:svg:pyVHDLParser-pypi-status| |SHIELD:svg:pyVHDLParser-pypi-python| |br|
+   |SHIELD:svg:pyVHDLParser-codacy-quality| |SHIELD:svg:pyVHDLParser-codacy-coverage| |SHIELD:svg:pyVHDLParser-codecov-coverage| |SHIELD:svg:pyVHDLParser-lib-rank| |br|
+   |SHIELD:svg:pyVHDLParser-rtd| |SHIELD:svg:pyVHDLParser-license|
 
 .. only:: latex
 
-   .. image:: https://img.shields.io/badge/-VLSI--EDA/PoC-323131.png?style=flat&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABKVBMVEX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FOe9X6AAAAYnRSTlMAAQIDBAcIDA0PEBESFBUWGBkeHyEoMTIzNDU4OTw%2BP0JGWVxeX2BiY2RlZ2hvc3R1eHp%2Bio%2BXm52epKmqq62usLe5wcLDxMnQ0dLW2tvc3t%2Fh4uPo6uvs8fLz9fb3%2Bvv8%2FsuNaVkAAAF7SURBVHgBjdHZW9NAFAXwE0iElCARZCkuIotEUFyQBSJERBEILaAo6d6e%2F%2F%2BPcO58aZslD%2Fxe5mHuPfOdbzA06R1e1sn65aE3ibw5v8OBjj%2BHNHuvx5Tenp1av2bOdSJkKWKBaAmxhYiFogVoEzckw%2BModXcckryZgDigsgLLu1MVT09V1TvPwgqVAyhlinmpMjsCZWRWCsxTlAEEFIvIWKQIALdLsYaMNYqui02KPw4ynN8Um%2FAp1pGzTuEj1Ek2cmz9dogmlVsUuKXSBEUFBaoUoKihQI0iPqaQMxWvnlOsImeV4hz7FBcmMswLin0sU9tBxg61ZYw3qB25SHhyRK0xDuySX179INtfN8qjOvz5u6BNjbsAplvsbVm%2FqAQGFOMb%2B1rTULZJPnsqf%2FMC2kv2bUOYZ%2BR3lLzPr0ehPWbszITmVsn3GCqRWtVFbKZC%2Fvz45tOj1EBlBgPOCUUpOXDiIMF4%2Bzc98G%2FDQNrY1tW9Bc26v%2Fowhof6D6AkqSgsdGGuAAAAAElFTkSuQmCC
-      :target: https://www.github.com/VLSI-EDA/PoC
-      :alt: Source Code on GitHub
+   |SHIELD:png:pyVHDLParser-github| |SHIELD:png:pyVHDLParser-tag| |SHIELD:png:pyVHDLParser-release| |SHIELD:png:pyVHDLParser-date| |br|
+   |SHIELD:png:pyVHDLParser-lib-status| |SHIELD:png:pyVHDLParser-req-status| |SHIELD:png:pyVHDLParser-lib-dep| |br|
+   |SHIELD:png:pyVHDLParser-travis| |SHIELD:png:pyVHDLParser-pypi-tag| |SHIELD:png:pyVHDLParser-pypi-status| |SHIELD:png:pyVHDLParser-pypi-python| |br|
+   |SHIELD:png:pyVHDLParser-codacy-quality| |SHIELD:png:pyVHDLParser-codacy-coverage| |SHIELD:png:pyVHDLParser-codecov-coverage| |SHIELD:png:pyVHDLParser-lib-rank| |br|
+   |SHIELD:png:pyVHDLParser-rtd| |SHIELD:png:pyVHDLParser-license|
 
-.. #
-   |SHIELD:png:GH-Logo|
-   |SHIELD:png:Travis-CI|
-   |SHIELD:png:AppVeyor|
-   |SHIELD:png:Landscape|
-   |SHIELD:png:Requirements|
-   |br|
-   |SHIELD:png:Gitter:PoC|
-   |SHIELD:png:Gitter:News|
-   |br|
-   |SHIELD:png:GH-Tag|
-   |SHIELD:png:GH-Release|
-   |SHIELD:png:License-Code|
-   |SHIELD:png:License-Docs|
+--------------------------------------------------------------------------------
 
 The pyVHDLParser Documentation
 ##############################
 
-This is a token-stream based parser for VHDL-2008.
+This is a token-stream based parser for VHDL-2008 creating a document object model (DOM).
 
 .. important:: **This package requires Python 3.8+**, because it uses some of the latest Python feature for effective code writing:
 
@@ -64,21 +40,22 @@ Main Goals
 
 * **Parsing**
 
-  * slice an input document into **tokens** and text **blocks** which are categorized
-  * preserve case, whitespace and comments
-  * recover on parsing errors
-  * good error reporting / throw exceptions
+  * Slice an input document into **tokens** and text **blocks** which are categorized in **groups** for fast indexing
+  * Preserve case, whitespace and comments
+  * Recover on parsing errors
+  * Good error reporting / throw exceptions
 
 * **Fast Processing**
 
-  * multi-pass parsing and analysis
-  * delay analysis if not needed at current pass
-  * link tokens and blocks for fast-forward scanning
+  * Multi-pass parsing and analysis
+  * Delay analysis if not needed for current pass
+  * Link tokens and blocks for fast-forward scanning (triple helix)
 
 * **Generic VHDL Language Model**
 
-  * Assemble a document-object-model (Code-DOM)
+  * Assemble a sourcecode document-object-model (Code-DOM)
   * Provide an API for code introspection
+  * Provide an API for code modification / transformation
 
 See chapter :ref:`goal` for details.
 
@@ -86,10 +63,10 @@ See chapter :ref:`goal` for details.
 Use Cases
 *********
 
-* generate :ref:`documentation <usecase-doc>` by using the fast-forward scanner
-* generate a :ref:`document <usecase-codedom>`/:ref:`language <usecase-vhdlmodel>` model by using the grouped text-block scanner
-* extract compile orders and other dependency :ref:`graphs <usecase-graphs>`
-* generate :ref:`highlighted syntax <usecase-highlight>`
+* Generate :ref:`documentation <usecase-doc>` by using the fast-forward scanner
+* Generate a :ref:`document <usecase-codedom>`/:ref:`language <usecase-vhdlmodel>` model by using the grouped text-block scanner
+* Extract compile orders and other dependency :ref:`graphs <usecase-graphs>`
+* Generate :ref:`highlighted syntax <usecase-highlight>`
 
 .. seealso::
 
@@ -98,11 +75,11 @@ Use Cases
 Parsing Approach
 ****************
 
-1. slice an input document into **tokens**
-2. assemble tokens to text **blocks** which are categorized
-3. assemble text blocks for fast-forward scanning into **groups**
-4. translate groups into a document-object-model (DOM)
-5. provide a generic VHDL language model
+1. Slice an input document into **tokens**
+2. Assemble tokens to text **blocks** which are categorized
+3. Assemble text blocks for fast-forward scanning into **groups** (indexing)
+4. Translate groups into a sourcecode document-object-model (Code-DOM)
+5. Provide a generic VHDL language model
 
 .. seealso::
 
@@ -123,6 +100,21 @@ News
 
 .. only:: html
 
+   Nov. 2020 - Test cases
+   =========================
+
+.. only:: latex
+
+   .. rubric:: Nov. 2020 - Test cases
+
+* Added testcases for Tokenizer and block generation.
+* Added first testcases for pass 4 (Code-DOM)
+* Collect code and branch coverage.
+* ``Frontend.py`` |rarr| pyVHDLParser executable installed via pip
+
+
+.. only:: html
+
    Dec. 2019 - Major reworks
    =========================
 
@@ -132,6 +124,7 @@ News
 
 * Reworked and updated documentation.
 * Implemented a new test frontend.
+
 
 .. only:: html
 
@@ -196,7 +189,7 @@ This library is licensed under **Apache License 2.0**.
    ProjectGoals
    UseCases
    Concepts
-   Installation/index
+   Installation
    TestApplication/index
 
 .. raw:: latex

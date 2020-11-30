@@ -7,97 +7,149 @@
    # Beware that `?logo=data:image/png;base64,` must also be converted to
    # percent encoding so that the URL is properly parsed.
 
-.. # Shield for a GitHub repository
-.. |SHIELD:svg:GH-Logo| image:: https://img.shields.io/badge/-Paebbels/pyVHDLParser-323131.svg?style=flat&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABKVBMVEX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FOe9X6AAAAYnRSTlMAAQIDBAcIDA0PEBESFBUWGBkeHyEoMTIzNDU4OTw%2BP0JGWVxeX2BiY2RlZ2hvc3R1eHp%2Bio%2BXm52epKmqq62usLe5wcLDxMnQ0dLW2tvc3t%2Fh4uPo6uvs8fLz9fb3%2Bvv8%2FsuNaVkAAAF7SURBVHgBjdHZW9NAFAXwE0iElCARZCkuIotEUFyQBSJERBEILaAo6d6e%2F%2F%2BPcO58aZslD%2Fxe5mHuPfOdbzA06R1e1sn65aE3ibw5v8OBjj%2BHNHuvx5Tenp1av2bOdSJkKWKBaAmxhYiFogVoEzckw%2BModXcckryZgDigsgLLu1MVT09V1TvPwgqVAyhlinmpMjsCZWRWCsxTlAEEFIvIWKQIALdLsYaMNYqui02KPw4ynN8Um%2FAp1pGzTuEj1Ek2cmz9dogmlVsUuKXSBEUFBaoUoKihQI0iPqaQMxWvnlOsImeV4hz7FBcmMswLin0sU9tBxg61ZYw3qB25SHhyRK0xDuySX179INtfN8qjOvz5u6BNjbsAplvsbVm%2FqAQGFOMb%2B1rTULZJPnsqf%2FMC2kv2bUOYZ%2BR3lLzPr0ehPWbszITmVsn3GCqRWtVFbKZC%2Fvz45tOj1EBlBgpyVHDLParserUUpOXDiIMF4%2Bzc98G%2FDQNrY1tW9Bc26v%2Fowhof6D6AkqSgsdGGuAAAAAElFTkSuQmCC
-   :target: https://www.github.com/Paebbels/pyVHDLParser
-   :alt: Source Code on GitHub
-.. |SHIELD:png:GH-Logo| image:: https://img.shields.io/badge/-Paebbels/pyVHDLParser-323131.png?style=flat&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABKVBMVEX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FOe9X6AAAAYnRSTlMAAQIDBAcIDA0PEBESFBUWGBkeHyEoMTIzNDU4OTw%2BP0JGWVxeX2BiY2RlZ2hvc3R1eHp%2Bio%2BXm52epKmqq62usLe5wcLDxMnQ0dLW2tvc3t%2Fh4uPo6uvs8fLz9fb3%2Bvv8%2FsuNaVkAAAF7SURBVHgBjdHZW9NAFAXwE0iElCARZCkuIotEUFyQBSJERBEILaAo6d6e%2F%2F%2BPcO58aZslD%2Fxe5mHuPfOdbzA06R1e1sn65aE3ibw5v8OBjj%2BHNHuvx5Tenp1av2bOdSJkKWKBaAmxhYiFogVoEzckw%2BModXcckryZgDigsgLLu1MVT09V1TvPwgqVAyhlinmpMjsCZWRWCsxTlAEEFIvIWKQIALdLsYaMNYqui02KPw4ynN8Um%2FAp1pGzTuEj1Ek2cmz9dogmlVsUuKXSBEUFBaoUoKihQI0iPqaQMxWvnlOsImeV4hz7FBcmMswLin0sU9tBxg61ZYw3qB25SHhyRK0xDuySX179INtfN8qjOvz5u6BNjbsAplvsbVm%2FqAQGFOMb%2B1rTULZJPnsqf%2FMC2kv2bUOYZ%2BR3lLzPr0ehPWbszITmVsn3GCqRWtVFbKZC%2Fvz45tOj1EBlBgpyVHDLParserUUpOXDiIMF4%2Bzc98G%2FDQNrY1tW9Bc26v%2Fowhof6D6AkqSgsdGGuAAAAAElFTkSuQmCC
-   :target: https://www.github.com/Paebbels/pyVHDLParser
-   :alt: Source Code on GitHub
+.. |SHIELD:svg:pyVHDLParser-github| image:: https://img.shields.io/badge/Paebbels-pyVHDLParser-323131?logo=github&longCache=true
+   :alt: Sourcecode on GitHub
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-github| image:: https://raster.shields.io/badge/Paebbels-pyVHDLParser-323131?logo=github&longCache=true
+   :alt: Sourcecode on GitHub
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser
 
-.. # Shield for a Travis-CI build result
-.. |SHIELD:svg:Travis-CI| image:: https://img.shields.io/travis/Paebbels/pyVHDLParser/release.svg?style=flat&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAIP0lEQVR42qVXaUyUWRaFycyP%2BTVLemaSSfrPJN3JZJKOPyY6uBLTQgGlUMVeFHuxFaioKGpcAFFQUaOigAsmo7ghikZtxZVFCCKgqOi4ICoqqLjghqjcOeem%2B5sQFZnuL3l5VV%2B9d%2B9595577iuX%2F%2FcZNWrUX7y8vMyJiYmbpk6d2pKamto5bdq0LnxuT05OPhgUFOQcOXLkP35a7%2Bvr6%2FKLnmXLlun87t27X02YMKFkzpw5va2trXL37l158OCBPHz4UEdXV5fcu3dPbt26Jdu3b%2B%2Fz8%2FNrM5vNf%2BNeAPxlIHAi06xZs7rOnj0rL168kPb2dnn8%2BLE8evToo0EgHPfv35e1a9cKQOT9LKc2m03nyMhIv%2FXr18uzZ8%2F0pDU1NXLz5k0xTzSLycs0cHibBClhBOTJkycKqKmpSZCyGkTv10N27unpqfPw4cNDSkpK5OrVqzSmAHbu3CnXr1%2BXhIQECQkNkeCQYHEkxAPQRHEmJ0taWposWbJEOjs7dX1bW5s0NjYyEtW0OXny5KGBMJlMf1ixYsUHOqYRGmPYi4qK5PLly5KUlCSLFi0S5FqCAaSutk6io6MlMzNTtmzZIkwX9zASdXV10tLSQhALaRtEHdy5iLhYrdbbP53gxo0baqy7u1tWrlxJAErA7sfdYrFYNBINZxv0XUdHh5SXl8uhQ4eMPbW1tfqZqQwODv7rF0%2F%2FPZ6GhoZ%2B5v3AgQNKqqdPnyoBly9fztMxJeSFAeDcuXN8p9Wxf%2F9%2BBfH8%2BXMFcP78eSMlWN%2F8SafDhg0zPqOmG2%2Ffvi137tzRkF%2B6dEny8vLE399fUA1y%2BvRpGtMT%2B1n8JMQWKhUVFQTKiKlzkE7XHjlyRJqbm7lWI3n06NG%2B0aNHfzvAOVDq7Obm9mcIzIbS0lK5cuWKVFVVyerVq2Xv3r2aw5kzZ0pubq6cOnWKNa8njYyKlKRkpyBlPL2yPiUlhfzQVJ04cUI2bdrE1CmI%2Bvp6Wbp06bkRI0ZYBoAA4u9JIIAxGL9jxw5GgeRjCjT8GzdulM2bN2s5btu2TcJsNgmz2yU8IkIBHz58WIm4atUq6enpoS21iagyJbTL1BEYQe8zALi7u%2BdiAxcYg8iZd4a2srJST%2B9wOMTb25tk0gqYiPLjmDRpkkYhJCRE4uPjBeUmBw8e1JJ9%2Ffo108GDGLYJJjw8XAwAY8eOzedLIuZCkoY1Tzbv2rVLEV%2B4cIE5NpSOPCHrORh%2BpoX7GDVqx5kzZ2Tfvn2yZ88eVUVKOG1zMAoRiJoBADnJpEHmiMTh5prqaimHgeLiYs2p0%2BkkETUCXt5eUD8dVDod0A7OjIhGYcGCBVJQUCBlZWVMD21yZjQ1Aj4%2BPv8DMGbMmDCemDJKR%2BPGjRNfhNgeES7hkREML0tIAfiYzWK3h6kA2TBjPUNMkPjdKgmJiRIHdXTEIV0%2B3poWdEqBrGvYs7Oz5dixY0zhfwwAULGvwsLCVMvt4XaJdcRKQlIinahTdEE60FxDyQDOl1Whsrt48WI1Ghpqkxjso3OSkpGaN2%2Be5OfnGwNiRBUlSQnMNqAScEpvi9UiMbGxgj4uqFcl2ty5c2XGjBn6vbCwkGlibbM0WWpaEdAurX0eonhLMbmjJM7JyWFZ0h4JrLYCAwM%2FIJpRsOPqAlTqHPX%2FDXKHU4T2BAYFfsAirQA%2B1HNupNo1NTeR1RzqnJrBCGVkZGiX5MO%2BsBm86evrE9wjpL%2B%2Fn6%2B1R0yfPp0cqfxICRGuDoweEKkxJiaGZaSsfvnypTK8EyLCfK4tLEClPKQ9rqFCsu45U%2FO19gODgmXm7NkQsDICpQ0dGzZsoLBRP%2FrHjx%2F%2Fb5gwnFeDkeunTJnye7J0zZo1zB1DrBtfvXql9ezp4SFubv8Ci09rmeGmQxAsNQWB2xMdajpGurmRI4Zz2KBdKiJ1gNVyLC4uztUFOR6NcJsJBMz%2FHUrwPRWQqnfy5EluplHKL0nIk%2FIdDWl%2Bjx8%2FLu%2Ffv9eajgV33rx5w9Qoy69du8Zy43qt%2B6ysLA7VDcj%2BVj09yuMbzgDBLvhb3AHuV1ZWybp168h8CpPm8O3bt4IOSSlWIwsXLmQFkB%2FMNVlNpSQXWBX8TcO9detW2b17t8yfP5%2BVwshSrlnmjoEXTwWT4moyeda0tl6mkGhIESYC4elY6zCcg%2Fe5MDhPAJZEZYSUgLORd4Cjc%2B4FoBxGjaCQogyWMEVIbYP0f%2FzMXWD8KKvV8i4gIOA8ygcLEzhQQrEwvBgdsBzt%2BSLCeJcRYYulLCvDS3eXwvFSSO4lKF4l0lCB0%2B9CNPORqgpwIq3Fw8PDirT%2F8xOuSUbTgO%2FZ2Yva6uvr0GIb0UrvoSM%2B0ZGenk6RgSL6yAQQc5y7u5ghq%2F4BARJqs1ELlAe9vb1IUTd7B%2FZ3Qaq9nHDugVI3D3YdcwWzv0Y5uqI%2FpOMKTgYbTKYexMXHSaIz6bOD94OJCDfTwT7CywrbMWz24MLbi1R8DdJ%2B5NsQJSxIxeIqCExAVFRU%2B8WLF6WosEiNhIbZ6GRIIzo2WiIiI9gvMEeqPCMFJS6DPUQGyfwNkHZAlhnmtww3DTlTkj%2FliNrPvvHFqFihmC5DfXDyP1nQAZO%2BfFIoXxDb82cdE3gwOiLELuPHxje4c%2Bi1ziZPUzxuPjTyScMcDvCBf1IKCwpBQn90UYfEo2qiYqKVjAGBAc%2B9fXxqQdL0H1V3aBFAGeqMlpnKjmgQD62UTtiy%2FSwWtmYqm5IUXKFeMM%2FsomV2u%2F3vtAEuufysByfgRJX8DshTPU2mPPy7yQBBYzGWgC%2FVkOSXWVmZZHwnSPoD%2FlOmodXSsWFjsOe%2FCAcrQqMD2awAAAAASUVORK5CYII%3D
-   :target: https://travis-ci.org/Paebbels/pyVHDLParser
-   :alt: Build status by Travis-CI
-.. |SHIELD:png:Travis-CI| image:: https://img.shields.io/travis/Paebbels/pyVHDLParser/release.png?style=flat&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAIP0lEQVR42qVXaUyUWRaFycyP%2BTVLemaSSfrPJN3JZJKOPyY6uBLTQgGlUMVeFHuxFaioKGpcAFFQUaOigAsmo7ghikZtxZVFCCKgqOi4ICoqqLjghqjcOeem%2B5sQFZnuL3l5VV%2B9d%2B9595577iuX%2F%2FcZNWrUX7y8vMyJiYmbpk6d2pKamto5bdq0LnxuT05OPhgUFOQcOXLkP35a7%2Bvr6%2FKLnmXLlun87t27X02YMKFkzpw5va2trXL37l158OCBPHz4UEdXV5fcu3dPbt26Jdu3b%2B%2Fz8%2FNrM5vNf%2BNeAPxlIHAi06xZs7rOnj0rL168kPb2dnn8%2BLE8evToo0EgHPfv35e1a9cKQOT9LKc2m03nyMhIv%2FXr18uzZ8%2F0pDU1NXLz5k0xTzSLycs0cHibBClhBOTJkycKqKmpSZCyGkTv10N27unpqfPw4cNDSkpK5OrVqzSmAHbu3CnXr1%2BXhIQECQkNkeCQYHEkxAPQRHEmJ0taWposWbJEOjs7dX1bW5s0NjYyEtW0OXny5KGBMJlMf1ixYsUHOqYRGmPYi4qK5PLly5KUlCSLFi0S5FqCAaSutk6io6MlMzNTtmzZIkwX9zASdXV10tLSQhALaRtEHdy5iLhYrdbbP53gxo0baqy7u1tWrlxJAErA7sfdYrFYNBINZxv0XUdHh5SXl8uhQ4eMPbW1tfqZqQwODv7rF0%2F%2FPZ6GhoZ%2B5v3AgQNKqqdPnyoBly9fztMxJeSFAeDcuXN8p9Wxf%2F9%2BBfH8%2BXMFcP78eSMlWN%2F8SafDhg0zPqOmG2%2Ffvi137tzRkF%2B6dEny8vLE399fUA1y%2BvRpGtMT%2B1n8JMQWKhUVFQTKiKlzkE7XHjlyRJqbm7lWI3n06NG%2B0aNHfzvAOVDq7Obm9mcIzIbS0lK5cuWKVFVVyerVq2Xv3r2aw5kzZ0pubq6cOnWKNa8njYyKlKRkpyBlPL2yPiUlhfzQVJ04cUI2bdrE1CmI%2Bvp6Wbp06bkRI0ZYBoAA4u9JIIAxGL9jxw5GgeRjCjT8GzdulM2bN2s5btu2TcJsNgmz2yU8IkIBHz58WIm4atUq6enpoS21iagyJbTL1BEYQe8zALi7u%2BdiAxcYg8iZd4a2srJST%2B9wOMTb25tk0gqYiPLjmDRpkkYhJCRE4uPjBeUmBw8e1JJ9%2Ffo108GDGLYJJjw8XAwAY8eOzedLIuZCkoY1Tzbv2rVLEV%2B4cIE5NpSOPCHrORh%2BpoX7GDVqx5kzZ2Tfvn2yZ88eVUVKOG1zMAoRiJoBADnJpEHmiMTh5prqaimHgeLiYs2p0%2BkkETUCXt5eUD8dVDod0A7OjIhGYcGCBVJQUCBlZWVMD21yZjQ1Aj4%2BPv8DMGbMmDCemDJKR%2BPGjRNfhNgeES7hkREML0tIAfiYzWK3h6kA2TBjPUNMkPjdKgmJiRIHdXTEIV0%2B3poWdEqBrGvYs7Oz5dixY0zhfwwAULGvwsLCVMvt4XaJdcRKQlIinahTdEE60FxDyQDOl1Whsrt48WI1Ghpqkxjso3OSkpGaN2%2Be5OfnGwNiRBUlSQnMNqAScEpvi9UiMbGxgj4uqFcl2ty5c2XGjBn6vbCwkGlibbM0WWpaEdAurX0eonhLMbmjJM7JyWFZ0h4JrLYCAwM%2FIJpRsOPqAlTqHPX%2FDXKHU4T2BAYFfsAirQA%2B1HNupNo1NTeR1RzqnJrBCGVkZGiX5MO%2BsBm86evrE9wjpL%2B%2Fn6%2B1R0yfPp0cqfxICRGuDoweEKkxJiaGZaSsfvnypTK8EyLCfK4tLEClPKQ9rqFCsu45U%2FO19gODgmXm7NkQsDICpQ0dGzZsoLBRP%2FrHjx%2F%2Fb5gwnFeDkeunTJnye7J0zZo1zB1DrBtfvXql9ezp4SFubv8Ci09rmeGmQxAsNQWB2xMdajpGurmRI4Zz2KBdKiJ1gNVyLC4uztUFOR6NcJsJBMz%2FHUrwPRWQqnfy5EluplHKL0nIk%2FIdDWl%2Bjx8%2FLu%2Ffv9eajgV33rx5w9Qoy69du8Zy43qt%2B6ysLA7VDcj%2BVj09yuMbzgDBLvhb3AHuV1ZWybp168h8CpPm8O3bt4IOSSlWIwsXLmQFkB%2FMNVlNpSQXWBX8TcO9detW2b17t8yfP5%2BVwshSrlnmjoEXTwWT4moyeda0tl6mkGhIESYC4elY6zCcg%2Fe5MDhPAJZEZYSUgLORd4Cjc%2B4FoBxGjaCQogyWMEVIbYP0f%2FzMXWD8KKvV8i4gIOA8ygcLEzhQQrEwvBgdsBzt%2BSLCeJcRYYulLCvDS3eXwvFSSO4lKF4l0lCB0%2B9CNPORqgpwIq3Fw8PDirT%2F8xOuSUbTgO%2FZ2Yva6uvr0GIb0UrvoSM%2B0ZGenk6RgSL6yAQQc5y7u5ghq%2F4BARJqs1ELlAe9vb1IUTd7B%2FZ3Qaq9nHDugVI3D3YdcwWzv0Y5uqI%2FpOMKTgYbTKYexMXHSaIz6bOD94OJCDfTwT7CywrbMWz24MLbi1R8DdJ%2B5NsQJSxIxeIqCExAVFRU%2B8WLF6WosEiNhIbZ6GRIIzo2WiIiI9gvMEeqPCMFJS6DPUQGyfwNkHZAlhnmtww3DTlTkj%2FliNrPvvHFqFihmC5DfXDyP1nQAZO%2BfFIoXxDb82cdE3gwOiLELuPHxje4c%2Bi1ziZPUzxuPjTyScMcDvCBf1IKCwpBQn90UYfEo2qiYqKVjAGBAc%2B9fXxqQdL0H1V3aBFAGeqMlpnKjmgQD62UTtiy%2FSwWtmYqm5IUXKFeMM%2FsomV2u%2F3vtAEuufysByfgRJX8DshTPU2mPPy7yQBBYzGWgC%2FVkOSXWVmZZHwnSPoD%2FlOmodXSsWFjsOe%2FCAcrQqMD2awAAAAASUVORK5CYII%3D
-   :target: https://travis-ci.org/Paebbels/pyVHDLParser
-   :alt: Build status by Travis-CI
+.. |SHIELD:svg:pyVHDLParser-license| image:: https://img.shields.io/badge/Apache%20License,%202.0-bd0000?longCache=true&label=license&logo=Apache&logoColor=D22128
+   :alt: License
+   :height: 22
+.. |SHIELD:png:pyVHDLParser-license| image:: https://raster.shields.io/badge/Apache%20License,%202.0-bd0000?longCache=true&label=license&logo=Apache&logoColor=D22128
+   :alt: License
+   :height: 22
 
-
-.. # Shield for a Travis-CI build result
-.. |SHIELD:svg:AppVeyor| image:: https://ci.appveyor.com/api/projects/status/r5dtv6amsppigpsp?svg=true
-   :target: https://ci.appveyor.com/project/Paebbels/pyVHDLParser/branch/release
-   :alt: Build status by AppVeyor
-.. |SHIELD:png:AppVeyor| image:: https://ci.appveyor.com/api/projects/status/r5dtv6amsppigpsp?png=true
-   :target: https://ci.appveyor.com/project/Paebbels/pyVHDLParser/branch/release
-   :alt: Build status by AppVeyor
-
-
-.. # Shield for a Landscape.io check result
-.. |SHIELD:svg:Landscape| image:: https://landscape.io/github/Paebbels/pyVHDLParser/release/landscape.svg?style=flat
-   :target: https://landscape.io/github/Paebbels/pyVHDLParser/release
-   :alt: Code Health
-.. |SHIELD:png:Landscape| image:: https://landscape.io/github/Paebbels/pyVHDLParser/release/landscape.png?style=flat
-   :target: https://landscape.io/github/Paebbels/pyVHDLParser/release
-   :alt: Code Health
-
-
-.. # Shield for a Requirements check
-.. |SHIELD:svg:Requirements| image:: https://requires.io/github/Paebbels/pyVHDLParser/requirements.svg?branch=release
-   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=release
-   :alt: Requirements Status
-.. |SHIELD:png:Requirements| image:: https://requires.io/github/Paebbels/pyVHDLParser/requirements.png?branch=release
-   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=release
-   :alt: Requirements Status
-
-
-.. # Shield for Gitter
-.. |SHIELD:svg:Gitter:pyVHDLParser| image:: https://img.shields.io/gitter/room/Paebbels/pyVHDLParser.svg?colorB=4cb696
-   :target: https://gitter.im/Paebbels/pyVHDLParser
-   :alt: Join
-.. |SHIELD:png:Gitter:pyVHDLParser| image:: https://img.shields.io/gitter/room/Paebbels/pyVHDLParser.png?colorB=4cb696
-   :target: https://gitter.im/Paebbels/pyVHDLParser
-   :alt: Join
-
-.. |SHIELD:svg:Gitter:News| image:: https://img.shields.io/badge/news-Subscribe%20to%20VLSI--EDA%2FNews-orange.svg
-   :target: https://gitter.im/Paebbels/News
-   :alt: Subscribe to Paebbels/News
-.. |SHIELD:png:Gitter:News| image:: https://img.shields.io/badge/news-Subscribe%20to%20VLSI--EDA%2FNews-orange.png
-   :target: https://gitter.im/Paebbels/News
-   :alt: Subscribe to Paebbels/News
-
-
-.. # Shield for a GitHub Tag
-.. |SHIELD:svg:GH-Tag| image:: https://img.shields.io/github/tag/Paebbels/pyVHDLParser.svg?label=latest%20tag&style=flat
+.. |SHIELD:svg:pyVHDLParser-tag| image:: https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases
+   :alt: GitHub tag (latest SemVer incl. pre-release
+   :height: 22
    :target: https://github.com/Paebbels/pyVHDLParser/tags
-   :alt: Latest tag
-.. |SHIELD:png:GH-Tag| image:: https://img.shields.io/github/tag/Paebbels/pyVHDLParser.png?label=latest%20tag&style=flat
+.. |SHIELD:png:pyVHDLParser-tag| image:: https://raster.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases
+   :alt: GitHub tag (latest SemVer incl. pre-release
+   :height: 22
    :target: https://github.com/Paebbels/pyVHDLParser/tags
-   :alt: Latest tag
 
+.. |SHIELD:svg:pyVHDLParser-release| image:: https://img.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases
+   :alt: GitHub release (latest SemVer incl. including pre-releases
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser/releases/latest
+.. |SHIELD:png:pyVHDLParser-release| image:: https://raster.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&include_prereleases
+   :alt: GitHub release (latest SemVer incl. including pre-releases
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser/releases/latest
 
-.. # Shield for a GitHub Tag
-.. |SHIELD:svg:GH-Release| image:: https://img.shields.io/github/release/Paebbels/pyVHDLParser.svg?label=latest%20release&style=flat
+.. |SHIELD:svg:pyVHDLParser-date| image:: https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub
+   :alt: GitHub release date
+   :height: 22
    :target: https://github.com/Paebbels/pyVHDLParser/releases
-   :alt: Latest release
-.. |SHIELD:png:GH-Release| image:: https://img.shields.io/github/release/Paebbels/pyVHDLParser.png?label=latest%20release&style=flat
+.. |SHIELD:png:pyVHDLParser-date| image:: https://raster.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub
+   :alt: GitHub release date
+   :height: 22
    :target: https://github.com/Paebbels/pyVHDLParser/releases
-   :alt: Latest release
 
+.. |SHIELD:svg:pyVHDLParser-lib-status| image:: https://img.shields.io/librariesio/release/pypi/pyVHDLParser
+   :alt: Libraries.io status for latest release
+   :height: 22
+   :target: https://libraries.io/github/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-lib-status| image:: https://raster.shields.io/librariesio/release/pypi/pyVHDLParser
+   :alt: Libraries.io status for latest release
+   :height: 22
+   :target: https://libraries.io/github/Paebbels/pyVHDLParser
 
-.. # Shield for the code license
-.. |SHIELD:svg:License-Code| image:: https://img.shields.io/github/license/Paebbels/pyVHDLParser.svg?style=flat
-   :target: References/Licenses/License.html
-   :alt: Apache License 2.0
-.. |SHIELD:png:License-Code| image:: https://img.shields.io/github/license/Paebbels/pyVHDLParser.png?style=flat
-   :target: References/Licenses/License.html
-   :alt: Apache License 2.0
+.. |SHIELD:svg:pyVHDLParser-req-status| image:: https://img.shields.io/requires/github/Paebbels/pyVHDLParser
+   :alt: Requires.io
+   :height: 22
+   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master
+.. |SHIELD:png:pyVHDLParser-req-status| image:: https://raster.shields.io/requires/github/Paebbels/pyVHDLParser
+   :alt: Requires.io
+   :height: 22
+   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master
 
+.. |SHIELD:svg:pyVHDLParser-travis| image:: https://img.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis
+   :alt: Travis - Build on 'master'
+   :height: 22
+   :target: https://travis-ci.com/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-travis| image:: https://raster.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis
+   :alt: Travis - Build on 'master'
+   :height: 22
+   :target: https://travis-ci.com/Paebbels/pyVHDLParser
 
-.. # Shield for the documentation license
-.. |SHIELD:svg:License-Docs| image:: https://img.shields.io/badge/doc%20license-CC--BY--4.0-aab2ab.svg?style=flat
-   :target: References/Licenses/CC-BY-4.0.html
-   :alt: Creative Commons Attribution 4.0
-.. |SHIELD:png:License-Docs| image:: https://img.shields.io/badge/doc%20license-CC--BY--4.0-aab2ab.png?style=flat
-   :target: References/Licenses/CC-BY-4.0.html
-   :alt: Creative Commons Attribution 4.0
+.. |SHIELD:svg:pyVHDLParser-pypi-tag| image:: https://img.shields.io/pypi/v/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Tag
+   :height: 22
+   :target: https://pypi.org/project/pyVHDLParser/
+.. |SHIELD:png:pyVHDLParser-pypi-tag| image:: https://raster.shields.io/pypi/v/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Tag
+   :height: 22
+   :target: https://pypi.org/project/pyVHDLParser/
+
+.. |SHIELD:svg:pyVHDLParser-pypi-status| image:: https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Status
+   :height: 22
+.. |SHIELD:png:pyVHDLParser-pypi-status| image:: https://raster.shields.io/pypi/status/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Status
+   :height: 22
+
+.. |SHIELD:svg:pyVHDLParser-pypi-python| image:: https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Python Version
+   :height: 22
+.. |SHIELD:png:pyVHDLParser-pypi-python| image:: https://raster.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI
+   :alt: PyPI - Python Version
+   :height: 22
+
+.. |SHIELD:svg:pyVHDLParser-lib-dep| image:: https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser
+   :alt: Dependent repos (via libraries.io)
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser/network/dependents
+.. |SHIELD:png:pyVHDLParser-lib-dep| image:: https://raster.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser
+   :alt: Dependent repos (via libraries.io)
+   :height: 22
+   :target: https://github.com/Paebbels/pyVHDLParser/network/dependents
+
+.. |SHIELD:svg:pyVHDLParser-codacy-quality| image:: https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy
+   :alt: Codacy - Quality
+   :height: 22
+   :target: https://www.codacy.com/manual/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-codacy-quality| image:: https://raster.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy
+   :alt: Codacy - Quality
+   :height: 22
+   :target: https://www.codacy.com/manual/Paebbels/pyVHDLParser
+
+.. |SHIELD:svg:pyVHDLParser-codacy-coverage| image:: https://img.shields.io/codacy/coverage/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy
+   :alt: Codacy - Line Coverage
+   :height: 22
+   :target: https://www.codacy.com/manual/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-codacy-coverage| image:: https://raster.shields.io/codacy/coverage/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy
+   :alt: Codacy - Line Coverage
+   :height: 22
+   :target: https://www.codacy.com/manual/Paebbels/pyVHDLParser
+
+.. |SHIELD:svg:pyVHDLParser-codecov-coverage| image:: https://img.shields.io/codecov/c/github/Paebbels/pyVHDLParser
+   :alt: Codecov - Branch Coverage
+   :height: 22
+   :target: https://codecov.io/gh/Paebbels/pyVHDLParser
+.. |SHIELD:png:pyVHDLParser-codecov-coverage| image:: https://raster.shields.io/codecov/c/github/Paebbels/pyVHDLParser
+   :alt: Codecov - Branch Coverage
+   :height: 22
+   :target: https://codecov.io/gh/Paebbels/pyVHDLParser
+
+.. |SHIELD:svg:pyVHDLParser-lib-rank| image:: https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser
+   :alt: Libraries.io SourceRank
+   :height: 22
+   :target: https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank
+.. |SHIELD:png:pyVHDLParser-lib-rank| image:: https://raster.shields.io/librariesio/sourcerank/pypi/pyVHDLParser
+   :alt: Libraries.io SourceRank
+   :height: 22
+   :target: https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank
+
+.. |SHIELD:svg:pyVHDLParser-rtd| image:: https://img.shields.io/readthedocs/pyVHDLParser
+   :alt: Read the Docs
+   :height: 22
+   :target: https://pyVHDLParser.readthedocs.io/en/latest/
+.. |SHIELD:png:pyVHDLParser-rtd| image:: https://raster.shields.io/readthedocs/pyVHDLParser
+   :alt: Read the Docs
+   :height: 22
+   :target: https://pyVHDLParser.readthedocs.io/en/latest/

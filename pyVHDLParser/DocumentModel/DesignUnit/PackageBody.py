@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pydecor                                import export
 from typing                                 import List
 
 import pyVHDLParser.Blocks.InterfaceObject
@@ -41,8 +42,12 @@ from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.VHDLModel                 import PackageBody as PackageBodyVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
+__all__ = []
+__api__ = __all__
+
 DEBUG = True
 
+@export
 class PackageBody(PackageBodyVHDLModel):
 	def __init__(self, packageBodyName):
 		super().__init__()

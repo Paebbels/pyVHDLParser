@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pydecor                                import export
 from typing                                 import List
 
 import pyVHDLParser.Blocks.InterfaceObject
@@ -42,19 +43,23 @@ from pyVHDLParser.Groups.List               import GenericListGroup
 from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
+__all__ = []
+__api__ = __all__
+
 DEBUG = True
 
+@export
 class Package(PackageVHDLModel):
 	def __init__(self, packageName):
 		super().__init__()
 		self._name = packageName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState): #document, group):
-		assert isinstance(parserState.CurrentGroup, PackageBlock.NameBlock)
+	def stateParse(cls, document, group):
+		assert isinstance(group, PackageBlock.NameBlock)
 		cls.stateParsePackageName(parserState)
 
-		for block in parserState.GroupIterator:
+		for block in group:
 			if isinstance(block, GenericListBlocks.OpenBlock):
 				parserState.PushState = cls.stateParseGenericList
 				parserState.ReIssue()

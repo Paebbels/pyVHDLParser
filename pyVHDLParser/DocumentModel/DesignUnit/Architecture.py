@@ -29,6 +29,7 @@
 # ==============================================================================
 #
 # load dependencies
+from pydecor                                import export
 from typing                                 import List
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
@@ -39,8 +40,12 @@ from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.VHDLModel                 import Architecture as ArchitectureVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
+__all__ = []
+__api__ = __all__
+
 DEBUG = True
 
+@export
 class Architecture(ArchitectureVHDLModel):
 	def __init__(self, architectureName, entityName):
 		super().__init__()

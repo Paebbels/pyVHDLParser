@@ -32,6 +32,6 @@ class Context(TestCase):
 		self.assertTrue(len(document.Contexts) == 1,        "Document doesn't contain the expected context.")
 		self.assertTrue(len(document.Entities) == 0,        "Document contains unexpected entities.")
 		self.assertTrue(len(document.Libraries) == 0,       "Document contains unexpected libraries.")
-		self.assertTrue(len(document.PackageBodies) == 0,   "Document contains unexpected packageBodies.")
+		self.assertTrue(len(document.PackageBodies) == 0,   "Document contains unexpected package bodies.")
 		self.assertTrue(len(document.Packages) == 0,        "Document contains unexpected packages.")
 		self.assertTrue(len(document.Uses) == 0,            "Document contains unexpected uses.")

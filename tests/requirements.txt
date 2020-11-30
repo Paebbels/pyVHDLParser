@@ -1,4 +1,4 @@
 -r ../requirements.txt
 
 # Coverage collection
-Coverage>=5.2.1
+Coverage>=5.3
