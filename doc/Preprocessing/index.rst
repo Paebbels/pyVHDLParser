@@ -1,8 +1,9 @@
 0. Pass - Preprocessing
 #######################
 
-Currently, pyVHDLParser doesn't implement any pre-processing steps. It accepts
-either an input filename or a string as content.
+.. note::
+   Currently, pyVHDLParser doesn't implement any pre-processing steps. It accepts
+   either an input filename or a string as content.
 
 
 .. rubric:: Possible Use Cases

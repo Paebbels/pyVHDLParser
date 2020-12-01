@@ -1,41 +1,7 @@
 Command Line Interface :file:`VHDLParser`
 #########################################
 
-Commands:
-
-Common Options
-**************
-
-``-q`` - quiet
-  Print almost no messages.
-
-``-v`` - verbose
-  Print more messages.
-
-``-d`` - debug
-  Print all messages.
-
-
-Miscellaneous Commands
-**********************
-
-List all available commands and options.
-
-.. rubric:: Usage
-
-.. code-block::
-
-   > VHDLParser help
-
-
-Print version information.
-
-.. rubric:: Usage
-
-.. code-block::
-
-   > VHDLParser version
-
+For a full list of command line options see :ref:`CMDREF:VHDLParser`
 
 Token Generation
 ****************

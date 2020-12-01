@@ -1,7 +1,10 @@
 Scripts and Applications
 ########################
 
-The repository contains a Python test application called ``Frontend.py``.
+The pyVHDLParser package comes with an executables registered by pip in the
+search path.
+
+* ``VHDLParser`` is a wrapper for ``pyVHDLParser.CLI.VHDLParser:main``.
 
 
 .. #
@@ -9,11 +12,9 @@ The repository contains a Python test application called ``Frontend.py``.
    located in the 'doc' root folder. It expects a variable 'parser' of type
    ArgumentParser.
 
-The main program :file:`Frontend.py` ...
+.. _CMDREF:VHDLParser:
 
-.. _CMDREF:FE:
-
-.. autoprogram:: Frontend-AutoProgram:parser
-   :prog: Frontend.py
+.. autoprogram:: VHDLParser-AutoProgram:parser
+   :prog: VHDLParser
    :groups:
-   :label: CmdRef:FE:
+   :label: CmdRef:VHDLParser:
