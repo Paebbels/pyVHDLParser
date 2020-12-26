@@ -30,6 +30,7 @@
 #
 # load dependencies
 from enum                     import Enum
+from pathlib import Path
 from typing                   import List
 
 from pydecor.decorators       import export
@@ -126,6 +127,7 @@ class Library(ModelEntity):
 
 @export
 class Document(ModelEntity):
+	_path:           Path                   #: path to the document. ``None`` if virtual document.
 	_contexts:       List['Context']        #: List of all contexts defined in a document.
 	_configurations: List['Configuration']  #: List of all configurations defined in a document.
 	_entities:       List['Entity']         #: List of all entities defined in a document.
@@ -133,15 +135,20 @@ class Document(ModelEntity):
 	_packages:       List['Package']        #: List of all packages defined in a document.
 	_packageBodies:  List['PackageBody']    #: List of all package bodies defined in a document.
 
-	def __init__(self):
+	def __init__(self, path: Path):
 		super().__init__()
 
+		self._path =            path
 		self._contexts =        []
 		self._configurations =  []
 		self._entities =        []
 		self._architectures =   []
 		self._packages =        []
 		self._packageBodies =   []
+
+	@property
+	def Path(self) -> Path:
+		return self._path
 
 	@property
 	def Contexts(self) -> List['Context']:
@@ -191,9 +198,9 @@ class Class(Enum):
 
 @export
 class BaseType(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		NamedEntity.__init__(self)
+		NamedEntity.__init__(self, name)
 
 
 @export
@@ -202,12 +209,13 @@ class Type(BaseType):
 
 @export
 class SubType(BaseType):
-	def __init__(self):
-		super().__init__()
-		self._type = None
+	_type: Type
+
+	def __init__(self, name: str):
+		super().__init__(name)
 
 	@property
-	def Type(self):
+	def Type(self) -> Type:
 		return self._type
 
 
@@ -233,57 +241,112 @@ class FileType(BaseType):
 
 @export
 class EnumeratedType(ScalarType):
-	def __init__(self):
-		super().__init__()
+	_elements: List
+
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._elements = []
 
 	@property
-	def Elements(self):
+	def Elements(self) -> List:
 		return self._elements
 
 
 @export
 class IntegerType(ScalarType):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._leftBound = None
 		self._rightBound = None
 
 
 @export
 class RealType(ScalarType):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._leftBound = None
 		self._rightBound = None
 
 
 @export
 class ArrayType(CompositeType):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._dimensions =  []
 		self._baseType =    None
 
 
 @export
 class RecordType(BaseType):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._members =     []
 
 
 @export
 class RecordTypeMember(ModelEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		self._name =        None
+
+		self._name =        name
 		self._subType =     None
 
 
 @export
 class Expression:
 	pass
+
+
+@export
+class Literal:
+	pass
+
+
+@export
+class IntegerLiteral:
+	def __init__(self):
+		self._value = None
+
+
+@export
+class FloatingPointLiteral:
+	def __init__(self):
+		self._value = None
+
+# CharacterLiteral
+# StringLiteral
+# BitStringLiteral
+# EnumerationLiteral
+# PhysicalLiteral
+
+@export
+class UnaryExpression(Expression):
+	def __init__(self):
+		self._operand = None
+
+@export
+class FunctionCall(Expression):
+	pass
+
+@export
+class QualifiedExpression(Expression):
+	pass
+
+@export
+class BinaryExpression(Expression):
+	def __init__(self):
+		self._leftOperand = None
+		self._rightOperand = None
+
+# AddingExpression
+# MultiplyingExpression
+# LogicalExpression
+# ShiftExpression
 
 @export
 class Range:
@@ -295,13 +358,22 @@ class Range:
 
 @export
 class InterfaceItem(ModelEntity):
-	def __init__(self):
+	_name: str
+	_mode: Modes
+
+	def __init__(self, name: str, mode: Modes):
 		super().__init__()
-		self._name = None
+
+		self._name = name
+		self._mode = mode
 
 	@property
-	def Name(self):
+	def Name(self) -> str:
 		return self._name
+
+	@property
+	def Mode(self) -> Modes:
+		return self._mode
 
 
 @export
@@ -345,19 +417,14 @@ class GenericPackageInterfaceItem(GenericInterfaceItem):
 @export
 class PortSignalInterfaceItem(PortInterfaceItem):
 	_subType:           SubType
-	_mode:              Modes
 	_defaultExpression: Expression
 
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str, mode: Modes):
+		super().__init__(name, mode)
 
 	@property
 	def SubType(self) -> SubType:
 		return self._subType
-
-	@property
-	def Mode(self) -> Modes:
-		return self._mode
 
 	@property
 	def DefaultExpression(self) -> Expression:
@@ -375,8 +442,8 @@ class ParameterVariableInterfaceItem(ParameterInterfaceItem):
 	_mode:              Modes
 	_defaultExpression: Expression
 
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
 
 	@property
 	def SubType(self):
@@ -487,8 +554,15 @@ class Entity(PrimaryUnit):
 	_declaredItems:     List   # FIXME: define liste element type e.g. via Union
 	_bodyItems:         List   # FIXME: define liste element type e.g. via Union
 
-	def __init__(self, name):
+	def __init__(self, name: str):
 		super().__init__(name)
+
+		self._libraryReferences = []
+		self._uses              = []
+		self._genericItems      = []
+		self._portItems         = []
+		self._declaredItems     = []
+		self._bodyItems         = []
 
 	@property
 	def LibraryReferences(self) -> List[LibraryReference]:
@@ -523,7 +597,7 @@ class Architecture(SecondaryUnit):
 	_declaredItems:     List   # FIXME: define liste element type e.g. via Union
 	_bodyItems:         List   # FIXME: define liste element type e.g. via Union
 
-	def __init__(self, name):
+	def __init__(self, name: str):
 		super().__init__(name)
 
 		self._libraryReferences = []
@@ -583,25 +657,22 @@ class ParameterAssociationItem(InterfaceItem):
 
 @export
 class Configuration(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
+		NamedEntity.__init__(self, name)
 
-		raise NotImplementedError()
 
 
 @export
-class Instantiation(NamedEntity):
-	def __init__(self):
-		super().__init__()
-		self._packageReference =    None
-		self._genericAssociations = []
+class Instantiation:
+	pass
 
 
 @export
 class Package(PrimaryUnit):
-	def __init__(self):
-		super().__init__()
-		NamedEntity.__init__(self)
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._libraryReferences = []
 		self._uses =              []
 		self._genericItems =      []
@@ -626,8 +697,8 @@ class Package(PrimaryUnit):
 
 @export
 class PackageBody(SecondaryUnit):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
 		self._package =           None
 		self._libraryReferences = []
 		self._uses =              []
@@ -652,17 +723,20 @@ class PackageBody(SecondaryUnit):
 
 @export
 class PackageInstantiation(PrimaryUnit, Instantiation):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
 		Instantiation.__init__(self)
-		self._packageReferences = None
+
+		self._packageReference = None
+		self._genericAssociations = []
 
 
 @export
 class Object(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		NamedEntity.__init__(self)
+		NamedEntity.__init__(self, name)
+
 		self._subType = None
 
 	@property
@@ -676,8 +750,9 @@ class BaseConstant(Object):
 
 @export
 class DeferredConstant(BaseConstant):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._constantReference = None
 
 	@property
@@ -687,8 +762,9 @@ class DeferredConstant(BaseConstant):
 
 @export
 class Constant(BaseConstant):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._defaultExpression = None
 
 	@property
@@ -698,8 +774,9 @@ class Constant(BaseConstant):
 
 @export
 class Variable(Object):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._defaultExpression = None
 
 	@property
@@ -709,8 +786,9 @@ class Variable(Object):
 
 @export
 class Signal(Object):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._defaultExpression = None
 
 	@property
@@ -720,9 +798,10 @@ class Signal(Object):
 
 @export
 class SubProgramm(ModelEntity, NamedEntity):
-	def __init__(self):
+	def __init__(self, name: str):
 		super().__init__()
-		NamedEntity.__init__(self)
+		NamedEntity.__init__(self, name)
+
 		self._genericItems =    []
 		self._parameterItems =  []
 		self._declaredItems =   []
@@ -751,8 +830,9 @@ class Procedure(SubProgramm):
 
 @export
 class Function(SubProgramm):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
+
 		self._returnType =  None
 		self._isPure =      True
 
@@ -783,29 +863,28 @@ class FunctionInstantiation(SubprogramInstantiation):
 @export
 class Method:
 	def __init__(self):
-		super().__init__()
 		self._protectedType = None
 
 
 @export
 class ProcedureMethod(Procedure, Method):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
 		Method.__init__(self)
 
 
 @export
 class FunctionMethod(Function, Method):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, name: str):
+		super().__init__(name)
 		Method.__init__(self)
 
 
 @export
 class Statement(ModelEntity, LabledEntity):
-	def __init__(self):
+	def __init__(self, label: str = None):
 		super().__init__()
-		LabledEntity.__init__(self)
+		LabledEntity.__init__(self, label)
 
 
 @export
@@ -818,8 +897,9 @@ class SequentialStatement(Statement):
 
 @export
 class ProcessStatement(ConcurrentStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		self._parameterItems =  []
 		self._declaredItems =   []
 		self._bodyItems =       []
@@ -839,8 +919,9 @@ class ProcessStatement(ConcurrentStatement):
 
 @export
 class ConcurrentBlockStatement(ConcurrentStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		self._portItems = []
 		self._declaredItems = []
 		self._bodyItems = []
@@ -860,8 +941,9 @@ class ConcurrentBlockStatement(ConcurrentStatement):
 
 @export
 class GenerateStatement(ConcurrentStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		self._declaredItems = []
 		self._bodyItems =     []
 
@@ -876,8 +958,9 @@ class GenerateStatement(ConcurrentStatement):
 
 @export
 class IfGenerateStatement(GenerateStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		self._ifBranch =      None
 		self._elsifBranches = []
 		self._elseBranch =    None
@@ -944,8 +1027,9 @@ class ElseGenerateBranch(GenerateBranch, BaseElseBranch):
 
 @export
 class ForGenerateStatement(GenerateStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		self._loopIndex = None
 		self._range =     None
 
@@ -990,8 +1074,9 @@ class VariableAssignment(Assignment):
 
 @export
 class ConcurrentSignalAssignment(ConcurrentStatement, SignalAssignment):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
+
 		SignalAssignment.__init__(self)
 
 
@@ -1039,8 +1124,8 @@ class AssertStatement(ReportStatement):
 
 @export
 class ConcurrentAssertStatement(ConcurrentStatement, AssertStatement):
-	def __init__(self):
-		super().__init__()
+	def __init__(self, label: str = None):
+		super().__init__(label=label)
 		AssertStatement.__init__(self)
 
 
