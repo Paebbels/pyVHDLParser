@@ -69,6 +69,9 @@ class Document(DocumentModel):
 
 		super().__init__(filePath)
 
+		self.__libraries =  []
+		self.__uses  =      []
+
 	def Parse(self, content=None):  # FIXME: parameter type
 		if (content is None):
 			if (not self._path.exists()):
