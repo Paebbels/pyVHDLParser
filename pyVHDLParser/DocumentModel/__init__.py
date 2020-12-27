@@ -29,9 +29,10 @@
 # ==============================================================================
 #
 from pathlib                              import Path
-from typing                               import List
+from typing                               import List, Union
 
 from pydecor.decorators                   import export
+from pyVHDLModel.VHDLModel                import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer
@@ -40,7 +41,6 @@ from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockT
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup
 from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
-from pyVHDLParser.VHDLModel               import Document as DocumentModel
 from pyVHDLParser.DocumentModel.Reference import Library, Use
 
 __all__ = []
@@ -59,26 +59,23 @@ class Document(DocumentModel):
 	__libraries:  List[Library]
 	__uses:       List[Use]
 
-	def __init__(self, file):  # FIXME: parameter type
-		super().__init__()
-
-		self.__libraries =  []
-		self.__uses  =      []
-
+	def __init__(self, file: Union[Path, str]):  # FIXME: parameter type
 		if isinstance(file, Path):
-			self._filePath = file
+			filePath = file
 		elif isinstance(file, str):
-			self._filePath = Path(file)
+			filePath = Path(file)
 		else:
 			raise ValueError("Unsupported type for parameter 'file'.")
 
+		super().__init__(filePath)
+
 	def Parse(self, content=None):  # FIXME: parameter type
 		if (content is None):
-			if (not self._filePath.exists()):
-				raise DOMParserException("File '{0!s}' does not exist.".format(self._filePath))\
-					from FileNotFoundError(str(self._filePath))
+			if (not self._path.exists()):
+				raise DOMParserException("File '{0!s}' does not exist.".format(self._path))\
+					from FileNotFoundError(str(self._path))
 
-			with self._filePath.open('r') as fileHandle:
+			with self._path.open('r') as fileHandle:
 				content = fileHandle.read()
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)

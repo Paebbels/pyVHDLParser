@@ -32,15 +32,16 @@
 from pydecor                                import export
 from typing                                 import List
 
-import pyVHDLParser.Blocks.InterfaceObject
+from pyVHDLModel.VHDLModel                  import Entity as EntityVHDLModel
+
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
+import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
-from pyVHDLParser.VHDLModel                 import Entity as EntityVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
 __all__ = []

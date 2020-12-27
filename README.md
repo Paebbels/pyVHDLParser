@@ -20,9 +20,9 @@
 
 This is a token-stream based parser for VHDL-2008.
 
-This projects requires Python 3.8+.
+This project requires Python 3.8+.
 
-## Intruduction
+## Introduction
 
 ### Main Goals
 

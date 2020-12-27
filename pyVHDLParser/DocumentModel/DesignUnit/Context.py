@@ -31,11 +31,12 @@
 # load dependencies
 from pydecor                                import export
 
+from pyVHDLModel.VHDLModel                  import Context as ContextVHDLModel
+
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Context as ContextBlocks
 from pyVHDLParser.Groups                    import ParserState
-from pyVHDLParser.VHDLModel                 import Context as ContextVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
 __all__ = []

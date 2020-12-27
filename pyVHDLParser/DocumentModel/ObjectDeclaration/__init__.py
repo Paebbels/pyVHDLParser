@@ -31,10 +31,11 @@
 # load dependencies
 from pyTerminalUI                                   import LineTerminal
 
+from pyVHDLModel.VHDLModel                          import Constant as ConstantBase
+
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBlock
-from pyVHDLParser.VHDLModel                         import Constant as ConstantBase
 from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting

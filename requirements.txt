@@ -6,3 +6,4 @@ pyExceptions>=1.0.1
 pyAttributes>=2.0.1
 pyCallBy>=1.1.1
 pyTerminalUI>=1.3.4
+pyVHDLModel>=0.7.1

@@ -31,10 +31,11 @@
 # load dependencies
 from pathlib import Path
 
-from pyVHDLParser.Functions import Console
+from pyTerminalUI                    import LineTerminal, Terminal
+
 from test.BlockParserTests.TestSuite import TestSuite as BlockParserTestSuite
 
-Console.init()
+Terminal.initColors()
 
 rootDirectory = Path(".")
 vhdlDirectory = rootDirectory / "vhdl"

@@ -32,6 +32,8 @@
 from pydecor                                import export
 from typing                                 import List
 
+from pyVHDLModel.VHDLModel                  import Package as PackageVHDLModel
+
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
@@ -40,7 +42,6 @@ from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup
-from pyVHDLParser.VHDLModel                 import Package as PackageVHDLModel
 from pyVHDLParser.DocumentModel.Reference   import Library, Use
 
 __all__ = []

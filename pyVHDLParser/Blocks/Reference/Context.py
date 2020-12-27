@@ -108,6 +108,7 @@ class NameBlock(Block):
 	def stateContextName(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
+			parserState.NewToken =      BoundaryToken(token)
 			parserState.NextState =     cls.stateWhitespace2
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):

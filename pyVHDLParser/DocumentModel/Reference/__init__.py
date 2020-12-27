@@ -29,10 +29,11 @@
 # ==============================================================================
 #
 # load dependencies
+from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, Use as UseModel
+
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Library as LibraryBlocks, Use as UseBlocks
-from pyVHDLParser.VHDLModel                 import LibraryReference as LibraryReferenceModel, Use as UseModel
 
 
 class Library(LibraryReferenceModel):

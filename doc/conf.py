@@ -42,7 +42,7 @@ def _LatestTagName():
 
 # The full version, including alpha/beta/rc tags
 version = "0.6"     # The short X.Y version.
-release = "0.6.0"   # The full version, including alpha/beta/rc tags.
+release = "0.6.1"   # The full version, including alpha/beta/rc tags.
 try:
 	if _IsUnderGitControl:
 		latestTagName = _LatestTagName()[1:]		# remove prefix "v"
@@ -166,9 +166,9 @@ extensions = [
 	"sphinx.ext.autodoc",
 	'sphinx.ext.extlinks',
 	'sphinx.ext.intersphinx',
-	'sphinx.ext.inheritance_diagram',
+#	'sphinx.ext.inheritance_diagram',
 	'sphinx.ext.todo',
-	'sphinx.ext.graphviz',
+#	'sphinx.ext.graphviz',
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
@@ -183,13 +183,13 @@ extensions = [
 
 # BuildTheDocs extensions
 	'btd.sphinx.autoprogram',
+	'btd.sphinx.graphviz',
+	'btd.sphinx.inheritance_diagram',
 
 # Other extensions
 #	'DocumentMember',
 	'sphinx_fontawesome',
 	'sphinx_autodoc_typehints',
-
-# local extensions (patched)
 
 # local extensions (patched)
 	'autoapi.sphinx',
@@ -217,10 +217,10 @@ autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
 # Sphinx.Ext.ExtLinks
 # ==============================================================================
 extlinks = {
-	'issue': ('https://github.com/Paebbels/pyMetaClasses/issues/%s', 'issue #'),
-	'pull':  ('https://github.com/Paebbels/pyMetaClasses/pull/%s', 'pull request #'),
-	'src':   ('https://github.com/Paebbels/pyMetaClasses/blob/master/pyMetaClasses/%s?ts=2', None),
-#	'test':  ('https://github.com/Paebbels/pyMetaClasses/blob/master/test/%s?ts=2', None)
+	'issue': ('https://github.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
+	'pull':  ('https://github.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
+	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyMetaClasses/%s?ts=2', None),
+#	'test':  ('https://github.com/Paebbels/pyVHDLParser/blob/master/test/%s?ts=2', None)
 }
 
 
