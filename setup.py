@@ -34,16 +34,24 @@
 # ============================================================================
 #
 import setuptools
+from pathlib import Path
 
 with open("README.md", "r") as file:
 	long_description = file.read()
 
+projectName = "pyVHDLParser"
+
+rfile = Path("requirements.txt")
+root = Path(__file__)
+if not rfile.is_file():
+	rfile = root.parent / (projectName + ".egg-info") / "requires.txt"
+	if not rfile.is_file():
+		exit(1)
+
 requirements = []
-with open("requirements.txt") as file:
+with rfile.open() as file:
 	for line in file.readlines():
 		requirements.append(line)
-
-projectName = "pyVHDLParser"
 
 github_url =  "https://github.com/Paebbels/" + projectName
 rtd_url =     "https://" + projectName + ".readthedocs.io/en/latest/"
