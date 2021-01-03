@@ -11,12 +11,13 @@
 # =============================================================================
 # Authors:            Patrick Lehmann
 #
-# Package installer:  A collection of MetaClasses for Python.
+# Package installer:  A streaming-based VHDL parser.
 #
 #
 # License:
 # ============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Bötzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,22 +34,28 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============================================================================
 #
-import setuptools
+from pathlib    import Path
+from setuptools import setup as setuptools_setup, find_packages as setuptools_find_packages
 
-with open("README.md", "r") as file:
+gitHubNamespace = "Paebbels"
+projectName =     "pyVHDLParser"
+
+# Read README for upload to PyPI
+readmeFile = Path("README.md")
+with readmeFile.open("r") as file:
 	long_description = file.read()
 
-requirements = []
-with open("requirements.txt") as file:
-	for line in file.readlines():
-		requirements.append(line)
+# Read requirements file and add them to package dependency list
+requirementsFile = Path("requirements.txt")
+with requirementsFile.open("r") as file:
+	requirements = [line for line in file.readlines()]
 
-projectName = "pyVHDLParser"
+# Derive URLs
+sourceCodeURL =     "https://github.com/{namespace}/{projectName}".format(namespace=gitHubNamespace, projectName=projectName)
+documentationURL =  "https://{namespace}.github.io/{projectName}/using/py/index.html".format(namespace=gitHubNamespace, projectName=projectName)
 
-github_url =  "https://github.com/Paebbels/" + projectName
-rtd_url =     "https://" + projectName + ".readthedocs.io/en/latest/"
-
-setuptools.setup(
+# Assemble all package information
+setuptools_setup(
 	name=projectName,
 	version="0.6.1",
 
@@ -61,15 +68,15 @@ setuptools.setup(
 	long_description=long_description,
 	long_description_content_type="text/markdown",
 
-	url=github_url,
+	url=sourceCodeURL,
 	project_urls={
-		'Documentation': rtd_url,
-		'Source Code':   github_url,
-		'Issue Tracker': github_url + "/issues"
+		'Documentation': documentationURL,
+		'Source Code':   sourceCodeURL,
+		'Issue Tracker': sourceCodeURL + "/issues"
 	},
 	# download_url="https://github.com/Paebbels/pyVHDLParser/tarball/0.1.0",
 
-	packages=setuptools.find_packages(),
+	packages=setuptools_find_packages(),
 	entry_points={
 		'console_scripts': [
 			"VHDLParser = pyVHDLParser.CLI.VHDLParser:main"
@@ -80,16 +87,19 @@ setuptools.setup(
 		"Operating System :: OS Independent",
 		"Programming Language :: Python :: 3 :: Only",
 		"Programming Language :: Python :: 3.8",
+		"Programming Language :: Python :: 3.9",
 		"Development Status :: 2 - Pre-Alpha",
-#   "Development Status :: 3 - Alpha",
-#		"Development Status :: 5 - Production/Stable",
+		#   "Development Status :: 3 - Alpha",
+		#		"Development Status :: 5 - Production/Stable",
 		"Intended Audience :: Developers",
+		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+		"Topic :: Software Development :: Code Generators",
+		"Topic :: Software Development :: Compilers",
+		"Topic :: Software Development :: Testing",
 		"Topic :: Utilities"
 	],
 	keywords="Python3 Parser VHDL Streaming Documentation",
 
 	python_requires='>=3.8',
 	install_requires=requirements,
-	# provides=
-	# obsoletes=
 )

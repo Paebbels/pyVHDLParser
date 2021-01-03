@@ -55,6 +55,7 @@ pyVHDLParser Package
 * pyAttributes
 * pyCallBy
 * pyTerminalUI
+* pyVHDLModel
 
 
 .. _dependency-testing:

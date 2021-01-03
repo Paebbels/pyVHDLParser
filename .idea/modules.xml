@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../pyTokenizer/.idea/pyTokenizer.iml" filepath="$PROJECT_DIR$/../pyTokenizer/.idea/pyTokenizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../pyVHDLModel/.idea/pyVHDLModel.iml" filepath="$PROJECT_DIR$/../pyVHDLModel/.idea/pyVHDLModel.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/pyVHDLParser.iml" filepath="$PROJECT_DIR$/.idea/pyVHDLParser.iml" />
     </modules>
   </component>

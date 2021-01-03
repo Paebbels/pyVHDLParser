@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   Test:
-    name: Test and collect coverage data
+    name: Python Unit Tests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

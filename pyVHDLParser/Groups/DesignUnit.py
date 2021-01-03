@@ -12,7 +12,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,11 +79,14 @@ class ContextGroup(Group):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Context.NameBlock):
+			parserState.NextGroup =   cls(parserState.LastGroup, currentBlock)
+			parserState.BlockMarker = currentBlock
+			#parserState.NextState =   cls.stateParseGenerics
 			return
 		elif isinstance(currentBlock, Context.EndBlock):
-			parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
-			parserState.Pop()
-			parserState.BlockMarker = None
+			#parserState.NextGroup =   cls(parserState.LastGroup, parserState.BlockMarker, parserState.Block)
+			#parserState.Pop()
+			#parserState.BlockMarker = None
 			return
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
