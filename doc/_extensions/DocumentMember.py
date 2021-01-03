@@ -1,5 +1,5 @@
 # ==============================================================================
-# Authors:          Patrick Lehmann
+# Authors:            Patrick Lehmann
 #
 # Python Module:
 #
