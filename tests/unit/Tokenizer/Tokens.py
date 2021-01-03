@@ -101,7 +101,7 @@ class Sequence_1(TestCase, ExpectedDataMixin, TokenSequence):
 	)
 
 class Sequence_2(TestCase, ExpectedDataMixin, TokenSequence):
-	code = """abc   \def\ \t 'a' "abc" /* help */ -- foo\n """
+	code = """abc   \\def\\ \t 'a' "abc" /* help */ -- foo\n """
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,               "abc"),
