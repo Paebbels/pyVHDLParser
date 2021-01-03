@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TokenStream - Current.vhdl" type="PythonConfigurationType" factoryName="Python" folderName="Token Stream">
+  <configuration default="false" name="TokenStream - Current.vhdl" type="PythonConfigurationType" factoryName="Python" folderName="pyVHDLParser - Token Stream">
     <module name="pyVHDLParser" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="GroupStream - Current.vhdl (Validation)" type="PythonConfigurationType" factoryName="Python" folderName="Group Stream">
+  <configuration default="false" name="GroupStream - Current.vhdl (Validation)" type="PythonConfigurationType" factoryName="Python" folderName="pyVHDLParser - Group Stream">
     <module name="pyVHDLParser" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

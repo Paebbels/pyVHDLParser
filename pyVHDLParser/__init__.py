@@ -1,6 +1,3 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
 #            __     ___   _ ____  _     ____
 #  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __
@@ -19,7 +16,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

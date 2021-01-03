@@ -2,3 +2,7 @@
 
 # Coverage collection
 Coverage>=5.3
+
+# Test Runner
+pytest>=6.2.1
+pytest-cov>=2.10.1
