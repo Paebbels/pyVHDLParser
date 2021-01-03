@@ -162,7 +162,7 @@ Python iterators
 A Python iterable is an object implementing an ``__iter__`` method returning an
 iterator. The iterator implements a ``__next__`` method to return the next
 element in line. Usually, the iterator has some internal state, so it can compute
-the next element. At the end of an iteration, :exec:`StopIteration` is raised.
+the next element. At the end of an iteration, :exc:`StopIteration` is raised.
 
 .. code-block:: Python
 
