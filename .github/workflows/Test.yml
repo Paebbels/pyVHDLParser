@@ -28,7 +28,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          python -m pytest -rA --cov=.. --cov-config=tests/.coveragerc tests/unit
+          python -m pytest -rA tests/unit
 
   IssueTesting:
     name: Issue Tests
@@ -55,7 +55,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          python -m pytest -rA --cov=.. --cov-config=tests/.coveragerc tests/issue
+          python -m pytest -rA tests/issue
 
   Coverage:
     name: Collect Coverage Data
