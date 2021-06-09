@@ -51,7 +51,7 @@ next, calling :func:`next` returns a new token for each call.
 The example wants to print the outer objects (first and last) of the token chain.
 So at first, :func:`next` is called once to get the first element. Then an
 endless loop is used to generate all tokens. If the generator ends, it raises
-a :exec:`StopIteration` exception. The last token will be stored in variable
+a :exc:`StopIteration` exception. The last token will be stored in variable
 ``lastToken``.
 
 .. code-block:: Python

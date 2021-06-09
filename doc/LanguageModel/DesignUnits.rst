@@ -1,4 +1,4 @@
-.. _lngmod-desuni:
+.. _vhdlmodel-desuni:
 
 Design Units
 ############

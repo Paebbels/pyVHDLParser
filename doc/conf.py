@@ -202,7 +202,8 @@ extensions = [
 # Sphinx.Ext.InterSphinx
 # ==============================================================================
 intersphinx_mapping = {
-	'python':   ('https://docs.python.org/3', None),
+	'python':     ('https://docs.python.org/3', None),
+	'vhdlmodel':  ('https://vhdl.github.io/pyVHDLModel', None),
 }
 
 

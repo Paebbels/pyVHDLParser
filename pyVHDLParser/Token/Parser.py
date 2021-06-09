@@ -27,7 +27,7 @@
 #
 # load dependencies
 from enum                     import Enum
-from typing import Iterator
+from typing                   import Iterator
 
 from pydecor.decorators       import export
 

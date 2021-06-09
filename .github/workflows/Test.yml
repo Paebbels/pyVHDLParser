@@ -3,12 +3,11 @@ name: Test and Coverage
 on: [ push ]
 
 jobs:
-  Test:
+  UnitTesting:
     name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 3
       matrix:
         python-version: [ 3.8, 3.9 ]
 
@@ -29,7 +28,34 @@ jobs:
 
       - name: Run unit tests
         run: |
-          python -m pytest -rA --cov=.. --cov-config=tests/.coveragerc tests/unit
+          python -m pytest -rA tests/unit
+
+  IssueTesting:
+    name: Issue Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8, 3.9 ]
+
+    env:
+      PYTHON: ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -rA tests/issue
 
   Coverage:
     name: Collect Coverage Data
@@ -76,7 +102,7 @@ jobs:
 
   TriggerNext:
     name: Trigger next Workflows
-    needs: [Test, Coverage]
+    needs: [ UnitTesting, Coverage ]
     runs-on: ubuntu-latest
     env:
       PYTHON: 3.9

@@ -1,4 +1,4 @@
-.. _lngmod-subprog:
+.. _vhdlmodel-subprog:
 
 Subprogram Declarations
 ########################
