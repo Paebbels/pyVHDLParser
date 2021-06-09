@@ -34,7 +34,7 @@ from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Context as ContextBlocks
 from pyVHDLParser.Groups                    import ParserState
-from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
 __all__ = []
 __api__ = __all__
@@ -60,7 +60,7 @@ class Context(ContextVHDLModel):
 
 				if (len(document.Libraries) != 0):
 					raise BlockParserException("A context (library statements) is not allowed for a context declaration.", None)  # FIXME: change to DOMParserException
-				if (len(document.Uses) != 0):
+				if (len(document.PackageReferences) != 0):
 					raise BlockParserException("A context (use statements) is not allowed for a context declaration.", None)  # FIXME: change to DOMParserException
 
 				context = cls(contextName)
@@ -147,7 +147,7 @@ class Context(ContextVHDLModel):
 
 	def AddUses(self, uses):
 		for use in uses:
-			self._uses.append(use)
+			self._packageReferences.append(use)
 
 	def AddGeneric(self, generic):
 		self._genericItems.append(generic)
@@ -159,7 +159,7 @@ class Context(ContextVHDLModel):
 		indentation = "  "*indent
 		for lib in self._libraries:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
-		for lib, pack, obj in self._uses:
+		for lib, pack, obj in self._packageReferences:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}ENTITY{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(name=self._name, indent=indentation, **Console.Foreground))

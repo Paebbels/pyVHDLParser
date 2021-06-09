@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks.List               import GenericList as GenericListBlo
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import PackageBody as PackageBodyBlock
 from pyVHDLParser.Groups                    import ParserState
-from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
 __all__ = []
 __api__ = __all__
@@ -98,10 +98,10 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.CurrentNode.AddPackageBody(packageBody)
 		parserState.CurrentNode = packageBody
 		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
-		parserState.CurrentNode.AddUses(oldNode.Uses)
+		parserState.CurrentNode.AddUses(oldNode.PackageReferences)
 
 		oldNode.Libraries.clear()
-		oldNode.Uses.clear()
+		oldNode.PackageReferences.clear()
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState): #document, group):
@@ -167,11 +167,11 @@ class PackageBody(PackageBodyVHDLModel):
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraries.append(library._library)
 
-	def AddUses(self, uses: List[Use]):
+	def AddUses(self, uses: List[PackageReference]):
 		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
-			self._uses.append(use)
+			self._packageReferences.append(use)
 
 	def AddConstant(self, constant):
 		if DEBUG: print("{DARK_CYAN}Adding constant to package body {GREEN}{0}{NOCOLOR}:\n  {1!s}".format(self._name, constant, **Console.Foreground))
@@ -181,7 +181,7 @@ class PackageBody(PackageBodyVHDLModel):
 		indentation = "  "*indent
 		for lib in self._libraries:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
-		for lib, pack, obj in self._uses:
+		for lib, pack, obj in self._packageReferences:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))

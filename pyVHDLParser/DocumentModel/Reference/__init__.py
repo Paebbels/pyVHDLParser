@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, Use as UseModel
+from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, PackageReference as UseModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException
@@ -63,7 +63,7 @@ class Library(LibraryReferenceModel):
 		return self._library
 
 
-class Use(UseModel):
+class PackageReference(UseModel):
 	def __init__(self, libraryName, packageName, itemName):
 		super().__init__()
 		self._library = libraryName
