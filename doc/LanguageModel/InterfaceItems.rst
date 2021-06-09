@@ -1,4 +1,4 @@
-.. _lngmod-inter:
+.. _vhdlmodel-inter:
 
 Interface Items
 ###################

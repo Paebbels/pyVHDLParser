@@ -1,4 +1,4 @@
-.. _lngmod-types:
+.. _vhdlmodel-types:
 
 Type Declarations
 #################

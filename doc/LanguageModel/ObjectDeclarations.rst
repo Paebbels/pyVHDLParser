@@ -1,4 +1,4 @@
-.. _lngmod-obj:
+.. _vhdlmodel-obj:
 
 Object Declartions
 ###################

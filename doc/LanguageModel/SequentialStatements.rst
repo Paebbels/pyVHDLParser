@@ -1,4 +1,4 @@
-.. _lngmod-seqstm:
+.. _vhdlmodel-seqstm:
 
 Sequential Statements
 #####################

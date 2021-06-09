@@ -1,4 +1,4 @@
-.. _lngmod-constm:
+.. _vhdlmodel-constm:
 
 Concurrent Statements
 #####################

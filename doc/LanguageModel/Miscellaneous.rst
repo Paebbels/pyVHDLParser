@@ -1,4 +1,4 @@
-.. _lngmod-misc:
+.. _vhdlmodel-misc:
 
 Concepts not defined by IEEE Std. 1076
 ######################################
@@ -6,7 +6,7 @@ Concepts not defined by IEEE Std. 1076
 Some features required for a holistic language model are not defined in
 the VHDL :term:`LRM` or made explicitly implementation specific to the implementer.
 
-.. _lngmod-design:
+.. _vhdlmodel-design:
 
 Design
 ======
@@ -35,7 +35,7 @@ a design has the two child nodes: ``Libraries`` and ``Documents``. Each is a
 
 
 
-.. _lngmod-library:
+.. _vhdlmodel-library:
 
 Library
 =======
@@ -71,7 +71,7 @@ is a *primary* design unit like: ``configuration``, ``entity``, ``package`` or
 
 
 
-.. _lngmod-sourcefile:
+.. _vhdlmodel-sourcefile:
 
 Sourcecode File
 ===============

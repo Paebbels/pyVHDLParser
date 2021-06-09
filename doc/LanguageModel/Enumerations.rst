@@ -1,4 +1,4 @@
-.. _lngmod-enum:
+.. _vhdlmodel-enum:
 
 Enumerations
 ############
