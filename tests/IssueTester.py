@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
 class SingleFileIssue(TokenizerChecks):
 	def check_Tokenizer(self, file):
-		self.failIf(not file.exists(), "Sourcefile '{0!s}' does not exist.".format(file))
+		self.assertTrue(file.exists(), "Sourcefile '{0!s}' does not exist.".format(file))
 
 		with file.open('r') as fileHandle:
 			self.code = fileHandle.read()
