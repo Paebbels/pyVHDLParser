@@ -130,26 +130,22 @@ jobs:
       PYTHON: ${{ needs.Coverage.outputs.python }}
     outputs:
       python:     ${{ env.PYTHON }}
-      tag:        v${{ steps.getGitTag.outputs.result }}
-      version:    ${{ steps.getGitTag.outputs.result }}
-      datetime:   ${{ env.RELEASE_DATETIME }}
+      tag:        ${{ steps.getVariables.outputs.gitTag }}
+      version:    ${{ steps.getVariables.outputs.version }}
+      datetime:   ${{ steps.getVariables.outputs.datetime }}
       upload_url: ${{ steps.createReleasePage.outputs.upload_url }}
 
     steps:
       - name: Extract Git tag from GITHUB_REF
-        id:   getGitTag
-        uses: actions/github-script@0.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            return context.payload.ref.replace(/\/refs\/tags\/v/, '');
-
-      - name: Create Release Page Contents
+        id:   getVariables
         run: |
+          GIT_TAG=${GITHUB_REF#refs/*/}
+          RELEASE_VERSION=${GIT_TAG#v}
           RELEASE_DATETIME="$(date --utc '+%d.%m.%Y - %H:%M:%S')"
-          echo "Date: ${RELEASE_DATETIME}"
-          # Setup environment variables
-          echo "RELEASE_DATETIME=${RELEASE_DATETIME}" >> $GITHUB_ENV
+          # write to step outputs
+          echo ::set-output name=gitTag::${GIT_TAG}
+          echo ::set-output name=version::${RELEASE_VERSION}
+          echo ::set-output name=datetime::${RELEASE_DATETIME}
 
       - name: Create Release Page
         id:   createReleasePage
@@ -157,10 +153,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.getGitTag.outputs.result }}
-          release_name: ${{ steps.getGitTag.outputs.result }}
+          tag_name: ${{ steps.getVariables.outputs.gitTag }}
+          release_name: ${{ steps.getVariables.outputs.gitTag }}
           body: |
-            **Automated Release created on: ${{ env.RELEASE_DATETIME }}**
+            **Automated Release created on: ${{ steps.getVariables.outputs.datetime }}**
 
             # New Features
             * tbd
