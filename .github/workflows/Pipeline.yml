@@ -1,0 +1,322 @@
+name: Unit Testing, Coverage Collection, Package, Release and Publish
+
+on: [ push ]
+
+jobs:
+  UnitTesting:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8, 3.9 ]
+
+    env:
+      PYTHON: ${{ matrix.python-version }}
+    outputs:
+      python: ${{ env.PYTHON }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -rA tests/unit
+
+  IssueTesting:
+    name: Issue Tests
+    runs-on: ubuntu-latest
+
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8, 3.9 ]
+
+    env:
+      PYTHON: ${{ matrix.python-version }}
+    outputs:
+      python: ${{ env.PYTHON }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -rA tests/issue
+
+  Coverage:
+    name: Collect Coverage Data
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHON: 3.9
+    outputs:
+      python: ${{ env.PYTHON }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ env.PYTHON }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Collect coverage
+        if: ${{ always() }}
+        run: |
+          python -m pytest -rA --cov=.. --cov-config=tests/.coveragerc tests/unit
+
+      - name: Convert to cobertura format
+        if: ${{ always() }}
+        run: |
+          coverage xml
+
+      - name: Publish coverage at CodeCov
+        if: ${{ always() }}
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: PYTHON
+
+      - name: Publish coverage at Codacy
+        if: ${{ always() }}
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage.xml
+
+  Release:
+    name: Release Page on GitHub
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - UnitTesting
+      - IssueTesting
+      - Coverage
+
+    env:
+      PYTHON: ${{ needs.Coverage.outputs.python }}
+    outputs:
+      python:     ${{ env.PYTHON }}
+      tag:        ${{ steps.getVariables.outputs.gitTag }}
+      version:    ${{ steps.getVariables.outputs.version }}
+      datetime:   ${{ steps.getVariables.outputs.datetime }}
+      upload_url: ${{ steps.createReleasePage.outputs.upload_url }}
+
+    steps:
+      - name: Extract Git tag from GITHUB_REF
+        id:   getVariables
+        run: |
+          GIT_TAG=${GITHUB_REF#refs/*/}
+          RELEASE_VERSION=${GIT_TAG#v}
+          RELEASE_DATETIME="$(date --utc '+%d.%m.%Y - %H:%M:%S')"
+          # write to step outputs
+          echo ::set-output name=gitTag::${GIT_TAG}
+          echo ::set-output name=version::${RELEASE_VERSION}
+          echo ::set-output name=datetime::${RELEASE_DATETIME}
+
+      - name: Create Release Page
+        id:   createReleasePage
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.getVariables.outputs.gitTag }}
+          release_name: ${{ steps.getVariables.outputs.gitTag }}
+          body: |
+            **Automated Release created on: ${{ steps.getVariables.outputs.datetime }}**
+
+            # New Features
+            * tbd
+
+            # Changes
+            * tbd
+
+            # Bug Fixes
+            * tbd
+          draft: false
+          prerelease: false
+
+  Package:
+    name: Package in Wheel Format
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - Coverage
+
+    env:
+      PYTHON:   ${{ needs.Coverage.outputs.python }}
+      ARTIFACT: pyVHDLParser-wheel
+    outputs:
+      python:   ${{ env.PYTHON }}
+      artifact: ${{ env.ARTIFACT }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ env.PYTHON }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON }}
+
+      - name: Install dependencies for packaging and release
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+
+      - name: Build Python package (source distribution)
+        run: |
+          python setup.py sdist
+
+      - name: Build Python package (binary distribution - wheel)
+        run: |
+          python setup.py bdist_wheel
+
+      - name: Upload 'pyVHDLParser' artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  PublishOnPyPI:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - Package
+
+    env:
+      PYTHON:   ${{ needs.Package.outputs.python }}
+      ARTIFACT: ${{ needs.Package.outputs.artifact }}
+    outputs:
+      python:   ${{ env.PYTHON }}
+      artifact: ${{ env.ARTIFACT }}
+
+    steps:
+      - name: Download artifacts '${{ env.ARTIFACT }}' from 'Package' job
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/
+
+      - name: Setup Python ${{ env.PYTHON }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON }}
+
+      - name: Install dependencies for packaging and release
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel twine
+
+      - name: Release Python package to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          twine upload dist/*
+
+  PublishOnGitHub:
+    name: Publish to GitHub
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - Package
+      - Release
+
+    env:
+      PYTHON:   ${{ needs.Package.outputs.python }}
+      ARTIFACT: ${{ needs.Package.outputs.artifact }}
+    outputs:
+      python:   ${{ env.PYTHON }}
+      artifact: ${{ env.ARTIFACT }}
+
+    steps:
+      - name: Download artifacts from 'Package' job
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/
+
+      - name: Upload wheel as Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.Release.outputs.upload_url }}
+          asset_path: dist/pyVHDLParser-${{ needs.Release.outputs.version }}-py3-none-any.whl
+          asset_name: pyVHDLParser-${{ needs.Release.outputs.version }}-py3-none-any.whl
+          asset_content_type: application/x-wheel+zip
+
+  ArtifactCleanUp:
+    name: Artifact Cleanup
+    runs-on: ubuntu-latest
+
+    needs:
+      - Package
+      - PublishOnPyPI
+      - PublishOnGitHub
+
+    env:
+      ARTIFACT: ${{ needs.Package.outputs.artifact }}
+
+    steps:
+    - name: Delete all Artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: |
+          ${{ env.ARTIFACT }}
+
+#  TriggerNext:
+#    name: Trigger next Workflows
+#    needs: [ UnitTesting, Coverage ]
+#    runs-on: ubuntu-latest
+#    env:
+#      PYTHON: 3.9
+#    steps:
+#      - name: Trigger Release Workflow
+#        if: startsWith(github.ref, 'refs/tags')
+#        uses: peter-evans/repository-dispatch@v1
+#        with:
+#          token: ${{ secrets.TRIGGER_TOKEN_2 }}
+##          repository: vhdl/pyVHDLModel
+#          event-type: doRelease
+#          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "PYTHON": "${{ env.PYTHON }}"}'

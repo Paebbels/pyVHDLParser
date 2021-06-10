@@ -29,10 +29,10 @@ This is a token-stream based parser for VHDL-2008 creating a document object mod
 
 .. important:: **This package requires Python 3.8+**, because it uses some of the latest Python feature for effective code writing:
 
-   * `Pathlib <https://docs.python.org/3/library/pathlib.html>`_ (Python 3.4)
-   * `Type hints <https://docs.python.org/3/library/typing.html#module-typing>`_ (Python 3.5) and for `variables <https://docs.python.org/3/whatsnew/3.6.html#pep-526-syntax-for-variable-annotations>`_ (Python 3.6)
-   * `Data classes <https://docs.python.org/3/library/dataclasses.html>`_ (Python 3.7)
-   * `Assignment expressions <https://docs.python.org/3/whatsnew/3.8.html#assignment-expressions>`_ (Python 3.8)
+   * `Pathlib <https://docs.python.org/3/library/pathlib.html>`__ (Python 3.4)
+   * `Type hints <https://docs.python.org/3/library/typing.html#module-typing>`__ (Python 3.5) and for `variables <https://docs.python.org/3/whatsnew/3.6.html#pep-526-syntax-for-variable-annotations>`__ (Python 3.6)
+   * `Data classes <https://docs.python.org/3/library/dataclasses.html>`__ (Python 3.7)
+   * `Assignment expressions <https://docs.python.org/3/whatsnew/3.8.html#assignment-expressions>`__ (Python 3.8)
 
 
 Main Goals
@@ -165,7 +165,8 @@ Let's create a new parser in Python to process VHDL code.
 Contributors
 ************
 
-* `Patrick Lehmann <https://github.com/Paebbels>`_ (Maintainer)
+* `Patrick Lehmann <https://github.com/Paebbels>`__ (Maintainer)
+* `and more... <https://github.com/Paebbels/pyVHDLParser/graphs/contributors>`__
 
 
 License
@@ -175,7 +176,7 @@ This library is licensed under **Apache License 2.0**.
 
 ------------------------------------
 
-.. |docdate| date:: %b %d, %Y - %H:%M
+.. |docdate| date:: %d.%b %Y - %H:%M
 
 .. only:: html
 
@@ -234,6 +235,7 @@ This library is licensed under **Apache License 2.0**.
    ChangeLog/index
    License
    Glossary
+   TODOs
    genindex
    py-modindex
 

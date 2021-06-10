@@ -88,7 +88,7 @@ exported in various documentation format like JSON, XML, Restructured Text, ...
 
 .. seealso::
 
-   A VHDL domain for Sphinx: `sphinxcontrib-vhdldomain <https://github.com/Paebbels/sphinxcontrib-vhdldomain>`_
+   A VHDL domain for Sphinx: `sphinxcontrib-vhdldomain <https://github.com/Paebbels/sphinxcontrib-vhdldomain>`__
 
 
 .. _usecase-doccov:
@@ -96,7 +96,7 @@ exported in various documentation format like JSON, XML, Restructured Text, ...
 Documentation Coverage Collection
 *********************************
 
-Simulators and frameworks like `OSVVM <https://github.com/OSVVM/OSVVM>`_ are
+Simulators and frameworks like `OSVVM <https://github.com/OSVVM/OSVVM>`__ are
 collecting statement, branch and even functional coverage, but non of the tools
 is collecting documentation coverage.
 

@@ -1,6 +1,3 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
 # Authors:            Patrick Lehmann
 #
@@ -12,7 +9,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +39,7 @@ from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup
-from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
 __all__ = []
 __api__ = __all__
@@ -98,10 +95,10 @@ class Package(PackageVHDLModel):
 		parserState.CurrentNode.AddPackage(package)
 		parserState.CurrentNode = package
 		parserState.CurrentNode.AddLibraryReferences(oldNode.Libraries)
-		parserState.CurrentNode.AddUses(oldNode.Uses)
+		parserState.CurrentNode.AddUses(oldNode.PackageReferences)
 
 		oldNode.Libraries.clear()
-		oldNode.Uses.clear()
+		oldNode.PackageReferences.clear()
 
 	@classmethod
 	def stateParseGenericList(cls, parserState: ParserState): #document, group):
@@ -137,11 +134,11 @@ class Package(PackageVHDLModel):
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraryReferences.append(library._library)
 
-	def AddUses(self, uses : List[Use]):
+	def AddUses(self, uses : List[PackageReference]):
 		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
-			self._uses.append(use)
+			self._packageReferences.append(use)
 
 	def AddGeneric(self, generic):
 		if DEBUG: print("{DARK_CYAN}Adding generic to package {GREEN}{0}{NOCOLOR}:\n  {YELLOW}{1}{NOCOLOR} : {2}".format(self._name, generic, "", **Console.Foreground))
@@ -163,7 +160,7 @@ class Package(PackageVHDLModel):
 		indentation = "  "*indent
 		for lib in self._libraries:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
-		for use in self._uses:
+		for use in self._packageReferences:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{item}{NOCOLOR};".format(indent=indentation, lib=use._library, pack=use._package, item=use._item, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))

@@ -162,7 +162,7 @@ Python iterators
 A Python iterable is an object implementing an ``__iter__`` method returning an
 iterator. The iterator implements a ``__next__`` method to return the next
 element in line. Usually, the iterator has some internal state, so it can compute
-the next element. At the end of an iteration, :exec:`StopIteration` is raised.
+the next element. At the end of an iteration, :exc:`StopIteration` is raised.
 
 .. code-block:: Python
 
@@ -272,19 +272,19 @@ Code-DOM
 
 .. note::
 
-   CodeDOM is based on the ideas of `Project Roslyn <https://github.com/dotnet/roslyn>`_
-   and a series of `CodeProject <https://www.codeproject.com/>`_ articles
-   written by `Ken Beckett <https://www.codeproject.com/script/Membership/View.aspx?mid=473427>`_
+   CodeDOM is based on the ideas of `Project Roslyn <https://github.com/dotnet/roslyn>`__
+   and a series of `CodeProject <https://www.codeproject.com/>`__ articles
+   written by `Ken Beckett <https://www.codeproject.com/script/Membership/View.aspx?mid=473427>`__
    in 2012.
 
-   * `The Future of Software Development: CodeDOMs (Part 1) <https://www.codeproject.com/Articles/488657/The-Future-of-Software-Development-CodeDOMs-Part-1>`_
-   * `Creating a CodeDOM: Modeling the Semantics of Code (Part 2) <https://www.codeproject.com/Articles/490184/Creating-a-CodeDOM-Modeling-the-Semantics-of-Code>`_
-   * `Displaying a CodeDOM using WPF (Part 3) <https://www.codeproject.com/Articles/491550/Displaying-a-CodeDOM-using-WPF-Part-3>`_
-   * `Object-Oriented Parsing: Breaking With Tradition (Part 4) <https://www.codeproject.com/Articles/492466/Object-Oriented-Parsing-Breaking-With-Tradition-Pa>`_
-   * `CodeDOM Classes for Solution and Project Files (Part 5) <https://www.codeproject.com/Articles/495311/CodeDOM-Classes-for-Solution-and-Project-Files-Par>`_
-   * `Accessing Assembly Metadata with Reflection or Mono Cecil (Part 6) <https://www.codeproject.com/Articles/499960/Accessing-Assembly-Metadata-with-Reflection-or-Mon>`_
-   * `Resolving Symbolic References in a CodeDOM (Part 7) <https://www.codeproject.com/Articles/502354/Resolving-Symbolic-References-in-a-CodeDOM-Part-7>`_
-   * `Calculating Metrics and Searching with a CodeDOM (Part 8) <https://www.codeproject.com/Articles/505579/Calculating-Metrics-and-Searching-with-a-CodeDOM-P>`_
+   * `The Future of Software Development: CodeDOMs (Part 1) <https://www.codeproject.com/Articles/488657/The-Future-of-Software-Development-CodeDOMs-Part-1>`__
+   * `Creating a CodeDOM: Modeling the Semantics of Code (Part 2) <https://www.codeproject.com/Articles/490184/Creating-a-CodeDOM-Modeling-the-Semantics-of-Code>`__
+   * `Displaying a CodeDOM using WPF (Part 3) <https://www.codeproject.com/Articles/491550/Displaying-a-CodeDOM-using-WPF-Part-3>`__
+   * `Object-Oriented Parsing: Breaking With Tradition (Part 4) <https://www.codeproject.com/Articles/492466/Object-Oriented-Parsing-Breaking-With-Tradition-Pa>`__
+   * `CodeDOM Classes for Solution and Project Files (Part 5) <https://www.codeproject.com/Articles/495311/CodeDOM-Classes-for-Solution-and-Project-Files-Par>`__
+   * `Accessing Assembly Metadata with Reflection or Mono Cecil (Part 6) <https://www.codeproject.com/Articles/499960/Accessing-Assembly-Metadata-with-Reflection-or-Mon>`__
+   * `Resolving Symbolic References in a CodeDOM (Part 7) <https://www.codeproject.com/Articles/502354/Resolving-Symbolic-References-in-a-CodeDOM-Part-7>`__
+   * `Calculating Metrics and Searching with a CodeDOM (Part 8) <https://www.codeproject.com/Articles/505579/Calculating-Metrics-and-Searching-with-a-CodeDOM-P>`__
 
 ------------------------
 

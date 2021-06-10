@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../pyVHDLParser'))
 # Project information
 # ==============================================================================
 project =   "pyVHDLParser"
-copyright = "2016-2020 Patrick Lehmann - Boetzingen, Germany"
+copyright = "2016-2021 Patrick Lehmann - Boetzingen, Germany"
 author =    "Patrick Lehmann"
 
 
@@ -42,7 +42,7 @@ def _LatestTagName():
 
 # The full version, including alpha/beta/rc tags
 version = "0.6"     # The short X.Y version.
-release = "0.6.1"   # The full version, including alpha/beta/rc tags.
+release = "0.6.3"   # The full version, including alpha/beta/rc tags.
 try:
 	if _IsUnderGitControl:
 		latestTagName = _LatestTagName()[1:]		# remove prefix "v"
@@ -202,7 +202,8 @@ extensions = [
 # Sphinx.Ext.InterSphinx
 # ==============================================================================
 intersphinx_mapping = {
-	'python':   ('https://docs.python.org/3', None),
+	'python':     ('https://docs.python.org/3', None),
+	'vhdlmodel':  ('https://vhdl.github.io/pyVHDLModel', None),
 }
 
 
@@ -234,7 +235,7 @@ graphviz_output_format = "svg"
 # ==============================================================================
 # Sphinx.Ext.ToDo
 # ==============================================================================
-# If true, `todo` and `todoList` produce output, else they produce nothing.
+# If true, ``todo`` and ``todoList`` produce output, else they produce nothing.
 todo_include_todos = True
 todo_link_only = True
 

@@ -1,6 +1,3 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
 # Authors:            Patrick Lehmann
 #
@@ -12,7 +9,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, Use as UseModel
+from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, PackageReference as UseModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException
@@ -66,7 +63,7 @@ class Library(LibraryReferenceModel):
 		return self._library
 
 
-class Use(UseModel):
+class PackageReference(UseModel):
 	def __init__(self, libraryName, packageName, itemName):
 		super().__init__()
 		self._library = libraryName

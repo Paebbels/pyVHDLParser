@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="BlockStream - Current.vhdl (Debug)" type="PythonConfigurationType" factoryName="Python" folderName="Block Stream">
+  <configuration default="false" name="BlockStream - Current.vhdl (Debug)" type="PythonConfigurationType" factoryName="Python" folderName="pyVHDLParser - Block Stream">
     <module name="pyVHDLParser" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

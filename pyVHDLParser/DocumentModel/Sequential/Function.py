@@ -1,6 +1,3 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
 # Authors:            Patrick Lehmann
 #
@@ -12,7 +9,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +38,7 @@ from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBl
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Sequential                 import Function as FunctionBlock
 from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
-from pyVHDLParser.DocumentModel.Reference           import Library, Use
+from pyVHDLParser.DocumentModel.Reference           import Library, PackageReference
 
 # Type alias for type hinting
 ParserState = GroupToModelParser.GroupParserState
@@ -127,7 +124,7 @@ class Function(FunctionModel):
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **LineTerminal().Foreground))
 			self._libraries.append(library._library)
 
-	def AddUses(self, uses: List[Use]):
+	def AddUses(self, uses: List[PackageReference]):
 		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to function {GREEN}{0}{NOCOLOR}:".format(self._name, **LineTerminal().Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **LineTerminal().Foreground))

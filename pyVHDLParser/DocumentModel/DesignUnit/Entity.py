@@ -1,6 +1,3 @@
-# EMACS settings: -*-	tab-width: 2; indent-tabs-mode: t; python-indent-offset: 2 -*-
-# vim: tabstop=2:shiftwidth=2:noexpandtab
-# kate: tab-width 2; replace-tabs off; indent-width 2;
 # ==============================================================================
 # Authors:            Patrick Lehmann
 #
@@ -12,7 +9,7 @@
 #
 # License:
 # ==============================================================================
-# Copyright 2017-2020 Patrick Lehmann - Boetzingen, Germany
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +39,7 @@ import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
-from pyVHDLParser.DocumentModel.Reference   import Library, Use
+from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
 __all__ = []
 __api__ = __all__
@@ -68,7 +65,7 @@ class Entity(EntityVHDLModel):
 
 				entity = cls(entityName)
 				entity.AddLibraryReferences(document.Libraries)
-				entity.AddUses(document.Uses)
+				entity.AddUses(document.PackageReferences)
 
 				print("Found library '{0}'. Adding to current node '{1!s}'.".format(entityName, document))
 				document.AddEntity(entity)
@@ -162,7 +159,7 @@ class Entity(EntityVHDLModel):
 
 	def AddUses(self, uses):
 		for use in uses:
-			self._uses.append(use)
+			self._packageReferences.append(use)
 
 	def AddGeneric(self, generic):
 		self._genericItems.append(generic)
@@ -174,7 +171,7 @@ class Entity(EntityVHDLModel):
 		indentation = "  "*indent
 		for lib in self._libraries:
 			print("{indent}{DARK_CYAN}LIBRARY{NOCOLOR} {GREEN}{lib}{NOCOLOR};".format(indent=indentation, lib=lib, **Console.Foreground))
-		for lib, pack, obj in self._uses:
+		for lib, pack, obj in self._packageReferences:
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}ENTITY{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(name=self._name, indent=indentation, **Console.Foreground))

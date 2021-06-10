@@ -493,12 +493,15 @@ And this is the filtered and fused result stream:
  [41]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1_Fused.png
 
 
+## Contributors
+* [Patrick Lehmann](https://github.com/Paebbels) (Maintainer)
+* [and more...](https://github.com/Paebbels/pyVHDLParser/graphs/contributors)
+
+
 ## License
 
-This Python package (source code) is licensed under [Apache License 2.0](LICENSE.md).
-
-<!-- The accompanying documentation is licensed under Creative Commons - Attribution-4.0 (CC-BY 4.0). -->
-
+This Python package (source code) licensed under [Apache License 2.0](LICENSE.md).  
+The accompanying documentation is licensed under [Creative Commons - Attribution 4.0 (CC-BY 4.0)](doc/Doc-License.rst).
 
 -------------------------
 
