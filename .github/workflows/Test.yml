@@ -129,9 +129,10 @@ jobs:
     env:
       PYTHON: ${{ needs.Coverage.outputs.python }}
     outputs:
-      python:   ${{ env.PYTHON }}
-      tag:      ${{ steps.getGitTag.outputs.result }}
-      datetime: ${{ env.RELEASE_DATETIME }}
+      python:     ${{ env.PYTHON }}
+      tag:        ${{ steps.getGitTag.outputs.result }}
+      datetime:   ${{ env.RELEASE_DATETIME }}
+      upload_url: ${{ steps.createReleasePage.outputs.upload_url }}
 
     steps:
       - name: Extract Git tag from GITHUB_REF
@@ -150,6 +151,7 @@ jobs:
           echo "RELEASE_DATETIME=${RELEASE_DATETIME}" >> $GITHUB_ENV
 
       - name: Create Release Page
+        id:   createReleasePage
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -279,7 +281,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.Release.outputs.release_upload_url }}
+          upload_url: ${{ needs.Release.outputs.upload_url }}
           asset_path: dist/*.whl
           asset_name: pyVHDLParser-${{ needs.Release.outputs.tag }}.whl
           asset_content_type: application/x-wheel+zip
