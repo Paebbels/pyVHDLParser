@@ -3,70 +3,70 @@ name: Test and Coverage
 on: [ push ]
 
 jobs:
-  UnitTesting:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ 3.8, 3.9 ]
-
-    env:
-      PYTHON: ${{ matrix.python-version }}
-    outputs:
-      python: ${{ env.PYTHON }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r tests/requirements.txt
-
-      - name: Run unit tests
-        run: |
-          python -m pytest -rA tests/unit
-
-  IssueTesting:
-    name: Issue Tests
-    runs-on: ubuntu-latest
-
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ 3.8, 3.9 ]
-
-    env:
-      PYTHON: ${{ matrix.python-version }}
-    outputs:
-      python: ${{ env.PYTHON }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r tests/requirements.txt
-
-      - name: Run unit tests
-        run: |
-          python -m pytest -rA tests/issue
+#  UnitTesting:
+#    name: Unit Tests
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        python-version: [ 3.8, 3.9 ]
+#
+#    env:
+#      PYTHON: ${{ matrix.python-version }}
+#    outputs:
+#      python: ${{ env.PYTHON }}
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Setup Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install -r tests/requirements.txt
+#
+#      - name: Run unit tests
+#        run: |
+#          python -m pytest -rA tests/unit
+#
+#  IssueTesting:
+#    name: Issue Tests
+#    runs-on: ubuntu-latest
+#
+#    continue-on-error: true
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        python-version: [ 3.8, 3.9 ]
+#
+#    env:
+#      PYTHON: ${{ matrix.python-version }}
+#    outputs:
+#      python: ${{ env.PYTHON }}
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Setup Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install -r tests/requirements.txt
+#
+#      - name: Run unit tests
+#        run: |
+#          python -m pytest -rA tests/issue
 
   Coverage:
     name: Collect Coverage Data
@@ -122,19 +122,20 @@ jobs:
 
     if: startsWith(github.ref, 'refs/tags')
     needs:
-      - UnitTesting
-      - IssueTesting
+#      - UnitTesting
+#      - IssueTesting
       - Coverage
 
     env:
       PYTHON: ${{ needs.Coverage.outputs.python }}
     outputs:
       python: ${{ env.PYTHON }}
-      tag:    ${{ steps.getTag.outputs.result }}
+      tag:    ${{ steps.getGitTag.outputs.result }}
+      date:   ${{ env.RELEASE_DATETIME }}
 
     steps:
       - name: Extract Git tag from GITHUB_REF
-        id:   getTag
+        id:   getGitTag
         uses: actions/github-script@0.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -143,7 +144,7 @@ jobs:
 
       - name: Create Release Page Contents
         run: |
-          RELEASE_DATETIME="$(date --utc '%d.%m.%Y - %H:%M:%s')"
+          RELEASE_DATETIME="$(date --utc '+%d.%m.%Y - %H:%M:%S')"
           echo "Date: ${RELEASE_DATETIME}"
           # Setup environment variables
           echo "RELEASE_DATETIME=${RELEASE_DATETIME}" >> $GITHUB_ENV
@@ -153,8 +154,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.getTag.outputs.result }}
-          release_name: ${{ steps.getTag.outputs.result }}
+          tag_name: ${{ steps.getGitTag.outputs.result }}
+          release_name: ${{ steps.getGitTag.outputs.result }}
           body: |
             **Automated Release**
             Created on: ${{ env.RELEASE_DATETIME }}
@@ -243,8 +244,6 @@ jobs:
 
     needs:
       - Package
-    env:
-      PYTHON: ${{ needs.Package.outputs.python }}
 
     steps:
       - name: Download artifacts from 'Package' job
