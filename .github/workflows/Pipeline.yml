@@ -1,72 +1,72 @@
-name: Test and Coverage
+name: Unit Testing, Coverage Collection, Package, Release and Publish
 
 on: [ push ]
 
 jobs:
-#  UnitTesting:
-#    name: Unit Tests
-#    runs-on: ubuntu-latest
-#
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        python-version: [ 3.8, 3.9 ]
-#
-#    env:
-#      PYTHON: ${{ matrix.python-version }}
-#    outputs:
-#      python: ${{ env.PYTHON }}
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Setup Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r tests/requirements.txt
-#
-#      - name: Run unit tests
-#        run: |
-#          python -m pytest -rA tests/unit
-#
-#  IssueTesting:
-#    name: Issue Tests
-#    runs-on: ubuntu-latest
-#
-#    continue-on-error: true
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        python-version: [ 3.8, 3.9 ]
-#
-#    env:
-#      PYTHON: ${{ matrix.python-version }}
-#    outputs:
-#      python: ${{ env.PYTHON }}
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Setup Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r tests/requirements.txt
-#
-#      - name: Run unit tests
-#        run: |
-#          python -m pytest -rA tests/issue
+  UnitTesting:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8, 3.9 ]
+
+    env:
+      PYTHON: ${{ matrix.python-version }}
+    outputs:
+      python: ${{ env.PYTHON }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -rA tests/unit
+
+  IssueTesting:
+    name: Issue Tests
+    runs-on: ubuntu-latest
+
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.8, 3.9 ]
+
+    env:
+      PYTHON: ${{ matrix.python-version }}
+    outputs:
+      python: ${{ env.PYTHON }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -rA tests/issue
 
   Coverage:
     name: Collect Coverage Data
