@@ -54,7 +54,7 @@ documentationURL =  "https://{namespace}.github.io/{projectName}/using/py/index.
 # Assemble all package information
 setuptools_setup(
 	name=projectName,
-	version="0.6.2",
+	version="0.6.3",
 
 	author="Patrick Lehmann",
 	author_email="Paebbels@gmail.com",
