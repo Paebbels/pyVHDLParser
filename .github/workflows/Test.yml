@@ -130,7 +130,8 @@ jobs:
       PYTHON: ${{ needs.Coverage.outputs.python }}
     outputs:
       python:     ${{ env.PYTHON }}
-      tag:        ${{ steps.getGitTag.outputs.result }}
+      tag:        v${{ steps.getGitTag.outputs.result }}
+      version:    ${{ steps.getGitTag.outputs.result }}
       datetime:   ${{ env.RELEASE_DATETIME }}
       upload_url: ${{ steps.createReleasePage.outputs.upload_url }}
 
@@ -141,7 +142,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            return context.payload.ref.replace(/\/refs\/tags\//, '');
+            return context.payload.ref.replace(/\/refs\/tags\/v/, '');
 
       - name: Create Release Page Contents
         run: |
@@ -169,7 +170,7 @@ jobs:
 
             # Bug Fixes
             * tbd
-          draft: true
+          draft: false
           prerelease: false
 
   Package:
@@ -282,8 +283,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.Release.outputs.upload_url }}
-          asset_path: dist/*.whl
-          asset_name: pyVHDLParser-${{ needs.Release.outputs.tag }}.whl
+          asset_path: dist/pyVHDLParser-${{ needs.Release.outputs.version }}-py3-none-any.whl
+          asset_name: pyVHDLParser-${{ needs.Release.outputs.version }}-py3-none-any.whl
           asset_content_type: application/x-wheel+zip
 
   ArtifactCleanUp:
