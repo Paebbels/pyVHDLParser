@@ -166,9 +166,9 @@ extensions = [
 	"sphinx.ext.autodoc",
 	'sphinx.ext.extlinks',
 	'sphinx.ext.intersphinx',
-#	'sphinx.ext.inheritance_diagram',
+	'sphinx.ext.inheritance_diagram',
 	'sphinx.ext.todo',
-#	'sphinx.ext.graphviz',
+	'sphinx.ext.graphviz',
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
@@ -183,8 +183,8 @@ extensions = [
 
 # BuildTheDocs extensions
 	'btd.sphinx.autoprogram',
-	'btd.sphinx.graphviz',
-	'btd.sphinx.inheritance_diagram',
+#	'btd.sphinx.graphviz',
+#	'btd.sphinx.inheritance_diagram',
 
 # Other extensions
 #	'DocumentMember',
