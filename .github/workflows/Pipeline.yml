@@ -92,17 +92,16 @@ jobs:
           pip install -r tests/requirements.txt
 
       - name: Collect coverage
-        if: ${{ always() }}
+        continue-on-error: true
         run: |
           python -m pytest -rA --cov=.. --cov-config=tests/.coveragerc tests/unit
 
       - name: Convert to cobertura format
-        if: ${{ always() }}
         run: |
           coverage xml
 
       - name: Publish coverage at CodeCov
-        if: ${{ always() }}
+        continue-on-error: true
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage.xml
@@ -110,7 +109,7 @@ jobs:
           env_vars: PYTHON
 
       - name: Publish coverage at Codacy
-        if: ${{ always() }}
+        continue-on-error: true
         uses: codacy/codacy-coverage-reporter-action@master
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
