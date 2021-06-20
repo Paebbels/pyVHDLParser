@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLModel.VHDLModel                  import LibraryReference as LibraryReferenceModel, PackageReference as UseModel
+from pyVHDLModel.VHDLModel                  import Library as LibraryReferenceModel, Package as UseModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException
