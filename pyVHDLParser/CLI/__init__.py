@@ -25,8 +25,9 @@ from typing                           import Protocol, Callable, Dict
 from pyAttributes                     import Attribute
 from pyAttributes.ArgParseAttributes  import ArgumentAttribute, SwitchArgumentAttribute
 
-from pyVHDLParser.Token               import LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
-from pyVHDLParser.Token               import IntegerLiteralToken, WordToken, Token, SpaceToken, CharacterToken
+from pyVHDLParser.Token               import (LinebreakToken, IndentationToken, CommentToken, StringLiteralToken,
+											  IntegerLiteralToken, WordToken, SpaceToken, CharacterToken)
+from pyVHDLParser.Token               import Token as BaseToken
 from pyVHDLParser.Token.Keywords      import KeywordToken
 
 
@@ -76,8 +77,8 @@ TOKENTYPE_TO_COLOR_TRANSLATION = {
 }
 
 
-def translate(token: Token) -> str:
-	if isinstance(token, Token):
+def translate(token: BaseToken) -> str:
+	if isinstance(token, BaseToken):
 		tokenCls = token.__class__
 	else:
 		tokenCls = token
