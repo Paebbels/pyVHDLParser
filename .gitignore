@@ -4,6 +4,7 @@ __pycache__/
 
 # Python installation packages
 dist/
+/*.egg-info
 
 # Coverage.py
 .coverage
