@@ -356,7 +356,7 @@ class Tokenizer:
 
 					start.Column +=   1
 					start.Absolute += 1
-					buffer =          buffer[:2]
+					buffer =          buffer[1:]
 					if ((buffer[0] in __ALPHA_CHARACTERS__) and (buffer[1] in __ALPHA_CHARACTERS__)):
 						tokenKind =     cls.TokenKind.AlphaChars
 					elif ((buffer[0] in __WHITESPACE_CHARACTERS__) and (buffer[1] in __WHITESPACE_CHARACTERS__)):
