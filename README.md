@@ -450,10 +450,10 @@ One of many post processing steps could be to remove whitespaces, indentation an
 This screenshot shows the filtered results:
 [![][30]][30] 
 
- [10]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/TokenStream_Example_1.png
- [20]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Example_1.png
- [21]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Uses_Detailed.png
- [30]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Uses_Fused.png
+ [10]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/TokenStream_Example_1.png
+ [20]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/BlockStream_Example_1.png
+ [21]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/BlockStream_Uses_Detailed.png
+ [30]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/BlockStream_Uses_Fused.png
 
 ## Example 2 - Simple_1
 
@@ -489,8 +489,8 @@ This is the result stream:
 And this is the filtered and fused result stream:
 [![][41]][41]
 
- [40]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1.png
- [41]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/docs/screens/BlockStream_Simple_1_Fused.png
+ [40]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/BlockStream_Simple_1.png
+ [41]: https://raw.githubusercontent.com/Paebbels/pyVHDLParser/master/doc/screens/BlockStream_Simple_1_Fused.png
 
 
 ## Contributors
