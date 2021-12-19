@@ -28,8 +28,8 @@
 from pathlib                              import Path
 from typing                               import List, Union
 
-from pyTooling.Decorators                   import export
-from pyVHDLModel.VHDLModel                import Document as DocumentModel
+from pyTooling.Decorators                 import export
+from pyVHDLModel.SyntaxModel              import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer
@@ -38,7 +38,7 @@ from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockT
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup
 from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
-from pyVHDLParser.DocumentModel.Reference import Library, PackageReference
+from pyVHDLParser.DocumentModel.Reference import LibraryClause, PackageReference
 
 
 @export
@@ -50,7 +50,7 @@ class DOMParserException(ParserException):
 
 @export
 class Document(DocumentModel):
-	__libraries:  List[Library]
+	__libraries:  List[LibraryClause]
 	__uses:       List[PackageReference]
 
 	def __init__(self, file: Union[Path, str]):  # FIXME: parameter type
@@ -102,7 +102,7 @@ class Document(DocumentModel):
 
 	@classmethod
 	def stateParse(cls, document, startOfDocumentGroup: Group):
-		from pyVHDLParser.DocumentModel.Reference               import Library as LibraryModel, PackageReference as UseModel
+		from pyVHDLParser.DocumentModel.Reference               import LibraryClause as LibraryModel, PackageReference as UseModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Context      import Context as ContextModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Entity       import Entity as EntityModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Architecture import Architecture as ArchitectureModel

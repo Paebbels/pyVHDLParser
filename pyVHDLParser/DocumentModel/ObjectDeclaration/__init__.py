@@ -26,9 +26,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pyTooling.TerminalUI                                   import LineTerminal
+from pyTooling.TerminalUI                           import LineTerminal
 
-from pyVHDLModel.VHDLModel                          import Constant as ConstantBase
+from pyVHDLModel.SyntaxModel                        import Constant as ConstantBase
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException

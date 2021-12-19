@@ -14,7 +14,7 @@ ArrowBlock
 WhenExpressionBlock
 -------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByCharORClosingRoundBracket`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByCharORClosingRoundBracket`
 
 WhenBlock
 ---------
@@ -29,7 +29,7 @@ IsBlock
 CaseExpressionBlock
 -------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
 
 CaseBlock
 ---------

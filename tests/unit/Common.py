@@ -30,7 +30,7 @@ from dataclasses                import dataclass
 from typing                     import List, Tuple, Any
 
 from flags                      import Flags
-from pyMetaClasses              import Singleton
+from pyTooling.MetaClasses      import Singleton
 
 from pyVHDLParser.Base          import ParserException
 from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token, CharacterTranslation

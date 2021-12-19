@@ -29,14 +29,14 @@
 from pydecor                                import export
 from typing                                 import List
 
-from pyVHDLModel.VHDLModel                  import Architecture as ArchitectureVHDLModel
+from pyVHDLModel.SyntaxModel                import Architecture as ArchitectureVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Structural         import Architecture as ArchitectureBlocks
 from pyVHDLParser.Groups                    import ParserState
-from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
+from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
 DEBUG = True

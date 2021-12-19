@@ -37,19 +37,19 @@ a design has the two child nodes: ``Libraries`` and ``Documents``. Each is a
 
 .. _vhdlmodel-library:
 
-Library
-=======
+LibraryStatement
+================
 
 A library contains multiple *design units*. Each design unit listed in a library
 is a *primary* design unit like: ``configuration``, ``entity``, ``package`` or
 ``context``.
 
-**Condensed definition of class** :class:`~pyVHDLParser.VHDLModel.Library`:
+**Condensed definition of class** :class:`~pyVHDLParser.VHDLModel.LibraryStatement`:
 
 .. code-block:: Python
 
    @Export
-   class Library(ModelEntity):
+   class LibraryStatement(ModelEntity):
      _contexts :       List =  None    #: List of all contexts defined in a library.
      _configurations : List =  None    #: List of all configurations defined in a library.
      _entities :       List =  None    #: List of all entities defined in a library.

@@ -387,9 +387,9 @@ The example generates:
 ```
 [StartOfDocumentBlock]
 [Blocks.CommentBlock            '-- Copryright 2016\n'                                         at (line:   1, col:  1) .. (line:   1, col: 19)]
-[Library.LibraryBlock           'library '                                                     at (line:   2, col:  1) .. (line:   2, col:  8)]
-[Library.LibraryNameBlock       'IEEE'                                                         at (line:   2, col:  9) .. (line:   2, col: 13)]
-[Library.LibraryEndBlock        ';'                                                            at (line:   2, col: 13) .. (line:   2, col: 13)]
+[LibraryStatement.LibraryBlock           'library '                                                     at (line:   2, col:  1) .. (line:   2, col:  8)]
+[LibraryStatement.LibraryNameBlock       'IEEE'                                                         at (line:   2, col:  9) .. (line:   2, col: 13)]
+[LibraryStatement.LibraryEndBlock        ';'                                                            at (line:   2, col: 13) .. (line:   2, col: 13)]
 [LinebreakBlock                                                                                at (line:   2, col: 14) .. (line:   2, col: 14)]
 [Use.UseBlock                   'use     '                                                     at (line:   3, col:  1) .. (line:   3, col:  8)]
 [Use.UseNameBlock               'IEEE.std_logic_1164.all'                                      at (line:   3, col:  9) .. (line:   3, col: 32)]

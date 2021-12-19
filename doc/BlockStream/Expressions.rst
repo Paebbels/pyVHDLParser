@@ -1,18 +1,18 @@
 Expressions
 ###########
 
-Expression blocks are base-classes for a specific expression implementation. All
-four expression base-classes are derived from another base-class called :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`
+BaseExpression blocks are base-classes for a specific expression implementation. All
+four expression base-classes are derived from another base-class called :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`
 E.g. :class:`~pyVHDLParser.Blocks.Object.Constant.ConstantDeclarationDefaultExpressionBlock`
-is derived from :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`.
+is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`.
 
-Generic Expression Form
+Generic BaseExpression Form
 ***********************
 
 ExpressionBlock
 ---------------
 
-**Condensed definition of class** :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`:
+**Condensed definition of class** :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`:
 
 .. code-block:: Python
 
@@ -61,29 +61,29 @@ ExpressionBlock
 
 
 
-Specific Expression Forms
-*************************
+Specific BaseExpression Forms
+*****************************
 
 Expressions can be ended by:
 
 ``)`` or a user-defined character
-  See :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByCharORClosingRoundBracket`
+  See :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByCharORClosingRoundBracket`
 
 * ``)`` or a user-defined keyword
-  See :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
+  See :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
 
 * ``to`` or ``downto`` keyword
-  See :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordOrToOrDownto`
+  See :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordOrToOrDownto`
 
 * ``;``
-  See :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`
+  See :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`
 
 
 
 ExpressionBlockEndedByCharORClosingRoundBracket
 -----------------------------------------------
 
-This block is derived from :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`.
+This block is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`.
 It implements an expression that is either ended by a closing round bracket
 (``)``) or a user-defined character. When this base-class is inherited, the user
 needs to overwrite:
@@ -98,7 +98,7 @@ needs to overwrite:
   The block that is generated when exiting the block.
 
 
-**Condensed definition of class** :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByCharORClosingRoundBracket`:
+**Condensed definition of class** :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByCharORClosingRoundBracket`:
 
 .. code-block:: Python
 
@@ -122,14 +122,14 @@ needs to overwrite:
 ExpressionBlockEndedByKeywordORClosingRoundBracket
 --------------------------------------------------
 
-This block is derived from :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`.
+This block is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`.
 
 ExpressionBlockEndedByKeywordOrToOrDownto
 -----------------------------------------
 
-This block is derived from :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`.
+This block is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`.
 
 ExpressionBlockEndedBySemicolon
 -------------------------------
 
-This block is derived from :class:`~pyVHDLParser.Blocks.Expression.ExpressionBlock`.
+This block is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlock`.

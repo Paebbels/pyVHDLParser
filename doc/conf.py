@@ -220,7 +220,7 @@ autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
 extlinks = {
 	'issue': ('https://github.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
 	'pull':  ('https://github.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
-	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyMetaClasses/%s?ts=2', None),
+	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyVHDLParser/%s?ts=2', None),
 #	'test':  ('https://github.com/Paebbels/pyVHDLParser/blob/master/test/%s?ts=2', None)
 }
 

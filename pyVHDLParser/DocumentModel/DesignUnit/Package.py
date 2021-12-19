@@ -29,7 +29,7 @@
 from pydecor                                import export
 from typing                                 import List
 
-from pyVHDLModel.VHDLModel                  import Package as PackageVHDLModel
+from pyVHDLModel.SyntaxModel                import Package as PackageVHDLModel
 
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
@@ -39,7 +39,7 @@ from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup
-from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
+from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
 DEBUG = True
@@ -126,7 +126,7 @@ class Package(PackageVHDLModel):
 
 		parserState.CurrentNode.AddGeneric(genericName)
 
-	def AddLibraryReferences(self, libraries : List[Library]):
+	def AddLibraryReferences(self, libraries : List[LibraryClause]):
 		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))

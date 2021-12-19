@@ -28,6 +28,7 @@
 # load dependencies
 from pathlib import Path
 from unittest import TestCase
+from pytest   import mark
 
 from tests.IssueTester import SingleFileIssue
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
 	exit(1)
 
 class Issue_18(TestCase, SingleFileIssue):
+	@mark.xfail
 	def test_Tokenizer(self):
 		file = Path(__file__).with_suffix(".vhdl")
 		self.check_Tokenizer(file)

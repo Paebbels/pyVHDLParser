@@ -9,7 +9,7 @@ SignalDeclarationEndMarkerBlock
 SignalDeclarationDefaultExpressionBlock
 ---------------------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`
 
 SignalDeclarationBlock
 ----------------------

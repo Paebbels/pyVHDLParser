@@ -29,7 +29,7 @@
 from pydecor                                import export
 from typing                                 import List
 
-from pyVHDLModel.VHDLModel                  import Entity as EntityVHDLModel
+from pyVHDLModel.SyntaxModel                import Entity as EntityVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
@@ -39,7 +39,7 @@ import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
-from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
+from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
 DEBUG = True
