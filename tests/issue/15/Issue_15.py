@@ -31,7 +31,7 @@ from unittest import TestCase
 
 from tests.IssueTester import SingleFileIssue
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
 	print("Use: 'python -m unitest <testcase module>'")
 	exit(1)

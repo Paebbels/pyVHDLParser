@@ -9,7 +9,7 @@ from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, Spac
 from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
 	print("Use: 'python -m unitest <testcase module>'")
 	exit(1)
