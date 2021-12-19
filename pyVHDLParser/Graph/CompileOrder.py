@@ -26,13 +26,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators         import export
+from pyTooling.Decorators         import export
 
 from pyVHDLParser.Graph.Graph   import Graph as BaseGraph
 from pyVHDLParser.Graph.Graph   import Node as  BaseNode
-
-__all__ = []
-__api__ = __all__
 
 
 @export

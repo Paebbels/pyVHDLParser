@@ -28,7 +28,7 @@
 # load dependencies
 from typing                                         import List
 
-from pyTerminalUI                                   import LineTerminal
+from pyTooling.TerminalUI                                   import LineTerminal
 from pyVHDLModel.VHDLModel                          import Function as FunctionModel
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken

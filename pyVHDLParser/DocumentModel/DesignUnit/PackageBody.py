@@ -40,8 +40,6 @@ from pyVHDLParser.Blocks.Sequential         import PackageBody as PackageBodyBlo
 from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
-__all__ = []
-__api__ = __all__
 
 DEBUG = True
 

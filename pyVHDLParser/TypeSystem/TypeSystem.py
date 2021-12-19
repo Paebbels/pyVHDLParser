@@ -28,7 +28,7 @@
 # load dependencies
 from enum                     import Enum, unique
 
-from pydecor.decorators       import export
+from pyTooling.Decorators       import export
 
 
 @export

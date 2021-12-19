@@ -26,10 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators               import export
-
-__all__ = []
-__api__ = __all__
+from pyTooling.Decorators               import export
 
 
 @export

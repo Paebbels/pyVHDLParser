@@ -29,16 +29,13 @@
 from enum                     import Enum
 from typing                   import Iterator
 
-from pydecor.decorators       import export
+from pyTooling.Decorators       import export
 
 from pyVHDLParser             import SourceCodePosition
 from pyVHDLParser.Base        import ParserException
 from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken
 from pyVHDLParser.Token       import CharacterLiteralToken, StringLiteralToken, ExtendedIdentifier, DirectiveToken, IntegerLiteralToken, RealLiteralToken
 from pyVHDLParser.Token       import CharacterToken, SpaceToken, WordToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
-
-__all__ = []
-__api__ = __all__
 
 
 @export

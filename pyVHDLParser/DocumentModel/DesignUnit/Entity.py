@@ -41,8 +41,6 @@ from pyVHDLParser.Groups                    import ParserState
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
 from pyVHDLParser.DocumentModel.Reference   import Library, PackageReference
 
-__all__ = []
-__api__ = __all__
 
 DEBUG = True
 

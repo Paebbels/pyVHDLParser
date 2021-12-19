@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators               import export
+from pyTooling.Decorators               import export
 
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
@@ -35,9 +35,6 @@ from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, W
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket, ExpressionBlockEndedByKeywordORClosingRoundBracket
-
-__all__ = []
-__api__ = __all__
 
 
 @export

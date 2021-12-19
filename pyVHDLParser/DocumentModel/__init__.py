@@ -28,7 +28,7 @@
 from pathlib                              import Path
 from typing                               import List, Union
 
-from pydecor.decorators                   import export
+from pyTooling.Decorators                   import export
 from pyVHDLModel.VHDLModel                import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
@@ -39,9 +39,6 @@ from pyVHDLParser.Groups.Comment          import WhitespaceGroup
 from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
 from pyVHDLParser.DocumentModel.Reference import Library, PackageReference
-
-__all__ = []
-__api__ = __all__
 
 
 @export

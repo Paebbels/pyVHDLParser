@@ -26,14 +26,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators                   import export
+from pyTooling.Decorators                   import export
 
 from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException
-
-__all__ = []
-__api__ = __all__
 
 
 @export

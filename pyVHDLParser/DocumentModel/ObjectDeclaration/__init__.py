@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyTerminalUI                                   import LineTerminal
+from pyTooling.TerminalUI                                   import LineTerminal
 
 from pyVHDLModel.VHDLModel                          import Constant as ConstantBase
 

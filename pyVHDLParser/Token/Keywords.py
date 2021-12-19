@@ -26,13 +26,10 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators         import export
+from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token import Token, WordToken, VHDLToken, CharacterToken
 from pyVHDLParser.Token.Parser  import TokenizerException
-
-__all__ = []
-__api__ = __all__
 
 
 @export

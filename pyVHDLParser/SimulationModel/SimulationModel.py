@@ -26,12 +26,9 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators                       import export
+from pyTooling.Decorators                       import export
 
 from pyVHDLParser.SimulationModel.EventSystem import ProjectedWaveform, Waveform, Scheduler, Event
-
-__all__ = []
-__api__ = __all__
 
 
 @export

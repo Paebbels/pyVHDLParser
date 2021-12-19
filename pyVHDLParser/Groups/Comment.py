@@ -26,14 +26,11 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators           import export
+from pyTooling.Decorators           import export
 
 from pyVHDLParser.Blocks          import CommentBlock
 from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Groups          import ParserState, GroupParserException, Group
-
-__all__ = []
-__api__ = __all__
 
 
 @export

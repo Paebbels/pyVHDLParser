@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators                     import export
+from pyTooling.Decorators                     import export
 
 from pyVHDLParser.Blocks.Object.Variable    import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Object.Signal      import SignalDeclarationBlock
@@ -34,9 +34,6 @@ from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
 from pyVHDLParser.Groups                    import ParserState, GroupParserException, Group
-
-__all__ = []
-__api__ = __all__
 
 
 @export

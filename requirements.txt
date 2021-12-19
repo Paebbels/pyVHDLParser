@@ -1,9 +1,6 @@
 colorama>=0.4.4
 py-flags>=1.1.4
-pydecor>=2.0.1
 
-pyExceptions>=1.0.1
-pyAttributes>=2.1.0
-pyCallBy>=1.1.1
-pyTerminalUI>=1.3.4
-pyVHDLModel>=0.9.0
+pyTooling>=1.7.0
+pyAttributes>=2.3.4
+pyVHDLModel==0.14.1

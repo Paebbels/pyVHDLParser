@@ -24,10 +24,11 @@ from argparse       import RawDescriptionHelpFormatter
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
 
-from pyExceptions                     import ExceptionBase
+from pyTooling.Exceptions             import ExceptionBase
+from pyTooling.Decorators             import export
+from pyTooling.MetaClasses            import Singleton
+from pyTooling.TerminalUI             import LineTerminal, Severity
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, DefaultAttribute, CommandAttribute, ArgumentAttribute, CommonSwitchArgumentAttribute
-from pyMetaClasses                    import Singleton
-from pyTerminalUI                     import LineTerminal, Severity
 
 from pyVHDLParser.Blocks              import MetaBlock
 
@@ -41,17 +42,13 @@ __author__ =      "Patrick Lehmann"
 __copyright__ =   "Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany\n" + \
                   "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __maintainer__ =  "Patrick Lehmann"
-__email__ =       "Patrick.Lehmann@plc2.de"
+__email__ =       "Paebbels@gmail.com"
 __version__ =     "0.6.0"
 __status__ =      "Alpha"
 __license__ =     "Apache License 2.0"
-__api__ = [
-	'printImportError',
-	'Application'
-]
-__all__ = __api__
 
 
+@export
 def printImportError(ex):
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
@@ -63,6 +60,7 @@ def printImportError(ex):
 	exit(1)
 
 
+@export
 class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 

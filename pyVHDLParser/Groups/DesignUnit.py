@@ -29,7 +29,7 @@
 from collections                              import ChainMap
 from itertools                                import chain
 
-from pydecor.decorators                       import export
+from pyTooling.Decorators                       import export
 
 from pyVHDLParser.Blocks                      import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common               import LinebreakBlock, IndentationBlock
@@ -49,9 +49,6 @@ from pyVHDLParser.Groups.Reference            import LibraryGroup, UseGroup
 from pyVHDLParser.Groups.Sequential.Function  import FunctionGroup
 from pyVHDLParser.Groups.Sequential.Procedure import ProcedureGroup
 from pyVHDLParser.Groups.Sequential.Process   import ProcessGroup
-
-__all__ = []
-__api__ = __all__
 
 
 @export

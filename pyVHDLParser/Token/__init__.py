@@ -28,14 +28,10 @@
 # load dependencies
 from typing import Iterator
 
-from pydecor.decorators       import export
+from pyTooling.Decorators       import export
 
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base        import ParserException
-
-__all__ = []
-__api__ = __all__
-
 
 
 __CHARACTER_TRANSLATION = {

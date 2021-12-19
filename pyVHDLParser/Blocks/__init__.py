@@ -28,17 +28,14 @@
 from types                          import FunctionType
 from typing                         import List, Callable, Iterator, Generator
 
-from pydecor.decorators             import export
-from pyTerminalUI                   import LineTerminal
+from pyTooling.Decorators           import export
+from pyTooling.TerminalUI           import LineTerminal
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
 from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
 from pyVHDLParser.Token             import WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
-
-__all__ = []
-__api__ = __all__
 
 
 @export

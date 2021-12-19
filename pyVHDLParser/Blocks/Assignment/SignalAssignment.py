@@ -26,16 +26,13 @@
 # ==============================================================================
 #
 # load dependencies
-from pydecor.decorators                import export
+from pyTooling.Decorators                import export
 
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Blocks               import BlockParserException, Block, ParserState
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
-
-__all__ = []
-__api__ = __all__
 
 
 @export

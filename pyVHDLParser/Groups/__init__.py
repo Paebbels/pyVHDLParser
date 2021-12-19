@@ -29,9 +29,9 @@
 from types                                  import FunctionType
 from typing import Iterator, Callable, List, Generator, Any, Dict
 
-from pyTerminalUI                           import LineTerminal
+from pyTooling.TerminalUI                           import LineTerminal
 
-from pydecor.decorators                     import export
+from pyTooling.Decorators                     import export
 
 from pyVHDLParser                           import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base                      import ParserException
@@ -40,9 +40,6 @@ from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBl
 from pyVHDLParser.Blocks.Reference          import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
-
-__all__ = []
-__api__ = __all__
 
 
 @export
