@@ -9,49 +9,36 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-import os
-import sys
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../pyVHDLParser'))
-#sys.path.insert(0, os.path.abspath('_extensions'))
-#sys.path.insert(0, os.path.abspath('_themes/sphinx_rtd_theme'))
+#
+from json    import loads
+from os.path import abspath
+from pathlib import Path
+from sys     import path as sys_path
+
+from pyTooling.Packaging import extractVersionInformation
+
+sys_path.insert(0, abspath('.'))
+sys_path.insert(0, abspath('..'))
+sys_path.insert(0, abspath('../pyVHDLParser'))
+sys_path.insert(0, abspath('_extensions'))
+#sys_path.insert(0, os.path.abspath('_themes/sphinx_rtd_theme'))
 
 
 # ==============================================================================
-# Project information
-# ==============================================================================
-project =   "pyVHDLParser"
-copyright = "2016-2021 Patrick Lehmann - Boetzingen, Germany"
-author =    "Patrick Lehmann"
-
-
-# ==============================================================================
-# Versioning
+# Project information and versioning
 # ==============================================================================
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-from subprocess import check_output
+project = "pyVHDLParser"
 
-def _IsUnderGitControl():
-	return (check_output(["git", "rev-parse", "--is-inside-work-tree"], universal_newlines=True).strip() == "true")
+packageInformationFile = Path(f"../{project}/__init__.py")
+versionInformation = extractVersionInformation(packageInformationFile)
 
-def _LatestTagName():
-	return check_output(["git", "describe", "--abbrev=0", "--tags"], universal_newlines=True).strip()
-
-# The full version, including alpha/beta/rc tags
-version = "0.6"     # The short X.Y version.
-release = "0.6.4"   # The full version, including alpha/beta/rc tags.
-try:
-	if _IsUnderGitControl:
-		latestTagName = _LatestTagName()[1:]		# remove prefix "v"
-		versionParts =  latestTagName.split("-")[0].split(".")
-
-		version = ".".join(versionParts[:2])
-		release = latestTagName   # ".".join(versionParts[:3])
-except:
-	pass
+author =    versionInformation.Author
+copyright = versionInformation.Copyright
+version =   ".".join(versionInformation.Version.split(".")[:2])  # e.g. 2.3    The short X.Y version.
+release =   versionInformation.Version
 
 
 # ==============================================================================
@@ -85,7 +72,7 @@ try:
 	with open(prologPath, "r") as prologFile:
 		rst_prolog = prologFile.read()
 except Exception as ex:
-	print("[ERROR:] While reading '{0!s}'.".format(prologPath))
+	print(f"[ERROR:] While reading '{prologPath}'.")
 	print(ex)
 	rst_prolog = ""
 
@@ -93,13 +80,26 @@ except Exception as ex:
 # ==============================================================================
 # Options for HTML output
 # ==============================================================================
-# html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+    'home_breadcrumbs': True,
+    'vcs_pageview_mode': 'blob',
+}
+
+html_context = {}
+ctx = Path(__file__).resolve().parent / 'context.json'
+if ctx.is_file():
+	html_context.update(loads(ctx.open('r').read()))
+
+html_theme_path = ["."]
+html_theme = "_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = 'pyVHDLParserDoc'
 
 # If not None, a 'Last updated on:' timestamp is inserted at every page
 # bottom, using the given strftime format.
@@ -126,7 +126,7 @@ latex_elements = {
 		% ================================================================================
 		% Add more Unicode characters for pdfLaTeX.
 		% - Alternatively, compile with XeLaTeX or LuaLaTeX.
-		% - https://github.com/sphinx-doc/sphinx/issues/3511
+		% - https://GitHub.com/sphinx-doc/sphinx/issues/3511
 		%
 		\ifdefined\DeclareUnicodeCharacter
 			\DeclareUnicodeCharacter{2265}{$\geq$}
@@ -146,8 +146,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
 	( master_doc,
-	  'pyVHDLParser.tex',
-	  'The pyVHDLParser Documentation',
+		'pyVHDLParser.tex',
+		'The pyVHDLParser Documentation',
 		'Patrick Lehmann',
 		'manual'
 	),
@@ -159,9 +159,6 @@ latex_documents = [
 # Extensions
 # ==============================================================================
 extensions = [
-# Sphinx theme
-	"sphinx_rtd_theme",
-
 # Standard Sphinx extensions
 	"sphinx.ext.autodoc",
 	'sphinx.ext.extlinks',
@@ -176,13 +173,14 @@ extensions = [
 
 # SphinxContrib extensions
 # 'sphinxcontrib.actdiag',
+	'sphinxcontrib.mermaid',
 # 'sphinxcontrib.seqdiag',
 # 'sphinxcontrib.textstyle',
 # 'sphinxcontrib.spelling',
 # 'changelog',
 
 # BuildTheDocs extensions
-	'btd.sphinx.autoprogram',
+#	'btd.sphinx.autoprogram',
 #	'btd.sphinx.graphviz',
 #	'btd.sphinx.inheritance_diagram',
 
@@ -192,7 +190,7 @@ extensions = [
 	'sphinx_autodoc_typehints',
 
 # local extensions (patched)
-	'autoapi.sphinx',
+#	'autoapi.sphinx',
 
 # local extensions
 #	'DocumentMember'
@@ -202,8 +200,7 @@ extensions = [
 # Sphinx.Ext.InterSphinx
 # ==============================================================================
 intersphinx_mapping = {
-	'python':     ('https://docs.python.org/3', None),
-	'vhdlmodel':  ('https://vhdl.github.io/pyVHDLModel', None),
+	'python':   ('https://docs.python.org/3', None),
 }
 
 
@@ -218,10 +215,9 @@ autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
 # Sphinx.Ext.ExtLinks
 # ==============================================================================
 extlinks = {
-	'issue': ('https://github.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
-	'pull':  ('https://github.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
-	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyVHDLParser/%s?ts=2', None),
-#	'test':  ('https://github.com/Paebbels/pyVHDLParser/blob/master/test/%s?ts=2', None)
+	"ghissue": ('https://GitHub.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
+	"ghpull":  ('https://GitHub.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
+	"ghsrc":   ('https://GitHub.com/Paebbels/pyVHDLParser/blob/main/%s?ts=2', None),
 }
 
 
@@ -235,7 +231,7 @@ graphviz_output_format = "svg"
 # ==============================================================================
 # Sphinx.Ext.ToDo
 # ==============================================================================
-# If true, ``todo`` and ``todoList`` produce output, else they produce nothing.
+# If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 todo_link_only = True
 
@@ -245,5 +241,5 @@ todo_link_only = True
 # AutoAPI.Sphinx
 # ==============================================================================
 autoapi_modules = {
-  'pyVHDLParser':  {'output': "pyVHDLParser"}
+  'pyVHDLParser':  {'output': "pyVHDLParser", "override": True}
 }
