@@ -9,7 +9,7 @@ EndBlock
 NextConditionBlock
 ------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`
 
 NextBlock
 ---------

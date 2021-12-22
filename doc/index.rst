@@ -100,8 +100,29 @@ News
 
 .. only:: html
 
+   Jun. 2021 - Enhancements
+   ========================
+
+.. only:: latex
+
+   .. rubric:: Jun. 2021 - Enhancements
+
+* Added infrastructure to run example code provided in issues as testcase.
+*
+* New Single-File GitHub Action workflow (pipeline).
+* Added Dependabot configuration file.
+* Updated dependencies
+
+  * Sphinx uses now v4.0.2
+  * Removed 2 patched Sphinx extensions &rarr; now using original extensions.
+
+* ...
+
+
+.. only:: html
+
    Nov. 2020 - Test cases
-   =========================
+   ======================
 
 .. only:: latex
 
@@ -129,7 +150,7 @@ News
 .. only:: html
 
    Dec. 2018 - Minor updates
-   ==========================
+   =========================
 
 .. only:: latex
 

@@ -42,7 +42,7 @@ def _LatestTagName():
 
 # The full version, including alpha/beta/rc tags
 version = "0.6"     # The short X.Y version.
-release = "0.6.3"   # The full version, including alpha/beta/rc tags.
+release = "0.6.4"   # The full version, including alpha/beta/rc tags.
 try:
 	if _IsUnderGitControl:
 		latestTagName = _LatestTagName()[1:]		# remove prefix "v"
@@ -166,9 +166,9 @@ extensions = [
 	"sphinx.ext.autodoc",
 	'sphinx.ext.extlinks',
 	'sphinx.ext.intersphinx',
-#	'sphinx.ext.inheritance_diagram',
+	'sphinx.ext.inheritance_diagram',
 	'sphinx.ext.todo',
-#	'sphinx.ext.graphviz',
+	'sphinx.ext.graphviz',
 	'sphinx.ext.mathjax',
 	'sphinx.ext.ifconfig',
 	'sphinx.ext.viewcode',
@@ -183,8 +183,8 @@ extensions = [
 
 # BuildTheDocs extensions
 	'btd.sphinx.autoprogram',
-	'btd.sphinx.graphviz',
-	'btd.sphinx.inheritance_diagram',
+#	'btd.sphinx.graphviz',
+#	'btd.sphinx.inheritance_diagram',
 
 # Other extensions
 #	'DocumentMember',
@@ -220,7 +220,7 @@ autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
 extlinks = {
 	'issue': ('https://github.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
 	'pull':  ('https://github.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
-	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyMetaClasses/%s?ts=2', None),
+	'src':   ('https://github.com/Paebbels/pyVHDLParser/blob/master/pyVHDLParser/%s?ts=2', None),
 #	'test':  ('https://github.com/Paebbels/pyVHDLParser/blob/master/test/%s?ts=2', None)
 }
 

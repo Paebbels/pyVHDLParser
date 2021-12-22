@@ -2,19 +2,26 @@
 __pycache__/
 *.py[cod]
 
-# Python installation packages
-dist/
-/*.egg-info
-
 # Coverage.py
 .coverage
 .cov
 coverage.xml
 
+# setuptools
+/build/**/*.*
+/dist/**/*.*
+/*.egg-info
+
+# Dependencies
+!requirements.txt
+
 # Sphinx
 doc/_build/
 doc/pyVHDLParser/**/*.*
 !doc/pyVHDLParser/index.rst
+
+# BuildTheDocs
+doc/_theme/**/*.*
 
 # IntelliJ project files
 /.idea/workspace.xml

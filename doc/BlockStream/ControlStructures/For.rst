@@ -17,12 +17,12 @@ LoopBlock
 ExpressionBlockEndedByLoopORToORDownto
 --------------------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordOrToOrDownto`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordOrToOrDownto`
 
 ExpressionBlockEndedByLoop
 --------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
 
 LoopIterationDirectionBlock
 ---------------------------

@@ -1,47 +1,46 @@
-# ==============================================================================
-# Authors:            Patrick Lehmann
-#
-# Python functions:   A streaming VHDL parser
-#
-# Description:
-# ------------------------------------
-#		TODO:
-#
-# License:
-# ==============================================================================
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
-# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
+# ==================================================================================================================== #
+#            __     ___   _ ____  _     ____                                                                           #
+#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #
+# | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|                                                 #
+# | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #
+# | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #
+# |_|    |___/                                                                                                         #
+# ==================================================================================================================== #
+# Authors:                                                                                                             #
+#   Patrick Lehmann                                                                                                    #
+#                                                                                                                      #
+# License:                                                                                                             #
+# ==================================================================================================================== #
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
+#                                                                                                                      #
+# Licensed under the Apache License, Version 2.0 (the "License");                                                      #
+# you may not use this file except in compliance with the License.                                                     #
+# You may obtain a copy of the License at                                                                              #
+#                                                                                                                      #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#                                                                                                                      #
+# Unless required by applicable law or agreed to in writing, software                                                  #
+# distributed under the License is distributed on an "AS IS" BASIS,                                                    #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #
+# See the License for the specific language governing permissions and                                                  #
+# limitations under the License.                                                                                       #
+# ==================================================================================================================== #
 #
 from pathlib                              import Path
 from typing                               import List, Union
 
-from pydecor.decorators                   import export
-from pyVHDLModel.VHDLModel                import Document as DocumentModel
+from pyTooling.Decorators                 import export
+from pyVHDLModel.SyntaxModel              import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer
 from pyVHDLParser.Blocks                  import TokenToBlockParser, BlockParserException
-from pyVHDLParser.Groups import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group, GroupParserException
+from pyVHDLParser.Groups                  import StartOfDocumentGroup, EndOfDocumentGroup, BlockToGroupParser, Group, GroupParserException
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup
 from pyVHDLParser.Groups.DesignUnit       import ContextGroup, EntityGroup, ArchitectureGroup, PackageBodyGroup, PackageGroup
 from pyVHDLParser.Groups.Reference        import LibraryGroup, UseGroup
-from pyVHDLParser.DocumentModel.Reference import Library, PackageReference
-
-__all__ = []
-__api__ = __all__
+from pyVHDLParser.DocumentModel.Reference import LibraryClause, PackageReference
 
 
 @export
@@ -53,7 +52,7 @@ class DOMParserException(ParserException):
 
 @export
 class Document(DocumentModel):
-	__libraries:  List[Library]
+	__libraries:  List[LibraryClause]
 	__uses:       List[PackageReference]
 
 	def __init__(self, file: Union[Path, str]):  # FIXME: parameter type
@@ -105,7 +104,7 @@ class Document(DocumentModel):
 
 	@classmethod
 	def stateParse(cls, document, startOfDocumentGroup: Group):
-		from pyVHDLParser.DocumentModel.Reference               import Library as LibraryModel, PackageReference as UseModel
+		from pyVHDLParser.DocumentModel.Reference               import LibraryClause as LibraryModel, PackageReference as UseModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Context      import Context as ContextModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Entity       import Entity as EntityModel
 		from pyVHDLParser.DocumentModel.DesignUnit.Architecture import Architecture as ArchitectureModel

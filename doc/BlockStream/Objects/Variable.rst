@@ -9,7 +9,7 @@ VariableDeclarationEndMarkerBlock
 VariableDeclarationDefaultExpressionBlock
 -----------------------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`
 
 VariableDeclarationBlock
 ------------------------

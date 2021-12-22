@@ -1,33 +1,41 @@
-# ==============================================================================
-# Authors:            Patrick Lehmann
-#
-# Python frontend:    A streaming VHDL parser
-#
-# License:
-# ==============================================================================
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
+# ==================================================================================================================== #
+#            __     ___   _ ____  _     ____                                                                           #
+#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #
+# | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|                                                 #
+# | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #
+# | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #
+# |_|    |___/                                                                                                         #
+# ==================================================================================================================== #
+# Authors:                                                                                                             #
+#   Patrick Lehmann                                                                                                    #
+#                                                                                                                      #
+# License:                                                                                                             #
+# ==================================================================================================================== #
+# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
+#                                                                                                                      #
+# Licensed under the Apache License, Version 2.0 (the "License");                                                      #
+# you may not use this file except in compliance with the License.                                                     #
+# You may obtain a copy of the License at                                                                              #
+#                                                                                                                      #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#                                                                                                                      #
+# Unless required by applicable law or agreed to in writing, software                                                  #
+# distributed under the License is distributed on an "AS IS" BASIS,                                                    #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #
+# See the License for the specific language governing permissions and                                                  #
+# limitations under the License.                                                                                       #
+# ==================================================================================================================== #
 #
 from argparse       import RawDescriptionHelpFormatter
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
 
-from pyExceptions                     import ExceptionBase
+from pyTooling.Exceptions             import ExceptionBase
+from pyTooling.Decorators             import export
+from pyTooling.MetaClasses            import Singleton
+from pyTooling.TerminalUI             import LineTerminal, Severity
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, DefaultAttribute, CommandAttribute, ArgumentAttribute, CommonSwitchArgumentAttribute
-from pyMetaClasses                    import Singleton
-from pyTerminalUI                     import LineTerminal, Severity
 
 from pyVHDLParser.Blocks              import MetaBlock
 
@@ -41,17 +49,13 @@ __author__ =      "Patrick Lehmann"
 __copyright__ =   "Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany\n" + \
                   "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __maintainer__ =  "Patrick Lehmann"
-__email__ =       "Patrick.Lehmann@plc2.de"
+__email__ =       "Paebbels@gmail.com"
 __version__ =     "0.6.0"
 __status__ =      "Alpha"
 __license__ =     "Apache License 2.0"
-__api__ = [
-	'printImportError',
-	'Application'
-]
-__all__ = __api__
 
 
+@export
 def printImportError(ex):
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
@@ -63,6 +67,7 @@ def printImportError(ex):
 	exit(1)
 
 
+@export
 class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 

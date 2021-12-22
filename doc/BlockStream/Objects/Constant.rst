@@ -9,7 +9,7 @@ ConstantDeclarationEndMarkerBlock
 ConstantDeclarationDefaultExpressionBlock
 -----------------------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedBySemicolon`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`
 
 ConstantDeclarationBlock
 ------------------------

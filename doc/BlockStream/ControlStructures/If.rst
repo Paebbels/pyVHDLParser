@@ -19,7 +19,7 @@ ElseBlock
 ExpressionBlockEndedByThen
 --------------------------
 
-:class:`pyVHDLParser.Blocks.Expression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
+:class:`pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedByKeywordORClosingRoundBracket`
 
 IfConditionBlock
 ----------------
