@@ -3,6 +3,6 @@ References
 
 .. toctree::
 
-   LibraryStatement
+   Library
    Use
    Context
