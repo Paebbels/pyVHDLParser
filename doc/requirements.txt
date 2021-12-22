@@ -1,24 +1,22 @@
 -r ../requirements.txt
-# Enforce latest version on ReadTheDocs
-sphinx>=4.0.2
 
-# Sphinx Themes
-sphinx-rtd-theme>=0.5.2
+# Enforce latest version on ReadTheDocs
+sphinx>=4.3.0
+pyTooling>=1.7.0
 
 # Sphinx Extenstions
+#sphinx.ext.coverage
 #sphinxcontrib-actdiag>=0.8.5
+sphinxcontrib-mermaid>=0.7.1
 #sphinxcontrib-seqdiag>=0.8.5
-# sphinxcontrib-textstyle>=0.2.1
-# sphinxcontrib-spelling>=2.2.0
+#sphinxcontrib-textstyle>=0.2.1
+#sphinxcontrib-spelling>=2.2.0
 autoapi
 sphinx_fontawesome>=0.0.6
-sphinx_autodoc_typehints>=1.11.1
+sphinx_autodoc_typehints>=1.12.0
 # changelog>=0.3.5
 
 # BuildTheDocs Extensions (mostly patched Sphinx extensions)
 btd.sphinx.autoprogram>=0.1.7.post1
 #btd.sphinx.graphviz>=2.3.1.post1
 #btd.sphinx.inheritance_diagram>=2.3.1.post1
-
-# Enforce newer version on ReadTheDocs (currently using 2.3.1)
-Pygments>=2.9.0

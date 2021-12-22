@@ -3,7 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../pyTokenizer" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../pyVHDLModel" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/doc/_themes/sphinx_rtd_theme" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../VHDL/pyVHDLModel" vcs="Git" />
   </component>
 </project>

@@ -7,7 +7,7 @@ E.g. :class:`~pyVHDLParser.Blocks.Object.Constant.ConstantDeclarationDefaultExpr
 is derived from :class:`~pyVHDLParser.Blocks.BaseExpression.ExpressionBlockEndedBySemicolon`.
 
 Generic BaseExpression Form
-***********************
+***************************
 
 ExpressionBlock
 ---------------
