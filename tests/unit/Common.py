@@ -28,10 +28,10 @@
 # ==================================================================================================================== #
 #
 from dataclasses                import dataclass
-from typing                     import List, Tuple, Any
+from typing                     import List, Tuple
 
 from flags                      import Flags
-from pyTooling.MetaClasses      import Singleton
+from pyTooling.MetaClasses      import ExtendedType
 
 from pyVHDLParser.Base          import ParserException
 from pyVHDLParser.Token         import StartOfDocumentToken, EndOfDocumentToken, Token, CharacterTranslation
@@ -44,7 +44,7 @@ from tests.Interfaces           import ITestcase as ITC
 from tests.Linking import TokenizerChecks
 
 
-class Initializer(metaclass=Singleton):
+class Initializer(metaclass=ExtendedType, singleton=True):
 	def __init__(self):
 		print("Init all blocks.")
 		for block in MetaBlock.BLOCKS:
