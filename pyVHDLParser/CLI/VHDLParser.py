@@ -33,7 +33,6 @@ from textwrap       import dedent, wrap
 
 from pyTooling.Exceptions             import ExceptionBase
 from pyTooling.Decorators             import export
-from pyTooling.MetaClasses            import Singleton
 from pyTooling.TerminalUI             import LineTerminal, Severity
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, DefaultAttribute, CommandAttribute, ArgumentAttribute, CommonSwitchArgumentAttribute
 
@@ -74,12 +73,8 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 	# load platform information (Windows, Linux, Darwin, ...)
 	__PLATFORM =  platform_system()
 
-	def __init__(self, debug=False, verbose=False, quiet=False, sphinx=False):
-		super().__init__(verbose, debug, quiet)
-
-		# Initialize the Terminal class
-		# --------------------------------------------------------------------------
-		Singleton.Register(LineTerminal, self)
+	def __init__(self): #, debug=False, verbose=False, quiet=False, sphinx=False):
+		super().__init__() #verbose, debug, quiet)
 
 		# Late-initialize Block classes
 		# --------------------------------------------------------------------------
@@ -115,8 +110,8 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 
 		# If executed in Sphinx to auto-document CLI arguments, exit now
 		# --------------------------------------------------------------------------
-		if sphinx:
-			return
+#		if sphinx:
+#			return
 
 		# Change error and warning reporting
 		# --------------------------------------------------------------------------
@@ -214,7 +209,7 @@ def main(): # mccabe:disable=MC0001
 
 	try:
 		# handover to a class instance
-		app = Application(debug, verbose, quiet)
+		app = Application() #debug, verbose, quiet)
 		app.Run()
 		app.exit()
 
