@@ -28,7 +28,9 @@
 # ==================================================================================================================== #
 #
 from textwrap import dedent
-from unittest import TestCase, skip
+from unittest import TestCase
+
+from pytest   import mark
 
 from pyVHDLParser.DocumentModel import Document
 from tests.unit.Common import Initializer
@@ -45,7 +47,7 @@ def setUpModule():
 
 
 class PackageBody(TestCase):
-	@skip("Not working yet")
+	@mark.xfail(reason="Not working yet")
 	def test_PackageBody(self):
 		code = dedent("""\
 			package body p is
