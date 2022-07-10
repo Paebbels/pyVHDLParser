@@ -39,7 +39,7 @@ from pyVHDLParser.Blocks.List       import GenericList
 from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, BlockSequenceWithParserError, ExpectedTokenStream, ExpectedBlockStream, TokenLinking
 
 
-if __name__ == "__main__": # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
 	print("Use: 'python -m unitest <testcase module>'")
 	exit(1)
