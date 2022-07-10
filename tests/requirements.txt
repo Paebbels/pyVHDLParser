@@ -1,7 +1,7 @@
 -r ../requirements.txt
 
 # Coverage collection
-Coverage>=6.3
+Coverage>=6.4
 
 # Test Runner
 pytest>=7.1.2
@@ -9,4 +9,4 @@ pytest-cov>=3.0.0
 
 # Static Type Checking
 mypy>=0.950
-lxml>=4.8
+lxml>=4.9
