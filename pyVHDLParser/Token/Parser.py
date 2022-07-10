@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from enum                     import Enum
+from enum                     import IntEnum
 from typing                   import Iterator
 
 from pyTooling.Decorators     import export
@@ -53,7 +53,7 @@ class TokenizerException(ParserException):
 
 @export
 class Tokenizer:
-	class TokenKind(Enum):
+	class TokenKind(IntEnum):
 		"""Enumeration of all Tokenizer states."""
 
 		SpaceChars =                      0   #: Last char was a space
@@ -66,13 +66,13 @@ class Tokenizer:
 		PossibleRealLiteral =             7   #: Last char was a ``.``
 		PossibleCharacterLiteral =        8   #: Last char was a ``'``
 		PossibleStringLiteralStart =      9   #: Last char was a ``"``
-		PossibleExtendedIdentifierStart = 10   #: Last char was a ``\``
+		PossibleExtendedIdentifierStart = 10  #: Last char was a ``\``
 		SingleLineComment =               11  #: Found ``--`` before
 		MultiLineComment =                12  #: Found ``/*`` before
 		Linebreak =                       13  #: Last char was a ``\n``
 		Directive =                       14  #: Last char was a `` ` ``
 		FuseableCharacter =               15  #: Last char was a character that could be fused
-		OtherChars =                      16  #: Any thing else
+		OtherChars =                      16  #: Anything else
 
 
 	@classmethod
