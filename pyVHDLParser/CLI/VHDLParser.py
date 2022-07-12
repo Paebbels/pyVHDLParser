@@ -36,22 +36,13 @@ from pyTooling.Decorators             import export
 from pyTooling.TerminalUI             import LineTerminal, Severity
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, DefaultAttribute, CommandAttribute, ArgumentAttribute, CommonSwitchArgumentAttribute
 
+from pyVHDLParser                     import __author__, __license__, __version__, __copyright__
 from pyVHDLParser.Blocks              import MetaBlock
 
 from pyVHDLParser.CLI.Token           import TokenStreamHandlers
 from pyVHDLParser.CLI.Block           import BlockStreamHandlers
 from pyVHDLParser.CLI.Group           import GroupStreamHandlers
 from pyVHDLParser.CLI.CodeDOM         import CodeDOMHandlers
-
-
-__author__ =      "Patrick Lehmann"
-__copyright__ =   "Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany\n" + \
-                  "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
-__maintainer__ =  "Patrick Lehmann"
-__email__ =       "Paebbels@gmail.com"
-__version__ =     "0.6.0"
-__status__ =      "Alpha"
-__license__ =     "Apache License 2.0"
 
 
 @export
