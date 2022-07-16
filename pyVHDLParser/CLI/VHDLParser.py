@@ -30,6 +30,7 @@
 from argparse       import RawDescriptionHelpFormatter
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
+from typing import NoReturn
 
 from pyTooling.Exceptions             import ExceptionBase
 from pyTooling.Decorators             import export
@@ -43,10 +44,12 @@ from pyVHDLParser.CLI.Token           import TokenStreamHandlers
 from pyVHDLParser.CLI.Block           import BlockStreamHandlers
 from pyVHDLParser.CLI.Group           import GroupStreamHandlers
 from pyVHDLParser.CLI.CodeDOM         import CodeDOMHandlers
+from pyVHDLParser.CLI.ANTLR           import ANTLRHandlers
 
 
 @export
-def printImportError(ex):
+def printImportError(ex) -> NoReturn:
+	# TODO: use pyTooling Platform
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
 	print("Missing package: '{0}'\n".format(ex.name))
@@ -54,18 +57,20 @@ def printImportError(ex):
 		print("Run: 'py.exe -3 -m pip install -r requirements.txt'\n")
 	elif (platform == "Linux"):
 		print("Run: 'python3 -m pip install -r requirements.txt'\n")
+
 	exit(1)
 
 
 @export
-class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):
+class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers, ANTLRHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)
+	# TODO: use pyTooling Platform
 	__PLATFORM =  platform_system()
 
-	def __init__(self): #, debug=False, verbose=False, quiet=False, sphinx=False):
-		super().__init__() #verbose, debug, quiet)
+	def __init__(self, debug=False, verbose=False, quiet=False, sphinx=False):
+		super().__init__(verbose, debug, quiet)
 
 		# Late-initialize Block classes
 		# --------------------------------------------------------------------------
@@ -82,27 +87,27 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 			Test application to test pyVHDLParser capabilities.
 			""")
 		epilog = "\n".join(wrap(dedent("""\
-		  pyVHDLParser is a streaming parser to read and understand VHDL code equipped with comments for documentation extraction.
-		  """), textWidth, replace_whitespace=False))
+			pyVHDLParser is a streaming parser to read and understand VHDL code equipped with comments for documentation extraction.
+			"""), textWidth, replace_whitespace=False))
 
 		class HelpFormatter(RawDescriptionHelpFormatter):
 			def __init__(self, *args, **kwargs):
 				kwargs['max_help_position'] = 30
-				kwargs['width'] =             textWidth
+				kwargs['width'] = textWidth
 				super().__init__(*args, **kwargs)
 
 		ArgParseMixin.__init__(
 			self,
-	    description=description,
+			description=description,
 			epilog=epilog,
-	    formatter_class=HelpFormatter,
-	    add_help=False
-	  )
+			formatter_class=HelpFormatter,
+			add_help=False
+		)
 
 		# If executed in Sphinx to auto-document CLI arguments, exit now
 		# --------------------------------------------------------------------------
-#		if sphinx:
-#			return
+		if sphinx:
+			return
 
 		# Change error and warning reporting
 		# --------------------------------------------------------------------------
@@ -184,7 +189,7 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 
 
 # main program
-def main(): # mccabe:disable=MC0001
+def main():  # mccabe:disable=MC0001
 	"""This is the entry point for pyVHDLParser written as a function.
 
 	1. It extracts common flags from the script's arguments list, before :py:class:`~argparse.ArgumentParser` is fully loaded.
@@ -194,13 +199,13 @@ def main(): # mccabe:disable=MC0001
 	"""
 	from sys import argv as sys_argv
 
-	debug =   "-d"        in sys_argv
-	verbose = "-v"        in sys_argv
-	quiet =   "-q"        in sys_argv
+	debug =   "-d" in sys_argv
+	verbose = "-v" in sys_argv
+	quiet =   "-q" in sys_argv
 
 	try:
 		# handover to a class instance
-		app = Application() #debug, verbose, quiet)
+		app = Application()  # debug, verbose, quiet)
 		app.Run()
 		app.exit()
 
@@ -222,10 +227,14 @@ def main(): # mccabe:disable=MC0001
 	# 		print("{CYAN}  Use '-v' for verbose or '-d' for debug to print out extended messages.{NOCOLOR}".format(**Init.Foreground))
 	# 	LineTerminal.exit(1)
 
-	except ExceptionBase as ex:                 LineTerminal.printExceptionBase(ex)
-	except NotImplementedError as ex:           LineTerminal.printNotImplementedError(ex)
-	#except ImportError as ex:                   printImportError(ex)
-	except Exception as ex:                     LineTerminal.printException(ex)
+	except ExceptionBase as ex:
+		LineTerminal.printExceptionBase(ex)
+	except NotImplementedError as ex:
+		LineTerminal.printNotImplementedError(ex)
+	# except ImportError as ex:
+	# 	printImportError(ex)
+	except Exception as ex:
+		LineTerminal.printException(ex)
 
 
 # entry point
