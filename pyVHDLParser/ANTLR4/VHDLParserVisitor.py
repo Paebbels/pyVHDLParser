@@ -1,9 +1,6 @@
-# Generated from .\VHDLParser.g4 by ANTLR 4.10.1
-from antlr4 import *
-if __name__ is not None and "." in __name__:
-    from .VHDLParser import VHDLParser
-else:
-    from VHDLParser import VHDLParser
+from antlr4 import ParseTreeVisitor
+
+from .VHDLParser import VHDLParser
 
 
 class VHDLParserVisitor(ParseTreeVisitor):

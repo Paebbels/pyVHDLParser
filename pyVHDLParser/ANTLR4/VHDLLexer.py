@@ -1,8 +1,7 @@
-# Generated from .\VHDLLexer.g4 by ANTLR 4.10.1
+from sys    import stdout
 from typing import TextIO
 
-from antlr4 import *
-import sys
+from antlr4 import Lexer, ATNDeserializer, DFA, LexerATNSimulator, PredictionContextCache
 
 
 def serializedATN():
@@ -629,7 +628,7 @@ class VHDLLexer(Lexer):
 
 	grammarFileName = "VHDLLexer.g4"
 
-	def __init__(self, input=None, output: TextIO = sys.stdout):
+	def __init__(self, input=None, output: TextIO = stdout):
 		super().__init__(input, output)
 		self.checkVersion("4.10.1")
 		self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())

@@ -1,16 +1,12 @@
-# Generated from .\VHDLParser.g4 by ANTLR 4.10.1
-# encoding: utf-8
-from antlr4 import *
-import sys
+from sys    import stdout
+from typing import TextIO
 
-if sys.version_info[1] > 5:
-	from typing import TextIO
-else:
-	from typing.io import TextIO
+from antlr4 import ATNDeserializer, Parser, PredictionContextCache, DFA, TokenStream, ParserATNSimulator, \
+	ParserRuleContext, ParseTreeVisitor, Token, RecognitionException, NoViableAltException, ATN
 
 
 def serializedATN():
-	return [
+	return (
 		4,1,130,2160,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,
 		7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,
 		13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,
@@ -894,12 +890,13 @@ def serializedATN():
 		1914,1919,1924,1937,1942,1947,1955,1959,1964,1974,1977,1995,2000,
 		2007,2015,2018,2026,2034,2045,2048,2054,2062,2072,2080,2089,2102,
 		2108,2116,2124,2129,2133,2136,2139,2148,2152,2157
-	]
+	)
+
 
 class VHDLParser(Parser):
 	grammarFileName = "VHDLParser.g4"
 	atn = ATNDeserializer().deserialize(serializedATN())
-	decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+	decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 	sharedContextCache = PredictionContextCache()
 	literalNames = ( "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>",
 			 "'abs'", "'access'", "'after'", "'alias'", "'all'",
@@ -1380,19 +1377,16 @@ class VHDLParser(Parser):
 	LIT_STRING=129
 	LIT_IDENTIFIER=130
 
-	def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
+	def __init__(self, input:TokenStream, output:TextIO = stdout):
 		super().__init__(input, output)
 		self.checkVersion("4.10.1")
 		self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
 		self._predicates = None
 
-
-
-
 	class Access_type_definitionContext(ParserRuleContext):
 		__slots__ = 'parser'
 
-		def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+		def __init__(self, parser, parent:ParserRuleContext = None, invokingState:int = -1):
 			super().__init__(parent, invokingState)
 			self.parser = parser
 
@@ -1401,7 +1395,6 @@ class VHDLParser(Parser):
 
 		def subtype_indication(self):
 			return self.getTypedRuleContext(VHDLParser.Subtype_indicationContext,0)
-
 
 		def getRuleIndex(self):
 			return VHDLParser.RULE_access_type_definition
@@ -10094,8 +10087,8 @@ class VHDLParser(Parser):
 			self.state = 1405
 			self._errHandler.sync(self)
 			_alt = self._interp.adaptivePredict(self._input,142,self._ctx)
-			while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-				if _alt==1:
+			while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+				if _alt == 1:
 					self.state = 1402
 					self.name_part()
 				self.state = 1407
