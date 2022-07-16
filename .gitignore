@@ -25,3 +25,5 @@ doc/_theme/**/*.*
 
 # IntelliJ project files
 /.idea/workspace.xml
+
+pyVHDLParser/Sven
