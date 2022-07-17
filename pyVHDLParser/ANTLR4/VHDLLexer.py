@@ -445,7 +445,7 @@ class VHDLLexer(Lexer):
 	TOK_COMMA = 122
 	TOK_BAR = 123
 	TOK_DOT = 124
-	TOK_APOSTROPHE = 125
+	TOK_TICK = 125
 	LIT_ABSTRACT = 126
 	LIT_BIT_STRING = 127
 	LIT_CHARACTER = 128
@@ -485,7 +485,7 @@ class VHDLLexer(Lexer):
 		"KW_UNAFFECTED", "KW_UNITS", "KW_UNTIL", "KW_USE", "KW_VARIABLE", "KW_WAIT", "KW_WITH", "KW_WHEN", "KW_WHILE",
 		"OP_XNOR", "OP_XOR", "OP_EQ", "OP_NE", "OP_LT", "OP_LE", "OP_GT", "OP_GE", "OP_PLUS", "OP_MINUS", "OP_MUL",
 		"OP_DIV", "OP_POW", "OP_CONCAT", "TOK_RARROW", "TOK_SIG_ASSIGN", "TOK_VAR_ASSIGN", "TOK_BOX", "TOK_LP", "TOK_RP",
-		"TOK_LB", "TOK_RB", "TOK_COLON", "TOK_SEMICOL", "TOK_COMMA", "TOK_BAR", "TOK_DOT", "TOK_APOSTROPHE", "LIT_ABSTRACT",
+		"TOK_LB", "TOK_RB", "TOK_COLON", "TOK_SEMICOL", "TOK_COMMA", "TOK_BAR", "TOK_DOT", "TOK_TICK", "LIT_ABSTRACT",
 		"LIT_BIT_STRING", "LIT_CHARACTER", "LIT_STRING", "LIT_IDENTIFIER"
 	)
 
@@ -503,7 +503,7 @@ class VHDLLexer(Lexer):
 		"KW_USE", "KW_VARIABLE", "KW_WAIT", "KW_WITH", "KW_WHEN", "KW_WHILE", "OP_XNOR", "OP_XOR", "OP_EQ", "OP_NE",
 		"OP_LT", "OP_LE", "OP_GT", "OP_GE", "OP_PLUS", "OP_MINUS", "OP_MUL", "OP_DIV", "OP_POW", "OP_CONCAT", "TOK_RARROW",
 		"TOK_SIG_ASSIGN", "TOK_VAR_ASSIGN", "TOK_BOX", "TOK_LP", "TOK_RP", "TOK_LB", "TOK_RB", "TOK_COLON", "TOK_SEMICOL",
-		"TOK_COMMA", "TOK_BAR", "TOK_DOT", "TOK_APOSTROPHE", "Letter", "Digit", "ExtendedDigit", "Integer", "BasedInteger",
+		"TOK_COMMA", "TOK_BAR", "TOK_DOT", "TOK_TICK", "Letter", "Digit", "ExtendedDigit", "Integer", "BasedInteger",
 		"Exponent", "Real", "BaseLiteral", "LIT_ABSTRACT", "BinaryBitString", "OctalBitString", "DecimalBitString",
 		"HexBitString", "LIT_BIT_STRING", "LIT_CHARACTER", "LIT_STRING", "BasicIdentifier", "ExtendedIdentifier",
 		"LIT_IDENTIFIER"
