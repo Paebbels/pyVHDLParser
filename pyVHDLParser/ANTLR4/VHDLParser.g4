@@ -409,13 +409,13 @@ delay_mechanism
   ;
 
 design_file
-  : design_unit*
+  : designUnits+=design_unit*
     EOF
   ;
 
 design_unit
-  : context_clause
-    library_unit
+  : contextClause=context_clause
+    libraryUnit=library_unit
   ;
 
 designator
@@ -496,13 +496,13 @@ entity_class_entry_list
   ;
 
 entity_declaration
-  : KW_ENTITY LIT_IDENTIFIER KW_IS
-      entity_header
-      entity_declarative_part
+  : KW_ENTITY entityName=LIT_IDENTIFIER KW_IS
+      header=entity_header
+      declarativePart=entity_declarative_part
     ( KW_BEGIN
-      entity_statement_part
+      statementPart=entity_statement_part
     )?
-    KW_END KW_ENTITY? LIT_IDENTIFIER? TOK_SEMICOL
+    KW_END KW_ENTITY? entityName2=LIT_IDENTIFIER? TOK_SEMICOL
   ;
 
 entity_declarative_item
@@ -537,8 +537,8 @@ entity_designator
   ;
 
 entity_header
-  : generic_clause?
-    port_clause?
+  : genericClause=generic_clause?
+    portClause=port_clause?
   ;
 
 entity_name_list
@@ -642,11 +642,11 @@ generation_scheme
   ;
 
 generic_clause
-  : KW_GENERIC TOK_LP generic_list TOK_RP TOK_SEMICOL
+  : KW_GENERIC TOK_LP generics=generic_list TOK_RP TOK_SEMICOL
   ;
 
 generic_list
-  : interface_constant_declaration ( TOK_SEMICOL interface_constant_declaration )*
+  : constants+=interface_constant_declaration ( TOK_SEMICOL constants+=interface_constant_declaration )*
   ;
 
 generic_map_aspect
@@ -687,7 +687,7 @@ identifier
 */
 
 identifier_list
-  : LIT_IDENTIFIER ( TOK_COMMA LIT_IDENTIFIER )*
+  : identifier+=LIT_IDENTIFIER ( TOK_COMMA identifier+=LIT_IDENTIFIER )*
   ;
 
 if_statement
@@ -728,8 +728,8 @@ instantiation_list
   ;
 
 interface_constant_declaration
-  : KW_CONSTANT? identifier_list TOK_COLON KW_IN? subtype_indication
-    ( TOK_VAR_ASSIGN expression )?
+  : KW_CONSTANT? constantNames=identifier_list TOK_COLON modeName=KW_IN? subtypeIndication=subtype_indication
+    ( TOK_VAR_ASSIGN defaultValue=expression )?
   ;
 
 interface_declaration
@@ -802,9 +802,10 @@ library_clause
   : KW_LIBRARY logical_name_list TOK_SEMICOL
   ;
 
-// TODO: why this order?
+// TODO: can it be merged?
 library_unit
-  : secondary_unit | primary_unit
+  : primaryUnit=primary_unit
+  | secondaryUnit=secondary_unit
   ;
 
 literal
@@ -1035,9 +1036,9 @@ primary
   ;
 
 primary_unit
-  : entity_declaration
-  | configuration_declaration
-  | package_declaration         // TODO: context
+  : entity=entity_declaration
+  | configuration=configuration_declaration
+  | package=package_declaration         // TODO: context
   ;
 
 /*

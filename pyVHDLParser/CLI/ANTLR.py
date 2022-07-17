@@ -32,8 +32,10 @@ from pathlib        import Path
 from antlr4 import CommonTokenStream, InputStream
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
+from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem
 from ..ANTLR4.VHDLLexer import VHDLLexer
 from ..ANTLR4.VHDLParser import VHDLParser
+from ..ANTLR4.Visitor import VHDLVisitor
 
 
 from . import FrontEndProtocol, FilenameAttribute
@@ -59,7 +61,23 @@ class ANTLRHandlers:
 		lexer = VHDLLexer(InputStream(content))
 		stream = CommonTokenStream(lexer)
 		parser = VHDLParser(stream)
-
 		parserTree = parser.design_file()
+		visitor = VHDLVisitor()
+		designUnits = visitor.visit(parserTree)
+
+		document = Document(file)
+		for designUnit in designUnits:
+			if isinstance(designUnit, Entity):
+				document.Entities.append(designUnit)
+
+		print("=" * 80)
+		print(f"Sourcefile: {document.Path}")
+		print(f"  Entities:")
+		for entity in document.Entities:
+			print(f"    {entity.Identifier}")
+			print(f"      Generics:")
+			for generic in entity.GenericItems:
+				if isinstance(generic, GenericConstantInterfaceItem):
+					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Subtype}")
 
 		self.exit()
