@@ -4,861 +4,800 @@ from .VHDLParser import VHDLParser
 
 
 class VHDLParserVisitor(ParseTreeVisitor):
-
-	# Visit a parse tree produced by VHDLParser#access_type_definition.
-	def visitAccess_type_definition(self, ctx: VHDLParser.Access_type_definitionContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#actual_designator.
-	def visitActual_designator(self, ctx: VHDLParser.Actual_designatorContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#actual_parameter_part.
-	def visitActual_parameter_part(self, ctx: VHDLParser.Actual_parameter_partContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#actual_part.
-	def visitActual_part(self, ctx: VHDLParser.Actual_partContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#adding_operator.
-	def visitAdding_operator(self, ctx: VHDLParser.Adding_operatorContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#aggregate.
-	def visitAggregate(self, ctx: VHDLParser.AggregateContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#alias_declaration.
-	def visitAlias_declaration(self, ctx: VHDLParser.Alias_declarationContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#alias_designator.
-	def visitAlias_designator(self, ctx: VHDLParser.Alias_designatorContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#alias_indication.
-	def visitAlias_indication(self, ctx: VHDLParser.Alias_indicationContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#allocator.
-	def visitAllocator(self, ctx: VHDLParser.AllocatorContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#architecture_body.
-	def visitArchitecture_body(self, ctx: VHDLParser.Architecture_bodyContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#architecture_declarative_part.
-	def visitArchitecture_declarative_part(self, ctx: VHDLParser.Architecture_declarative_partContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#architecture_statement.
-	def visitArchitecture_statement(self, ctx: VHDLParser.Architecture_statementContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#architecture_statement_part.
-	def visitArchitecture_statement_part(self, ctx: VHDLParser.Architecture_statement_partContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#array_type_definition.
-	def visitArray_type_definition(self, ctx: VHDLParser.Array_type_definitionContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#assertion.
-	def visitAssertion(self, ctx: VHDLParser.AssertionContext):
+	# Visit a parse tree produced by VHDLParser#rule_AbsolutePathname.
+	def visitRule_AbsolutePathname(self, ctx: VHDLParser.Rule_AbsolutePathnameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#assertion_statement.
-	def visitAssertion_statement(self, ctx: VHDLParser.Assertion_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_AccessTypeDefinition.
+	def visitRule_AccessTypeDefinition(self, ctx: VHDLParser.Rule_AccessTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#association_element.
-	def visitAssociation_element(self, ctx: VHDLParser.Association_elementContext):
+	# Visit a parse tree produced by VHDLParser#rule_ActualDesignator.
+	def visitRule_ActualDesignator(self, ctx: VHDLParser.Rule_ActualDesignatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#association_list.
-	def visitAssociation_list(self, ctx: VHDLParser.Association_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_ActualParameterPart.
+	def visitRule_ActualParameterPart(self, ctx: VHDLParser.Rule_ActualParameterPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#attribute_declaration.
-	def visitAttribute_declaration(self, ctx: VHDLParser.Attribute_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ActualPart.
+	def visitRule_ActualPart(self, ctx: VHDLParser.Rule_ActualPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#attribute_designator.
-	def visitAttribute_designator(self, ctx: VHDLParser.Attribute_designatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_Aggregate.
+	def visitRule_Aggregate(self, ctx: VHDLParser.Rule_AggregateContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#attribute_specification.
-	def visitAttribute_specification(self, ctx: VHDLParser.Attribute_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_AliasDeclaration.
+	def visitRule_AliasDeclaration(self, ctx: VHDLParser.Rule_AliasDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#base_unit_declaration.
-	def visitBase_unit_declaration(self, ctx: VHDLParser.Base_unit_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_AliasDesignator.
+	def visitRule_AliasDesignator(self, ctx: VHDLParser.Rule_AliasDesignatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#binding_indication.
-	def visitBinding_indication(self, ctx: VHDLParser.Binding_indicationContext):
+	# Visit a parse tree produced by VHDLParser#rule_AliasIndication.
+	def visitRule_AliasIndication(self, ctx: VHDLParser.Rule_AliasIndicationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_configuration.
-	def visitBlock_configuration(self, ctx: VHDLParser.Block_configurationContext):
+	# Visit a parse tree produced by VHDLParser#rule_Allocator.
+	def visitRule_Allocator(self, ctx: VHDLParser.Rule_AllocatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_declarative_item.
-	def visitBlock_declarative_item(self, ctx: VHDLParser.Block_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_Architecture.
+	def visitRule_Architecture(self, ctx: VHDLParser.Rule_ArchitectureContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_declarative_part.
-	def visitBlock_declarative_part(self, ctx: VHDLParser.Block_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_ArchitectureDeclarativePart.
+	def visitRule_ArchitectureDeclarativePart(self, ctx: VHDLParser.Rule_ArchitectureDeclarativePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_header.
-	def visitBlock_header(self, ctx: VHDLParser.Block_headerContext):
+	# Visit a parse tree produced by VHDLParser#rule_ArchitectureStatement.
+	def visitRule_ArchitectureStatement(self, ctx: VHDLParser.Rule_ArchitectureStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_specification.
-	def visitBlock_specification(self, ctx: VHDLParser.Block_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ArchitectureStatementPart.
+	def visitRule_ArchitectureStatementPart(self, ctx: VHDLParser.Rule_ArchitectureStatementPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_statement.
-	def visitBlock_statement(self, ctx: VHDLParser.Block_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_ArrayTypeDefinition.
+	def visitRule_ArrayTypeDefinition(self, ctx: VHDLParser.Rule_ArrayTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#block_statement_part.
-	def visitBlock_statement_part(self, ctx: VHDLParser.Block_statement_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_Assertion.
+	def visitRule_Assertion(self, ctx: VHDLParser.Rule_AssertionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#case_statement.
-	def visitCase_statement(self, ctx: VHDLParser.Case_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_AssertionStatement.
+	def visitRule_AssertionStatement(self, ctx: VHDLParser.Rule_AssertionStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#case_statement_alternative.
-	def visitCase_statement_alternative(self, ctx: VHDLParser.Case_statement_alternativeContext):
+	# Visit a parse tree produced by VHDLParser#rule_AssociationElement.
+	def visitRule_AssociationElement(self, ctx: VHDLParser.Rule_AssociationElementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#choice.
-	def visitChoice(self, ctx: VHDLParser.ChoiceContext):
+	# Visit a parse tree produced by VHDLParser#rule_AssociationList.
+	def visitRule_AssociationList(self, ctx: VHDLParser.Rule_AssociationListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#choices.
-	def visitChoices(self, ctx: VHDLParser.ChoicesContext):
+	# Visit a parse tree produced by VHDLParser#rule_AttributeDeclaration.
+	def visitRule_AttributeDeclaration(self, ctx: VHDLParser.Rule_AttributeDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#component_configuration.
-	def visitComponent_configuration(self, ctx: VHDLParser.Component_configurationContext):
+	# Visit a parse tree produced by VHDLParser#rule_AttributeDesignator.
+	def visitRule_AttributeDesignator(self, ctx: VHDLParser.Rule_AttributeDesignatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#component_declaration.
-	def visitComponent_declaration(self, ctx: VHDLParser.Component_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_AttributeSpecification.
+	def visitRule_AttributeSpecification(self, ctx: VHDLParser.Rule_AttributeSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#component_instantiation_statement.
-	def visitComponent_instantiation_statement(self, ctx: VHDLParser.Component_instantiation_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_BaseUnitDeclaration.
+	def visitRule_BaseUnitDeclaration(self, ctx: VHDLParser.Rule_BaseUnitDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#component_specification.
-	def visitComponent_specification(self, ctx: VHDLParser.Component_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_BindingIndication.
+	def visitRule_BindingIndication(self, ctx: VHDLParser.Rule_BindingIndicationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#composite_type_definition.
-	def visitComposite_type_definition(self, ctx: VHDLParser.Composite_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockConfiguration.
+	def visitRule_BlockConfiguration(self, ctx: VHDLParser.Rule_BlockConfigurationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#concurrent_assertion_statement.
-	def visitConcurrent_assertion_statement(self, ctx: VHDLParser.Concurrent_assertion_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockDeclarativeItem.
+	def visitRule_BlockDeclarativeItem(self, ctx: VHDLParser.Rule_BlockDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#concurrent_procedure_call_statement.
-	def visitConcurrent_procedure_call_statement(self, ctx: VHDLParser.Concurrent_procedure_call_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockDeclarativePart.
+	def visitRule_BlockDeclarativePart(self, ctx: VHDLParser.Rule_BlockDeclarativePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#concurrent_signal_assignment_statement.
-	def visitConcurrent_signal_assignment_statement(self, ctx: VHDLParser.Concurrent_signal_assignment_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockHeader.
+	def visitRule_BlockHeader(self, ctx: VHDLParser.Rule_BlockHeaderContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#condition.
-	def visitCondition(self, ctx: VHDLParser.ConditionContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockSpecification.
+	def visitRule_BlockSpecification(self, ctx: VHDLParser.Rule_BlockSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#condition_clause.
-	def visitCondition_clause(self, ctx: VHDLParser.Condition_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockStatement.
+	def visitRule_BlockStatement(self, ctx: VHDLParser.Rule_BlockStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#conditional_signal_assignment.
-	def visitConditional_signal_assignment(self, ctx: VHDLParser.Conditional_signal_assignmentContext):
+	# Visit a parse tree produced by VHDLParser#rule_BlockStatementPart.
+	def visitRule_BlockStatementPart(self, ctx: VHDLParser.Rule_BlockStatementPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#conditional_waveforms.
-	def visitConditional_waveforms(self, ctx: VHDLParser.Conditional_waveformsContext):
+	# Visit a parse tree produced by VHDLParser#rule_CaseStatement.
+	def visitRule_CaseStatement(self, ctx: VHDLParser.Rule_CaseStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#configuration_declaration.
-	def visitConfiguration_declaration(self, ctx: VHDLParser.Configuration_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_CaseStatementAlternative.
+	def visitRule_CaseStatementAlternative(self, ctx: VHDLParser.Rule_CaseStatementAlternativeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#configuration_declarative_item.
-	def visitConfiguration_declarative_item(self, ctx: VHDLParser.Configuration_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_Choice.
+	def visitRule_Choice(self, ctx: VHDLParser.Rule_ChoiceContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#configuration_declarative_part.
-	def visitConfiguration_declarative_part(self, ctx: VHDLParser.Configuration_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_Choices.
+	def visitRule_Choices(self, ctx: VHDLParser.Rule_ChoicesContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#configuration_item.
-	def visitConfiguration_item(self, ctx: VHDLParser.Configuration_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_ComponentConfiguration.
+	def visitRule_ComponentConfiguration(self, ctx: VHDLParser.Rule_ComponentConfigurationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#configuration_specification.
-	def visitConfiguration_specification(self, ctx: VHDLParser.Configuration_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ComponentDeclaration.
+	def visitRule_ComponentDeclaration(self, ctx: VHDLParser.Rule_ComponentDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#constant_declaration.
-	def visitConstant_declaration(self, ctx: VHDLParser.Constant_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ComponentInstantiationStatement.
+	def visitRule_ComponentInstantiationStatement(self, ctx: VHDLParser.Rule_ComponentInstantiationStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#constrained_array_definition.
-	def visitConstrained_array_definition(self, ctx: VHDLParser.Constrained_array_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_ComponentSpecification.
+	def visitRule_ComponentSpecification(self, ctx: VHDLParser.Rule_ComponentSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#constraint.
-	def visitConstraint(self, ctx: VHDLParser.ConstraintContext):
+	# Visit a parse tree produced by VHDLParser#rule_CompositeTypeDefinition.
+	def visitRule_CompositeTypeDefinition(self, ctx: VHDLParser.Rule_CompositeTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#context_clause.
-	def visitContext_clause(self, ctx: VHDLParser.Context_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConcurrentAssertionStatement.
+	def visitRule_ConcurrentAssertionStatement(self, ctx: VHDLParser.Rule_ConcurrentAssertionStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#context_item.
-	def visitContext_item(self, ctx: VHDLParser.Context_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConcurrentProcedureCallStatement.
+	def visitRule_ConcurrentProcedureCallStatement(self, ctx: VHDLParser.Rule_ConcurrentProcedureCallStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#delay_mechanism.
-	def visitDelay_mechanism(self, ctx: VHDLParser.Delay_mechanismContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConcurrentSignalAssignmentStatement.
+	def visitRule_ConcurrentSignalAssignmentStatement(self, ctx: VHDLParser.Rule_ConcurrentSignalAssignmentStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#design_file.
-	def visitDesign_file(self, ctx: VHDLParser.Design_fileContext):
+	# Visit a parse tree produced by VHDLParser#rule_Condition.
+	def visitRule_Condition(self, ctx: VHDLParser.Rule_ConditionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#design_unit.
-	def visitDesign_unit(self, ctx: VHDLParser.Design_unitContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConditionClause.
+	def visitRule_ConditionClause(self, ctx: VHDLParser.Rule_ConditionClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#designator.
-	def visitDesignator(self, ctx: VHDLParser.DesignatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConditionalSignalAssignment.
+	def visitRule_ConditionalSignalAssignment(self, ctx: VHDLParser.Rule_ConditionalSignalAssignmentContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#direction.
-	def visitDirection(self, ctx: VHDLParser.DirectionContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConditionalWaveforms.
+	def visitRule_ConditionalWaveforms(self, ctx: VHDLParser.Rule_ConditionalWaveformsContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#disconnection_specification.
-	def visitDisconnection_specification(self, ctx: VHDLParser.Disconnection_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConfigurationDeclaration.
+	def visitRule_ConfigurationDeclaration(self, ctx: VHDLParser.Rule_ConfigurationDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#discrete_range.
-	def visitDiscrete_range(self, ctx: VHDLParser.Discrete_rangeContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConfigurationDeclarativeItem.
+	def visitRule_ConfigurationDeclarativeItem(self, ctx: VHDLParser.Rule_ConfigurationDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#element_association.
-	def visitElement_association(self, ctx: VHDLParser.Element_associationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConfigurationItem.
+	def visitRule_ConfigurationItem(self, ctx: VHDLParser.Rule_ConfigurationItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#element_declaration.
-	def visitElement_declaration(self, ctx: VHDLParser.Element_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConfigurationSpecification.
+	def visitRule_ConfigurationSpecification(self, ctx: VHDLParser.Rule_ConfigurationSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#element_subtype_definition.
-	def visitElement_subtype_definition(self, ctx: VHDLParser.Element_subtype_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConstantDeclaration.
+	def visitRule_ConstantDeclaration(self, ctx: VHDLParser.Rule_ConstantDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_aspect.
-	def visitEntity_aspect(self, ctx: VHDLParser.Entity_aspectContext):
+	# Visit a parse tree produced by VHDLParser#rule_ConstrainedArrayDefinition.
+	def visitRule_ConstrainedArrayDefinition(self, ctx: VHDLParser.Rule_ConstrainedArrayDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_class.
-	def visitEntity_class(self, ctx: VHDLParser.Entity_classContext):
+	# Visit a parse tree produced by VHDLParser#rule_Constraint.
+	def visitRule_Constraint(self, ctx: VHDLParser.Rule_ConstraintContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_class_entry.
-	def visitEntity_class_entry(self, ctx: VHDLParser.Entity_class_entryContext):
+	# Visit a parse tree produced by VHDLParser#rule_ContextItem.
+	def visitRule_ContextItem(self, ctx: VHDLParser.Rule_ContextItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_class_entry_list.
-	def visitEntity_class_entry_list(self, ctx: VHDLParser.Entity_class_entry_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_DelayMechanism.
+	def visitRule_DelayMechanism(self, ctx: VHDLParser.Rule_DelayMechanismContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_declaration.
-	def visitEntity_declaration(self, ctx: VHDLParser.Entity_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_DesignFile.
+	def visitRule_DesignFile(self, ctx: VHDLParser.Rule_DesignFileContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_declarative_item.
-	def visitEntity_declarative_item(self, ctx: VHDLParser.Entity_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_DesignUnit.
+	def visitRule_DesignUnit(self, ctx: VHDLParser.Rule_DesignUnitContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_declarative_part.
-	def visitEntity_declarative_part(self, ctx: VHDLParser.Entity_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_Designator.
+	def visitRule_Designator(self, ctx: VHDLParser.Rule_DesignatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_designator.
-	def visitEntity_designator(self, ctx: VHDLParser.Entity_designatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_Direction.
+	def visitRule_Direction(self, ctx: VHDLParser.Rule_DirectionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_header.
-	def visitEntity_header(self, ctx: VHDLParser.Entity_headerContext):
+	# Visit a parse tree produced by VHDLParser#rule_DisconnectionSpecification.
+	def visitRule_DisconnectionSpecification(self, ctx: VHDLParser.Rule_DisconnectionSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_name_list.
-	def visitEntity_name_list(self, ctx: VHDLParser.Entity_name_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_DiscreteRange.
+	def visitRule_DiscreteRange(self, ctx: VHDLParser.Rule_DiscreteRangeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_specification.
-	def visitEntity_specification(self, ctx: VHDLParser.Entity_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ElementAssociation.
+	def visitRule_ElementAssociation(self, ctx: VHDLParser.Rule_ElementAssociationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_statement.
-	def visitEntity_statement(self, ctx: VHDLParser.Entity_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_ElementDeclaration.
+	def visitRule_ElementDeclaration(self, ctx: VHDLParser.Rule_ElementDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_statement_part.
-	def visitEntity_statement_part(self, ctx: VHDLParser.Entity_statement_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_ElementSubtypeDefinition.
+	def visitRule_ElementSubtypeDefinition(self, ctx: VHDLParser.Rule_ElementSubtypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#entity_tag.
-	def visitEntity_tag(self, ctx: VHDLParser.Entity_tagContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityAspect.
+	def visitRule_EntityAspect(self, ctx: VHDLParser.Rule_EntityAspectContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#enumeration_literal.
-	def visitEnumeration_literal(self, ctx: VHDLParser.Enumeration_literalContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityClass.
+	def visitRule_EntityClass(self, ctx: VHDLParser.Rule_EntityClassContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#enumeration_type_definition.
-	def visitEnumeration_type_definition(self, ctx: VHDLParser.Enumeration_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityClassEntry.
+	def visitRule_EntityClassEntry(self, ctx: VHDLParser.Rule_EntityClassEntryContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#exit_statement.
-	def visitExit_statement(self, ctx: VHDLParser.Exit_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityClassEntryList.
+	def visitRule_EntityClassEntryList(self, ctx: VHDLParser.Rule_EntityClassEntryListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#expression.
-	def visitExpression(self, ctx: VHDLParser.ExpressionContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityDeclaration.
+	def visitRule_EntityDeclaration(self, ctx: VHDLParser.Rule_EntityDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#factor.
-	def visitFactor(self, ctx: VHDLParser.FactorContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityDeclarativeItem.
+	def visitRule_EntityDeclarativeItem(self, ctx: VHDLParser.Rule_EntityDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#file_declaration.
-	def visitFile_declaration(self, ctx: VHDLParser.File_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityDeclarativePart.
+	def visitRule_EntityDeclarativePart(self, ctx: VHDLParser.Rule_EntityDeclarativePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#file_logical_name.
-	def visitFile_logical_name(self, ctx: VHDLParser.File_logical_nameContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityDesignator.
+	def visitRule_EntityDesignator(self, ctx: VHDLParser.Rule_EntityDesignatorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#file_open_information.
-	def visitFile_open_information(self, ctx: VHDLParser.File_open_informationContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityNameList.
+	def visitRule_EntityNameList(self, ctx: VHDLParser.Rule_EntityNameListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#file_type_definition.
-	def visitFile_type_definition(self, ctx: VHDLParser.File_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntitySpecification.
+	def visitRule_EntitySpecification(self, ctx: VHDLParser.Rule_EntitySpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#formal_parameter_list.
-	def visitFormal_parameter_list(self, ctx: VHDLParser.Formal_parameter_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityStatement.
+	def visitRule_EntityStatement(self, ctx: VHDLParser.Rule_EntityStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#formal_part.
-	def visitFormal_part(self, ctx: VHDLParser.Formal_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityStatementPart.
+	def visitRule_EntityStatementPart(self, ctx: VHDLParser.Rule_EntityStatementPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#generate_statement.
-	def visitGenerate_statement(self, ctx: VHDLParser.Generate_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_EntityTag.
+	def visitRule_EntityTag(self, ctx: VHDLParser.Rule_EntityTagContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#generation_scheme.
-	def visitGeneration_scheme(self, ctx: VHDLParser.Generation_schemeContext):
+	# Visit a parse tree produced by VHDLParser#rule_EnumerationLiteral.
+	def visitRule_EnumerationLiteral(self, ctx: VHDLParser.Rule_EnumerationLiteralContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#generic_clause.
-	def visitGeneric_clause(self, ctx: VHDLParser.Generic_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_EnumerationTypeDefinition.
+	def visitRule_EnumerationTypeDefinition(self, ctx: VHDLParser.Rule_EnumerationTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#generic_list.
-	def visitGeneric_list(self, ctx: VHDLParser.Generic_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_ExitStatement.
+	def visitRule_ExitStatement(self, ctx: VHDLParser.Rule_ExitStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#generic_map_aspect.
-	def visitGeneric_map_aspect(self, ctx: VHDLParser.Generic_map_aspectContext):
+	# Visit a parse tree produced by VHDLParser#rule_Expression.
+	def visitRule_Expression(self, ctx: VHDLParser.Rule_ExpressionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#guarded_signal_specification.
-	def visitGuarded_signal_specification(self, ctx: VHDLParser.Guarded_signal_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_Factor.
+	def visitRule_Factor(self, ctx: VHDLParser.Rule_FactorContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#identifier_list.
-	def visitIdentifier_list(self, ctx: VHDLParser.Identifier_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_FileDeclaration.
+	def visitRule_FileDeclaration(self, ctx: VHDLParser.Rule_FileDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#if_statement.
-	def visitIf_statement(self, ctx: VHDLParser.If_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_FileLogicalName.
+	def visitRule_FileLogicalName(self, ctx: VHDLParser.Rule_FileLogicalNameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#index_constraint.
-	def visitIndex_constraint(self, ctx: VHDLParser.Index_constraintContext):
+	# Visit a parse tree produced by VHDLParser#rule_FileOpenInformation.
+	def visitRule_FileOpenInformation(self, ctx: VHDLParser.Rule_FileOpenInformationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#index_specification.
-	def visitIndex_specification(self, ctx: VHDLParser.Index_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_FileTypeDefinition.
+	def visitRule_FileTypeDefinition(self, ctx: VHDLParser.Rule_FileTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#index_subtype_definition.
-	def visitIndex_subtype_definition(self, ctx: VHDLParser.Index_subtype_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_FormalParameterList.
+	def visitRule_FormalParameterList(self, ctx: VHDLParser.Rule_FormalParameterListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#instantiated_unit.
-	def visitInstantiated_unit(self, ctx: VHDLParser.Instantiated_unitContext):
+	# Visit a parse tree produced by VHDLParser#rule_FormalPart.
+	def visitRule_FormalPart(self, ctx: VHDLParser.Rule_FormalPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#instantiation_list.
-	def visitInstantiation_list(self, ctx: VHDLParser.Instantiation_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_GenerateStatement.
+	def visitRule_GenerateStatement(self, ctx: VHDLParser.Rule_GenerateStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_constant_declaration.
-	def visitInterface_constant_declaration(self, ctx: VHDLParser.Interface_constant_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_GenerationScheme.
+	def visitRule_GenerationScheme(self, ctx: VHDLParser.Rule_GenerationSchemeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_declaration.
-	def visitInterface_declaration(self, ctx: VHDLParser.Interface_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_GenericClause.
+	def visitRule_GenericClause(self, ctx: VHDLParser.Rule_GenericClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_element.
-	def visitInterface_element(self, ctx: VHDLParser.Interface_elementContext):
+	# Visit a parse tree produced by VHDLParser#rule_GenericList.
+	def visitRule_GenericList(self, ctx: VHDLParser.Rule_GenericListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_file_declaration.
-	def visitInterface_file_declaration(self, ctx: VHDLParser.Interface_file_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_GenericMapAspect.
+	def visitRule_GenericMapAspect(self, ctx: VHDLParser.Rule_GenericMapAspectContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_signal_list.
-	def visitInterface_signal_list(self, ctx: VHDLParser.Interface_signal_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_GuardedSignalSpecification.
+	def visitRule_GuardedSignalSpecification(self, ctx: VHDLParser.Rule_GuardedSignalSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_port_list.
-	def visitInterface_port_list(self, ctx: VHDLParser.Interface_port_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_IdentifierList.
+	def visitRule_IdentifierList(self, ctx: VHDLParser.Rule_IdentifierListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_list.
-	def visitInterface_list(self, ctx: VHDLParser.Interface_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_IfStatement.
+	def visitRule_IfStatement(self, ctx: VHDLParser.Rule_IfStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_port_declaration.
-	def visitInterface_port_declaration(self, ctx: VHDLParser.Interface_port_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_IndexConstraint.
+	def visitRule_IndexConstraint(self, ctx: VHDLParser.Rule_IndexConstraintContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_signal_declaration.
-	def visitInterface_signal_declaration(self, ctx: VHDLParser.Interface_signal_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_IndexSpecification.
+	def visitRule_IndexSpecification(self, ctx: VHDLParser.Rule_IndexSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#interface_variable_declaration.
-	def visitInterface_variable_declaration(self, ctx: VHDLParser.Interface_variable_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_IndexSubtypeDefinition.
+	def visitRule_IndexSubtypeDefinition(self, ctx: VHDLParser.Rule_IndexSubtypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#iteration_scheme.
-	def visitIteration_scheme(self, ctx: VHDLParser.Iteration_schemeContext):
+	# Visit a parse tree produced by VHDLParser#rule_InstantiatedUnit.
+	def visitRule_InstantiatedUnit(self, ctx: VHDLParser.Rule_InstantiatedUnitContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#label_colon.
-	def visitLabel_colon(self, ctx: VHDLParser.Label_colonContext):
+	# Visit a parse tree produced by VHDLParser#rule_InstantiationList.
+	def visitRule_InstantiationList(self, ctx: VHDLParser.Rule_InstantiationListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#library_clause.
-	def visitLibrary_clause(self, ctx: VHDLParser.Library_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceConstantDeclaration.
+	def visitRule_InterfaceConstantDeclaration(self, ctx: VHDLParser.Rule_InterfaceConstantDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#library_unit.
-	def visitLibrary_unit(self, ctx: VHDLParser.Library_unitContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceDeclaration.
+	def visitRule_InterfaceDeclaration(self, ctx: VHDLParser.Rule_InterfaceDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#literal.
-	def visitLiteral(self, ctx: VHDLParser.LiteralContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceElement.
+	def visitRule_InterfaceElement(self, ctx: VHDLParser.Rule_InterfaceElementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#logical_name.
-	def visitLogical_name(self, ctx: VHDLParser.Logical_nameContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceFileDeclaration.
+	def visitRule_InterfaceFileDeclaration(self, ctx: VHDLParser.Rule_InterfaceFileDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#logical_name_list.
-	def visitLogical_name_list(self, ctx: VHDLParser.Logical_name_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceSignalList.
+	def visitRule_InterfaceSignalList(self, ctx: VHDLParser.Rule_InterfaceSignalListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#logical_operator.
-	def visitLogical_operator(self, ctx: VHDLParser.Logical_operatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfacePortList.
+	def visitRule_InterfacePortList(self, ctx: VHDLParser.Rule_InterfacePortListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#loop_statement.
-	def visitLoop_statement(self, ctx: VHDLParser.Loop_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceList.
+	def visitRule_InterfaceList(self, ctx: VHDLParser.Rule_InterfaceListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signal_mode.
-	def visitSignal_mode(self, ctx: VHDLParser.Signal_modeContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfacePortDeclaration.
+	def visitRule_InterfacePortDeclaration(self, ctx: VHDLParser.Rule_InterfacePortDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#multiplying_operator.
-	def visitMultiplying_operator(self, ctx: VHDLParser.Multiplying_operatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceSignalDeclaration.
+	def visitRule_InterfaceSignalDeclaration(self, ctx: VHDLParser.Rule_InterfaceSignalDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#name.
-	def visitName(self, ctx: VHDLParser.NameContext):
+	# Visit a parse tree produced by VHDLParser#rule_InterfaceVariableDeclaration.
+	def visitRule_InterfaceVariableDeclaration(self, ctx: VHDLParser.Rule_InterfaceVariableDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#name_part.
-	def visitName_part(self, ctx: VHDLParser.Name_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_IterationScheme.
+	def visitRule_IterationScheme(self, ctx: VHDLParser.Rule_IterationSchemeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#selected_name.
-	def visitSelected_name(self, ctx: VHDLParser.Selected_nameContext):
+	# Visit a parse tree produced by VHDLParser#rule_Label.
+	def visitRule_Label(self, ctx: VHDLParser.Rule_LabelContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#selected_name_part.
-	def visitSelected_name_part(self, ctx: VHDLParser.Selected_name_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_LabelWithColon.
+	def visitRule_LabelWithColon(self, ctx: VHDLParser.Rule_LabelWithColonContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#function_call_or_indexed_name_part.
-	def visitFunction_call_or_indexed_name_part(self, ctx: VHDLParser.Function_call_or_indexed_name_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_LibraryClause.
+	def visitRule_LibraryClause(self, ctx: VHDLParser.Rule_LibraryClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#slice_name_part.
-	def visitSlice_name_part(self, ctx: VHDLParser.Slice_name_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_LibraryUnit.
+	def visitRule_LibraryUnit(self, ctx: VHDLParser.Rule_LibraryUnitContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#attribute_name_part.
-	def visitAttribute_name_part(self, ctx: VHDLParser.Attribute_name_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_Literal.
+	def visitRule_Literal(self, ctx: VHDLParser.Rule_LiteralContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#next_statement.
-	def visitNext_statement(self, ctx: VHDLParser.Next_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_LoopStatement.
+	def visitRule_LoopStatement(self, ctx: VHDLParser.Rule_LoopStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#numeric_literal.
-	def visitNumeric_literal(self, ctx: VHDLParser.Numeric_literalContext):
+	# Visit a parse tree produced by VHDLParser#rule_SignalMode.
+	def visitRule_SignalMode(self, ctx: VHDLParser.Rule_SignalModeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#object_declaration.
-	def visitObject_declaration(self, ctx: VHDLParser.Object_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_Name.
+	def visitRule_Name(self, ctx: VHDLParser.Rule_NameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#opts.
-	def visitOpts(self, ctx: VHDLParser.OptsContext):
+	# Visit a parse tree produced by VHDLParser#rule_NamePart.
+	def visitRule_NamePart(self, ctx: VHDLParser.Rule_NamePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_body.
-	def visitPackage_body(self, ctx: VHDLParser.Package_bodyContext):
+	# Visit a parse tree produced by VHDLParser#rule_SelectedName.
+	def visitRule_SelectedName(self, ctx: VHDLParser.Rule_SelectedNameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_body_declarative_item.
-	def visitPackage_body_declarative_item(self, ctx: VHDLParser.Package_body_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_SelectedNamePart.
+	def visitRule_SelectedNamePart(self, ctx: VHDLParser.Rule_SelectedNamePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_body_declarative_part.
-	def visitPackage_body_declarative_part(self, ctx: VHDLParser.Package_body_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_FunctionCallOrIndexedNamePart.
+	def visitRule_FunctionCallOrIndexedNamePart(self, ctx: VHDLParser.Rule_FunctionCallOrIndexedNamePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_declaration.
-	def visitPackage_declaration(self, ctx: VHDLParser.Package_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SliceNamePart.
+	def visitRule_SliceNamePart(self, ctx: VHDLParser.Rule_SliceNamePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_declarative_item.
-	def visitPackage_declarative_item(self, ctx: VHDLParser.Package_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_AttributeNamePart.
+	def visitRule_AttributeNamePart(self, ctx: VHDLParser.Rule_AttributeNamePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#package_declarative_part.
-	def visitPackage_declarative_part(self, ctx: VHDLParser.Package_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_NextStatement.
+	def visitRule_NextStatement(self, ctx: VHDLParser.Rule_NextStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#parameter_specification.
-	def visitParameter_specification(self, ctx: VHDLParser.Parameter_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_NumericLiteral.
+	def visitRule_NumericLiteral(self, ctx: VHDLParser.Rule_NumericLiteralContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#physical_literal.
-	def visitPhysical_literal(self, ctx: VHDLParser.Physical_literalContext):
+	# Visit a parse tree produced by VHDLParser#rule_ObjectDeclaration.
+	def visitRule_ObjectDeclaration(self, ctx: VHDLParser.Rule_ObjectDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#physical_type_definition.
-	def visitPhysical_type_definition(self, ctx: VHDLParser.Physical_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_Opts.
+	def visitRule_Opts(self, ctx: VHDLParser.Rule_OptsContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#port_clause.
-	def visitPort_clause(self, ctx: VHDLParser.Port_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_PackageBody.
+	def visitRule_PackageBody(self, ctx: VHDLParser.Rule_PackageBodyContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#port_list.
-	def visitPort_list(self, ctx: VHDLParser.Port_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_PackageBodyDeclarativeItem.
+	def visitRule_PackageBodyDeclarativeItem(self, ctx: VHDLParser.Rule_PackageBodyDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#port_map_aspect.
-	def visitPort_map_aspect(self, ctx: VHDLParser.Port_map_aspectContext):
+	# Visit a parse tree produced by VHDLParser#rule_PackageDeclaration.
+	def visitRule_PackageDeclaration(self, ctx: VHDLParser.Rule_PackageDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#primary.
-	def visitPrimary(self, ctx: VHDLParser.PrimaryContext):
+	# Visit a parse tree produced by VHDLParser#rule_PackageDeclarativeItem.
+	def visitRule_PackageDeclarativeItem(self, ctx: VHDLParser.Rule_PackageDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#primary_unit.
-	def visitPrimary_unit(self, ctx: VHDLParser.Primary_unitContext):
+	# Visit a parse tree produced by VHDLParser#rule_ParameterSpecification.
+	def visitRule_ParameterSpecification(self, ctx: VHDLParser.Rule_ParameterSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#procedure_call.
-	def visitProcedure_call(self, ctx: VHDLParser.Procedure_callContext):
+	# Visit a parse tree produced by VHDLParser#rule_PartialPathName.
+	def visitRule_PartialPathName(self, ctx: VHDLParser.Rule_PartialPathNameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#procedure_call_statement.
-	def visitProcedure_call_statement(self, ctx: VHDLParser.Procedure_call_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_PathNameElement.
+	def visitRule_PathNameElement(self, ctx: VHDLParser.Rule_PathNameElementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#process_declarative_item.
-	def visitProcess_declarative_item(self, ctx: VHDLParser.Process_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_PhysicalLiteral.
+	def visitRule_PhysicalLiteral(self, ctx: VHDLParser.Rule_PhysicalLiteralContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#process_declarative_part.
-	def visitProcess_declarative_part(self, ctx: VHDLParser.Process_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_PhysicalTypeDefinition.
+	def visitRule_PhysicalTypeDefinition(self, ctx: VHDLParser.Rule_PhysicalTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#process_statement.
-	def visitProcess_statement(self, ctx: VHDLParser.Process_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_PortClause.
+	def visitRule_PortClause(self, ctx: VHDLParser.Rule_PortClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#postponed_process_statement.
-	def visitPostponed_process_statement(self, ctx: VHDLParser.Postponed_process_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_PortList.
+	def visitRule_PortList(self, ctx: VHDLParser.Rule_PortListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#process_statement_part.
-	def visitProcess_statement_part(self, ctx: VHDLParser.Process_statement_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_PortMapAspect.
+	def visitRule_PortMapAspect(self, ctx: VHDLParser.Rule_PortMapAspectContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#qualified_expression.
-	def visitQualified_expression(self, ctx: VHDLParser.Qualified_expressionContext):
+	# Visit a parse tree produced by VHDLParser#rule_Primary.
+	def visitRule_Primary(self, ctx: VHDLParser.Rule_PrimaryContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#range_decl.
-	def visitRange_decl(self, ctx: VHDLParser.Range_declContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcedureCall.
+	def visitRule_ProcedureCall(self, ctx: VHDLParser.Rule_ProcedureCallContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#explicit_range.
-	def visitExplicit_range(self, ctx: VHDLParser.Explicit_rangeContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcedureCallStatement.
+	def visitRule_ProcedureCallStatement(self, ctx: VHDLParser.Rule_ProcedureCallStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#range_constraint.
-	def visitRange_constraint(self, ctx: VHDLParser.Range_constraintContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcessDeclarativeItem.
+	def visitRule_ProcessDeclarativeItem(self, ctx: VHDLParser.Rule_ProcessDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#record_type_definition.
-	def visitRecord_type_definition(self, ctx: VHDLParser.Record_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcessDeclarativePart.
+	def visitRule_ProcessDeclarativePart(self, ctx: VHDLParser.Rule_ProcessDeclarativePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#relation.
-	def visitRelation(self, ctx: VHDLParser.RelationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcessStatement.
+	def visitRule_ProcessStatement(self, ctx: VHDLParser.Rule_ProcessStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#relational_operator.
-	def visitRelational_operator(self, ctx: VHDLParser.Relational_operatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_PostponedProcessStatement.
+	def visitRule_PostponedProcessStatement(self, ctx: VHDLParser.Rule_PostponedProcessStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#report_statement.
-	def visitReport_statement(self, ctx: VHDLParser.Report_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcessStatementPart.
+	def visitRule_ProcessStatementPart(self, ctx: VHDLParser.Rule_ProcessStatementPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#return_statement.
-	def visitReturn_statement(self, ctx: VHDLParser.Return_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_QualifiedExpression.
+	def visitRule_QualifiedExpression(self, ctx: VHDLParser.Rule_QualifiedExpressionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#scalar_type_definition.
-	def visitScalar_type_definition(self, ctx: VHDLParser.Scalar_type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_RangeDeclaration.
+	def visitRule_RangeDeclaration(self, ctx: VHDLParser.Rule_RangeDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#secondary_unit.
-	def visitSecondary_unit(self, ctx: VHDLParser.Secondary_unitContext):
+	# Visit a parse tree produced by VHDLParser#rule_ExplicitRange.
+	def visitRule_ExplicitRange(self, ctx: VHDLParser.Rule_ExplicitRangeContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#secondary_unit_declaration.
-	def visitSecondary_unit_declaration(self, ctx: VHDLParser.Secondary_unit_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_RangeConstraint.
+	def visitRule_RangeConstraint(self, ctx: VHDLParser.Rule_RangeConstraintContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#selected_signal_assignment.
-	def visitSelected_signal_assignment(self, ctx: VHDLParser.Selected_signal_assignmentContext):
+	# Visit a parse tree produced by VHDLParser#rule_RecordTypeDefinition.
+	def visitRule_RecordTypeDefinition(self, ctx: VHDLParser.Rule_RecordTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#selected_waveforms.
-	def visitSelected_waveforms(self, ctx: VHDLParser.Selected_waveformsContext):
+	# Visit a parse tree produced by VHDLParser#rule_Relation.
+	def visitRule_Relation(self, ctx: VHDLParser.Rule_RelationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#sensitivity_clause.
-	def visitSensitivity_clause(self, ctx: VHDLParser.Sensitivity_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_ReportStatement.
+	def visitRule_ReportStatement(self, ctx: VHDLParser.Rule_ReportStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#sensitivity_list.
-	def visitSensitivity_list(self, ctx: VHDLParser.Sensitivity_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_ReturnStatement.
+	def visitRule_ReturnStatement(self, ctx: VHDLParser.Rule_ReturnStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#sequence_of_statements.
-	def visitSequence_of_statements(self, ctx: VHDLParser.Sequence_of_statementsContext):
+	# Visit a parse tree produced by VHDLParser#rule_ScalarTypeDefinition.
+	def visitRule_ScalarTypeDefinition(self, ctx: VHDLParser.Rule_ScalarTypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#sequential_statement.
-	def visitSequential_statement(self, ctx: VHDLParser.Sequential_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_SecondaryUnitDeclaration.
+	def visitRule_SecondaryUnitDeclaration(self, ctx: VHDLParser.Rule_SecondaryUnitDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#shift_expression.
-	def visitShift_expression(self, ctx: VHDLParser.Shift_expressionContext):
+	# Visit a parse tree produced by VHDLParser#rule_SelectedSignalAssignment.
+	def visitRule_SelectedSignalAssignment(self, ctx: VHDLParser.Rule_SelectedSignalAssignmentContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#shift_operator.
-	def visitShift_operator(self, ctx: VHDLParser.Shift_operatorContext):
+	# Visit a parse tree produced by VHDLParser#rule_SelectedWaveforms.
+	def visitRule_SelectedWaveforms(self, ctx: VHDLParser.Rule_SelectedWaveformsContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signal_assignment_statement.
-	def visitSignal_assignment_statement(self, ctx: VHDLParser.Signal_assignment_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_SensitivityClause.
+	def visitRule_SensitivityClause(self, ctx: VHDLParser.Rule_SensitivityClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signal_declaration.
-	def visitSignal_declaration(self, ctx: VHDLParser.Signal_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SensitivityList.
+	def visitRule_SensitivityList(self, ctx: VHDLParser.Rule_SensitivityListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signal_kind.
-	def visitSignal_kind(self, ctx: VHDLParser.Signal_kindContext):
+	# Visit a parse tree produced by VHDLParser#rule_SequenceOfStatements.
+	def visitRule_SequenceOfStatements(self, ctx: VHDLParser.Rule_SequenceOfStatementsContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signal_list.
-	def visitSignal_list(self, ctx: VHDLParser.Signal_listContext):
+	# Visit a parse tree produced by VHDLParser#rule_SequentialStatement.
+	def visitRule_SequentialStatement(self, ctx: VHDLParser.Rule_SequentialStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#signature.
-	def visitSignature(self, ctx: VHDLParser.SignatureContext):
+	# Visit a parse tree produced by VHDLParser#rule_ShiftExpression.
+	def visitRule_ShiftExpression(self, ctx: VHDLParser.Rule_ShiftExpressionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simple_expression.
-	def visitSimple_expression(self, ctx: VHDLParser.Simple_expressionContext):
+	# Visit a parse tree produced by VHDLParser#rule_SignalAssignmentStatement.
+	def visitRule_SignalAssignmentStatement(self, ctx: VHDLParser.Rule_SignalAssignmentStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simple_simultaneous_statement.
-	def visitSimple_simultaneous_statement(self, ctx: VHDLParser.Simple_simultaneous_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_SignalDeclaration.
+	def visitRule_SignalDeclaration(self, ctx: VHDLParser.Rule_SignalDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simultaneous_alternative.
-	def visitSimultaneous_alternative(self, ctx: VHDLParser.Simultaneous_alternativeContext):
+	# Visit a parse tree produced by VHDLParser#rule_SignalKind.
+	def visitRule_SignalKind(self, ctx: VHDLParser.Rule_SignalKindContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simultaneous_case_statement.
-	def visitSimultaneous_case_statement(self, ctx: VHDLParser.Simultaneous_case_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_SignalList.
+	def visitRule_SignalList(self, ctx: VHDLParser.Rule_SignalListContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simultaneous_if_statement.
-	def visitSimultaneous_if_statement(self, ctx: VHDLParser.Simultaneous_if_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_Signature.
+	def visitRule_Signature(self, ctx: VHDLParser.Rule_SignatureContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simultaneous_statement.
-	def visitSimultaneous_statement(self, ctx: VHDLParser.Simultaneous_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_SimpleExpression.
+	def visitRule_SimpleExpression(self, ctx: VHDLParser.Rule_SimpleExpressionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#simultaneous_statement_part.
-	def visitSimultaneous_statement_part(self, ctx: VHDLParser.Simultaneous_statement_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_SimpleName.
+	def visitRule_SimpleName(self, ctx: VHDLParser.Rule_SimpleNameContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_body.
-	def visitSubprogram_body(self, ctx: VHDLParser.Subprogram_bodyContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramBody.
+	def visitRule_SubprogramBody(self, ctx: VHDLParser.Rule_SubprogramBodyContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_declaration.
-	def visitSubprogram_declaration(self, ctx: VHDLParser.Subprogram_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramDeclaration.
+	def visitRule_SubprogramDeclaration(self, ctx: VHDLParser.Rule_SubprogramDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_declarative_item.
-	def visitSubprogram_declarative_item(self, ctx: VHDLParser.Subprogram_declarative_itemContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramDeclarativeItem.
+	def visitRule_SubprogramDeclarativeItem(self, ctx: VHDLParser.Rule_SubprogramDeclarativeItemContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_declarative_part.
-	def visitSubprogram_declarative_part(self, ctx: VHDLParser.Subprogram_declarative_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramDeclarativePart.
+	def visitRule_SubprogramDeclarativePart(self, ctx: VHDLParser.Rule_SubprogramDeclarativePartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_kind.
-	def visitSubprogram_kind(self, ctx: VHDLParser.Subprogram_kindContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramKind.
+	def visitRule_SubprogramKind(self, ctx: VHDLParser.Rule_SubprogramKindContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_specification.
-	def visitSubprogram_specification(self, ctx: VHDLParser.Subprogram_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramSpecification.
+	def visitRule_SubprogramSpecification(self, ctx: VHDLParser.Rule_SubprogramSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#procedure_specification.
-	def visitProcedure_specification(self, ctx: VHDLParser.Procedure_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_ProcedureSpecification.
+	def visitRule_ProcedureSpecification(self, ctx: VHDLParser.Rule_ProcedureSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#function_specification.
-	def visitFunction_specification(self, ctx: VHDLParser.Function_specificationContext):
+	# Visit a parse tree produced by VHDLParser#rule_FunctionSpecification.
+	def visitRule_FunctionSpecification(self, ctx: VHDLParser.Rule_FunctionSpecificationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subprogram_statement_part.
-	def visitSubprogram_statement_part(self, ctx: VHDLParser.Subprogram_statement_partContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubprogramStatementPart.
+	def visitRule_SubprogramStatementPart(self, ctx: VHDLParser.Rule_SubprogramStatementPartContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subtype_declaration.
-	def visitSubtype_declaration(self, ctx: VHDLParser.Subtype_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubtypeDeclaration.
+	def visitRule_SubtypeDeclaration(self, ctx: VHDLParser.Rule_SubtypeDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#subtype_indication.
-	def visitSubtype_indication(self, ctx: VHDLParser.Subtype_indicationContext):
+	# Visit a parse tree produced by VHDLParser#rule_SubtypeIndication.
+	def visitRule_SubtypeIndication(self, ctx: VHDLParser.Rule_SubtypeIndicationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#suffix.
-	def visitSuffix(self, ctx: VHDLParser.SuffixContext):
+	# Visit a parse tree produced by VHDLParser#rule_Suffix.
+	def visitRule_Suffix(self, ctx: VHDLParser.Rule_SuffixContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#target.
-	def visitTarget(self, ctx: VHDLParser.TargetContext):
+	# Visit a parse tree produced by VHDLParser#rule_Target.
+	def visitRule_Target(self, ctx: VHDLParser.Rule_TargetContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#term.
-	def visitTerm(self, ctx: VHDLParser.TermContext):
+	# Visit a parse tree produced by VHDLParser#rule_Term.
+	def visitRule_Term(self, ctx: VHDLParser.Rule_TermContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#timeout_clause.
-	def visitTimeout_clause(self, ctx: VHDLParser.Timeout_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_TimeoutClause.
+	def visitRule_TimeoutClause(self, ctx: VHDLParser.Rule_TimeoutClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#type_declaration.
-	def visitType_declaration(self, ctx: VHDLParser.Type_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_TypeDeclaration.
+	def visitRule_TypeDeclaration(self, ctx: VHDLParser.Rule_TypeDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#type_definition.
-	def visitType_definition(self, ctx: VHDLParser.Type_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_TypeDefinition.
+	def visitRule_TypeDefinition(self, ctx: VHDLParser.Rule_TypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#unconstrained_array_definition.
-	def visitUnconstrained_array_definition(self, ctx: VHDLParser.Unconstrained_array_definitionContext):
+	# Visit a parse tree produced by VHDLParser#rule_UnconstrainedArrayDefinition.
+	def visitRule_UnconstrainedArrayDefinition(self, ctx: VHDLParser.Rule_UnconstrainedArrayDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#use_clause.
-	def visitUse_clause(self, ctx: VHDLParser.Use_clauseContext):
+	# Visit a parse tree produced by VHDLParser#rule_UseClause.
+	def visitRule_UseClause(self, ctx: VHDLParser.Rule_UseClauseContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#variable_assignment_statement.
-	def visitVariable_assignment_statement(self, ctx: VHDLParser.Variable_assignment_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_VariableAssignmentStatement.
+	def visitRule_VariableAssignmentStatement(self, ctx: VHDLParser.Rule_VariableAssignmentStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#variable_declaration.
-	def visitVariable_declaration(self, ctx: VHDLParser.Variable_declarationContext):
+	# Visit a parse tree produced by VHDLParser#rule_VariableDeclaration.
+	def visitRule_VariableDeclaration(self, ctx: VHDLParser.Rule_VariableDeclarationContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#wait_statement.
-	def visitWait_statement(self, ctx: VHDLParser.Wait_statementContext):
+	# Visit a parse tree produced by VHDLParser#rule_WaitStatement.
+	def visitRule_WaitStatement(self, ctx: VHDLParser.Rule_WaitStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#waveform.
-	def visitWaveform(self, ctx: VHDLParser.WaveformContext):
+	# Visit a parse tree produced by VHDLParser#rule_Waveform.
+	def visitRule_Waveform(self, ctx: VHDLParser.Rule_WaveformContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#waveform_element.
-	def visitWaveform_element(self, ctx: VHDLParser.Waveform_elementContext):
+	# Visit a parse tree produced by VHDLParser#rule_WaveformElement.
+	def visitRule_WaveformElement(self, ctx: VHDLParser.Rule_WaveformElementContext):
 		return self.visitChildren(ctx)
 
 
