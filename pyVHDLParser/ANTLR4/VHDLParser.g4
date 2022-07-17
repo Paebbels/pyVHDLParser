@@ -71,32 +71,32 @@ rule_AliasIndication
 
 rule_Allocator
   : KW_NEW (
-      rule_QualifiedExpression
+      qualifiedExpression=rule_QualifiedExpression
     | subtypeIndication=rule_SubtypeIndication
     )
   ;
 
-rule_ArchitectureBody
-  : KW_ARCHITECTURE LIT_IDENTIFIER KW_OF LIT_IDENTIFIER KW_IS
-      rule_ArchitectureDeclarativePart
+rule_Architecture
+  : KW_ARCHITECTURE architectureName=LIT_IDENTIFIER KW_OF entityName=LIT_IDENTIFIER KW_IS
+      architectureDeclarativePart=rule_ArchitectureDeclarativePart
     KW_BEGIN
-      rule_ArchitectureStatementPart
-    KW_END KW_ARCHITECTURE? LIT_IDENTIFIER? TOK_SEMICOL
+      architectureStatementPart=rule_ArchitectureStatementPart
+    KW_END KW_ARCHITECTURE? architectureName2=LIT_IDENTIFIER? TOK_SEMICOL
   ;
 
 rule_ArchitectureDeclarativePart
-  : rule_BlockDeclarativeItem*
+  : declarativeItem+=rule_BlockDeclarativeItem*
   ;
 
 rule_ArchitectureStatement
-  : rule_BlockStatement
-  | rule_ProcessStatement
-  | rule_PostponedProcessStatement
-  | rule_LabelWithColon? rule_ConcurrentProcedureCallStatement
-  | rule_LabelWithColon? rule_ConcurrentAssertionStatement
-  | rule_LabelWithColon? KW_POSTPONED? rule_ConcurrentSignalAssignmentStatement
-  | rule_ComponentInstantiationStatement
-  | rule_GenerateStatement
+  : blockStatement=rule_BlockStatement
+  | processStatement=rule_ProcessStatement
+  | postponedProcessStatement=rule_PostponedProcessStatement
+  | rule_LabelWithColon? procedureCallStatement=rule_ConcurrentProcedureCallStatement
+  | rule_LabelWithColon? assertionStatement=rule_ConcurrentAssertionStatement
+  | rule_LabelWithColon? postponed=KW_POSTPONED? signalAssignmentStatement=rule_ConcurrentSignalAssignmentStatement
+  | instantiationStatement=rule_ComponentInstantiationStatement
+  | generateStatement=rule_GenerateStatement
 //  | concurrent_break_statement
 //  | simultaneous_statement
   ;
@@ -179,8 +179,8 @@ rule_BindingIndication
 
 rule_BlockConfiguration
   : KW_FOR rule_BlockSpecification
-      rule_UseClause*
-      rule_ConfigurationItem*
+      useClauses+=rule_UseClause*
+      configurationItems+=rule_ConfigurationItem*
     KW_END KW_FOR TOK_SEMICOL
   ;
 
@@ -358,20 +358,16 @@ rule_ConditionalWaveforms
   ;
 
 rule_ConfigurationDeclaration
-  : KW_CONFIGURATION LIT_IDENTIFIER KW_OF rule_Name KW_IS
-      rule_ConfigurationDeclarativePart
-      rule_BlockConfiguration
-    KW_END KW_CONFIGURATION? LIT_IDENTIFIER? TOK_SEMICOL
+  : KW_CONFIGURATION configurationName=LIT_IDENTIFIER KW_OF entityName=rule_Name KW_IS
+      configurationDeclarativeItem+=rule_ConfigurationDeclarativeItem*
+      blockConfiguration=rule_BlockConfiguration
+    KW_END KW_CONFIGURATION? configurationName2=LIT_IDENTIFIER? TOK_SEMICOL
   ;
 
 rule_ConfigurationDeclarativeItem
   : rule_UseClause
   | rule_AttributeSpecification
 //  | group_declaration
-  ;
-
-rule_ConfigurationDeclarativePart
-  : rule_ConfigurationDeclarativeItem*
   ;
 
 rule_ConfigurationItem
@@ -463,8 +459,8 @@ rule_ElementSubtypeDefinition
   ;
 
 rule_EntityAspect
-  : KW_ENTITY rule_Name ( TOK_LP LIT_IDENTIFIER TOK_RP )?
-  | KW_CONFIGURATION rule_Name
+  : KW_ENTITY entityName=rule_Name ( TOK_LP architectureName=LIT_IDENTIFIER TOK_RP )?
+  | KW_CONFIGURATION configurationName=rule_Name
   | KW_OPEN
   ;
 
@@ -819,7 +815,7 @@ rule_LibraryUnit
   : entity=rule_EntityDeclaration
   | configuration=rule_ConfigurationDeclaration
   | package=rule_PackageDeclaration
-  | architecture=rule_ArchitectureBody
+  | architecture=rule_Architecture
   | packageBody=rule_PackageBody
   ;
 
@@ -937,9 +933,9 @@ rule_Opts
   ;
 
 rule_PackageBody
-  : KW_PACKAGE KW_BODY LIT_IDENTIFIER KW_IS
-      rule_PackageBodyDeclarativePart
-    KW_END ( KW_PACKAGE KW_BODY )? LIT_IDENTIFIER? TOK_SEMICOL
+  : KW_PACKAGE KW_BODY packageName=LIT_IDENTIFIER KW_IS
+      declarativeItem+=rule_PackageDeclarativeItem*
+    KW_END ( KW_PACKAGE KW_BODY )? packageName2=LIT_IDENTIFIER? TOK_SEMICOL
   ;
 
 rule_PackageBodyDeclarativeItem
@@ -956,31 +952,31 @@ rule_PackageBodyDeclarativeItem
 //  | group_declaration
   ;
 
-rule_PackageBodyDeclarativePart
-  : rule_PackageBodyDeclarativeItem*
-  ;
+//rule_PackageBodyDeclarativePart
+//  : rule_PackageBodyDeclarativeItem*
+//  ;
 
 rule_PackageDeclaration
-  : KW_PACKAGE LIT_IDENTIFIER KW_IS
-      rule_PackageDeclarativePart
-    KW_END KW_PACKAGE? LIT_IDENTIFIER? TOK_SEMICOL
+  : KW_PACKAGE packageName=LIT_IDENTIFIER KW_IS
+      declarativeItems+=rule_PackageBodyDeclarativeItem*
+    KW_END KW_PACKAGE? packageName2=LIT_IDENTIFIER? TOK_SEMICOL
   ;
 
 rule_PackageDeclarativeItem
-  : rule_SubprogramDeclaration
-  | rule_SubprogramBody
-  | rule_TypeDeclaration
-  | rule_SubtypeDeclaration
-  | rule_ConstantDeclaration
-  | rule_SignalDeclaration
-  | rule_VariableDeclaration
-  | rule_FileDeclaration
-  | rule_AliasDeclaration
-  | rule_ComponentDeclaration
-  | rule_AttributeDeclaration
-  | rule_AttributeSpecification
-  | rule_DisconnectionSpecification
-  | rule_UseClause
+  : subprogramDeclaration=rule_SubprogramDeclaration
+  | subprogramBody=rule_SubprogramBody
+  | typeDeclaration=rule_TypeDeclaration
+  | subtypeDeclaration=rule_SubtypeDeclaration
+  | constantDeclaration=rule_ConstantDeclaration
+  | signalDeclaration=rule_SignalDeclaration
+  | variableDeclaration=rule_VariableDeclaration         // TODO: isn't it only shared variables?
+  | fileDeclaration=rule_FileDeclaration
+  | aliasDeclaration=rule_AliasDeclaration
+  | componentDeclaration=rule_ComponentDeclaration
+  | attributeDeclaration=rule_AttributeDeclaration
+  | attributeSpecification=rule_AttributeSpecification
+  | disconnectionSpecification=rule_DisconnectionSpecification
+  | useClause=rule_UseClause
 //  | group_template_declaration
 //  | group_declaration
 //  | nature_declaration
@@ -988,9 +984,9 @@ rule_PackageDeclarativeItem
 //  | terminal_declaration
   ;
 
-rule_PackageDeclarativePart
-  : rule_PackageDeclarativeItem*
-  ;
+//rule_PackageDeclarativePart
+//  : rule_PackageDeclarativeItem*
+//  ;
 
 // rule_PackageHeader
 

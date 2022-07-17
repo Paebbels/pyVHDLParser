@@ -27,12 +27,14 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+import time
 from pathlib        import Path
 
 from antlr4 import CommonTokenStream, InputStream
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
-from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem, LibraryClause, UseClause
+from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem, LibraryClause, UseClause, \
+	Architecture, Package, PackageBody
 from ..ANTLR4.VHDLLexer import VHDLLexer
 from ..ANTLR4.VHDLParser import VHDLParser
 from ..ANTLR4.Visitor import VHDLVisitor
@@ -55,20 +57,33 @@ class ANTLRHandlers:
 		if not file.exists():
 			print(f"File '{file}' does not exist.")
 
+		startTime = time.perf_counter()
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
+		fileLoadTime = time.perf_counter()
+		print(f"Load file: {(time.perf_counter() - startTime):.6f}")
 
 		lexer = VHDLLexer(InputStream(content))
+		print(f"Lexer:     {(time.perf_counter() - startTime):.6f}")
 		stream = CommonTokenStream(lexer)
 		parser = VHDLParser(stream)
+		print(f"Parser:    {(time.perf_counter() - startTime):.6f}")
 		parserTree = parser.rule_DesignFile()
+		print(f"ParseTree: {(time.perf_counter() - startTime):.6f}")
 		visitor = VHDLVisitor()
 		designUnits = visitor.visit(parserTree)
+		print(f"Visitor:   {(time.perf_counter() - startTime):.6f}")
 
 		document = Document(file)
 		for designUnit in designUnits:
 			if isinstance(designUnit, Entity):
 				document.Entities.append(designUnit)
+			elif isinstance(designUnit, Architecture):
+				document.Architectures.append(designUnit)
+			elif isinstance(designUnit, Package):
+				document.Packages.append(designUnit)
+			elif isinstance(designUnit, PackageBody):
+				document.PackageBodies.append(designUnit)
 
 		print("=" * 80)
 		print(f"Sourcefile: {document.Path}")
@@ -85,5 +100,39 @@ class ANTLRHandlers:
 			for generic in entity.GenericItems:
 				if isinstance(generic, GenericConstantInterfaceItem):
 					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Subtype}")
+
+			print(f"  Architectures:")
+			for arch in document.Architectures:
+				print(f"    {arch.Identifier}")
+				print(f"      Context:")
+				for item in arch.ContextItems:
+					if isinstance(item, LibraryClause):
+						print(f"        library: {', '.join(item.Names)}")
+					elif isinstance(item, UseClause):
+						print(f"        use: {', '.join(item.Names)}")
+
+		print(f"  Packages:")
+		for package in document.Packages:
+			print(f"    {package.Identifier}")
+			print(f"      Context:")
+			for item in package.ContextItems:
+				if isinstance(item, LibraryClause):
+					print(f"        library: {', '.join(item.Names)}")
+				elif isinstance(item, UseClause):
+					print(f"        use: {', '.join(item.Names)}")
+			print(f"      Generics:")
+			for generic in package.GenericItems:
+				if isinstance(generic, GenericConstantInterfaceItem):
+					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Subtype}")
+
+		print(f"  Package bodies:")
+		for packageBody in document.PackageBodies:
+			print(f"    {packageBody.Identifier}")
+			print(f"      Context:")
+			for item in packageBody.ContextItems:
+				if isinstance(item, LibraryClause):
+					print(f"        library: {', '.join(item.Names)}")
+				elif isinstance(item, UseClause):
+					print(f"        use: {', '.join(item.Names)}")
 
 		self.exit()

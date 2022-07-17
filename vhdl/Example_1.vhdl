@@ -12,6 +12,8 @@ entity myEntity is
 	);
 end entity;
 
+use     IEEE.numeric_std.all;
+
 architecture rtl of myEntity is
 	constant const0 : integer := 5;
 begin
@@ -27,6 +29,8 @@ package pkg0 is
 	function func0(a : integer) return string;
 end package;
 
+use     std.textio.line;
+
 package body Components is
 	function func0(a : integer) return string is
 		procedure proc0 is
@@ -35,3 +39,9 @@ package body Components is
 	begin
 	end function;
 end package body;
+
+configuration config of myEntity is
+	for rtl
+
+	end for;
+end configuration;
