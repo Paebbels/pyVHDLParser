@@ -5,30 +5,30 @@ from .VHDLParserVisitor import VHDLParserVisitor
 
 
 class VHDLVisitor(VHDLParserVisitor):
-	def visitDesign_file(self, ctx:VHDLParser.Design_fileContext):
+	def visitRule_DesignFile(self, ctx:VHDLParser.Rule_DesignFileContext):
 		designUnits = []
 		for designUnit in ctx.designUnits:
 			designUnits.append(self.visit(designUnit))
 
 		return designUnits
 
-	def visitLibrary_unit(self, ctx:VHDLParser.Library_unitContext):
+	def visitRule_LibraryUnit(self, ctx:VHDLParser.Rule_LibraryUnitContext):
 		# TODO: can it be optimized?
 		if ctx.primaryUnit is not None:
 			return self.visit(ctx.primaryUnit)
-		elif ctx.secondary_unit is not None:
+		elif ctx.secondaryUnit is not None:
 			return self.visit(ctx.secondaryUnit)
 
 		raise Exception()
 
-	def visitPrimary_unit(self, ctx:VHDLParser.Primary_unitContext):
+	def visitRule_PrimaryUnit(self, ctx:VHDLParser.Rule_PrimaryUnitContext):
 		# TODO: can it be optimized?
 		if ctx.entity is not None:
 			return self.visit(ctx.entity)
 
 		raise Exception()
 
-	def visitEntity_declaration(self, ctx:VHDLParser.Entity_declarationContext):
+	def visitRule_EntityDeclaration(self, ctx:VHDLParser.Rule_EntityDeclarationContext):
 		entityName: str = ctx.entityName.text
 		entityName2 = ctx.entityName2
 		if entityName2 is not None:
@@ -36,23 +36,17 @@ class VHDLVisitor(VHDLParserVisitor):
 			if entityName.lower() != entityName2.lower():
 				raise Exception(f"Repeated entity name '{entityName2}' must match entity name '{entityName}'.")
 
-		generics, ports = self.visit(ctx.header)
+		generics = self.visit(ctx.genericClause) if ctx.genericClause is not None else []
+		ports = self.visit(ctx.portClause) if ctx.portClause is not None else []
 
 		entity = Entity(identifier=entityName, genericItems=generics, portItems=ports)
 		return entity
 
-	def visitEntity_header(self, ctx:VHDLParser.Entity_headerContext):
-		# TODO: can it be optimized, so no tuple is needed?
-		generics = self.visit(ctx.genericClause) if ctx.genericClause is not None else []
-		ports = self.visit(ctx.portClause) if ctx.portClause is not None else []
-
-		return (generics, ports)
-
-	def visitGeneric_clause(self, ctx:VHDLParser.Generic_clauseContext):
+	def visitRule_GenericClause(self, ctx:VHDLParser.Rule_GenericClauseContext):
 		# TODO: can it be optimized?
 		return self.visit(ctx.generics)
 
-	def visitGeneric_list(self, ctx:VHDLParser.Generic_listContext):
+	def visitRule_GenericList(self, ctx:VHDLParser.Rule_GenericListContext):
 		generics = []
 		for constant in ctx.constants:
 			const = self.visit(constant)
@@ -60,7 +54,7 @@ class VHDLVisitor(VHDLParserVisitor):
 
 		return generics
 
-	def visitInterface_constant_declaration(self, ctx:VHDLParser.Interface_constant_declarationContext):
+	def visitRule_InterfaceConstantDeclaration(self, ctx:VHDLParser.Rule_InterfaceConstantDeclarationContext):
 		constantNames = self.visit(ctx.constantNames)
 		if ctx.modeName is not None:
 			mode = Mode(ctx.modeName.text)
@@ -72,5 +66,5 @@ class VHDLVisitor(VHDLParserVisitor):
 
 		return GenericConstantInterfaceItem(constantNames, mode, subtypeIndication, defaultExpression)
 
-	def visitIdentifier_list(self, ctx:VHDLParser.Identifier_listContext):
+	def visitRule_IdentifierList(self, ctx:VHDLParser.Rule_IdentifierListContext):
 		return [identifier.text for identifier in ctx.identifier]

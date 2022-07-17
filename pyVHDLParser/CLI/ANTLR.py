@@ -61,7 +61,7 @@ class ANTLRHandlers:
 		lexer = VHDLLexer(InputStream(content))
 		stream = CommonTokenStream(lexer)
 		parser = VHDLParser(stream)
-		parserTree = parser.design_file()
+		parserTree = parser.rule_DesignFile()
 		visitor = VHDLVisitor()
 		designUnits = visitor.visit(parserTree)
 
