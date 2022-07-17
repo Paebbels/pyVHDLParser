@@ -150,7 +150,7 @@ TOK_SEMICOL: ';';
 TOK_COMMA: ',';
 TOK_BAR: '|';
 TOK_DOT: '.';
-TOK_APOSTROPHE: '\'';
+TOK_TICK: '\'';
 
 fragment Letter:        [a-z] ;
 fragment Digit:         [0-9] ;
