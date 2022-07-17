@@ -34,7 +34,7 @@ from antlr4 import CommonTokenStream, InputStream
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
 from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem, LibraryClause, UseClause, \
-	Architecture, Package, PackageBody
+	Architecture, Package, PackageBody, PortSignalInterfaceItem
 from ..ANTLR4.VHDLLexer import VHDLLexer
 from ..ANTLR4.VHDLParser import VHDLParser
 from ..ANTLR4.Visitor import VHDLVisitor
@@ -99,7 +99,11 @@ class ANTLRHandlers:
 			print(f"      Generics:")
 			for generic in entity.GenericItems:
 				if isinstance(generic, GenericConstantInterfaceItem):
-					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Subtype}")
+					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Mode} {generic.Subtype}")
+			print(f"      Ports:")
+			for port in entity.PortItems:
+				if isinstance(port, PortSignalInterfaceItem):
+					print(f"        signal {', '.join(port.Identifiers)} : {port.Mode} {port.Subtype}")
 
 			print(f"  Architectures:")
 			for arch in document.Architectures:

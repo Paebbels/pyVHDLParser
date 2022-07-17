@@ -32,7 +32,8 @@ from pyVHDLModel.SyntaxModel import (
 	GenericTypeInterfaceItem as ModelGenericTypeInterfaceItem,
 	GenericPackageInterfaceItem as ModelGenericPackageInterfaceItem,
 	GenericFunctionInterfaceItem as ModelGenericFunctionInterfaceItem,
-	GenericProcedureInterfaceItem as ModelGenericProcedureInterfaceItem
+	GenericProcedureInterfaceItem as ModelGenericProcedureInterfaceItem,
+	PortSignalInterfaceItem as ModelPortSignalInterfaceItem
 )
 
 
@@ -53,4 +54,8 @@ class GenericFunctionInterfaceItem(ModelGenericFunctionInterfaceItem):
 
 
 class GenericProcedureInterfaceItem(ModelGenericProcedureInterfaceItem):
+	pass
+
+
+class PortSignalInterfaceItem(ModelPortSignalInterfaceItem):
 	pass

@@ -2,7 +2,8 @@ from pyVHDLModel import Mode, MixinDesignUnitWithContext
 
 from ..LanguageModel.DesignUnit import Context, Entity, Architecture, Configuration, Package, PackageBody
 from ..LanguageModel.Reference import LibraryClause, UseClause, ContextReference
-from ..LanguageModel.InterfaceItem import GenericConstantInterfaceItem, GenericTypeInterfaceItem, GenericPackageInterfaceItem, GenericFunctionInterfaceItem, GenericProcedureInterfaceItem
+from ..LanguageModel.InterfaceItem import GenericConstantInterfaceItem, GenericTypeInterfaceItem, \
+	GenericPackageInterfaceItem, GenericFunctionInterfaceItem, GenericProcedureInterfaceItem, PortSignalInterfaceItem
 from ..LanguageModel.Expression import AndExpression
 
 from .VHDLParser import *
@@ -143,7 +144,7 @@ class VHDLVisitor(VHDLParserVisitor):
 
 	def visitRule_GenericClause(self, ctx: VHDLParser.Rule_GenericClauseContext):
 		# TODO: can it be optimized?
-		return self.visit(ctx.generics)
+		return self.visit(ctx.genericList)
 
 	def visitRule_GenericList(self, ctx: VHDLParser.Rule_GenericListContext):
 		generics = []
@@ -164,6 +165,41 @@ class VHDLVisitor(VHDLParserVisitor):
 		defaultExpression = self.visit(ctx.defaultValue) if ctx.defaultValue is not None else None
 
 		return GenericConstantInterfaceItem(constantNames, mode, subtypeIndication, defaultExpression)
+
+	def visitRule_PortClause(self, ctx: VHDLParser.Rule_PortClauseContext):
+		# TODO: can it be optimized?
+		return self.visit(ctx.portList)
+
+	def visitRule_InterfacePortList(self, ctx:VHDLParser.Rule_InterfacePortListContext):
+		ports = []
+		for port in ctx.interfacePortDeclarations:
+			const = self.visit(port)
+			ports.append(const)
+
+		return ports
+
+	def visitRule_InterfacePortDeclaration(self, ctx:VHDLParser.Rule_InterfacePortDeclarationContext):
+		signalNames = self.visit(ctx.names)
+		if ctx.signalMode is not None:
+			m:str = ctx.signalMode.getText().lower()
+
+			if m == "in":
+				mode = Mode.In
+			elif m == "out":
+				mode = Mode.Out
+			elif m == "inout":
+				mode = Mode.InOut
+			elif m == "buffer":
+				mode = Mode.Buffer
+			elif m == "linkage":
+				mode = Mode.Linkage
+		else:
+			mode = Mode.In
+
+		subtype = None
+		defaultExpression = None
+
+		return PortSignalInterfaceItem(signalNames, mode, subtype, defaultExpression)
 
 	def visitRule_IdentifierList(self, ctx: VHDLParser.Rule_IdentifierListContext):
 		return [identifier.text for identifier in ctx.identifier]
