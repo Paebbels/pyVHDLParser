@@ -1,5 +1,5 @@
-from pyVHDLModel import Mode
-from pyVHDLModel.SyntaxModel import GenericConstantInterfaceItem, Entity
+from pyVHDLModel import Mode, DesignUnit, MixinDesignUnitWithContext
+from pyVHDLModel.SyntaxModel import GenericConstantInterfaceItem, Entity, LibraryClause, UseClause
 from .VHDLParser import *
 from .VHDLParserVisitor import VHDLParserVisitor
 
@@ -12,19 +12,49 @@ class VHDLVisitor(VHDLParserVisitor):
 
 		return designUnits
 
-	def visitRule_LibraryUnit(self, ctx:VHDLParser.Rule_LibraryUnitContext):
-		# TODO: can it be optimized?
-		if ctx.primaryUnit is not None:
-			return self.visit(ctx.primaryUnit)
-		elif ctx.secondaryUnit is not None:
-			return self.visit(ctx.secondaryUnit)
+	def visitRule_ContextItem(self, ctx:VHDLParser.Rule_ContextItemContext):
+		if ctx.libraryClause is not None:
+			return self.visit(ctx.libraryClause)
+		elif ctx.useClause is not None:
+			return self.visit(ctx.useClause)
 
 		raise Exception()
 
-	def visitRule_PrimaryUnit(self, ctx:VHDLParser.Rule_PrimaryUnitContext):
+	def visitRule_LibraryClause(self, ctx:VHDLParser.Rule_LibraryClauseContext):
+		names = []
+		for name in ctx.names:
+			names.append(name.text)
+
+		return LibraryClause(names)
+
+	def visitRule_DesignUnit(self, ctx:VHDLParser.Rule_DesignUnitContext):
+		libraryUnit: MixinDesignUnitWithContext = self.visit(ctx.libraryUnit)
+
+		for contextClause in ctx.contextClauses:
+			contextItem = self.visit(contextClause)
+			libraryUnit.ContextItems.append(contextItem)
+
+			if isinstance(contextItem, LibraryClause):
+				libraryUnit.LibraryReferences.append(contextItem)
+			elif isinstance(contextItem, UseClause):
+				libraryUnit.LibraryReferences.append(contextItem)
+			#elif isinstance(contextItem, ContextClause):
+			#	libraryUnit.LibraryReferences.append(contextItem)
+
+		return libraryUnit
+
+	def visitRule_LibraryUnit(self, ctx:VHDLParser.Rule_LibraryUnitContext):
 		# TODO: can it be optimized?
 		if ctx.entity is not None:
 			return self.visit(ctx.entity)
+		elif ctx.package is not None:
+			return self.visit(ctx.package)
+		elif ctx.configuration is not None:
+			return self.visit(ctx.configuration)
+		elif ctx.architecture is not None:
+			return self.visit(ctx.architecture)
+		elif ctx.packageBody is not None:
+			return self.visit(ctx.packageBody)
 
 		raise Exception()
 

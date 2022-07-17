@@ -32,7 +32,7 @@ from pathlib        import Path
 from antlr4 import CommonTokenStream, InputStream
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
-from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem
+from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem, LibraryClause, UseClause
 from ..ANTLR4.VHDLLexer import VHDLLexer
 from ..ANTLR4.VHDLParser import VHDLParser
 from ..ANTLR4.Visitor import VHDLVisitor
@@ -75,6 +75,12 @@ class ANTLRHandlers:
 		print(f"  Entities:")
 		for entity in document.Entities:
 			print(f"    {entity.Identifier}")
+			print(f"      Context:")
+			for item in entity.ContextItems:
+				if isinstance(item, LibraryClause):
+					print(f"        library: {', '.join(item.Names)}")
+				elif isinstance(item, UseClause):
+					print(f"        use: {', '.join(item.Names)}")
 			print(f"      Generics:")
 			for generic in entity.GenericItems:
 				if isinstance(generic, GenericConstantInterfaceItem):
