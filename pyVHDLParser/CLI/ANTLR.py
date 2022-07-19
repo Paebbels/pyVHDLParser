@@ -90,6 +90,9 @@ class ANTLRHandlers:
 		print(f"  Entities:")
 		for entity in document.Entities:
 			print(f"    {entity.Identifier}")
+			print(f"      Doc-String:")
+			for line in entity.docstring:
+				print(f"        {line}")
 			print(f"      Context:")
 			for item in entity.ContextItems:
 				if isinstance(item, LibraryClause):

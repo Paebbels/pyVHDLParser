@@ -320,6 +320,7 @@ class VHDLLexer(Lexer):
 
 	WHITESPACE_CHANNEL = 2
 	COMMENT_CHANNEL = 3
+	LBR_CHANNEL = 4
 
 	WHITESPACE = 1
 	COMMENT_LINE = 2
@@ -452,9 +453,9 @@ class VHDLLexer(Lexer):
 	LIT_STRING = 129
 	LIT_IDENTIFIER = 130
 
-	channelNames = ("DEFAULT_TOKEN_CHANNEL", "HIDDEN", "WHITESPACE_CHANNEL", "COMMENT_CHANNEL")
+	channelNames = ("DEFAULT_TOKEN_CHANNEL", "HIDDEN", "WHITESPACE_CHANNEL", "COMMENT_CHANNEL", "LBR_CHANNEL")
 
-	modeNames = ["DEFAULT_MODE"]
+	modeNames = ("DEFAULT_MODE",)
 
 	literalNames = (
 		"<INVALID>", "'abs'", "'access'", "'after'", "'alias'", "'all'", "'and'", "'architecture'", "'array'", "'assert'",
