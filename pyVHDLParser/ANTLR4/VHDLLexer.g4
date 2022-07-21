@@ -9,7 +9,10 @@ channels {
 	COMMENT_CHANNEL
 }
 
-WHITESPACE:    [\p{White_Space}]+ -> channel(WHITESPACE_CHANNEL);
+
+LINEBREAK:     [\r\n]+            -> channel(WHITESPACE_CHANNEL);
+WHITESPACE:    [ \t\f\b]+         -> channel(WHITESPACE_CHANNEL);
+//WHITESPACE:    [\p{White_Space}]+ -> channel(WHITESPACE_CHANNEL);
 COMMENT_LINE:  '--' ~[\r\n]*      -> channel(COMMENT_CHANNEL)   ;
 COMMENT_BLOCK: '/*' .*? '*/'      -> channel(COMMENT_CHANNEL)   ;
 

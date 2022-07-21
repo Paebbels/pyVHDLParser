@@ -2,12 +2,18 @@
 library IEEE;
 use     IEEE.std_logic_1164.all;
 
+-- My documentation string
+
+ --   continues here
+ --   continues here
+
 entity myEntity is
 	generic (
 		BITS : positive := 8
 	);
 	port (
-		Clock   : in  std_logic;
+		-- System Interfaces
+		Clock   : in  std_logic;                           -- System Clock
 		Output	: out	std_logic_vector(BITS - 1 downto 0)
 	);
 end entity;

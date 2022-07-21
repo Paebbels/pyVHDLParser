@@ -33,12 +33,15 @@ from pathlib        import Path
 from antlr4 import CommonTokenStream, InputStream
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
-from pyVHDLModel.SyntaxModel import Document, Entity, GenericConstantInterfaceItem, LibraryClause, UseClause, \
-	Architecture, Package, PackageBody, PortSignalInterfaceItem
+from ..LanguageModel import Document
+from ..LanguageModel.Reference import UseClause, LibraryClause
+from ..LanguageModel.DesignUnit import Entity, Architecture, Package, PackageBody
+from ..LanguageModel.InterfaceItem import GenericConstantInterfaceItem, PortSignalInterfaceItem
+
+from ..ANTLR4 import ANTLR2Token
 from ..ANTLR4.VHDLLexer import VHDLLexer
 from ..ANTLR4.VHDLParser import VHDLParser
 from ..ANTLR4.Visitor import VHDLVisitor
-
 
 from . import FrontEndProtocol, FilenameAttribute
 
@@ -74,7 +77,15 @@ class ANTLRHandlers:
 		designUnits = visitor.visit(parserTree)
 		print(f"Visitor:   {(time.perf_counter() - startTime):.6f}")
 
-		document = Document(file)
+		print(f"{'-' * 40}")
+		conv = ANTLR2Token()
+		converted = conv.ConvertToTokenChain(stream)
+		print(f"ANTLR2Token: {(time.perf_counter() - startTime):.6f}")
+		# for token in converted:
+		# 	print(f"{token!r}")
+		print(f"{'-' * 40}")
+
+		document = Document(file, converted[0], converted[-1])
 		for designUnit in designUnits:
 			if isinstance(designUnit, Entity):
 				document.Entities.append(designUnit)
@@ -143,3 +154,4 @@ class ANTLRHandlers:
 					print(f"        use: {', '.join(item.Names)}")
 
 		self.exit()
+

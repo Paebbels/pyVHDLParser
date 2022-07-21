@@ -27,3 +27,19 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from pathlib import Path
+
+from pyVHDLModel.SyntaxModel import Document as ModelDocument
+from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
+
+
+class Document(ModelDocument):
+	_startOfTokenStream: StartOfDocumentToken
+	_endOfTokenStream: EndOfDocumentToken
+
+	def __init__(self, path: Path, startOfTokenStream: StartOfDocumentToken, endOfTokenStream: EndOfDocumentToken):
+		super().__init__(path)
+
+		self._startOfTokenStream = startOfTokenStream
+		self._endOfTokenStream = endOfTokenStream
+

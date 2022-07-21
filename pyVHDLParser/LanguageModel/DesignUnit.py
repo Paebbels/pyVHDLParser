@@ -38,6 +38,8 @@ from pyVHDLModel.SyntaxModel import (
 	PackageBody as ModelPackageBody
 )
 
+from ..Token import Token
+
 
 @export
 class Context(ModelContext):
@@ -46,7 +48,7 @@ class Context(ModelContext):
 
 @export
 class Entity(ModelEntity):
-	pass
+	_startToken: Token
 
 
 @export
