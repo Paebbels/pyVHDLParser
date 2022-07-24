@@ -174,6 +174,16 @@ class DivideOperator(OperatorToken):
 
 
 @export
+class ModuloOperator(OperatorToken):
+	__KEYWORD__ = "mod"
+
+
+@export
+class RemainderOperator(OperatorToken):
+	__KEYWORD__ = "rem"
+
+
+@export
 class PowerOperator(OperatorToken):
 	"""Token representing a power operator: ``**``."""
 	__KEYWORD__ = "**"
@@ -440,7 +450,7 @@ class ShiftOperator(Operator):
 
 
 @export
-class AbsKeyword(KeywordToken):
+class AbsOperator(KeywordToken):
 	"""Reserved word 'abs' for unary operator *absolute value*."""
 	__KEYWORD__ = "abs"
 
@@ -470,7 +480,7 @@ class AllKeyword(KeywordToken):
 
 
 @export
-class AndKeyword(LogicalOperator):
+class AndOperator(LogicalOperator):
 	"""Reserved word 'and' for binary logical operator *and*."""
 	__KEYWORD__ = "and"
 
@@ -691,11 +701,11 @@ class LoopKeyword(KeywordToken):
 
 @export
 class MapKeyword(KeywordToken):
-	__KEYWORD__ = "map"
+	__KEYWORD__ = "map"\
 
 
 @export
-class NandKeyword(LogicalOperator):
+class NandOperator(LogicalOperator):
 	__KEYWORD__ = "nand"
 
 
@@ -710,12 +720,12 @@ class NextKeyword(KeywordToken):
 
 
 @export
-class NorKeyword(LogicalOperator):
+class NorOperator(LogicalOperator):
 	__KEYWORD__ = "nor"
 
 
 @export
-class NotKeyword(KeywordToken):
+class NotOperator(LogicalOperator):
 	__KEYWORD__ = "not"
 
 
@@ -740,7 +750,7 @@ class OpenKeyword(KeywordToken):
 
 
 @export
-class OrKeyword(LogicalOperator):
+class OrOperator(LogicalOperator):
 	__KEYWORD__ = "or"
 
 
@@ -770,7 +780,7 @@ class PortKeyword(KeywordToken):
 
 
 @export
-class PostponendKeyword(KeywordToken):
+class PostponedKeyword(KeywordToken):
 	__KEYWORD__ = "postponend"
 
 
@@ -835,12 +845,12 @@ class ReturnKeyword(KeywordToken):
 
 
 @export
-class RolKeyword(ShiftOperator):
+class RolOperator(ShiftOperator):
 	__KEYWORD__ = "rol"
 
 
 @export
-class RorKeyword(ShiftOperator):
+class RorOperator(ShiftOperator):
 	__KEYWORD__ = "ror"
 
 
@@ -870,22 +880,22 @@ class SignalKeyword(KeywordToken):
 
 
 @export
-class SlaKeyword(ShiftOperator):
+class SlaOperator(ShiftOperator):
 	__KEYWORD__ = "sla"
 
 
 @export
-class SllKeyword(ShiftOperator):
+class SllOperator(ShiftOperator):
 	__KEYWORD__ = "sll"
 
 
 @export
-class SraKeyword(ShiftOperator):
+class SraOperator(ShiftOperator):
 	__KEYWORD__ = "sra"
 
 
 @export
-class SrlKeyword(ShiftOperator):
+class SrlOperator(ShiftOperator):
 	__KEYWORD__ = "srl"
 
 
@@ -965,10 +975,10 @@ class WithKeyword(KeywordToken):
 
 
 @export
-class XorKeyword(LogicalOperator):
+class XorOperator(LogicalOperator):
 	__KEYWORD__ = "xor"
 
 
 @export
-class XnorKeyword(LogicalOperator):
+class XnorOperator(LogicalOperator):
 	__KEYWORD__ = "xnor"

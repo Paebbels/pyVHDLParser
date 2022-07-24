@@ -34,9 +34,9 @@ from pyVHDLParser.Token           import CommentToken, Token, MultiLineCommentTo
 from pyVHDLParser.Token.Keywords  import EqualOperator, PlusOperator, MinusOperator, MultiplyOperator, DivideOperator, ConcatOperator, LessThanOperator
 from pyVHDLParser.Token.Keywords  import GreaterThanOperator, DelimiterToken, PowerOperator, UnequalOperator, LessThanOrEqualOperator
 from pyVHDLParser.Token.Keywords  import GreaterThanOrEqualOperator, MatchingEqualOperator, MatchingUnequalOperator, MatchingLessThanOperator
-from pyVHDLParser.Token.Keywords  import MatchingLessThanOrEqualOperator, MatchingGreaterThanOperator, MatchingGreaterThanOrEqualOperator, OrKeyword
-from pyVHDLParser.Token.Keywords  import NorKeyword, AndKeyword, NandKeyword, XorKeyword, XnorKeyword, SlaKeyword, SllKeyword, SraKeyword, SrlKeyword
-from pyVHDLParser.Token.Keywords  import NotKeyword, AbsKeyword, OpeningRoundBracketToken, BoundaryToken, ClosingRoundBracketToken, IdentifierToken
+from pyVHDLParser.Token.Keywords  import MatchingLessThanOrEqualOperator, MatchingGreaterThanOperator, MatchingGreaterThanOrEqualOperator, OrOperator
+from pyVHDLParser.Token.Keywords  import NorOperator, AndOperator, NandOperator, XorOperator, XnorOperator, SlaOperator, SllOperator, SraOperator, SrlOperator
+from pyVHDLParser.Token.Keywords  import NotOperator, AbsOperator, OpeningRoundBracketToken, BoundaryToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords  import LoopKeyword, ToKeyword, DowntoKeyword, EndToken
 from pyVHDLParser.Blocks          import Block, ParserState, BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
@@ -71,18 +71,18 @@ class ExpressionBlock(Block):
 		# "<=>":  SignalAssociationKeyword
 	}
 	OPERATOR_TRANSLATIONS = {
-		"or":    OrKeyword,
-		"nor":   NorKeyword,
-		"and":   AndKeyword,
-		"nand":  NandKeyword,
-		"xor":   XorKeyword,
-		"xnor":  XnorKeyword,
-		"sla":   SlaKeyword,
-		"sll":   SllKeyword,
-		"sra":   SraKeyword,
-		"srl":   SrlKeyword,
-		"not":   NotKeyword,
-		"abs":   AbsKeyword
+		"or":    OrOperator,
+		"nor":   NorOperator,
+		"and":   AndOperator,
+		"nand":  NandOperator,
+		"xor":   XorOperator,
+		"xnor":  XnorOperator,
+		"sla":   SlaOperator,
+		"sll":   SllOperator,
+		"sra":   SraOperator,
+		"srl":   SrlOperator,
+		"not":   NotOperator,
+		"abs":   AbsOperator
 	}
 
 

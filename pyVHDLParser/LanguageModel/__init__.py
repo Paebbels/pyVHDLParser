@@ -42,4 +42,3 @@ class Document(ModelDocument):
 
 		self._startOfTokenStream = startOfTokenStream
 		self._endOfTokenStream = endOfTokenStream
-

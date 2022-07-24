@@ -63,7 +63,6 @@ class ANTLRHandlers:
 		startTime = time.perf_counter()
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
-		fileLoadTime = time.perf_counter()
 		print(f"Load file: {(time.perf_counter() - startTime):.6f}")
 
 		lexer = VHDLLexer(InputStream(content))
