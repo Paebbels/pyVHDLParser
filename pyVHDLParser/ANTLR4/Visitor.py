@@ -33,7 +33,7 @@ class VHDLVisitor(VHDLParserVisitor):
 
 		return UseClause(names)
 
-	def visitRule_SelectedName(self, ctx:VHDLParser.Rule_SelectedNameContext):
+	def visitRule_SelectedName2(self, ctx:VHDLParser.Rule_SelectedName2Context):
 		# TODO: needs to return a proper 'Name'
 		return ctx.getText()
 
@@ -42,14 +42,14 @@ class VHDLVisitor(VHDLParserVisitor):
 		libraryUnit: MixinDesignUnitWithContext = self.visit(ctx.libraryUnit)
 
 		# check if there are context items and add them to the design unit
-		for contextClause in ctx.contextClauses:
-			contextItem = self.visit(contextClause)
-			libraryUnit.ContextItems.append(contextItem)
+		for contextItem in ctx.contextItems:
+			ctxItem = self.visit(contextItem)
+			libraryUnit.ContextItems.append(ctxItem)
 
-			if isinstance(contextItem, LibraryClause):
-				libraryUnit.LibraryReferences.append(contextItem)
-			elif isinstance(contextItem, UseClause):
-				libraryUnit.LibraryReferences.append(contextItem)
+			if isinstance(ctxItem, LibraryClause):
+				libraryUnit.LibraryReferences.append(ctxItem)
+			elif isinstance(ctxItem, UseClause):
+				libraryUnit.LibraryReferences.append(ctxItem)
 			#elif isinstance(contextItem, ContextClause):
 			#	libraryUnit.LibraryReferences.append(contextItem)
 
@@ -58,7 +58,7 @@ class VHDLVisitor(VHDLParserVisitor):
 	# def visitRule_ContextDeclaration(self, ctx: VHDLParser.Rule_ContextDeclarationContext):
 
 	def visitRule_EntityDeclaration(self, ctx: VHDLParser.Rule_EntityDeclarationContext):
-		entityName = self.checkRepeatedName(ctx.entityName, ctx.entityName2, "entity")
+		entityName = self.checkRepeatedName(ctx.name, ctx.name2, "entity")
 
 		generics = self.visit(ctx.genericClause) if ctx.genericClause is not None else []
 		ports = self.visit(ctx.portClause) if ctx.portClause is not None else []
@@ -83,7 +83,7 @@ class VHDLVisitor(VHDLParserVisitor):
 
 
 	def visitRule_Architecture(self, ctx:VHDLParser.Rule_ArchitectureContext):
-		architectureName = self.checkRepeatedName(ctx.architectureName, ctx.architectureName2, "architecture")
+		architectureName = self.checkRepeatedName(ctx.name, ctx.name2, "architecture")
 		entityName: str = ctx.entityName.text  # TODO: needs a Name
 
 		context = []
@@ -93,7 +93,7 @@ class VHDLVisitor(VHDLParserVisitor):
 		return Architecture(architectureName, entityName, context, declaredItems, statements)
 
 	def visitRule_ConfigurationDeclaration(self, ctx:VHDLParser.Rule_ConfigurationDeclarationContext):
-		configurationName = self.checkRepeatedName(ctx.configurationName, ctx.configurationName2, "configuration")
+		configurationName = self.checkRepeatedName(ctx.name, ctx.name2, "configuration")
 		entityName: str = ctx.entityName.getText
 
 		context = []
@@ -101,12 +101,12 @@ class VHDLVisitor(VHDLParserVisitor):
 		return Configuration(configurationName, context)
 
 	def visitRule_PackageDeclaration(self, ctx:VHDLParser.Rule_PackageDeclarationContext):
-		packageName = self.checkRepeatedName(ctx.packageName, ctx.packageName2, "package")
+		packageName = self.checkRepeatedName(ctx.name, ctx.name2, "package")
 
 		return Package(packageName)
 
 	def visitRule_PackageBody(self, ctx:VHDLParser.Rule_PackageBodyContext):
-		packageName = self.checkRepeatedName(ctx.packageName, ctx.packageName2, "package body")
+		packageName = self.checkRepeatedName(ctx.name, ctx.name2, "package body")
 
 		return PackageBody(packageName)
 
@@ -131,14 +131,9 @@ class VHDLVisitor(VHDLParserVisitor):
 		return GenericConstantInterfaceItem(constantNames, mode, subtypeIndication, defaultExpression)
 
 	def visitRule_PortClause(self, ctx: VHDLParser.Rule_PortClauseContext):
-		ports = []
-		for port in ctx.interfacePortDeclarations:
-			const = self.visit(port)
-			ports.append(const)
+		return [self.visit(port) for port in ctx.ports]
 
-		return ports
-
-	def visitRule_InterfacePortDeclaration(self, ctx:VHDLParser.Rule_InterfacePortDeclarationContext):
+	def visitRule_InterfacePortDeclaration(self, ctx:VHDLParser.Rule_InterfaceSignalDeclarationContext):
 		signalNames = self.visit(ctx.names)
 		if ctx.modeName is not None:
 			modeToken:Token = ctx.modeName.name
@@ -165,4 +160,4 @@ class VHDLVisitor(VHDLParserVisitor):
 		return PortSignalInterfaceItem(signalNames, mode, subtype, defaultExpression)
 
 	def visitRule_IdentifierList(self, ctx: VHDLParser.Rule_IdentifierListContext):
-		return [identifier.text for identifier in ctx.identifier]
+		return [identifier.text for identifier in ctx.identifiers]
