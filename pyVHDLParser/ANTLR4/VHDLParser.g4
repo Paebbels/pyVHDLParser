@@ -1,13 +1,39 @@
+// ================================================================================================================== //
+//            __     ___   _ ____  _     ____                                                                         //
+//  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                //
+// | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|                                               //
+// | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                  //
+// | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                  //
+// |_|    |___/                                                                                                       //
+// ================================================================================================================== //
+// Authors:                                                                                                           //
+//   Patrick Lehmann                                                                                                  //
+//                                                                                                                    //
+// License:                                                                                                           //
+// ================================================================================================================== //
+// Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                          //
+// Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                             //
+//                                                                                                                    //
+// Licensed under the Apache License, Version 2.0 (the "License");                                                    //
+// you may not use this file except in compliance with the License.                                                   //
+// You may obtain a copy of the License at                                                                            //
+//                                                                                                                    //
+//   http://www.apache.org/licenses/LICENSE-2.0                                                                       //
+//                                                                                                                    //
+// Unless required by applicable law or agreed to in writing, software                                                //
+// distributed under the License is distributed on an "AS IS" BASIS,                                                  //
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                           //
+// See the License for the specific language governing permissions and                                                //
+// limitations under the License.                                                                                     //
+// ================================================================================================================== //
+//
 parser grammar VHDLParser;
 
 options {
 	tokenVocab = VHDLLexer;
 }
 
-// TODO: Context
-// TODO: Protzected Type
 // TODO: PSL
-// TODO: VHDL-2019
 // TODO: VHDL-AMS
 
 rule_AbsolutePathname
@@ -82,11 +108,11 @@ rule_Allocator
 	;
 
 rule_Architecture
-	: KW_ARCHITECTURE architectureName=LIT_IDENTIFIER KW_OF entityName=LIT_IDENTIFIER KW_IS
+	: KW_ARCHITECTURE name=LIT_IDENTIFIER KW_OF entityName=LIT_IDENTIFIER KW_IS
 			declarativeItems+=rule_BlockDeclarativeItem*
 		KW_BEGIN
 			statements+=rule_ArchitectureStatement*
-		KW_END KW_ARCHITECTURE? architectureName2=LIT_IDENTIFIER? TOK_SEMICOL
+		KW_END KW_ARCHITECTURE? name2=LIT_IDENTIFIER? TOK_SEMICOL
 	;
 
 // rule_ArchitectureDeclarativePart
@@ -183,9 +209,8 @@ rule_AttributeDesignator
 	| LIT_IDENTIFIER
 	;
 
-rule_AttributeName
-	: prefix=rule_Prefix signature=rule_Signature? TOK_TICK designator=rule_AttributeDesignator ( TOK_LP expression=rule_Expression TOK_RP )?
-	;
+// rule_AttributeName
+// moved into rule_Name
 
 rule_AttributeSpecification
 	: KW_ATTRIBUTE designator=LIT_IDENTIFIER
@@ -281,11 +306,11 @@ rule_BlockSpecification
 
 rule_BlockStatement
 	: label=LIT_IDENTIFIER TOK_COLON KW_BLOCK ( TOK_LP guardExpression=rule_Expression TOK_RP )? KW_IS?
-			( genericClause=rule_GenericClause (
-				genericMapAspect=rule_GenericMapAspect TOK_SEMICOL )?
+			( genericClause=rule_GenericClause
+				( genericMapAspect=rule_GenericMapAspect TOK_SEMICOL )?
 			)?
-			( portClause=rule_PortClause (
-				portMapAspect=rule_PortMapAspect TOK_SEMICOL )?
+			( portClause=rule_PortClause
+				( portMapAspect=rule_PortMapAspect TOK_SEMICOL )?
 			)?
 			blockDeclarativeItem+=rule_BlockDeclarativeItem*
 		KW_BEGIN
@@ -348,7 +373,7 @@ rule_CaseStatementAlternative
 rule_Choice
 	: rule_SimpleExpression
 	| rule_DiscreteRange
-	| rule_SimpleName
+	| LIT_IDENTIFIER
 	| KW_OTHERS
 	;
 
@@ -560,7 +585,7 @@ rule_ContextItem
 	;
 
 rule_ContextReference
-	: KW_CONTEXT names+=rule_SelectedName ( TOK_COLON names+=rule_SelectedName )* TOK_SEMICOL
+	: KW_CONTEXT names+=rule_SelectedName2 ( TOK_COLON names+=rule_SelectedName2 )* TOK_SEMICOL
 	;
 
 // rule_DecimalLiteral
@@ -1046,9 +1071,8 @@ rule_IndexConstraint
 	: TOK_LP ranges+=rule_DiscreteRange ( TOK_COMMA ranges+=rule_DiscreteRange )* TOK_RP
 	;
 
-rule_IndexedName
-	: rule_Prefix TOK_LP expressions+=rule_Expression ( TOK_COMMA expressions+=rule_Expression )* TOK_RP
-	;
+// rule_IndexedName
+// moed into rule_Name
 
 //rule_IndexSpecification
 //	: range=rule_DiscreteRange
@@ -1283,14 +1307,14 @@ rule_ModeViewIndication
 // moved into rule_Term
 
 rule_Name
-	: rule_SimpleName
-	| rule_OperatorSymbol
-	| LIT_CHARACTER
-	| rule_SelectedName
-	| rule_IndexedName
-	| rule_SliceName
-	| rule_AttributeName
-	| rule_ExternalName
+	: LIT_IDENTIFIER                  #rule_SimpleName
+	| rule_OperatorSymbol             #rule_Operator
+	| LIT_CHARACTER                   #rule_Char
+	| prefix=rule_Name TOK_DOT rule_Suffix                                                                                                  #rule_SelectedName    // prefix.suffix
+	| prefix=rule_Name TOK_LP expressions+=rule_Expression ( TOK_COMMA expressions+=rule_Expression )* TOK_RP                               #rule_IndexedName     // prefix ( expr , expr )             prefix -> name | functionCall
+	| prefix=rule_Name TOK_LP rule_DiscreteRange TOK_RP                                                                                     #rule_SliceName       // prefix ( left direction right )
+	| prefix=rule_Name signature=rule_Signature? TOK_TICK designator=rule_AttributeDesignator ( TOK_LP expression=rule_Expression TOK_RP )? #rule_AttributeName   // prefix ' id
+	| rule_ExternalName               #rule_External
 	;
 
 rule_NextStatement
@@ -1302,13 +1326,6 @@ rule_NextStatement
 rule_NullStatement
 	: ( label=LIT_IDENTIFIER TOK_COLON )? KW_NULL TOK_SEMICOL
 	;
-
-//rule_NamePart
-//	: rule_SelectedNamePart
-//	| rule_FunctionCallOrIndexedNamePart
-//	| rule_SliceNamePart
-//	| rule_AttributeName
-//	;
 
 rule_FunctionCallOrIndexedNamePart
 	: TOK_LP rule_ActualParameterPart TOK_RP
@@ -1429,7 +1446,7 @@ rule_PackageInstantiationDeclaration
 
 // TODO: why * for /package/SimpleName
 rule_PackagePathname
-	: TOK_AT libraryName=LIT_IDENTIFIER TOK_DOT ( packageName=rule_SimpleName TOK_DOT )* objectName=rule_SimpleName
+	: TOK_AT libraryName=LIT_IDENTIFIER TOK_DOT ( packageName=LIT_IDENTIFIER TOK_DOT )* objectName=LIT_IDENTIFIER
 	;
 
 rule_ParameterMapAspect
@@ -1441,12 +1458,11 @@ rule_ParameterSpecification
 	;
 
 rule_PartialPathname
-	: ( rule_PathnameElement TOK_DOT )* rule_SimpleName
+	: ( rule_PathnameElement TOK_DOT )* LIT_IDENTIFIER
 	;
 
 rule_PathnameElement
-	: rule_SimpleName
-	| label=LIT_IDENTIFIER
+	: nameOrLabel=LIT_IDENTIFIER
 	;
 
 rule_PhysicalIncompleteTypeDefinition
@@ -1487,7 +1503,8 @@ rule_PortMapAspect
 
 rule_Prefix
 	: rule_Name
-	| rule_FunctionCall
+//	: rule_FunctionCall
+//	| rule_Name
 	;
 
 // TODO: combine into expression ?
@@ -1607,11 +1624,10 @@ rule_PostponedProcessStatement
 
 // TODO: where the semicolon?
 // TODO: merge name?
-// TODO: why simpleName?
 rule_ProtectedTypeBody
 	: KW_PROTECTED KW_BODY
 			declaredItems+=rule_ProtectedTypeBodyDeclarativeItem*
-		KW_END KW_PROTECTED KW_BODY name2=rule_SimpleName
+		KW_END KW_PROTECTED KW_BODY name2=LIT_IDENTIFIER
 	;
 
 // TODO: same as rule_ProcessDeclarativeItem
@@ -1638,12 +1654,11 @@ rule_ProtectedTypeBodyDeclarativeItem
 // rule_ProtectedTypeBodyDeclarativePart
 // moved into rule_ProtectedTypeBody
 
-// TODO: why simpleName?
 rule_ProtectedTypeDeclaration
 	: KW_PROTECTED
 			// TODO: protected type header
 			declaredItems+=rule_ProtectedTypeDeclarativeItem*
-		KW_END KW_PROTECTED name2=rule_SimpleName
+		KW_END KW_PROTECTED name2=LIT_IDENTIFIER
 	;
 
 // TODO: same as
@@ -1696,7 +1711,7 @@ quantity_specification
 */
 
 rule_Range
-	: rule_AttributeName
+	: rule_Name
 	| rule_SimpleRange
 	| rule_Expression
 	;
@@ -1722,15 +1737,15 @@ rule_RecordConstraint
 	;
 
 rule_RecordElementConstraint
-	: rule_SimpleName rule_ElementConstraint
+	: LIT_IDENTIFIER rule_ElementConstraint
 	;
 
 rule_RecordElementList
-	: rule_SimpleName ( TOK_COMMA rule_SimpleName )*
+	: elements+=LIT_IDENTIFIER ( TOK_COMMA elements+=LIT_IDENTIFIER )*
 	;
 
 rule_RecordElementResolution
-	: rule_SimpleName rule_ResolutionIndication
+	: LIT_IDENTIFIER rule_ResolutionIndication
 	;
 
 rule_RecordResolution
@@ -1808,8 +1823,9 @@ rule_SelectedForceAssignment
 			rule_Target TOK_SIG_ASSIGN KW_FORCE rule_ForceMode rule_SelectedExpressions TOK_SEMICOL
 	;
 
-rule_SelectedName
-	: rule_Prefix TOK_DOT rule_Suffix
+rule_SelectedName2
+	: names+=LIT_IDENTIFIER ( TOK_DOT names+=LIT_IDENTIFIER )+
+	| names+=LIT_IDENTIFIER ( TOK_DOT names+=LIT_IDENTIFIER )* TOK_DOT KW_ALL
 	;
 
 rule_SelectedSignalAssignment
@@ -1943,9 +1959,8 @@ rule_SimpleModeIndication
 		( TOK_VAR_ASSIGN rule_ConditionalExpression )?
 	;
 
-rule_SimpleName
-	: LIT_IDENTIFIER
-	;
+// rule_SimpleName
+// moved to many rules
 
 rule_SimpleRange
 	: leftBound=rule_SimpleExpression direction=rule_Direction rightBound=rule_SimpleExpression
@@ -1969,9 +1984,8 @@ rule_SimpleVariableAssignment
 	: rule_Target TOK_VAR_ASSIGN rule_ConditionalOrUnaffectedExpression TOK_SEMICOL
 	;
 
-rule_SliceName
-	: rule_Prefix TOK_LP rule_DiscreteRange TOK_RP
-	;
+// rule_SliceName
+// moved into rule_Name
 
 // rule_StringLiteral
 // handled by lexer
@@ -2115,7 +2129,7 @@ rule_SubtypeIndication
 	;
 
 rule_Suffix
-	: rule_SimpleName
+	: LIT_IDENTIFIER
 	| LIT_CHARACTER
 	| rule_OperatorSymbol
 	| KW_ALL
@@ -2212,7 +2226,7 @@ unconstrained_nature_definition
 */
 
 rule_UseClause
-	: KW_USE names+=rule_SelectedName ( TOK_COMMA names+=rule_SelectedName )* TOK_SEMICOL
+	: KW_USE names+=rule_SelectedName2 ( TOK_COMMA names+=rule_SelectedName2 )* TOK_SEMICOL
 	;
 
 rule_ValueReturnStatement
