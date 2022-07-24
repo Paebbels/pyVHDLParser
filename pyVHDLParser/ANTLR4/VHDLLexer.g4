@@ -6,15 +6,16 @@ options {
 
 channels {
 	WHITESPACE_CHANNEL,
-	COMMENT_CHANNEL
+	COMMENT_CHANNEL,
+	TOOLDIRECTIVE_CHANNEL
 }
 
 
-LINEBREAK:     [\r\n]+            -> channel(WHITESPACE_CHANNEL);
-WHITESPACE:    [ \t\f\b]+         -> channel(WHITESPACE_CHANNEL);
-//WHITESPACE:    [\p{White_Space}]+ -> channel(WHITESPACE_CHANNEL);
-COMMENT_LINE:  '--' ~[\r\n]*      -> channel(COMMENT_CHANNEL)   ;
-COMMENT_BLOCK: '/*' .*? '*/'      -> channel(COMMENT_CHANNEL)   ;
+LINEBREAK:     [\r\n]+            -> channel(WHITESPACE_CHANNEL)    ;
+WHITESPACE:    [ \t\f\b]+         -> channel(WHITESPACE_CHANNEL)    ;
+COMMENT_LINE:  '--' ~[\r\n]*      -> channel(COMMENT_CHANNEL)       ;
+COMMENT_BLOCK: '/*' .*? '*/'      -> channel(COMMENT_CHANNEL)       ;
+TOOLDIRECTIVE: '`' ~[\r\n]*       -> channel(TOOLDIRECTIVE_CHANNEL) ;
 
 OP_ABS: 'abs';
 //KW_ACROSS: 'across';
@@ -37,6 +38,8 @@ KW_CASE: 'case';
 KW_COMPONENT: 'component';
 KW_CONFIGURATION: 'configuration';
 KW_CONSTANT: 'constant';
+KW_CONTEXT: 'context';
+KW_DEFAULT: 'default';
 KW_DISCONNECT: 'disconnect';
 KW_DOWNTO: 'downto';
 KW_END: 'end';
@@ -46,6 +49,7 @@ KW_ELSIF: 'elsif';
 KW_EXIT: 'exit';
 KW_FILE: 'file';
 KW_FOR: 'for';
+KW_FORCE: 'force';
 KW_FUNCTION: 'function';
 KW_GENERATE: 'generate';
 KW_GENERIC: 'generic';
@@ -80,11 +84,14 @@ OP_OR: 'or';
 KW_OTHERS: 'others';
 KW_OUT: 'out';
 KW_PACKAGE: 'package';
+KW_PARAMETER: 'parameter';
 KW_PORT: 'port';
 KW_POSTPONED: 'postponed';
+KW_PRIVATE: 'private';
 KW_PROCESS: 'process';
 KW_PROCEDURE: 'procedure';
 //KW_PROCEDURAL: 'procedural';
+KW_PROTECTED: 'protected';
 KW_PURE: 'pure';
 //KW_QUANTITY: 'quantity';
 KW_RANGE: 'range';
@@ -120,6 +127,7 @@ KW_UNITS: 'units';
 KW_UNTIL: 'until';
 KW_USE: 'use';
 KW_VARIABLE: 'variable';
+KW_VIEW: 'view';
 KW_WAIT: 'wait';
 KW_WITH: 'with';
 KW_WHEN: 'when';
@@ -133,12 +141,19 @@ OP_LT: '<';
 OP_LE: '<=)';
 OP_GT: '>';
 OP_GE: '>=';
+OP_IEQ: '?=';
+OP_INE: '?/=';
+OP_ILT: '?<';
+OP_ILE: '?<=)';
+OP_IGT: '?>';
+OP_IGE: '?>=';
 OP_PLUS: '+';
 OP_MINUS: '-';
 OP_MUL: '*';
 OP_DIV: '/';
 OP_POW: '**';
 OP_CONCAT: '&';
+OP_CONDITION: '??';
 
 TOK_RARROW: '=>';
 TOK_SIG_ASSIGN: '<=';
@@ -148,12 +163,18 @@ TOK_LP: '(';
 TOK_RP: ')';
 TOK_LB: '[';
 TOK_RB: ']';
+TOK_DLA: '<<';
+TOK_DRA: '>>';
 TOK_COLON: ':';
 TOK_SEMICOL: ';';
 TOK_COMMA: ',';
 TOK_BAR: '|';
 TOK_DOT: '.';
+TOK_QUESTION: '?';
+TOK_AT: '@';
+TOK_CIRCUMFLEX: '^';
 TOK_TICK: '\'';
+TOK_DQUOTE: '"';
 
 fragment Letter:        [a-z] ;
 fragment Digit:         [0-9] ;
