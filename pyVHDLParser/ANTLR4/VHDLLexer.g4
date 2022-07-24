@@ -273,10 +273,10 @@ LIT_ABSTRACT
   | BaseLiteral
   ;
 
-fragment BinaryBitString:  [us]? 'b' '"' ([0-1]    | '_')+ '"' ;
-fragment OctalBitString:   [us]? 'o' '"' ([0-7]    | '_')+ '"' ;
-fragment DecimalBitString:       'd' '"' ([0-9]    | '_')+ '"' ;
-fragment HexBitString:     [us]? 'x' '"' ([0-9a-f] | '_')+ '"' ;
+fragment BinaryBitString:  Integer? [us]? 'b' '"' ([0-1]    | '_')+ '"' ;
+fragment OctalBitString:   Integer? [us]? 'o' '"' ([0-7]    | '_')+ '"' ;
+fragment DecimalBitString: Integer?       'd' '"' ([0-9]    | '_')+ '"' ;
+fragment HexBitString:     Integer? [us]? 'x' '"' ([0-9a-f] | '_')+ '"' ;
 
 LIT_BIT_STRING
   : BinaryBitString
@@ -306,7 +306,7 @@ LIT_OTHER_CHARACTER
   ;
 */
 
-fragment BasicIdentifier:    [a-z] ('_' [a-z0-9] | [a-z0-9])* ;
+fragment BasicIdentifier:    [a-z] ('_'? [a-z0-9])* ;
 fragment ExtendedIdentifier: '\\' ([a-z0-9] | '_')+ '\\'      ;
 
 LIT_IDENTIFIER

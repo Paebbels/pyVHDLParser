@@ -67,10 +67,6 @@ rule_ActualDesignator
 	| open=KW_OPEN
 	;
 
-rule_ActualParameterPart
-	: associationList=rule_AssociationList
-	;
-
 rule_ActualPart
 	: actualDesignator=rule_ActualDesignator
 	| conversion=rule_Name TOK_LP actualDesignator=rule_ActualDesignator TOK_RP
@@ -371,9 +367,9 @@ rule_CaseStatementAlternative
 	;
 
 rule_Choice
-	: rule_SimpleExpression
+	: rule_Expression
 	| rule_DiscreteRange
-	| LIT_IDENTIFIER
+//	| LIT_IDENTIFIER
 	| KW_OTHERS
 	;
 
@@ -564,7 +560,8 @@ constrained_nature_definition
 */
 
 rule_Constraint
-	: rule_RangeConstraint
+	: rule_SimpleRange                // FIXME: added for testing
+	| rule_RangeConstraint
 	| rule_ArrayConstraint
 	| rule_RecordConstraint
 	;
@@ -596,6 +593,7 @@ rule_DelayMechanism
 	| ( KW_REJECT expression=rule_Expression )? KW_INERTIAL
 	;
 
+// Entrypoint rule
 rule_DesignFile
 	: designUnits+=rule_DesignUnit+
 		EOF
@@ -608,7 +606,7 @@ rule_DesignUnit
 
 rule_Designator
 	: LIT_IDENTIFIER
-	| rule_OperatorSymbol
+	| LIT_STRING
 	;
 
 // TODO: merge into rules?
@@ -709,6 +707,7 @@ rule_EntityClass
 //  | TERMINAL
 	;
 
+/*
 rule_EntityClassEntry
 	: rule_EntityClass TOK_BOX?
 	;
@@ -716,6 +715,7 @@ rule_EntityClassEntry
 rule_EntityClassEntryList
 	: entityClasses+=rule_EntityClassEntry ( TOK_COMMA entityClasses+=rule_EntityClassEntry )*
 	;
+*/
 
 rule_EntityDeclaration
 	: KW_ENTITY name=LIT_IDENTIFIER KW_IS
@@ -789,7 +789,7 @@ rule_EntityStatement
 rule_EntityTag
 	: LIT_IDENTIFIER    // rule_SimpleName
 	| LIT_CHARACTER
-	| rule_OperatorSymbol
+	| LIT_STRING
 	;
 
 rule_EnumerationLiteral
@@ -812,8 +812,15 @@ rule_ExitStatement
 // handled by lexer
 
 rule_Expression
-	: OP_CONDITION rule_Primary
-	| rule_LogicalExpression
+	: rule_Primary                                                                                                                                                 #primaryOp
+	|	operator=OP_CONDITION right=rule_Expression                                                                                                                  #unaryOp
+	| operator=( OP_ABS | OP_NOT | OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR | OP_PLUS | OP_MINUS ) right=rule_Expression                               #unaryOp
+	| <assoc=right> left=rule_Expression	operator=OP_POW right=rule_Expression                                                                                    #binaryOp
+	| left=rule_Expression operator=( OP_MUL | OP_DIV | OP_MOD | OP_REM ) right=rule_Expression                                                                    #binaryOp
+	| left=rule_Expression operator=( OP_PLUS | OP_MINUS | OP_CONCAT ) right=rule_Expression                                                                       #binaryOp
+	| left=rule_Expression operator=( OP_SLL | OP_SRL | OP_SLA | OP_SRA | OP_ROL | OP_ROR ) right=rule_Expression                                                  #binaryOp
+	| left=rule_Expression operator=( OP_EQ | OP_NE | OP_LT | OP_LE | OP_GT | OP_GE | OP_IEQ | OP_INE | OP_ILT | OP_ILE | OP_IGT | OP_IGE ) right=rule_Expression  #binaryOp
+	| left=rule_Expression operator=( OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR ) right=rule_Expression                                                 #binaryOp
 	;
 
 rule_ExpressionOrUnaffected
@@ -852,10 +859,8 @@ rule_ExternalPathname
 	;
 
 // TODO: combine into expression
-rule_Factor
-	: left=rule_UnaryExpression
-		( OP_POW right=rule_UnaryExpression)?
-	;
+// rule_Factor
+// moved into rule_Expression
 
 rule_FileDeclaration
 	: KW_FILE identifierList=rule_IdentifierList TOK_COLON
@@ -962,14 +967,9 @@ rule_GenerateStatementBody
 		KW_END KW_GENERATE label=LIT_IDENTIFIER? TOK_SEMICOL
 	;
 
-rule_GenerationScheme
-	: KW_FOR rule_ParameterSpecification
-	| KW_IF condition=rule_Expression
-	;
-
 rule_GenericClause
 	: KW_GENERIC TOK_LP
-			constants+=rule_InterfaceConstantDeclaration ( TOK_SEMICOL constants+=rule_InterfaceConstantDeclaration )*
+			elements+=rule_InterfaceElement ( TOK_SEMICOL elements+=rule_InterfaceElement )*
 		TOK_RP TOK_SEMICOL
 	;
 
@@ -1113,7 +1113,7 @@ rule_InterfaceConstantDeclaration
 
 rule_InterfaceDeclaration
 	: rule_InterfaceConstantDeclaration
-	| rule_InterfaceSignalDeclaration
+//	| rule_InterfaceSignalDeclaration       -> directly used in rule_PortClause
 	| rule_InterfaceVariableDeclaration
 	| rule_InterfaceFileDeclaration
 	| rule_InterfaceTypeDeclaration
@@ -1143,16 +1143,12 @@ rule_InterfaceList
 		TOK_SEMICOL?
 	;
 
-rule_InterfaceObjectDeclaration
-	: rule_InterfaceConstantDeclaration
-	| rule_InterfaceSignalDeclaration
-	| rule_InterfaceVariableDeclaration
-	| rule_InterfaceFileDeclaration
-	;
+// rule_InterfaceObjectDeclaration
+// moved into rule_InterfaceDeclaration
 
 rule_InterfacePackageDeclaration
 	: KW_PACKAGE name=LIT_IDENTIFIER KW_IS
-			KW_NEW rule_InterfacePackageGenericMapAspect
+			KW_NEW rule_Name rule_InterfacePackageGenericMapAspect
 	;
 
 rule_InterfacePackageGenericMapAspect
@@ -1172,13 +1168,13 @@ interface_quantity_declaration
 	;
 */
 
+// TODO: missing type in EBNF
 rule_InterfaceSignalDeclaration
-	: KW_SIGNAL? rule_IdentifierList TOK_COLON modeName=rule_ModeIndication?
+	: KW_SIGNAL? rule_IdentifierList TOK_COLON modeName=rule_ModeIndication
 	;
 
-rule_InterfaceSignalList
-	: interfaceSignalDeclarations+=rule_InterfaceSignalDeclaration ( TOK_SEMICOL interfaceSignalDeclarations+=rule_InterfaceSignalDeclaration )*
-	;
+// rule_InterfaceSignalList
+// merged into rule_InterfaceDeclaration, but directly used in rule_PortClause
 
 rule_InterfaceSubprogramDeclaration
 	: rule_InterfaceSubprogramSpecification ( KW_IS rule_InterfaceSubprogramDefault )?
@@ -1241,8 +1237,11 @@ rule_LibraryUnit
 	: entity=rule_EntityDeclaration
 	| configuration=rule_ConfigurationDeclaration
 	| package=rule_PackageDeclaration
+	| packageInstance=rule_PackageInstantiationDeclaration
+	| context=rule_ContextDeclaration
 	| architecture=rule_Architecture
 	| packageBody=rule_PackageBody
+//	| verificationUnit=rule_VerificationUnit
 	;
 
 rule_Literal
@@ -1253,12 +1252,8 @@ rule_Literal
 	| KW_NULL
 	;
 
-// TODO: combine into expression
-rule_LogicalExpression
-	: left=rule_Relation (:
-			operator=( OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR )
-		right=rule_Relation )*
-	;
+// rule_LogicalExpression
+// moved into rule_Expression
 
 // rule_LogicalName
 // moved into many rules
@@ -1285,6 +1280,7 @@ rule_Mode
 
 rule_ModeIndication
 	: rule_SimpleModeIndication
+	| rule_ArrayModeViewIndication
 	| rule_RecordModeViewIndication
 	;
 
@@ -1298,23 +1294,21 @@ rule_ModeViewElementDefinition
 	: rule_RecordElementList TOK_COLON rule_ElementModeIndication TOK_SEMICOL
 	;
 
-rule_ModeViewIndication
-	: rule_ArrayModeViewIndication
-	| rule_RecordModeViewIndication
-	;
+// rule_ModeViewIndication
+// moved into rule_ModeIndication
 
 // rule_MultiplyingOperator
 // moved into rule_Term
 
 rule_Name
-	: LIT_IDENTIFIER                  #rule_SimpleName
-	| rule_OperatorSymbol             #rule_Operator
-	| LIT_CHARACTER                   #rule_Char
+	: LIT_IDENTIFIER                                                                                                                        #rule_SimpleName
+	| LIT_STRING                                                                                                                            #rule_Operator
+	| LIT_CHARACTER                                                                                                                         #rule_Char
 	| prefix=rule_Name TOK_DOT rule_Suffix                                                                                                  #rule_SelectedName    // prefix.suffix
 	| prefix=rule_Name TOK_LP expressions+=rule_Expression ( TOK_COMMA expressions+=rule_Expression )* TOK_RP                               #rule_IndexedName     // prefix ( expr , expr )             prefix -> name | functionCall
 	| prefix=rule_Name TOK_LP rule_DiscreteRange TOK_RP                                                                                     #rule_SliceName       // prefix ( left direction right )
 	| prefix=rule_Name signature=rule_Signature? TOK_TICK designator=rule_AttributeDesignator ( TOK_LP expression=rule_Expression TOK_RP )? #rule_AttributeName   // prefix ' id
-	| rule_ExternalName               #rule_External
+	| rule_ExternalName                                                                                                                     #rule_External
 	;
 
 rule_NextStatement
@@ -1325,10 +1319,6 @@ rule_NextStatement
 
 rule_NullStatement
 	: ( label=LIT_IDENTIFIER TOK_COLON )? KW_NULL TOK_SEMICOL
-	;
-
-rule_FunctionCallOrIndexedNamePart
-	: TOK_LP rule_ActualParameterPart TOK_RP
 	;
 
 /*
@@ -1351,25 +1341,8 @@ rule_NumericLiteral
 	| rule_PhysicalLiteral
 	;
 
-rule_ObjectDeclaration
-	: rule_ConstantDeclaration
-	| rule_SignalDeclaration
-	| rule_VariableDeclaration
-	| rule_FileDeclaration
-//  | terminal_declaration
-//  | quantity_declaration
-	;
-
-rule_OperatorSymbol
-	: TOK_DQUOTE (
-			OP_NOT | OP_AND | OP_OR | OP_XOR | OP_NAND | OP_NOR | OP_XNOR
-		| OP_PLUS | OP_MINUS | OP_MUL | OP_DIV | OP_POW | OP_CONCAT
-		| OP_EQ | OP_NE | OP_LT | OP_LE | OP_GT | OP_GE
-		| OP_IEQ | OP_INE | OP_ILT | OP_ILE | OP_IGT | OP_IGE
-		| OP_SRL | OP_SLL | OP_SRA | OP_SLA | OP_ROL | OP_ROR
-		| OP_ABS | OP_REM | OP_MOD
-		) TOK_DQUOTE
-	;
+// rule_ObjectDeclaration
+// unused rule
 
 rule_PackageBody
 	: KW_PACKAGE KW_BODY name=LIT_IDENTIFIER KW_IS
@@ -1402,7 +1375,7 @@ rule_PackageBodyDeclarativeItem
 
 rule_PackageDeclaration
 	: KW_PACKAGE name=LIT_IDENTIFIER KW_IS
-			// TODO: package_header
+			genericClause=rule_GenericClause?
 			declarativeItems+=rule_PackageDeclarativeItem*
 		KW_END KW_PACKAGE? name2=LIT_IDENTIFIER? TOK_SEMICOL
 	;
@@ -1501,13 +1474,9 @@ rule_PortMapAspect
 		TOK_RP
 	;
 
-rule_Prefix
-	: rule_Name
-//	: rule_FunctionCall
-//	| rule_Name
-	;
+// rule_Prefix
+// merged into rule_Name
 
-// TODO: combine into expression ?
 rule_Primary
 	: rule_Name
 	| rule_Literal
@@ -1616,7 +1585,7 @@ rule_PostponedProcessStatement
 			declaredItems+=rule_ProcessDeclarativeItem*
 		KW_BEGIN
 			statements+=rule_SequentialStatement*
-		KW_END KW_POSTPONED KW_PROCESS LIT_IDENTIFIER? TOK_SEMICOL
+		KW_END KW_POSTPONED? KW_PROCESS LIT_IDENTIFIER? TOK_SEMICOL
 	;
 
 // rule_ProcessStatementPart
@@ -1627,7 +1596,7 @@ rule_PostponedProcessStatement
 rule_ProtectedTypeBody
 	: KW_PROTECTED KW_BODY
 			declaredItems+=rule_ProtectedTypeBodyDeclarativeItem*
-		KW_END KW_PROTECTED KW_BODY name2=LIT_IDENTIFIER
+		KW_END KW_PROTECTED KW_BODY name2=LIT_IDENTIFIER?
 	;
 
 // TODO: same as rule_ProcessDeclarativeItem
@@ -1658,7 +1627,7 @@ rule_ProtectedTypeDeclaration
 	: KW_PROTECTED
 			// TODO: protected type header
 			declaredItems+=rule_ProtectedTypeDeclarativeItem*
-		KW_END KW_PROTECTED name2=LIT_IDENTIFIER
+		KW_END KW_PROTECTED name2=LIT_IDENTIFIER?
 	;
 
 // TODO: same as
@@ -1716,11 +1685,6 @@ rule_Range
 	| rule_Expression
 	;
 
-// TODO: move to e
-//rule_ExplicitRange
-//	: left=rule_SimpleExpression ( direction=rule_Direction right=rule_SimpleExpression )?
-//	;
-
 rule_RangeConstraint
 	: KW_RANGE rule_Range
 	;
@@ -1763,12 +1727,8 @@ rule_RecordModeViewIndication
 		( KW_OF rule_SubtypeIndication )?
 	;
 
-// TODO: combine into expression
-rule_Relation
-	: left=rule_ShiftExpression (:
-			operator=( OP_EQ | OP_NE | OP_LT | OP_LE | OP_GT | OP_GE | OP_IEQ | OP_INE | OP_ILT | OP_ILE | OP_IGT | OP_IGE)
-		right=rule_ShiftExpression )?
-	;
+// rule_Relation
+// moved into rule_Expression
 
 rule_RelativePathname
 	: ( TOK_CIRCUMFLEX TOK_DOT )* rule_PartialPathname
@@ -1894,12 +1854,8 @@ rule_SequentialStatement
 
 	;
 
-// TODO: combine into expression
-rule_ShiftExpression
-	: rule_SimpleExpression (:
-			operator=( OP_SLL | OP_SRL | OP_SLA | OP_SRA | OP_ROL | OP_ROR )
-		rule_SimpleExpression )?
-	;
+// rule_ShiftExpression
+// moved into rule_Expression
 
 // rule_ShiftOperator
 // moved into rule_ShiftExpression
@@ -1942,20 +1898,15 @@ rule_SimpleConfigurationSpecification
 		( KW_END KW_FOR TOK_SEMICOL )?
 	;
 
-// TODO: combine into expression
-rule_SimpleExpression
-	: sign=( OP_PLUS | OP_MINUS )?
-		left=rule_Term (
-			operator=( OP_PLUS | OP_MINUS | OP_CONCAT )
-		right=rule_Term )*
-	;
+// rule_SimpleExpression
+// moved into rule_Expression
 
 rule_SimpleForceAssignment
 	: rule_Target TOK_SIG_ASSIGN KW_FORCE rule_ForceMode rule_ConditionalOrUnaffectedExpression TOK_SEMICOL
 	;
 
 rule_SimpleModeIndication
-	: rule_Mode rule_InterfaceTypeIndication KW_BUS?
+	: rule_Mode? rule_InterfaceTypeIndication KW_BUS?
 		( TOK_VAR_ASSIGN rule_ConditionalExpression )?
 	;
 
@@ -1963,7 +1914,7 @@ rule_SimpleModeIndication
 // moved to many rules
 
 rule_SimpleRange
-	: leftBound=rule_SimpleExpression direction=rule_Direction rightBound=rule_SimpleExpression
+	: leftBound=rule_Expression direction=rule_Direction rightBound=rule_Expression
 	;
 
 rule_SimpleReleaseAssignment
@@ -1977,7 +1928,7 @@ rule_SimpleSignalAssignment
 	;
 
 rule_SimpleWaveformAssignment
-	: rule_Target TOK_SIG_ASSIGN rule_DelayMechanism rule_Waveform TOK_SEMICOL
+	: rule_Target TOK_SIG_ASSIGN rule_DelayMechanism? rule_Waveform TOK_SEMICOL
 	;
 
 rule_SimpleVariableAssignment
@@ -2131,7 +2082,7 @@ rule_SubtypeIndication
 rule_Suffix
 	: LIT_IDENTIFIER
 	| LIT_CHARACTER
-	| rule_OperatorSymbol
+	| LIT_STRING
 	| KW_ALL
 	;
 
@@ -2141,11 +2092,8 @@ rule_Target
 	;
 
 // TODO: combine into expression? Sven?
-rule_Term
-	: left=rule_Factor (
-			operator=( OP_MUL | OP_DIV | OP_MOD | OP_REM )
-		right=rule_Factor )*
-	;
+// rule_Term
+// moved into rule_Expression
 
 /*
 terminal_aspect
@@ -2198,16 +2146,11 @@ rule_TypeMark
 	;
 
 // TODO: combine into expression
-rule_UnaryExpression
-	: rule_Primary
-	| operator=OP_ABS left=rule_Primary
-	| operator=OP_NOT left=rule_Primary
-	| operator=( OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR ) rule_Primary
-	;
+// rule_UnaryExpression
+// moved into rule_Expression
 
-rule_UnaryMiscellaneousOperator
-	: OP_ABS | OP_NOT | OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR
-	;
+// rule_UnaryMiscellaneousOperator
+// unused rule
 
 rule_UnboundArrayDefinition
 	: KW_ARRAY TOK_LP rule_IndexSubtypeDefinition ( TOK_COMMA rule_IndexSubtypeDefinition )* TOK_RP
