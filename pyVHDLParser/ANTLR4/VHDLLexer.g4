@@ -98,7 +98,7 @@ KW_PSL_FAIRNESS:  'fairness';
 KW_GENERATE:      'generate';
 KW_GENERIC:       'generic';
 KW_GUARDED:       'guarded';
-KW_PSL_GROUP:     'group';
+KW_GROUP:         'group';
 
 // Reserved words starting with I
 KW_IF:            'if';

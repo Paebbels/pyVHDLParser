@@ -112,8 +112,8 @@ class VHDLVisitor(VHDLParserVisitor):
 
 	def visitRule_GenericClause(self, ctx: VHDLParser.Rule_GenericClauseContext):
 		generics = []
-		for constant in ctx.constants:
-			const = self.visit(constant)
+		for element in ctx.elements:
+			const = self.visit(element)
 			generics.append(const)
 
 		return generics
