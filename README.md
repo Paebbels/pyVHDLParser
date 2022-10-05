@@ -9,7 +9,6 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser)](https://github.com/Paebbels/pyVHDLParser/network/dependents)  
 [![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyVHDLParser)](https://libraries.io/github/Paebbels/pyVHDLParser)
-[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyVHDLParser)](https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master)  
 [![Codacy - Quality](https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
 [![Codacy - Coverage](https://img.shields.io/codacy/coverage/1155f244b6f54a3a95abdaa80d6771f8?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyVHDLParser)
 [![Codecov - Branch Coverage](https://img.shields.io/codecov/c/github/Paebbels/pyVHDLParser?logo=Codecov)](https://codecov.io/gh/Paebbels/pyVHDLParser)

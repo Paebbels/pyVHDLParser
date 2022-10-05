@@ -27,3 +27,10 @@
 
 .. role:: underline
    :class: underline
+
+.. role:: xlarge
+   :class: xlarge
+
+.. role:: pycode(code)
+   :language: python
+   :class: highlight
