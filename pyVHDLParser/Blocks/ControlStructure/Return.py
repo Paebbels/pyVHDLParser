@@ -54,19 +54,19 @@ class ReturnBlock(Block):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if  (token == ";"):
-				parserState.NewToken =    EndToken(token)
+				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop()
 				return
 			elif  (token == "("):
-				parserState.NewToken =    BoundaryToken(token)
+				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   EndBlock.stateError
 				parserState.PushState =   ReturnExpressionBlock.stateExpression
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -83,7 +83,7 @@ class ReturnBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and  (token == ";")):
-			parserState.NewToken =      EndToken(token)
+			parserState.NewToken =      EndToken(fromExistingToken=token)
 			parserState.NewBlock =      EndBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.Pop()
 			return
@@ -104,7 +104,7 @@ class ReturnBlock(Block):
 			return
 		elif (isinstance(token, SpaceToken) and (
 			isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

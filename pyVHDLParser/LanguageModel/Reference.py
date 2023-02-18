@@ -27,11 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLModel.SyntaxModel import (
-	LibraryClause as ModelLibraryClause,
-	UseClause as ModelUseClause,
-	ContextReference as ModelContextReference
-)
+from pyVHDLModel.DesignUnit import LibraryClause as ModelLibraryClause,	UseClause as ModelUseClause
+from pyVHDLModel.DesignUnit import ContextReference as ModelContextReference
 
 
 class LibraryClause(ModelLibraryClause):

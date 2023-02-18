@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLModel.SyntaxModel import (
+from pyVHDLModel.Interface import (
 	GenericConstantInterfaceItem as ModelGenericConstantInterfaceItem,
 	GenericTypeInterfaceItem as ModelGenericTypeInterfaceItem,
 	GenericPackageInterfaceItem as ModelGenericPackageInterfaceItem,

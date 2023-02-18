@@ -44,12 +44,12 @@ class OpenBlock(Block):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if (token <= "all"):
-				parserState.NewToken =    AllKeyword(token)
+				parserState.NewToken =    AllKeyword(fromExistingToken=token)
 				parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   CloseBlock.stateAllKeyword
 			else:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.TokenMarker = parserState.NewToken
 				parserState.NextState =   ItemBlock.stateItemRemainder
 			return
@@ -83,18 +83,18 @@ class ItemBlock(Block):
 			if (token == "("):
 				parserState.Counter += 1
 			elif (token == ")"):
-				parserState.NewToken =      OpeningRoundBracketToken(token)
+				parserState.NewToken =      OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter -= 1
 				if (parserState.Counter == 0):
-					parserState.NewToken =    BoundaryToken(token)
+					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					parserState.Pop()
 					parserState.TokenMarker = parserState.NewToken
 				else:
-					parserState.NewToken =    ClosingRoundBracketToken(token)
+					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 			elif (token == ";"):
 				if (parserState.Counter == 1):
-					parserState.NewToken =    DelimiterToken(token)
+					parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.NextState =   DelimiterBlock.stateItemDelimiter
@@ -111,7 +111,7 @@ class DelimiterBlock(SkipableBlock):
 	def stateItemDelimiter(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =    IdentifierToken(token)
+			parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   ItemBlock.stateItemRemainder
 			return
@@ -141,7 +141,7 @@ class CloseBlock(Block):
 	def stateAllKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == ")")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
@@ -163,7 +163,7 @@ class CloseBlock(Block):
 		token = parserState.Token
 		errorMessage = "Expected  '(' after keyword PROCESS."
 		if (isinstance(token, CharacterToken) and (token == ")")):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.NewToken, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
@@ -183,7 +183,7 @@ class CloseBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

@@ -30,7 +30,7 @@
 from argparse       import RawDescriptionHelpFormatter
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
-from typing import NoReturn
+from typing         import NoReturn
 
 from pyTooling.Exceptions             import ExceptionBase
 from pyTooling.Decorators             import export
@@ -44,7 +44,7 @@ from pyVHDLParser.CLI.Token           import TokenStreamHandlers
 from pyVHDLParser.CLI.Block           import BlockStreamHandlers
 from pyVHDLParser.CLI.Group           import GroupStreamHandlers
 from pyVHDLParser.CLI.CodeDOM         import CodeDOMHandlers
-from pyVHDLParser.CLI.ANTLR           import ANTLRHandlers
+# from pyVHDLParser.CLI.ANTLR           import ANTLRHandlers
 
 
 @export
@@ -62,7 +62,7 @@ def printImportError(ex) -> NoReturn:
 
 
 @export
-class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers, ANTLRHandlers):
+class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):  # , ANTLRHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)

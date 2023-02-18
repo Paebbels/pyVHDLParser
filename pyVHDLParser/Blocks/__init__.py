@@ -503,7 +503,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken =                keyword(token)
+					newToken =                keyword(fromExistingToken=token)
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken

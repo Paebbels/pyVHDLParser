@@ -87,19 +87,19 @@ class DeclarativeRegion(metaclass=MetaBlock):
 
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken =                keyword(token)
+					newToken =                keyword(fromExistingToken=token)
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
 
 			if (tokenValue == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
+				parserState.NewToken =  BeginKeyword(fromExistingToken=token)
 				parserState.NewBlock =  cls.BEGIN_BLOCK(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = cls.BEGIN_BLOCK.stateStatementRegion
 				return
 			elif (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
+				parserState.NewToken =  EndKeyword(fromExistingToken=token)
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 
@@ -181,14 +181,14 @@ class ConcurrentBeginBlock(BeginBlock):
 
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken = keyword(token)
+					newToken = keyword(fromExistingToken=token)
 					parserState.PushState = cls.KEYWORDS[keyword]
 					parserState.NewToken = newToken
 					parserState.TokenMarker = newToken
 					return
 
 			if (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
+				parserState.NewToken =  EndKeyword(fromExistingToken=token)
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 
@@ -254,14 +254,14 @@ class SequentialBeginBlock(BeginBlock):
 
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken =                keyword(token)
+					newToken =                keyword(fromExistingToken=token)
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken
 					return
 
 			if (tokenValue == "end"):
-				parserState.NewToken =  EndKeyword(token)
+				parserState.NewToken =  EndKeyword(fromExistingToken=token)
 				parserState.NextState = cls.END_BLOCK.stateEndKeyword
 				return
 

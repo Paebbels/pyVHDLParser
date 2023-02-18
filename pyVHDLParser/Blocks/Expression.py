@@ -92,25 +92,24 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 	EXIT_TOKEN: Token = None
 	EXIT_BLOCK: Block = None
 
-
 	@classmethod
 	def stateBeforeExpression(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				parserState.NextState =   cls.stateExpression
 				return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateExpression
 			return
 		elif isinstance(token, LiteralToken):
@@ -137,12 +136,12 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			try:
-				parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				return
 			except KeyError:
 				if (token == cls.EXIT_CHAR):
 					if (parserState.Counter == 0):
-						parserState.NewToken = cls.EXIT_TOKEN(token)
+						parserState.NewToken = cls.EXIT_TOKEN(fromExistingToken=token)
 						parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 						_ =                    cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 						parserState.Pop(2)
@@ -152,7 +151,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		elif isinstance(token, CharacterToken):
 			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
-					parserState.NewToken =  cls.EXIT_TOKEN(token)
+					parserState.NewToken =  cls.EXIT_TOKEN(fromExistingToken=token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                     cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 					parserState.Pop(2)
@@ -160,27 +159,27 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				return
 			elif (token == ")"):
 				if (parserState.Counter == 0):
-					parserState.NewToken =    BoundaryToken(token)
+					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					parserState.Pop(3, parserState.NewToken)
 					return
 				else:
-					parserState.NewToken =    ClosingRoundBracketToken(token)
+					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 					parserState.Counter -=    1
 					return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				return
 		elif isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			return
 		elif isinstance(token, LiteralToken):
 			return
@@ -202,13 +201,13 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			try:
-				parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 			except KeyError:
 				if (token == cls.EXIT_CHAR):
 					if (parserState.Counter == 0):
-						parserState.NewToken =  cls.EXIT_TOKEN(token)
+						parserState.NewToken =  cls.EXIT_TOKEN(fromExistingToken=token)
 						parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 						_ =                     cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 						parserState.Pop(1)
@@ -218,7 +217,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		elif isinstance(token, CharacterToken):
 			if (token == cls.EXIT_CHAR):
 				if (parserState.Counter == 0):
-					parserState.NewToken =  cls.EXIT_TOKEN(token)
+					parserState.NewToken =  cls.EXIT_TOKEN(fromExistingToken=token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                     cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 					parserState.Pop(2)
@@ -226,31 +225,31 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				parserState.NextState =   cls.stateExpression
 				return
 			elif (token == ")"):
 				if (parserState.Counter == 0):
-					parserState.NewToken =    BoundaryToken(token)
+					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 
 					parserState.Pop(3, tokenMarker=parserState.NewToken)
 					return
 				else:
-					parserState.NewToken =    ClosingRoundBracketToken(token)
+					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 					parserState.Counter -=    1
 					parserState.NextState =   cls.stateExpression
 					return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateExpression
 			return
 		elif isinstance(token, LiteralToken):
@@ -275,7 +274,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -292,19 +291,19 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	def stateExpression(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				return
 			elif (token == ")"):
-				parserState.NewToken =  ClosingRoundBracketToken(token)
+				parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
 				parserState.Counter -=  1
 				return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				return
 		elif isinstance(token, WordToken):
 			if (token <= cls.EXIT_KEYWORD.__KEYWORD__):
@@ -315,9 +314,9 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 				return
 			else:
 				try:
-					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 				except KeyError:
-					parserState.NewToken =    IdentifierToken(token)
+					parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				return
 		elif isinstance(token, LiteralToken):
 			return
@@ -338,36 +337,36 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				parserState.NextState =   cls.stateExpression
 				return
 			elif (token == ")"):
-				parserState.NewToken =    ClosingRoundBracketToken(token)
+				parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 				parserState.Counter -=    1
 				parserState.NextState =   cls.stateExpression
 				return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, WordToken):
 			if (token <= cls.EXIT_KEYWORD.__KEYWORD__):
-				parserState.NewToken =    cls.EXIT_KEYWORD(token)
+				parserState.NewToken =    cls.EXIT_KEYWORD(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			else:
 				try:
-					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 				except KeyError:
-					parserState.NewToken =  IdentifierToken(token)
+					parserState.NewToken =  IdentifierToken(fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, LiteralToken):
@@ -392,7 +391,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -409,24 +408,24 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 	def stateExpression(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				return
 			elif (token == ")"):
-				parserState.NewToken =  ClosingRoundBracketToken(token)
+				parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
 				parserState.Counter -=  1
 				return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				return
 		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == cls.EXIT_KEYWORD.__KEYWORD__):
-				parserState.NewToken =    LoopKeyword(token)
+				parserState.NewToken =    LoopKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop(2, parserState.NewToken)
@@ -434,7 +433,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			elif (tokenValue == "to"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
 
-				parserState.NewToken =    ToKeyword(token)
+				parserState.NewToken =    ToKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop(1, parserState.NewToken)
@@ -442,16 +441,16 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			elif (tokenValue == "downto"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
 
-				parserState.NewToken =    DowntoKeyword(token)
+				parserState.NewToken =    DowntoKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop(1, parserState.NewToken)
 				return
 			else:
 				try:
-					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 				except KeyError:
-					parserState.NewToken =    IdentifierToken(token)
+					parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				return
 		elif isinstance(token, LiteralToken):
 			return
@@ -472,28 +471,28 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				parserState.NextState =   cls.stateExpression
 				return
 			elif (token == ")"):
-				parserState.NewToken =  ClosingRoundBracketToken(token)
+				parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
 				parserState.Counter -=  1
 				parserState.NextState = cls.stateExpression
 				return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == cls.EXIT_KEYWORD.__KEYWORD__):
-				parserState.NewToken =    LoopKeyword(token)
+				parserState.NewToken =    LoopKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.EXIT_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop(1, parserState.NewToken)
@@ -501,7 +500,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			elif (tokenValue == "to"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
 
-				parserState.NewToken =    ToKeyword(token)
+				parserState.NewToken =    ToKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
@@ -509,16 +508,16 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 			elif (tokenValue == "downto"):
 				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
 
-				parserState.NewToken =    DowntoKeyword(token)
+				parserState.NewToken =    DowntoKeyword(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			else:
 				try:
-					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](token)
+					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 				except KeyError:
-					parserState.NewToken =  IdentifierToken(token)
+					parserState.NewToken =  IdentifierToken(fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, LiteralToken):
@@ -543,7 +542,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -559,12 +558,12 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 	def stateExpression(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == ";"):
 				if (parserState.Counter == 0):
-					parserState.NewToken =  EndToken(token)
+					parserState.NewToken =  EndToken(fromExistingToken=token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                     cls.END_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 					parserState.Pop(2)
@@ -572,24 +571,24 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				return
 			elif (token == ")"):
 				if (parserState.Counter == -1):
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 				else:
-					parserState.NewToken =  ClosingRoundBracketToken(token)
+					parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
 					parserState.Counter -=  1
 					return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				return
 		elif isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			return
 		elif isinstance(token, LiteralToken):
 			return
@@ -610,13 +609,13 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
-			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](token)
+			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 			parserState.NextState =   cls.stateExpression
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == ";"):
 				if (parserState.Counter == 0):
-					parserState.NewToken =  EndToken(token)
+					parserState.NewToken =  EndToken(fromExistingToken=token)
 					parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                     cls.END_BLOCK(parserState.NewBlock, parserState.NewToken, endToken=parserState.NewToken)
 					parserState.Pop(2)
@@ -624,7 +623,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 				else:
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 			elif (token == "("):
-				parserState.NewToken =    OpeningRoundBracketToken(token)
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter +=    1
 				parserState.NextState =   cls.stateExpression
 				return
@@ -632,19 +631,19 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 				if (parserState.Counter == -1):
 					raise BlockParserException("Mismatch in opening and closing parenthesis. Counter={0}".format(parserState.Counter), token)
 				else:
-					parserState.NewToken =  ClosingRoundBracketToken(token)
+					parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
 					parserState.Counter -=  1
 					parserState.NextState = cls.stateExpression
 					return
 			else:
-				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](token)
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
 				parserState.NextState =   cls.stateExpression
 				return
 		elif isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](token)
+				parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateExpression
 			return
 		elif isinstance(token, LiteralToken):
@@ -669,7 +668,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

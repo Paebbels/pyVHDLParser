@@ -52,12 +52,12 @@ class DelimiterBlock(SkipableBlock):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if (token <= "constant"):
-				parserState.NewToken =    ConstantKeyword(token)
+				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "type"):
-				parserState.NewToken =    TypeKeyword(token)
+				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -70,7 +70,7 @@ class DelimiterBlock(SkipableBlock):
 			elif (token <= "pure"):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateObjectName
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -119,7 +119,7 @@ class OpenBlock(Block):
 	def stateGenericKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
 			parserState.PushState =   cls.stateOpeningParenthesis
@@ -141,7 +141,7 @@ class OpenBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == "(")):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     CloseBlock.stateClosingParenthesis
 			parserState.PushState =     cls.stateOpeningParenthesis
@@ -162,7 +162,7 @@ class OpenBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -179,13 +179,13 @@ class OpenBlock(Block):
 			return
 		elif isinstance(token, WordToken):
 			if (token <= "constant"):
-				parserState.NewToken =    ConstantKeyword(token)
+				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "type"):
-				parserState.NewToken =    TypeKeyword(token)
+				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
@@ -199,7 +199,7 @@ class OpenBlock(Block):
 			elif (token <= "pure"):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateObjectName
 				parserState.TokenMarker = parserState.NewToken

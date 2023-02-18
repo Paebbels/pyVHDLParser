@@ -59,13 +59,13 @@ class ThenBlock(SequentialBeginBlock):
 			tokenValue = token.Value.lower()
 
 			if (tokenValue == "elsif"):
-				newToken =                ElsIfKeyword(token)
+				newToken =                ElsIfKeyword(fromExistingToken=token)
 				parserState.NewToken =    newToken
 				parserState.TokenMarker = newToken
 				parserState.NextState =   ElsIfConditionBlock.stateElsIfKeyword
 				return
 			elif (tokenValue == "else"):
-				newToken =                ElseKeyword(token)
+				newToken =                ElseKeyword(fromExistingToken=token)
 				parserState.NewToken =    newToken
 				parserState.NewBlock =    ElseBlock(parserState.LastBlock, newToken)
 				parserState.TokenMarker = None
@@ -96,14 +96,14 @@ class IfConditionBlock(Block):
 	def stateIfKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   ThenBlock.stateThenKeyword
 			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -140,7 +140,7 @@ class IfConditionBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -159,14 +159,14 @@ class ElsIfConditionBlock(Block):
 	def stateElsIfKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   ThenBlock.stateThenKeyword
 			parserState.PushState =   ExpressionBlockEndedByThen.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -203,7 +203,7 @@ class ElsIfConditionBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

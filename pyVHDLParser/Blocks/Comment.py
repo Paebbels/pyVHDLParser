@@ -62,7 +62,7 @@ class SingleLineCommentBlock(CommentBlock):
 	def stateLinebreak(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken = IndentationToken(token)
+			parserState.NewToken = IndentationToken(fromExistingToken=token)
 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()
 		else:

@@ -29,14 +29,8 @@
 #
 from pyTooling.Decorators import export
 
-from pyVHDLModel.SyntaxModel import (
-	Context as ModelContext,
-	Entity as ModelEntity,
-	Architecture as ModelArchitecture,
-	Configuration as ModelConfiguration,
-	Package as ModelPackage,
-	PackageBody as ModelPackageBody
-)
+from pyVHDLModel.DesignUnit import Context as ModelContext,	Entity as ModelEntity, Architecture as ModelArchitecture
+from pyVHDLModel.DesignUnit import Configuration as ModelConfiguration,	Package as ModelPackage, PackageBody as ModelPackageBody
 
 from ..Token import Token
 

@@ -29,7 +29,7 @@
 #
 from pathlib import Path
 
-from pyVHDLModel.SyntaxModel import Document as ModelDocument
+from pyVHDLModel        import Document as ModelDocument
 from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
 
 
