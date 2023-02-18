@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLModel.SyntaxModel                import LibraryClause as VHDLModel_LibraryClause, UseClause as VHDLModel_UseClause
+from pyVHDLModel.DesignUnit                 import LibraryClause as VHDLModel_LibraryClause, UseClause as VHDLModel_UseClause
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken, AllKeyword
 from pyVHDLParser.Blocks                    import BlockParserException

@@ -27,6 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing import Any
+
 from pyTooling.Decorators       import export
 
 from pyVHDLParser               import SourceCodePosition
@@ -405,7 +407,7 @@ class KeywordToken(VHDLToken):
 	def __init__(self, previousToken: Token = None, value: str = None, start: SourceCodePosition = None, end: SourceCodePosition = None, fromExistingToken: WordToken = None):
 		if fromExistingToken is None:
 			if value.lower() != self.__KEYWORD__:
-				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), wordToken)
+				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), None)
 
 			super().__init__(previousToken, value, str, end)
 		else:

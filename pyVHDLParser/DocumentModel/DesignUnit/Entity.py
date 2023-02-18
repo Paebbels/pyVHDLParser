@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 from typing                                 import List
 
 from pyVHDLModel.SyntaxModel                import Entity as EntityVHDLModel
@@ -48,8 +48,7 @@ DEBUG = True
 @export
 class Entity(EntityVHDLModel):
 	def __init__(self, entityName):
-		super().__init__()
-		self._name = entityName
+		super().__init__(entityName)
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState): #document, group):

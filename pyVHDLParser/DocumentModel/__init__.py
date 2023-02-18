@@ -31,7 +31,7 @@ from pathlib                              import Path
 from typing                               import List, Union
 
 from pyTooling.Decorators                 import export
-from pyVHDLModel.SyntaxModel              import Document as DocumentModel
+from pyVHDLModel                          import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer
