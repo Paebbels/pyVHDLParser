@@ -308,5 +308,5 @@ class Tokenizer_ExceptionInKeyword(TestCase, ExpectedDataMixin, TokenSequence):
 		)
 
 		with self.assertRaises(TokenizerException) as ex:
-			_ = EntityKeyword(keywordToken)
+			_ = EntityKeyword(fromExistingToken=keywordToken)
 		# TODO: check exception message
