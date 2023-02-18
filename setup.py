@@ -45,6 +45,9 @@ DescribePythonPackageHostedOnGitHub(
 	description="A streaming-based VHDL parser.",
 	gitHubNamespace=gitHubNamespace,
 	sourceFileWithVersion=packageInformationFile,
+	consoleScripts={
+		"VHDLParser": "pyVHDLParser.CLI.VHDLParser:main",
+	},
 	developmentStatus="pre-alpha",
 	classifiers=[
 		"Operating System :: OS Independent",
