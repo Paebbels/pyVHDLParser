@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -27,18 +27,35 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pyVHDLModel.SyntaxModel import (
+	GenericConstantInterfaceItem as ModelGenericConstantInterfaceItem,
+	GenericTypeInterfaceItem as ModelGenericTypeInterfaceItem,
+	GenericPackageInterfaceItem as ModelGenericPackageInterfaceItem,
+	GenericFunctionInterfaceItem as ModelGenericFunctionInterfaceItem,
+	GenericProcedureInterfaceItem as ModelGenericProcedureInterfaceItem,
+	PortSignalInterfaceItem as ModelPortSignalInterfaceItem
+)
 
-from pyVHDLModel.SyntaxModel import Document as ModelDocument
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
+
+class GenericConstantInterfaceItem(ModelGenericConstantInterfaceItem):
+	pass
 
 
-class Document(ModelDocument):
-	_startOfTokenStream: StartOfDocumentToken
-	_endOfTokenStream: EndOfDocumentToken
+class GenericTypeInterfaceItem(ModelGenericTypeInterfaceItem):
+	pass
 
-	def __init__(self, path: Path, startOfTokenStream: StartOfDocumentToken, endOfTokenStream: EndOfDocumentToken):
-		super().__init__(path)
 
-		self._startOfTokenStream = startOfTokenStream
-		self._endOfTokenStream = endOfTokenStream
+class GenericPackageInterfaceItem(ModelGenericPackageInterfaceItem):
+	pass
+
+
+class GenericFunctionInterfaceItem(ModelGenericFunctionInterfaceItem):
+	pass
+
+
+class GenericProcedureInterfaceItem(ModelGenericProcedureInterfaceItem):
+	pass
+
+
+class PortSignalInterfaceItem(ModelPortSignalInterfaceItem):
+	pass

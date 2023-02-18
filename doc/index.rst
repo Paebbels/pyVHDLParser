@@ -7,7 +7,7 @@
 .. only:: html
 
    |SHIELD:svg:pyVHDLParser-github| |SHIELD:svg:pyVHDLParser-tag| |SHIELD:svg:pyVHDLParser-release| |SHIELD:svg:pyVHDLParser-date| |br|
-   |SHIELD:svg:pyVHDLParser-lib-status| |SHIELD:svg:pyVHDLParser-req-status| |SHIELD:svg:pyVHDLParser-lib-dep| |br|
+   |SHIELD:svg:pyVHDLParser-lib-status| |SHIELD:svg:pyVHDLParser-lib-dep| |br|
    |SHIELD:svg:pyVHDLParser-travis| |SHIELD:svg:pyVHDLParser-pypi-tag| |SHIELD:svg:pyVHDLParser-pypi-status| |SHIELD:svg:pyVHDLParser-pypi-python| |br|
    |SHIELD:svg:pyVHDLParser-codacy-quality| |SHIELD:svg:pyVHDLParser-codacy-coverage| |SHIELD:svg:pyVHDLParser-codecov-coverage| |SHIELD:svg:pyVHDLParser-lib-rank| |br|
    |SHIELD:svg:pyVHDLParser-rtd| |SHIELD:svg:pyVHDLParser-license|
@@ -15,7 +15,7 @@
 .. only:: latex
 
    |SHIELD:png:pyVHDLParser-github| |SHIELD:png:pyVHDLParser-tag| |SHIELD:png:pyVHDLParser-release| |SHIELD:png:pyVHDLParser-date| |br|
-   |SHIELD:png:pyVHDLParser-lib-status| |SHIELD:png:pyVHDLParser-req-status| |SHIELD:png:pyVHDLParser-lib-dep| |br|
+   |SHIELD:png:pyVHDLParser-lib-status| |SHIELD:png:pyVHDLParser-lib-dep| |br|
    |SHIELD:png:pyVHDLParser-travis| |SHIELD:png:pyVHDLParser-pypi-tag| |SHIELD:png:pyVHDLParser-pypi-status| |SHIELD:png:pyVHDLParser-pypi-python| |br|
    |SHIELD:png:pyVHDLParser-codacy-quality| |SHIELD:png:pyVHDLParser-codacy-coverage| |SHIELD:png:pyVHDLParser-codecov-coverage| |SHIELD:png:pyVHDLParser-lib-rank| |br|
    |SHIELD:png:pyVHDLParser-rtd| |SHIELD:png:pyVHDLParser-license|

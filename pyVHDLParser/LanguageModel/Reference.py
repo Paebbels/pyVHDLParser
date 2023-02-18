@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -27,18 +27,20 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pyVHDLModel.SyntaxModel import (
+	LibraryClause as ModelLibraryClause,
+	UseClause as ModelUseClause,
+	ContextReference as ModelContextReference
+)
 
-from pyVHDLModel.SyntaxModel import Document as ModelDocument
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
+
+class LibraryClause(ModelLibraryClause):
+	pass
 
 
-class Document(ModelDocument):
-	_startOfTokenStream: StartOfDocumentToken
-	_endOfTokenStream: EndOfDocumentToken
+class UseClause(ModelUseClause):
+	pass
 
-	def __init__(self, path: Path, startOfTokenStream: StartOfDocumentToken, endOfTokenStream: EndOfDocumentToken):
-		super().__init__(path)
 
-		self._startOfTokenStream = startOfTokenStream
-		self._endOfTokenStream = endOfTokenStream
+class ContextReference(ModelContextReference):
+	pass

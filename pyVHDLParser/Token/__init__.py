@@ -170,7 +170,7 @@ class Token:
 	Start:           SourceCodePosition   #: Position for the token start
 	End:             SourceCodePosition   #: Position for the token end
 
-	def __init__(self, previousToken: 'Token', start: SourceCodePosition, end :SourceCodePosition = None):
+	def __init__(self, previousToken: 'Token', start: SourceCodePosition, end: SourceCodePosition = None):
 		"""
 		Initializes a token object.
 
@@ -339,7 +339,6 @@ class CharacterToken(ValuedToken):
 			char="'" + CharacterTranslation(self.Value) + "'  ",
 			pos=self.Start
 		)
-
 
 
 @export

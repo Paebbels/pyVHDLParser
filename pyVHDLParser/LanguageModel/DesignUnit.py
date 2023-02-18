@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -27,18 +27,45 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pyTooling.Decorators import export
 
-from pyVHDLModel.SyntaxModel import Document as ModelDocument
-from pyVHDLParser.Token import StartOfDocumentToken, EndOfDocumentToken
+from pyVHDLModel.SyntaxModel import (
+	Context as ModelContext,
+	Entity as ModelEntity,
+	Architecture as ModelArchitecture,
+	Configuration as ModelConfiguration,
+	Package as ModelPackage,
+	PackageBody as ModelPackageBody
+)
+
+from ..Token import Token
 
 
-class Document(ModelDocument):
-	_startOfTokenStream: StartOfDocumentToken
-	_endOfTokenStream: EndOfDocumentToken
+@export
+class Context(ModelContext):
+	pass
 
-	def __init__(self, path: Path, startOfTokenStream: StartOfDocumentToken, endOfTokenStream: EndOfDocumentToken):
-		super().__init__(path)
 
-		self._startOfTokenStream = startOfTokenStream
-		self._endOfTokenStream = endOfTokenStream
+@export
+class Entity(ModelEntity):
+	_startToken: Token
+
+
+@export
+class Architecture(ModelArchitecture):
+	pass
+
+
+@export
+class Configuration(ModelConfiguration):
+	pass
+
+
+@export
+class Package(ModelPackage):
+	pass
+
+
+@export
+class PackageBody(ModelPackageBody):
+	pass

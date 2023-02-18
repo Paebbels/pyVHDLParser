@@ -403,19 +403,19 @@ begin
 
     dout2 <= guarded din;
 
-    /*with dout(0) select
+    with dout(0) select
       dout4 <= din when '0',
-              (others => '1') when others;*/
+              (others => '1') when others;
 
     g1: for i in 0 to 40 generate
-       -- g2: if i <= data_type'left generate
+       g2: if i <= data_type'left generate
          cmp: entity work.reg
             generic map (width => 1)
             port map (clk => clk,
                        rst_n => rst_n,
                        d(0) => din (i),
                        q(0) => dout3 (i));
-      -- end generate g2;
+      end generate g2;
     end generate g1;
   end block;
 
