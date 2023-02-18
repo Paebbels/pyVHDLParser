@@ -1,13 +1,13 @@
 -r ../requirements.txt
 
 # Enforce latest version on ReadTheDocs
-sphinx>=5.2.3
-pyTooling>=2.4.0
+sphinx>=5.3,<6.0
+pyTooling>=2.12.3
 
 # Sphinx Extenstions
 #sphinx.ext.coverage
 #sphinxcontrib-actdiag>=0.8.5
-sphinxcontrib-mermaid>=0.7.1
+sphinxcontrib-mermaid>=0.8.0
 #sphinxcontrib-seqdiag>=0.8.5
 #sphinxcontrib-textstyle>=0.2.1
 #sphinxcontrib-spelling>=2.2.0

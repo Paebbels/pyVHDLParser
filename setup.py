@@ -44,6 +44,9 @@ DescribePythonPackageHostedOnGitHub(
 	gitHubNamespace=gitHubNamespace,
 	keywords="Python3 VHDL Parser",
 	sourceFileWithVersion=packageInformationFile,
+	consoleScripts={
+		"VHDLParser": "pyVHDLParser.CLI.VHDLParser:main",
+	},
 	developmentStatus="pre-alpha",
 	classifiers=list(DEFAULT_CLASSIFIERS) + [
 		"Operating System :: OS Independent",

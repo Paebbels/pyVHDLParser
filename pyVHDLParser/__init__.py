@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -32,10 +32,10 @@ A streaming-based VHDL parser.
 """
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
-__copyright__ = "Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany\n" + \
+__copyright__ = "Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany\n" + \
                 "Copyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.6.5"
+__version__ =   "0.7.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
 
 from pyTooling.Decorators import export

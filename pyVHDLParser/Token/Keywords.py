@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -407,7 +407,7 @@ class KeywordToken(VHDLToken):
 	def __init__(self, previousToken: Token = None, value: str = None, start: SourceCodePosition = None, end: SourceCodePosition = None, fromExistingToken: WordToken = None):
 		if fromExistingToken is None:
 			if value.lower() != self.__KEYWORD__:
-				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), wordToken)
+				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), None)
 
 			super().__init__(previousToken, value, str, end)
 		else:
@@ -675,7 +675,7 @@ class InertialKeyword(KeywordToken):
 
 
 @export
-class LableKeyword(KeywordToken):
+class LabelKeyword(KeywordToken):
 	__KEYWORD__ = "lable"
 
 
@@ -781,7 +781,12 @@ class PortKeyword(KeywordToken):
 
 @export
 class PostponedKeyword(KeywordToken):
-	__KEYWORD__ = "postponend"
+	__KEYWORD__ = "postponed"
+
+
+@export
+class PrivateKeyword(KeywordToken):
+	__KEYWORD__ = "private"
 
 
 @export
@@ -925,6 +930,11 @@ class TypeKeyword(KeywordToken):
 
 
 @export
+class UnaffectedKeyword(KeywordToken):
+	__KEYWORD__ = "unaffected"
+
+
+@export
 class UnitsKeyword(KeywordToken):
 	__KEYWORD__ = "units"
 
@@ -947,6 +957,11 @@ class UnbufferedKeyword(KeywordToken):
 @export
 class VariableKeyword(KeywordToken):
 	__KEYWORD__ = "variable"
+
+
+@export
+class ViewKeyword(KeywordToken):
+	__KEYWORD__ = "view"
 
 
 @export
