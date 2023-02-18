@@ -1,24 +1,24 @@
-# =============================================================================
-#            __     ___   _ ____  _     ____
-#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __
-# | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|
-# | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |
-# | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|
-# |_|    |___/
-# =============================================================================
+# ==================================================================================================================== #
+#            __     ___   _ ____  _     ____                                                                           #
+#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #
+# | '_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | '__/ __|/ _ \ '__|                                                 #
+# | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #
+# | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #
+# |_|    |___/                                                                                                         #
+# ==================================================================================================================== #
 # Authors:                                                                                                             #
 #   Patrick Lehmann                                                                                                    #
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
-# Copyright 2014-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
+# Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
 # You may obtain a copy of the License at                                                                              #
 #                                                                                                                      #
-#		http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
 #                                                                                                                      #
 # Unless required by applicable law or agreed to in writing, software                                                  #
 # distributed under the License is distributed on an "AS IS" BASIS,                                                    #
@@ -29,11 +29,9 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""\
-Package installer for 'A streaming-based VHDL parser'.
-"""
+"""Package installer for 'A streaming-based VHDL parser'."""
 from pathlib             import Path
-from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub
+from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub, DEFAULT_CLASSIFIERS
 
 gitHubNamespace =        "Paebbels"
 packageName =            "pyVHDLParser"
@@ -44,9 +42,10 @@ DescribePythonPackageHostedOnGitHub(
 	packageName=packageName,
 	description="A streaming-based VHDL parser.",
 	gitHubNamespace=gitHubNamespace,
+	keywords="Python3 VHDL Parser",
 	sourceFileWithVersion=packageInformationFile,
 	developmentStatus="pre-alpha",
-	classifiers=[
+	classifiers=list(DEFAULT_CLASSIFIERS) + [
 		"Operating System :: OS Independent",
 		"Intended Audience :: Developers",
 		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",

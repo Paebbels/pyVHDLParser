@@ -15,13 +15,11 @@ coverage.xml
 # Dependencies
 !requirements.txt
 
-# Sphinx
-doc/_build/
-doc/pyVHDLParser/**/*.*
-!doc/pyVHDLParser/index.rst
-
-# BuildTheDocs
-doc/_theme/**/*.*
+# Sphinx documentation
+/doc/_build/
+/doc/_theme/
+/doc/pyVHDLParser/**/*.*
+!/doc/pyVHDLParser/index.rst
 
 # IntelliJ project files
 /.idea/workspace.xml
