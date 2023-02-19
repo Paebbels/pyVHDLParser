@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -57,7 +57,7 @@ class NameBlock(Block):
 	def stateBodyKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -74,7 +74,7 @@ class NameBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.statePackageName
 			return
 		elif isinstance(token, LinebreakToken):
@@ -91,7 +91,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -102,7 +102,7 @@ class NameBlock(Block):
 	def statePackageName(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -119,7 +119,7 @@ class NameBlock(Block):
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, WordToken) and (token <= "is")):
-			parserState.NewToken =      IsKeyword(token)
+			parserState.NewToken =      IsKeyword(fromExistingToken=token)
 			parserState.NewBlock =      NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.TokenMarker =   None
 			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion
@@ -138,7 +138,7 @@ class NameBlock(Block):
 			parserState.TokenMarker =   None
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

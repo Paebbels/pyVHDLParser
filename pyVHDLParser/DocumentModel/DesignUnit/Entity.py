@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 from typing                                 import List
 
 from pyVHDLModel.SyntaxModel                import Entity as EntityVHDLModel
@@ -48,8 +48,7 @@ DEBUG = True
 @export
 class Entity(EntityVHDLModel):
 	def __init__(self, entityName):
-		super().__init__()
-		self._name = entityName
+		super().__init__(entityName)
 
 	@classmethod
 	def stateParse(cls, parserState: ParserState): #document, group):

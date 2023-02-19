@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -32,9 +32,9 @@ A streaming-based VHDL parser.
 """
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
-__copyright__ = "2016-2021, Patrick Lehmann"
+__copyright__ = "Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany\nCopyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.6.5"
+__version__ =   "0.7.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
 
 from pyTooling.Decorators import export
@@ -66,21 +66,26 @@ class SourceCodePosition:
 class StartOf:
 	"""Base-class (mixin) for all StartOf*** classes."""
 
+
 @export
 class StartOfDocument(StartOf):
 	"""Base-class (mixin) for all StartOf***Document classes."""
+
 
 @export
 class StartOfSnippet(StartOf):
 	"""Base-class (mixin) for all StartOf***Snippet classes."""
 
+
 @export
 class EndOf:
 	"""Base-class (mixin) for all EndOf*** classes."""
 
+
 @export
 class EndOfDocument(EndOf):
 	"""Base-class (mixin) for all EndOf***Document classes."""
+
 
 @export
 class EndOfSnippet(EndOf):

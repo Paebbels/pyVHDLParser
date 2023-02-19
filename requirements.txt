@@ -1,7 +1,7 @@
-colorama>=0.4.4
+colorama>=0.4.6
 py-flags>=1.1.4
 
-pyTooling>=1.7.0
-pyTooling.TerminalUI>=1.5.5
-pyAttributes>=2.3.4
-pyVHDLModel==0.14.1
+pyTooling>=2.12.3
+pyTooling.TerminalUI>=1.5.9
+pyAttributes>=2.5.1
+pyVHDLModel==0.23.0

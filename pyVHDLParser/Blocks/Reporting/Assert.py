@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -42,7 +42,7 @@ class AssertBlock(Block):
 	def stateAssertKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -59,7 +59,7 @@ class AssertBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateAssertion
 			return
 		elif isinstance(token, LinebreakToken):
@@ -78,7 +78,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -89,7 +89,7 @@ class AssertBlock(Block):
 	def stateAssertion(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -106,7 +106,7 @@ class AssertBlock(Block):
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, WordToken) and (token <= "report")):
-			parserState.NewToken =      ReportKeyword(token)
+			parserState.NewToken =      ReportKeyword(fromExistingToken=token)
 			parserState.NextState =     cls.stateReportKeyword
 			return
 		elif isinstance(token, LinebreakToken):
@@ -125,7 +125,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -136,7 +136,7 @@ class AssertBlock(Block):
 	def stateReportKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -153,7 +153,7 @@ class AssertBlock(Block):
 	def stateWhitespace3(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateMessage
 			return
 		elif isinstance(token, LinebreakToken):
@@ -172,7 +172,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -183,12 +183,12 @@ class AssertBlock(Block):
 	def stateMessage(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == ";")):
-			parserState.NewToken =    EndToken(token)
+			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace4
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -205,12 +205,12 @@ class AssertBlock(Block):
 	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == ";")):
-			parserState.NewToken =    EndToken(token)
+			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif (isinstance(token, WordToken) and (token <= "severity")):
-			parserState.NewToken =    SeverityKeyword(token)
+			parserState.NewToken =    SeverityKeyword(fromExistingToken=token)
 			parserState.NextState =   cls.stateSeverityKeyword
 			return
 		elif isinstance(token, LinebreakToken):
@@ -229,7 +229,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
 			return
@@ -240,7 +240,7 @@ class AssertBlock(Block):
 	def stateSeverityKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace5
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -257,7 +257,7 @@ class AssertBlock(Block):
 	def stateWhitespace5(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateSeverityLevel
 			return
 		elif isinstance(token, LinebreakToken):
@@ -276,7 +276,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -287,12 +287,12 @@ class AssertBlock(Block):
 	def stateSeverityLevel(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == ";")):
-			parserState.NewToken =    EndToken(token)
+			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace6
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -309,7 +309,7 @@ class AssertBlock(Block):
 	def stateWhitespace6(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken)and (token == ";")):
-			parserState.NewToken =      EndToken(token)
+			parserState.NewToken =      EndToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
@@ -329,7 +329,7 @@ class AssertBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

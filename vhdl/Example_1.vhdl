@@ -2,15 +2,23 @@
 library IEEE;
 use     IEEE.std_logic_1164.all;
 
+-- My documentation string
+
+ --   continues here
+ --   continues here
+
 entity myEntity is
 	generic (
 		BITS : positive := 8
 	);
 	port (
-		Clock   : in  std_logic;
+		-- System Interfaces
+		Clock   : in  std_logic;                           -- System Clock
 		Output	: out	std_logic_vector(BITS - 1 downto 0)
 	);
 end entity;
+
+use     IEEE.numeric_std.all;
 
 architecture rtl of myEntity is
 	constant const0 : integer := 5;
@@ -27,6 +35,8 @@ package pkg0 is
 	function func0(a : integer) return string;
 end package;
 
+use     std.textio.line;
+
 package body Components is
 	function func0(a : integer) return string is
 		procedure proc0 is
@@ -35,3 +45,9 @@ package body Components is
 	begin
 	end function;
 end package body;
+
+configuration config of myEntity is
+	for rtl
+
+	end for;
+end configuration;

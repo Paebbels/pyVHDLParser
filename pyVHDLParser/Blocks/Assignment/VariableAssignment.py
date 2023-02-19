@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -45,7 +45,7 @@ class SignalAssignmentBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -66,7 +66,7 @@ class SignalAssignmentBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
@@ -78,7 +78,7 @@ class SignalAssignmentBlock(Block):
 		errorMessage = "Expected signalAssignment name (identifier)."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -100,11 +100,11 @@ class SignalAssignmentBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateSignalAssignmentName
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -117,13 +117,13 @@ class SignalAssignmentBlock(Block):
 		errorMessage = "Expected ';' after signalAssignment name."
 		if isinstance(token, CharacterToken):
 			if (token == ";"):
-				parserState.NewToken =    EndToken(token)
+				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == "\n"):
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
@@ -155,12 +155,12 @@ class SignalAssignmentBlock(Block):
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
 			if (token == ";"):
-				parserState.NewToken =    EndToken(token)
+				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -182,7 +182,7 @@ class SignalAssignmentBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

@@ -1,10 +1,55 @@
 [build-system]
 requires = [
-    "pyTooling >= 1.7.0",
-    "setuptools >= 35.0.2",
-    "wheel >= 0.29.0"
+    "pyTooling >= 2.12.0",
+    "setuptools >= 62.3.3",
+    "wheel >= 0.38.1"
 ]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 120
+
+[tool.mypy]
+python_version = "3.11"
+namespace_packages = true
+
+pretty = true
+show_error_context = true
+
+html_report = "report/typing"
+
+[tool.pytest.ini_options]
+# Don't set 'python_classes = *' otherwise, pytest doesn't search for classes
+# derived from unittest.Testcase
+python_files = "*"
+python_functions = "test_*"
+filterwarnings = [
+	"error::DeprecationWarning",
+	"error::PendingDeprecationWarning"
+]
+
+[tool.coverage.run]
+branch = true
+omit = [
+	"*site-packages*",
+	"setup.py",
+	"tests/*"
+]
+
+[tool.coverage.report]
+skip_covered = false
+skip_empty = true
+exclude_lines = [
+	"pragma: no cover",
+	"raise NotImplementedError"
+]
+omit = [
+	"tests/*"
+]
+
+[tool.coverage.html]
+directory = "report/coverage/html"
+title="Code Coverage of pyVHDLParser"
+
+[tool.coverage.xml]
+output = "report/coverage/coverage.xml"

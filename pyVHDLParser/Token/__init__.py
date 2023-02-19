@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -34,13 +34,6 @@ from pyTooling.Decorators     import export
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base        import ParserException
 
-
-__CHARACTER_TRANSLATION = {
-	"\r": "«\\r»",
-	"\n": "«\\n»",
-	"\t": "«\\t»",
-#	" ":  "« »"
-}
 
 @export
 def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
@@ -173,11 +166,11 @@ class Token:
 	"""Base-class for all token classes."""
 
 	_previousToken:  'Token'              #: Reference to the previous token
-	NextToken:       'Token'             = None #: Reference to the next token
+	NextToken:       'Token'              #: Reference to the next token
 	Start:           SourceCodePosition   #: Position for the token start
 	End:             SourceCodePosition   #: Position for the token end
 
-	def __init__(self, previousToken: 'Token', start: SourceCodePosition, end :SourceCodePosition = None):
+	def __init__(self, previousToken: 'Token', start: SourceCodePosition, end: SourceCodePosition = None):
 		"""
 		Initializes a token object.
 
@@ -265,7 +258,6 @@ class ValuedToken(Token):
 			)
 
 
-
 @export
 class StartOfToken(Token):
 	"""Base-class for meta-tokens representing the start of a token stream."""
@@ -310,13 +302,16 @@ class EndOfToken(Token):
 class StartOfDocumentToken(StartOfToken, StartOfDocument):
 	pass
 
+
 @export
 class EndOfDocumentToken(EndOfToken, EndOfDocument):
 	pass
 
+
 @export
 class StartOfSnippetToken(StartOfToken, StartOfSnippet):
 	pass
+
 
 @export
 class EndOfSnippetToken(EndOfToken, EndOfSnippet):
@@ -346,7 +341,6 @@ class CharacterToken(ValuedToken):
 		)
 
 
-
 @export
 class FusedCharacterToken(CharacterToken):
 	"""Token representing a double (or triple) character."""
@@ -371,6 +365,7 @@ class FusedCharacterToken(CharacterToken):
 @export
 class SpaceToken(ValuedToken):
 	"""Token representing a space (space or tab)."""
+
 	def __repr__(self) -> str:
 		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
 			name=self.__class__.__name__,
@@ -414,6 +409,7 @@ class WordToken(ValuedToken):
 class VHDLToken(ValuedToken):
 	"""Base-class for all VHDL specific tokens."""
 
+
 @export
 class CommentToken(VHDLToken):
 	"""Base-class for comment tokens."""
@@ -444,8 +440,12 @@ class MultiLineCommentToken(CommentToken):
 class LiteralToken(VHDLToken):
 	"""Base-class for all literals in VHDL."""
 
-	def __eq__(self, other: str):  return self.Value == other
-	def __ne__(self, other: str):  return self.Value != other
+	def __eq__(self, other: str):
+		return self.Value == other
+
+	def __ne__(self, other: str):
+		return self.Value != other
+
 	def __hash__(self):
 		return super().__hash__()
 
@@ -460,6 +460,7 @@ class LiteralToken(VHDLToken):
 @export
 class IntegerLiteralToken(LiteralToken):
 	"""Token representing an integer literal."""
+
 
 @export
 class RealLiteralToken(LiteralToken):
@@ -541,10 +542,7 @@ class LinebreakToken(VHDLToken):
 	"""Token representing a linebreak in the source code file."""
 
 	def __repr__(self) -> str:
-		return "<{name:-<111} at {pos!r}>".format(
-				name=self.__class__.__name__ + "  ",
-				pos=self.Start
-			)
+		return f"<{self.__class__.__name__ + '  ':-<111} at {self.Start!r}>"
 
 
 @export
@@ -554,8 +552,4 @@ class IndentationToken(SpaceToken):
 	def __repr__(self) -> str:
 		value = self.Value
 		value = value.replace("\t", "\\t")
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-				name=self.__class__.__name__,
-				value="'" + value + "'  ",
-				pos=self.Start
-			)
+		return f"""<{self.__class__.__name__: <50}  {"'" + value + "'  ":.<59} at {self.Start!r}>"""

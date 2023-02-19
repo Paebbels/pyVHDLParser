@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -68,7 +68,7 @@ class NameBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -89,7 +89,7 @@ class NameBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
@@ -101,7 +101,7 @@ class NameBlock(Block):
 		errorMessage = "Expected block name (identifier)."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -112,7 +112,7 @@ class NameBlock(Block):
 				return
 			elif (token == "-"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
@@ -124,11 +124,11 @@ class NameBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateBlockName
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -142,7 +142,7 @@ class NameBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
@@ -174,7 +174,7 @@ class NameBlock(Block):
 		errorMessage = "Expected keyword IS after block name."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -196,12 +196,12 @@ class NameBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif (isinstance(token, WordToken) and (token <= "is")):
-			parserState.NewToken =      IsKeyword(token)
+			parserState.NewToken =      IsKeyword(fromExistingToken=token)
 			parserState.NewBlock =      NameBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     DeclarativeRegion.stateDeclarativeRegion
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

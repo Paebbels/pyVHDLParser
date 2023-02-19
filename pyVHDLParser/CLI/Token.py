@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -52,7 +52,7 @@ class TokenStreamHandlers:
 		file = Path(args.Filename)
 
 		if (not file.exists()):
-			print("File '{0!s}' does not exist.".format(file))
+			print(f"File '{file}' does not exist.")
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()

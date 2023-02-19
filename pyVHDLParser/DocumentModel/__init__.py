@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -31,7 +31,7 @@ from pathlib                              import Path
 from typing                               import List, Union
 
 from pyTooling.Decorators                 import export
-from pyVHDLModel.SyntaxModel              import Document as DocumentModel
+from pyVHDLModel                          import Document as DocumentModel
 
 from pyVHDLParser.Base                    import ParserException
 from pyVHDLParser.Token.Parser            import Tokenizer

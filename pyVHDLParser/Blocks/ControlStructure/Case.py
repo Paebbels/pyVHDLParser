@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -56,7 +56,7 @@ class ArrowBlock(SequentialBeginBlock):
 	def stateSequentialRegion(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, WordToken) and (token <= "when")):
-			newToken =                WhenKeyword(token)
+			newToken =                WhenKeyword(fromExistingToken=token)
 			parserState.NewToken =    newToken
 			parserState.TokenMarker = newToken
 			parserState.NextState =   WhenBlock.stateWhenKeyword
@@ -80,14 +80,14 @@ class WhenBlock(SequentialBeginBlock):
 	def stateWhenKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   ArrowBlock.stateArrowKeyword
 			parserState.PushState =   WhenExpressionBlock.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -124,7 +124,7 @@ class WhenBlock(SequentialBeginBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
 			return
@@ -165,13 +165,13 @@ class IsBlock(SequentialBeginBlock):
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == "when"):
-				newToken =                WhenKeyword(token)
+				newToken =                WhenKeyword(fromExistingToken=token)
 				parserState.NewToken =    newToken
 				parserState.TokenMarker = newToken
 				parserState.NextState =   WhenBlock.stateWhenKeyword
 				return
 			elif (tokenValue == "end"):
-				parserState.NewToken =    EndKeyword(token)
+				parserState.NewToken =    EndKeyword(fromExistingToken=token)
 				parserState.NextState =   cls.END_BLOCK.stateEndKeyword
 				return
 		elif isinstance(token, LinebreakToken):
@@ -190,7 +190,7 @@ class IsBlock(SequentialBeginBlock):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -210,14 +210,14 @@ class CaseBlock(Block):
 	def stateCaseKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   IsBlock.stateIsKeyword
 			parserState.PushState =   CaseExpressionBlock.stateExpression
 			return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -254,7 +254,7 @@ class CaseBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

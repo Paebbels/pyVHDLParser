@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -49,7 +49,7 @@ class InterfaceObjectBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateObjectName
 			return
 		elif isinstance(token, ExtendedIdentifier):
@@ -70,7 +70,7 @@ class InterfaceObjectBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -81,11 +81,11 @@ class InterfaceObjectBlock(Block):
 	def stateObjectName(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif (isinstance(token, CharacterToken) and (token == ":")):
-			parserState.NewToken =    DelimiterToken(token)
+			parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateColon1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -102,7 +102,7 @@ class InterfaceObjectBlock(Block):
 	def stateWhitespace2(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == ":")):
-			parserState.NewToken =      DelimiterToken(token)
+			parserState.NewToken =      DelimiterToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateColon1
 			return
 		elif isinstance(token, LinebreakToken):
@@ -120,7 +120,7 @@ class InterfaceObjectBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -132,15 +132,15 @@ class InterfaceObjectBlock(Block):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			try:
-				parserState.NewToken =    cls.MODES[token.Value.lower()](token)
+				parserState.NewToken =    cls.MODES[token.Value.lower()](fromExistingToken=token)
 				parserState.NextState =   cls.stateModeKeyword
 				return
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.NextState =   cls.stateSubtypeIndication
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace3
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -159,11 +159,11 @@ class InterfaceObjectBlock(Block):
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			try:
-				parserState.NewToken =    cls.MODES[tokenValue](token)
+				parserState.NewToken =    cls.MODES[tokenValue](fromExistingToken=token)
 				parserState.NextState =   cls.stateModeKeyword
 				return
 			except KeyError:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.NextState =   cls.stateSubtypeIndication
 				return
 		elif isinstance(token, ExtendedIdentifier):
@@ -184,7 +184,7 @@ class InterfaceObjectBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -211,7 +211,7 @@ class InterfaceObjectBlock(Block):
 	def stateWhitespace4(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateSubtypeIndication
 			return
 		elif isinstance(token, ExtendedIdentifier):
@@ -232,7 +232,7 @@ class InterfaceObjectBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -243,7 +243,7 @@ class InterfaceObjectBlock(Block):
 	def stateSubtypeIndication(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
-			parserState.NewToken =      VariableAssignmentKeyword(token)
+			parserState.NewToken =      VariableAssignmentKeyword(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
 			parserState.PushState =     cls.EXPRESSION.stateBeforeExpression
@@ -252,19 +252,19 @@ class InterfaceObjectBlock(Block):
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == ';'):
-				parserState.NewToken =    DelimiterToken(token)
+				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == ')'):
-				parserState.NewToken =    BoundaryToken(token)
+				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop(2)
 				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace5
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -281,7 +281,7 @@ class InterfaceObjectBlock(Block):
 	def stateWhitespace5(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, FusedCharacterToken) and (token == ":=")):
-			parserState.NewToken =      VariableAssignmentKeyword(token)
+			parserState.NewToken =      VariableAssignmentKeyword(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.DELIMITER_BLOCK.stateItemDelimiter
 			parserState.PushState =     cls.EXPRESSION.stateBeforeExpression
@@ -289,13 +289,13 @@ class InterfaceObjectBlock(Block):
 			return
 		elif isinstance(token, CharacterToken):
 			if (token == ';'):
-				parserState.NewToken =    DelimiterToken(token)
+				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == ')'):
-				parserState.NewToken =    BoundaryToken(token)
+				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop(2)
 				parserState.TokenMarker = parserState.NewToken
@@ -316,7 +316,7 @@ class InterfaceObjectBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -426,7 +426,7 @@ class InterfaceTypeBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateTypeName
 			return
 		elif isinstance(token, ExtendedIdentifier):
@@ -447,7 +447,7 @@ class InterfaceTypeBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -459,19 +459,19 @@ class InterfaceTypeBlock(Block):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (token == ';'):
-				parserState.NewToken =    DelimiterToken(token)
+				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == ')'):
-				parserState.NewToken =    BoundaryToken(token)
+				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop(2)
 				parserState.TokenMarker = parserState.NewToken
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -489,13 +489,13 @@ class InterfaceTypeBlock(Block):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (token == ';'):
-				parserState.NewToken =    DelimiterToken(token)
+				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)
 				parserState.Pop()
 				return
 			elif (token == ')'):
-				parserState.NewToken =    BoundaryToken(token)
+				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				parserState.Pop(2)
 				parserState.TokenMarker = parserState.NewToken
@@ -515,7 +515,7 @@ class InterfaceTypeBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return

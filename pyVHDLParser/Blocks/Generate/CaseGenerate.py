@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -48,7 +48,7 @@ class CaseBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -69,7 +69,7 @@ class CaseBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateWhitespace1
 			return
 
@@ -81,7 +81,7 @@ class CaseBlock(Block):
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -103,11 +103,11 @@ class CaseBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(token)
+			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateGenerateName
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -121,7 +121,7 @@ class CaseBlock(Block):
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
 				parserState.NewBlock =    CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
@@ -153,7 +153,7 @@ class CaseBlock(Block):
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
 					parserState.NewBlock =  CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -175,12 +175,12 @@ class CaseBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif (isinstance(token, WordToken) and (token <= "is")):
-			parserState.NewToken =      IsKeyword(token)
+			parserState.NewToken =      IsKeyword(fromExistingToken=token)
 			parserState.NewBlock =      CaseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
 			return
 		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -193,7 +193,7 @@ class CaseBlock(Block):
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
 			if (token == "\n"):
-				parserState.NewToken =    LinebreakToken(token)
+				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -206,22 +206,22 @@ class CaseBlock(Block):
 				parserState.TokenMarker = token
 				return
 		elif isinstance(token, SpaceToken):
-			parserState.NewToken =      IndentationToken(token)
+			parserState.NewToken =      IndentationToken(fromExistingToken=token)
 			parserState.NewBlock =      IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			return
 		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
 			if (keyword == "generic"):
-				newToken =              GenericKeyword(token)
+				newToken =              GenericKeyword(fromExistingToken=token)
 				parserState.PushState = GenericList.OpenBlock.stateGenericKeyword
 			elif (keyword == "port"):
-				newToken =              PortKeyword(token)
+				newToken =              PortKeyword(fromExistingToken=token)
 				parserState.PushState = PortList.OpenBlock.statePortKeyword
 			elif (keyword == "end"):
-				newToken =              EndKeyword(token)
+				newToken =              EndKeyword(fromExistingToken=token)
 				parserState.NextState = EndGenerateBlock.stateEndKeyword
 			elif (keyword == "begin"):
-				parserState.NewToken =  BeginKeyword(token)
+				parserState.NewToken =  BeginKeyword(fromExistingToken=token)
 				parserState.NewBlock =  BeginBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.NextState = BeginBlock.stateBeginKeyword
 				return

@@ -59,15 +59,6 @@
    :height: 22
    :target: https://libraries.io/github/Paebbels/pyVHDLParser
 
-.. |SHIELD:svg:pyVHDLParser-req-status| image:: https://img.shields.io/requires/github/Paebbels/pyVHDLParser
-   :alt: Requires.io
-   :height: 22
-   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master
-.. |SHIELD:png:pyVHDLParser-req-status| image:: https://raster.shields.io/requires/github/Paebbels/pyVHDLParser
-   :alt: Requires.io
-   :height: 22
-   :target: https://requires.io/github/Paebbels/pyVHDLParser/requirements/?branch=master
-
 .. |SHIELD:svg:pyVHDLParser-travis| image:: https://img.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis
    :alt: Travis - Build on 'master'
    :height: 22

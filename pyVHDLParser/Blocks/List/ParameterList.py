@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -44,7 +44,7 @@ class OpenBlock(Block):
 	def stateParameterKeyword(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
 			parserState.PushState =   cls.stateOpeningParenthesis
@@ -67,7 +67,7 @@ class OpenBlock(Block):
 	def stateWhitespace1(cls, parserState: ParserState):
 		token = parserState.Token
 		if (isinstance(token, CharacterToken) and (token == "(")):
-			parserState.NewToken =    BoundaryToken(token)
+			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.PushState =   cls.stateOpeningParenthesis
 			parserState.Counter =     1
@@ -88,7 +88,7 @@ class OpenBlock(Block):
 		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
 			return
 		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
-			parserState.NewToken =      BoundaryToken(token)
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
@@ -100,25 +100,25 @@ class OpenBlock(Block):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if (token <= "constant"):
-				parserState.NewToken =    ConstantKeyword(token)
+				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "variable"):
-				parserState.NewToken =    VariableKeyword(token)
+				parserState.NewToken =    VariableKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (token <= "signal"):
-				parserState.NewToken =    SignalKeyword(token)
+				parserState.NewToken =    SignalKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			else:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -153,18 +153,18 @@ class ItemBlock(Block):
 			elif (token == ")"):
 				parserState.Counter -= 1
 				if (parserState.Counter == 0):
-					parserState.NewToken =    BoundaryToken(token)
+					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       CloseBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.Pop()
 					parserState.TokenMarker = None
 				else:
-					parserState.NewToken =    ClosingRoundBracketToken(token)
+					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 					# parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.NewToken)
 					# parserState.Pop()
 			elif (token == ";"):
 				if (parserState.Counter == 1):
-					parserState.NewToken =    DelimiterToken(token)
+					parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 					parserState.NextState =   DelimiterBlock.stateItemDelimiter
@@ -183,22 +183,22 @@ class DelimiterBlock(SkipableBlock):
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			if (tokenValue == "constant"):
-				parserState.NewToken =    ConstantKeyword(token)
+				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "variable"):
-				parserState.NewToken =    VariableKeyword(token)
+				parserState.NewToken =    VariableKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "signal"):
-				parserState.NewToken =    SignalKeyword(token)
+				parserState.NewToken =    SignalKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
 			elif (tokenValue == "type"):
-				parserState.NewToken =    TypeKeyword(token)
+				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
@@ -211,7 +211,7 @@ class DelimiterBlock(SkipableBlock):
 			elif (tokenValue == "pure"):
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
-				parserState.NewToken =    IdentifierToken(token)
+				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateObjectName
 				parserState.TokenMarker = parserState.NewToken
 				return

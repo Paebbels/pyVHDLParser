@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
+# Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #
 # Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -503,7 +503,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 			for keyword in cls.KEYWORDS:
 				if (tokenValue == keyword.__KEYWORD__):
-					newToken =                keyword(token)
+					newToken =                keyword(fromExistingToken=token)
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken
 					parserState.TokenMarker = newToken

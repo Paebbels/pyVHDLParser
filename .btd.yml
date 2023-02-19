@@ -5,5 +5,4 @@ target: gh-pages
 formats: [ html ]
 images:
   base: btdi/sphinx:pytooling
-  latex: btdi/latex
-theme: https://codeload.GitHub.com/buildthedocs/sphinx.theme/tar.gz/v1
+theme: https://codeload.github.com/buildthedocs/sphinx.theme/tar.gz/v1
