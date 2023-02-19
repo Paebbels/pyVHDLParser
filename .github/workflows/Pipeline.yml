@@ -3,64 +3,61 @@ name: Pipeline
 on:
   push:
   workflow_dispatch:
-
-defaults:
-  run:
-    shell: bash
+  schedule:
+    - cron: '0 0 * * 5'
 
 jobs:
 
   Params:
-    uses: pyTooling/Actions/.github/workflows/Parameters.yml@r0
+    uses: pyTooling/Actions/.github/workflows/Parameters.yml@dev
     with:
       name: pyVHDLParser
-      python_version_list: "3.8 3.9 3.10"
+      python_version_list: "3.8 3.9 3.10 3.11"
 
   UnitTesting:
-    uses: pyTooling/Actions/.github/workflows/UnitTesting.yml@r0
+    uses: pyTooling/Actions/.github/workflows/UnitTesting.yml@dev
     needs:
       - Params
     with:
       jobs: ${{ needs.Params.outputs.python_jobs }}
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.unittesting }}
+      artifact: ${{ fromJson(needs.Params.outputs.artifact_names).unittesting_xml }}
 
   Coverage:
-    uses: pyTooling/Actions/.github/workflows/CoverageCollection.yml@r0
+    uses: pyTooling/Actions/.github/workflows/CoverageCollection.yml@dev
     needs:
       - Params
     with:
-      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.coverage }}
+      python_version: ${{ needs.Params.outputs.python_version }}
+      artifact: ${{ fromJson(needs.Params.outputs.artifact_names).codecoverage_html }}
     secrets:
       codacy_token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   StaticTypeCheck:
-    uses: pyTooling/Actions/.github/workflows/StaticTypeCheck.yml@r0
+    uses: pyTooling/Actions/.github/workflows/StaticTypeCheck.yml@dev
     needs:
       - Params
     with:
-      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
-      commands: |
-        mypy --html-report htmlmypy -p pyVHDLParser
-      report: 'htmlmypy'
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.typing }}
+      python_version: ${{ needs.Params.outputs.python_version }}
+      requirements: '-r tests/requirements.txt'
+      commands: mypy --html-report htmlmypy -p pyVHDLParser
+      html_artifact: ${{ fromJson(needs.Params.outputs.artifact_names).statictyping_html }}
 
   PublishTestResults:
-    uses: pyTooling/Actions/.github/workflows/PublishTestResults.yml@r0
+    uses: pyTooling/Actions/.github/workflows/PublishTestResults.yml@dev
     needs:
       - UnitTesting
 
   Package:
-    uses: pyTooling/Actions/.github/workflows/Package.yml@r0
+    uses: pyTooling/Actions/.github/workflows/Package.yml@dev
     needs:
       - Params
       - Coverage
     with:
-      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.package }}
+      python_version: ${{ needs.Params.outputs.python_version }}
+      artifact: ${{ fromJson(needs.Params.outputs.artifact_names).package_all }}
 
   Release:
-    uses: pyTooling/Actions/.github/workflows/Release.yml@r0
+    uses: pyTooling/Actions/.github/workflows/Release.yml@dev
     if: startsWith(github.ref, 'refs/tags')
     needs:
       - UnitTesting
@@ -69,16 +66,16 @@ jobs:
       - Package
 
   PublishOnPyPI:
-    uses: pyTooling/Actions/.github/workflows/PublishOnPyPI.yml@r0
+    uses: pyTooling/Actions/.github/workflows/PublishOnPyPI.yml@dev
     if: startsWith(github.ref, 'refs/tags')
     needs:
       - Params
       - Release
       - Package
     with:
-      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
+      python_version: ${{ needs.Params.outputs.python_version }}
       requirements: -r dist/requirements.txt
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.package }}
+      artifact: ${{ fromJson(needs.Params.outputs.artifact_names).package_all }}
     secrets:
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
@@ -90,27 +87,27 @@ jobs:
 #      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
 
   BuildTheDocs:
-    uses: pyTooling/Actions/.github/workflows/BuildTheDocs.yml@r0
+    uses: pyTooling/Actions/.github/workflows/BuildTheDocs.yml@dev
     needs:
       - Params
 #      - VerifyDocs
     with:
-      artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.doc }}
+      artifact: ${{ fromJson(needs.Params.outputs.artifact_names).documentation_html }}
 
   PublishToGitHubPages:
-    uses: pyTooling/Actions/.github/workflows/PublishToGitHubPages.yml@r0
+    uses: pyTooling/Actions/.github/workflows/PublishToGitHubPages.yml@dev
     needs:
       - Params
       - BuildTheDocs
       - Coverage
       - StaticTypeCheck
     with:
-      doc: ${{ fromJson(needs.Params.outputs.params).artifacts.doc }}
-      coverage: ${{ fromJson(needs.Params.outputs.params).artifacts.coverage }}
-      typing: ${{ fromJson(needs.Params.outputs.params).artifacts.typing }}
+      doc: ${{ fromJson(needs.Params.outputs.artifact_names).documentation_html }}
+      coverage: ${{ fromJson(needs.Params.outputs.artifact_names).codecoverage_html }}
+      typing: ${{ fromJson(needs.Params.outputs.artifact_names).statictyping_html }}
 
   ArtifactCleanUp:
-    uses: pyTooling/Actions/.github/workflows/ArtifactCleanUp.yml@r0
+    uses: pyTooling/Actions/.github/workflows/ArtifactCleanUp.yml@dev
     needs:
       - Params
       - UnitTesting
@@ -118,12 +115,11 @@ jobs:
       - StaticTypeCheck
       - BuildTheDocs
       - PublishToGitHubPages
+      - PublishTestResults
     with:
-      package: ${{ fromJson(needs.Params.outputs.params).artifacts.package }}
+      package: ${{ fromJson(needs.Params.outputs.artifact_names).package_all }}
       remaining: |
-        ${{ fromJson(needs.Params.outputs.params).artifacts.unittesting }}-3.8
-        ${{ fromJson(needs.Params.outputs.params).artifacts.unittesting }}-3.9
-        ${{ fromJson(needs.Params.outputs.params).artifacts.unittesting }}-3.10
-        ${{ fromJson(needs.Params.outputs.params).artifacts.coverage }}
-        ${{ fromJson(needs.Params.outputs.params).artifacts.typing }}
-        ${{ fromJson(needs.Params.outputs.params).artifacts.doc }}
+        ${{ fromJson(needs.Params.outputs.artifact_names).unittesting_xml }}-*
+        ${{ fromJson(needs.Params.outputs.artifact_names).codecoverage_html }}
+        ${{ fromJson(needs.Params.outputs.artifact_names).statictyping_html }}
+        ${{ fromJson(needs.Params.outputs.artifact_names).documentation_html }}
