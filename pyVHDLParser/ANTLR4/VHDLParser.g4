@@ -455,7 +455,7 @@ rule_ConcurrentSelectedSignalAssignment
 			target=rule_Target TOK_SIG_ASSIGN
 			guarded=KW_GUARDED?
 			delayMechanism=rule_DelayMechanism?
-			conditionalWaveforms=rule_ConditionalWaveforms
+			selectedWaveforms=rule_SelectedWaveforms
 		TOK_SEMICOL
 	;
 
