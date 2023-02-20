@@ -11,7 +11,7 @@
 //                                                                                                                    //
 // License:                                                                                                           //
 // ================================================================================================================== //
-// Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                          //
+// Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                          //
 // Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                             //
 //                                                                                                                    //
 // Licensed under the Apache License, Version 2.0 (the "License");                                                    //
@@ -455,7 +455,7 @@ rule_ConcurrentSelectedSignalAssignment
 			target=rule_Target TOK_SIG_ASSIGN
 			guarded=KW_GUARDED?
 			delayMechanism=rule_DelayMechanism?
-			conditionalWaveforms=rule_ConditionalWaveforms
+			selectedWaveforms=rule_SelectedWaveforms
 		TOK_SEMICOL
 	;
 
@@ -824,7 +824,7 @@ rule_Expression
 	| left=rule_Expression operator=( OP_MUL | OP_DIV | OP_MOD | OP_REM ) right=rule_Expression                                                                    #binaryOp
 	| left=rule_Expression operator=( OP_PLUS | OP_MINUS | OP_CONCAT ) right=rule_Expression                                                                       #binaryOp
 	| left=rule_Expression operator=( OP_SLL | OP_SRL | OP_SLA | OP_SRA | OP_ROL | OP_ROR ) right=rule_Expression                                                  #binaryOp
-	| left=rule_Expression operator=( OP_EQ | OP_NE | OP_LT | OP_LE | OP_GT | OP_GE | OP_IEQ | OP_INE | OP_ILT | OP_ILE | OP_IGT | OP_IGE ) right=rule_Expression  #binaryOp
+	| left=rule_Expression operator=( OP_EQ | OP_NE | OP_LT | TOK_SIG_ASSIGN | OP_GT | OP_GE | OP_IEQ | OP_INE | OP_ILT | OP_ILE | OP_IGT | OP_IGE ) right=rule_Expression  #binaryOp
 	| left=rule_Expression operator=( OP_AND | OP_OR | OP_NAND | OP_NOR | OP_XOR | OP_XNOR ) right=rule_Expression                                                 #binaryOp
 	;
 
@@ -941,7 +941,7 @@ rule_FunctionSpecification
 		KW_FUNCTION rule_Designator
 // TODO: insert subprogram_header
 		( KW_PARAMETER? TOK_LP rule_FormalParameterList TOK_RP )?
-		KW_RETURN ( returnIdentifier=LIT_IDENTIFIER )? rule_Name
+		KW_RETURN ( returnIdentifier=LIT_IDENTIFIER KW_OF )? rule_Name
 	;
 
 /*
@@ -974,7 +974,7 @@ rule_GenerateStatementBody
 
 rule_GenericClause
 	: KW_GENERIC TOK_LP
-			elements+=rule_InterfaceElement ( TOK_SEMICOL elements+=rule_InterfaceElement )*
+			elements+=rule_InterfaceElement ( TOK_SEMICOL elements+=rule_InterfaceElement )* TOK_SEMICOL?
 		TOK_RP TOK_SEMICOL
 	;
 
@@ -1145,8 +1145,7 @@ rule_InterfaceFunctionSpecification
 	;
 
 rule_InterfaceList
-	: interfaceElements+=rule_InterfaceElement ( TOK_SEMICOL interfaceElements+=rule_InterfaceElement )*
-		TOK_SEMICOL?
+	: interfaceElements+=rule_InterfaceElement ( TOK_SEMICOL interfaceElements+=rule_InterfaceElement )* TOK_SEMICOL?
 	;
 
 // rule_InterfaceObjectDeclaration
@@ -1287,7 +1286,7 @@ rule_ModeIndication
 rule_ModeViewDeclaration
 	: KW_VIEW name=LIT_IDENTIFIER KW_OF rule_SubtypeIndication KW_IS
 			rule_ModeViewElementDefinition*
-		KW_END KW_VIEW name2=LIT_IDENTIFIER TOK_SEMICOL
+		KW_END KW_VIEW name2=LIT_IDENTIFIER? TOK_SEMICOL
 	;
 
 rule_ModeViewElementDefinition
@@ -1461,7 +1460,7 @@ rule_PlainReturnStatement
 
 rule_PortClause
 	: KW_PORT TOK_LP
-			ports+=rule_InterfaceSignalDeclaration ( TOK_SEMICOL ports+=rule_InterfaceSignalDeclaration )*
+			ports+=rule_InterfaceSignalDeclaration ( TOK_SEMICOL ports+=rule_InterfaceSignalDeclaration )* TOK_SEMICOL?
 		TOK_RP TOK_SEMICOL
 	;
 
@@ -1827,7 +1826,7 @@ rule_SequentialBlockStatement
 			declaredItems+=rule_ProcessDeclarativeItem*
 		KW_BEGIN
 			statements+=rule_SequentialStatement*
-		KW_END KW_BLOCK? label2=LIT_IDENTIFIER TOK_SEMICOL
+		KW_END KW_BLOCK? label2=LIT_IDENTIFIER? TOK_SEMICOL
 	;
 
 // rule_SequentialBlockDeclarativePart
@@ -2124,7 +2123,7 @@ tolerance_aspect
 // handled by lexer
 
 rule_TypeConversion
-	: rule_TypeMark TOK_LP rule_Expression TOK_RP
+	: rule_Name TOK_LP rule_Expression TOK_RP
 	;
 
 rule_TypeDeclaration
