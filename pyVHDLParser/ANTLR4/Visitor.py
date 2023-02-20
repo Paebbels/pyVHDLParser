@@ -1,4 +1,6 @@
-from pyVHDLModel import Mode, MixinDesignUnitWithContext
+from pyVHDLModel import DesignUnit
+from pyVHDLModel.Base import Mode
+from pyVHDLModel.Symbol import PackageSymbol
 from .VHDLLexer import VHDLLexer
 
 from ..LanguageModel.DesignUnit import Context, Entity, Architecture, Configuration, Package, PackageBody
@@ -20,6 +22,8 @@ class VHDLVisitor(VHDLParserVisitor):
 			if nameText.lower() != name2Text.lower():
 				raise Exception(f"Repeated {languageEntity} name '{name2Text}' must match {languageEntity} name '{nameText}'.")
 
+		return nameText
+
 	def visitRule_DesignFile(self, ctx: VHDLParser.Rule_DesignFileContext):
 		return [self.visit(designUnit) for designUnit in ctx.designUnits]
 
@@ -39,7 +43,7 @@ class VHDLVisitor(VHDLParserVisitor):
 
 	def visitRule_DesignUnit(self, ctx: VHDLParser.Rule_DesignUnitContext):
 		# translate the design unit itself
-		libraryUnit: MixinDesignUnitWithContext = self.visit(ctx.libraryUnit)
+		libraryUnit: DesignUnit = self.visit(ctx.libraryUnit)
 
 		# check if there are context items and add them to the design unit
 		for contextItem in ctx.contextItems:
@@ -107,8 +111,9 @@ class VHDLVisitor(VHDLParserVisitor):
 
 	def visitRule_PackageBody(self, ctx:VHDLParser.Rule_PackageBodyContext):
 		packageName = self.checkRepeatedName(ctx.name, ctx.name2, "package body")
+		packageSymbol = PackageSymbol(packageName)
 
-		return PackageBody(packageName)
+		return PackageBody(packageSymbol)
 
 	def visitRule_GenericClause(self, ctx: VHDLParser.Rule_GenericClauseContext):
 		generics = []
