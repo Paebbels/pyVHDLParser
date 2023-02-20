@@ -307,7 +307,7 @@ LIT_OTHER_CHARACTER
 */
 
 fragment BasicIdentifier:    [a-z] ('_'? [a-z0-9])* ;
-fragment ExtendedIdentifier: '\\' ([a-z0-9] | '_')+ '\\'      ;
+fragment ExtendedIdentifier: '\\' .+? '\\' ;
 
 LIT_IDENTIFIER
 	: BasicIdentifier
