@@ -1,7 +1,9 @@
+# Generated from .\VHDLParser.g4 by ANTLR 4.12.0
 from antlr4 import ParseTreeVisitor
 
 from .VHDLParser import VHDLParser
 
+# This class defines a complete generic visitor for a parse tree produced by VHDLParser.
 
 class VHDLParserVisitor(ParseTreeVisitor):
 	# Visit a parse tree produced by VHDLParser#rule_AbsolutePathname.
@@ -54,14 +56,6 @@ class VHDLParserVisitor(ParseTreeVisitor):
 
 	# Visit a parse tree produced by VHDLParser#rule_ArrayConstraint.
 	def visitRule_ArrayConstraint(self, ctx: VHDLParser.Rule_ArrayConstraintContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#rule_ArrayElementConstraint.
-	def visitRule_ArrayElementConstraint(self, ctx: VHDLParser.Rule_ArrayElementConstraintContext):
-		return self.visitChildren(ctx)
-
-	# Visit a parse tree produced by VHDLParser#rule_ArrayElementResolution.
-	def visitRule_ArrayElementResolution(self, ctx: VHDLParser.Rule_ArrayElementResolutionContext):
 		return self.visitChildren(ctx)
 
 	# Visit a parse tree produced by VHDLParser#rule_ArrayIncompleteTypeDefinition.
@@ -204,6 +198,10 @@ class VHDLParserVisitor(ParseTreeVisitor):
 	def visitRule_ConcurrentSimpleSignalAssignment(self, ctx: VHDLParser.Rule_ConcurrentSimpleSignalAssignmentContext):
 		return self.visitChildren(ctx)
 
+	# Visit a parse tree produced by VHDLParser#rule_ConcurrentStatement.
+	def visitRule_ConcurrentStatement(self, ctx: VHDLParser.Rule_ConcurrentStatementContext):
+		return self.visitChildren(ctx)
+
 	# Visit a parse tree produced by VHDLParser#rule_ConditionClause.
 	def visitRule_ConditionClause(self, ctx: VHDLParser.Rule_ConditionClauseContext):
 		return self.visitChildren(ctx)
@@ -336,6 +334,10 @@ class VHDLParserVisitor(ParseTreeVisitor):
 	def visitRule_EntityClass(self, ctx: VHDLParser.Rule_EntityClassContext):
 		return self.visitChildren(ctx)
 
+	# Visit a parse tree produced by VHDLParser#rule_EntityClassEntry.
+	def visitRule_EntityClassEntry(self, ctx: VHDLParser.Rule_EntityClassEntryContext):
+		return self.visitChildren(ctx)
+
 	# Visit a parse tree produced by VHDLParser#rule_EntityDeclaration.
 	def visitRule_EntityDeclaration(self, ctx: VHDLParser.Rule_EntityDeclarationContext):
 		return self.visitChildren(ctx)
@@ -440,10 +442,6 @@ class VHDLParserVisitor(ParseTreeVisitor):
 	def visitRule_ForGenerateStatement(self, ctx: VHDLParser.Rule_ForGenerateStatementContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#rule_ForceMode.
-	def visitRule_ForceMode(self, ctx: VHDLParser.Rule_ForceModeContext):
-		return self.visitChildren(ctx)
-
 	# Visit a parse tree produced by VHDLParser#rule_FormalDesignator.
 	def visitRule_FormalDesignator(self, ctx: VHDLParser.Rule_FormalDesignatorContext):
 		return self.visitChildren(ctx)
@@ -486,6 +484,18 @@ class VHDLParserVisitor(ParseTreeVisitor):
 
 	# Visit a parse tree produced by VHDLParser#rule_GenericMapAspect.
 	def visitRule_GenericMapAspect(self, ctx: VHDLParser.Rule_GenericMapAspectContext):
+		return self.visitChildren(ctx)
+
+	# Visit a parse tree produced by VHDLParser#rule_GroupConstituent.
+	def visitRule_GroupConstituent(self, ctx: VHDLParser.Rule_GroupConstituentContext):
+		return self.visitChildren(ctx)
+
+	# Visit a parse tree produced by VHDLParser#rule_GroupDeclaration.
+	def visitRule_GroupDeclaration(self, ctx: VHDLParser.Rule_GroupDeclarationContext):
+		return self.visitChildren(ctx)
+
+	# Visit a parse tree produced by VHDLParser#rule_GroupTemplateDeclaration.
+	def visitRule_GroupTemplateDeclaration(self, ctx: VHDLParser.Rule_GroupTemplateDeclarationContext):
 		return self.visitChildren(ctx)
 
 	# Visit a parse tree produced by VHDLParser#rule_GuardedSignalSpecification.
@@ -1034,10 +1044,6 @@ class VHDLParserVisitor(ParseTreeVisitor):
 	def visitRule_TypeDefinition(self, ctx: VHDLParser.Rule_TypeDefinitionContext):
 		return self.visitChildren(ctx)
 
-	# Visit a parse tree produced by VHDLParser#rule_TypeMark.
-	def visitRule_TypeMark(self, ctx: VHDLParser.Rule_TypeMarkContext):
-		return self.visitChildren(ctx)
-
 	# Visit a parse tree produced by VHDLParser#rule_UnboundArrayDefinition.
 	def visitRule_UnboundArrayDefinition(self, ctx: VHDLParser.Rule_UnboundArrayDefinitionContext):
 		return self.visitChildren(ctx)
@@ -1073,6 +1079,5 @@ class VHDLParserVisitor(ParseTreeVisitor):
 	# Visit a parse tree produced by VHDLParser#rule_WaveformElement.
 	def visitRule_WaveformElement(self, ctx: VHDLParser.Rule_WaveformElementContext):
 		return self.visitChildren(ctx)
-
 
 del VHDLParser
