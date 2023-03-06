@@ -41,9 +41,9 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 	charIterator = iter(value)
 	try:
 		while char := next(charIterator):
-			if (char == "\r"):
+			if char == "\r":
 				nextChar = next(charIterator)
-				if (nextChar == "\n"):
+				if nextChar == "\n":
 					buffer += "«\\r\\n»"
 					if not oneLiner:
 						buffer += "\n"
@@ -52,15 +52,15 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 					if not oneLiner:
 						buffer += "\n"
 
-					if (nextChar == "\t"):
+					if nextChar == "\t":
 						buffer += "«\\n»"
 					else:
 						buffer += nextChar
-			elif (char == "\n"):
+			elif char == "\n":
 				buffer += "«\\n»"
 				if not oneLiner:
 					buffer += "\n"
-			elif (char == "\t"):
+			elif char == "\t":
 				buffer += "«\\t»"
 			else:
 				buffer += char
@@ -92,7 +92,7 @@ class TokenIterator:
 
 	def __next__(self) -> 'Token':
 		# in last call of '__next__', the last token in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		token = self.currentToken
@@ -110,7 +110,7 @@ class TokenIterator:
 				self.state = 2
 		else:
 			self.currentToken = token.NextToken
-			if (self.currentToken is None):
+			if self.currentToken is None:
 				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
 
 		return token
@@ -137,7 +137,7 @@ class TokenReverseIterator:
 
 	def __next__(self) -> 'Token':
 		# in last call of '__next__', the last token in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		token = self.currentToken
@@ -155,7 +155,7 @@ class TokenReverseIterator:
 				self.currentToken = None
 		else:
 			self.currentToken = token.PreviousToken
-			if (self.currentToken is None):
+			if self.currentToken is None:
 				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
 
 		return token

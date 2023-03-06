@@ -59,7 +59,7 @@ class LinebreakBlock(WhitespaceBlock):
 			# print("  {GREEN}continue: {0!s}{NOCOLOR}".format(parserState, **Console.Foreground))
 		else:
 			parserState.Pop()
-			if (parserState.TokenMarker is None):
+			if parserState.TokenMarker is None:
 				# print("  {DARK_GREEN}set marker: {GREEN}LinebreakBlock.stateLinebreak    {DARK_GREEN}marker {GREEN}{0!s}{NOCOLOR}".format(token, **Console.Foreground))
 				parserState.TokenMarker = token
 			# print("  {DARK_GREEN}re-issue:   {GREEN}{state!s: <20s}    {DARK_GREEN}token  {GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))

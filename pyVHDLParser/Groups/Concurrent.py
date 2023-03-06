@@ -41,7 +41,7 @@ class AssertGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, AssertBlock) and not block.MultiPart):
+				if isinstance(block, AssertBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:
@@ -61,7 +61,7 @@ class ReportGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, ReportBlock) and not block.MultiPart):
+				if isinstance(block, ReportBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:

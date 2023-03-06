@@ -35,7 +35,7 @@ def skip_member_handler(app, what, name, obj, skip, options):
 
 	try:
 		attributes = DocumentMemberAttribute.GetAttributes(obj)
-		if (len(attributes) > 0):
+		if len(attributes) > 0:
 			# print("*#"*20)
 			# try:
 				# print("skip_member_handler: ", obj)

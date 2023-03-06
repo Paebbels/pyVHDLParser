@@ -104,7 +104,7 @@ class Signal:
 		self.Simulator =          None
 
 	def Initialize(self):
-		if (self._initializer is not None):
+		if self._initializer is not None:
 			result = self._initializer()
 		else:
 			result = self._subType.Attributes.Low()

@@ -57,9 +57,9 @@ class Context(ContextVHDLModel):
 				else:
 					raise BlockParserException("ContextName not found.", None)  # FIXME: change to DOMParserException
 
-				if (len(document.Libraries) != 0):
+				if len(document.Libraries) != 0:
 					raise BlockParserException("A context (library statements) is not allowed for a context declaration.", None)  # FIXME: change to DOMParserException
-				if (len(document.PackageReferences) != 0):
+				if len(document.PackageReferences) != 0:
 					raise BlockParserException("A context (use statements) is not allowed for a context declaration.", None)  # FIXME: change to DOMParserException
 
 				context = cls(contextName)
@@ -162,12 +162,12 @@ class Context(ContextVHDLModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}ENTITY{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(name=self._name, indent=indentation, **Console.Foreground))
-		if (len(self._genericItems) > 0):
+		if len(self._genericItems) > 0:
 			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for generic in self._genericItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
 			print("{indent}  );".format(indent=indentation, **Console.Foreground))
-		if (len(self._portItems) > 0):
+		if len(self._portItems) > 0:
 			print("{indent}  {DARK_CYAN}PORT{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for port in self._portItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=port, type="", **Console.Foreground))

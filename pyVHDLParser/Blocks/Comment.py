@@ -40,7 +40,7 @@ class SingleLineCommentBlock(CommentBlock):
 	@classmethod
 	def statePossibleCommentStart(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "-")):
+		if isinstance(token, CharacterToken) and (token == "-"):
 			parserState.NewToken =    SingleLineCommentKeyword(parserState.TokenMarker)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   cls.stateConsumeComment
@@ -51,7 +51,7 @@ class SingleLineCommentBlock(CommentBlock):
 	@classmethod
 	def stateConsumeComment(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "\n")):
+		if isinstance(token, CharacterToken)and (token == "\n"):
 			parserState.NewBlock =    SingleLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.Token)
 			parserState.NextState =   cls.stateLinebreak
 			return
@@ -67,7 +67,7 @@ class SingleLineCommentBlock(CommentBlock):
 			parserState.Pop()
 		else:
 			parserState.Pop()
-			if (parserState.TokenMarker is None):
+			if parserState.TokenMarker is None:
 				# print("  new marker: None -> {0!s}".format(token))
 				parserState.TokenMarker = token
 				# print("  {DARK_GREEN}re-issue: {GREEN}{state!s}     {DARK_GREEN}token={GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
@@ -79,7 +79,7 @@ class MultiLineCommentBlock(CommentBlock):
 	@classmethod
 	def statePossibleCommentStart(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "*")):
+		if isinstance(token, CharacterToken) and (token == "*"):
 			parserState.NewToken =    MultiLineCommentStartKeyword(parserState.TokenMarker)
 			parserState.TokenMarker = parserState.NewToken
 			parserState.NextState =   cls.stateConsumeComment
@@ -92,7 +92,7 @@ class MultiLineCommentBlock(CommentBlock):
 	@classmethod
 	def stateConsumeComment(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "*")):
+		if isinstance(token, CharacterToken) and (token == "*"):
 			parserState.PushState =   cls.statePossibleCommentEnd
 			parserState.TokenMarker = token
 			return
@@ -102,7 +102,7 @@ class MultiLineCommentBlock(CommentBlock):
 	@classmethod
 	def statePossibleCommentEnd(cls, parserState: ParserState):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "/")):
+		if isinstance(token, CharacterToken) and (token == "/"):
 			parserState.NewToken = MultiLineCommentEndKeyword(parserState.TokenMarker)
 			parserState.Pop()
 			parserState.NewBlock = MultiLineCommentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)

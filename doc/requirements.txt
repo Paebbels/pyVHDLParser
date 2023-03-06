@@ -7,7 +7,7 @@ pyTooling>=2.12.3
 # Sphinx Extenstions
 #sphinx.ext.coverage
 #sphinxcontrib-actdiag>=0.8.5
-sphinxcontrib-mermaid>=0.8.0
+sphinxcontrib-mermaid>=0.8.1
 #sphinxcontrib-seqdiag>=0.8.5
 #sphinxcontrib-textstyle>=0.2.1
 #sphinxcontrib-spelling>=2.2.0

@@ -61,21 +61,21 @@ class Graph:
 		self._nodes.append(node)
 
 	def __colorize(self, node):
-		if (node.Color is NodeColors.Black):
+		if node.Color is NodeColors.Black:
 			node.Color = NodeColors.Gray
 			for edge in node._edges:
 				edge.EdgeKind = self.__colorize(edge.End)
-				if (edge.EdgeKind is EdgeKinds.Forward):
+				if edge.EdgeKind is EdgeKinds.Forward:
 					self._forwardEdges.append(edge)
-				elif (edge.EdgeKind is EdgeKinds.Backward):
+				elif edge.EdgeKind is EdgeKinds.Backward:
 					self._backwardEdges.append(edge)
-				elif (edge.EdgeKind is EdgeKinds.Sideward):
+				elif edge.EdgeKind is EdgeKinds.Sideward:
 					self._sidewardEdges.append(edge)
 
 			return EdgeKinds.Forward
-		elif (node.Color is NodeColors.Gray):
+		elif node.Color is NodeColors.Gray:
 			return EdgeKinds.Backward
-		elif (node.Color is NodeColors.White):
+		elif node.Color is NodeColors.White:
 			return  EdgeKinds.Sideward
 
 	def Colorize(self):
@@ -89,15 +89,15 @@ class Graph:
 
 		for node in self._nodes:
 			node.Weight = len(node._incomingEdges)
-			if (node.Weight > 0):
+			if node.Weight > 0:
 				workList.append(node)
 
-		while (len(workList) > 0):
+		while len(workList) > 0:
 			node = workList.pop()
 			for edge in node._outgoingEdges:
 				end = edge.End
 				end.Weight -= 1
-				if (end.Weight == 0):
+				if end.Weight == 0:
 					workList.append(end)
 
 			resultList.append(node)

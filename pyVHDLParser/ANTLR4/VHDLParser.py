@@ -4834,7 +4834,7 @@ class VHDLParser(Parser):
 			self.state = 970
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0):
+			if (((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0:
 				self.state = 969
 				localctx.delayMechanism = self.rule_DelayMechanism()
 
@@ -4994,7 +4994,7 @@ class VHDLParser(Parser):
 			self.state = 994
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0):
+			if (((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0:
 				self.state = 993
 				localctx.delayMechanism = self.rule_DelayMechanism()
 
@@ -5155,7 +5155,7 @@ class VHDLParser(Parser):
 			self.state = 1017
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0):
+			if (((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0:
 				self.state = 1016
 				localctx.delayMechanism = self.rule_DelayMechanism()
 
@@ -5561,7 +5561,7 @@ class VHDLParser(Parser):
 			self.state = 1073
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0):
+			if (((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0:
 				self.state = 1072
 				localctx.delayMechanism = self.rule_DelayMechanism()
 
@@ -12557,7 +12557,7 @@ class VHDLParser(Parser):
 			self.state = 1931
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 20)) & ~0x3f) == 0 and ((1 << (_la - 20)) & 562959214444545) != 0):
+			if (((_la - 20)) & ~0x3f) == 0 and ((1 << (_la - 20)) & 562959214444545) != 0:
 				self.state = 1930
 				localctx.modeName = self.rule_Mode()
 
@@ -18912,7 +18912,7 @@ class VHDLParser(Parser):
 			self.state = 2777
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 147)) & ~0x3f) == 0 and ((1 << (_la - 147)) & 114689) != 0):
+			if (((_la - 147)) & ~0x3f) == 0 and ((1 << (_la - 147)) & 114689) != 0:
 				self.state = 2769
 				localctx._rule_Name = self.rule_Name(0)
 				localctx.names.append(localctx._rule_Name)
@@ -19132,7 +19132,7 @@ class VHDLParser(Parser):
 			self.state = 2802
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 20)) & ~0x3f) == 0 and ((1 << (_la - 20)) & 562959214444545) != 0):
+			if (((_la - 20)) & ~0x3f) == 0 and ((1 << (_la - 20)) & 562959214444545) != 0:
 				self.state = 2801
 				self.rule_Mode()
 
@@ -19377,7 +19377,7 @@ class VHDLParser(Parser):
 			self.state = 2829
 			self._errHandler.sync(self)
 			_la = self._input.LA(1)
-			if ((((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0):
+			if (((_la - 48)) & ~0x3f) == 0 and ((1 << (_la - 48)) & 36028814198833153) != 0:
 				self.state = 2828
 				self.rule_DelayMechanism()
 

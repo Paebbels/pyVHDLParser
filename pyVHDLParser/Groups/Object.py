@@ -44,7 +44,7 @@ class ConstantGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, ConstantDeclarationBlock) and not block.MultiPart):
+				if isinstance(block, ConstantDeclarationBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:
@@ -64,7 +64,7 @@ class VariableGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, VariableDeclarationBlock) and not block.MultiPart):
+				if isinstance(block, VariableDeclarationBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:
@@ -84,7 +84,7 @@ class SignalGroup(Group):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, SignalDeclarationBlock) and not block.MultiPart):
+				if isinstance(block, SignalDeclarationBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:

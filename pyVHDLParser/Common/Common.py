@@ -62,12 +62,12 @@ class VHDLVersion(Enum):
 	def __init__(self, *_):
 		"""Patch the embedded MAP dictionary"""
 		for k, v in self.__class__.__VHDL_VERSION_MAPPINGS__.items():
-			if ((not isinstance(v, self.__class__)) and (v == self.value)):
+			if (not isinstance(v, self.__class__)) and (v == self.value):
 				self.__class__.__VHDL_VERSION_MAPPINGS__[k] = self
 
 	def __eq__(self, other: 'VHDLVersion') -> bool:
 		"""Return true if the internal value is equal to the second operand."""
-		if ((self is VHDLVersion.Any) or (other is VHDLVersion.Any)):
+		if (self is VHDLVersion.Any) or (other is VHDLVersion.Any):
 			return True
 		else:
 			return (self.value == other.value)

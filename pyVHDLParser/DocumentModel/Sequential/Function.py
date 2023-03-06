@@ -120,13 +120,13 @@ class Function(FunctionModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	def AddLibraries(self, libraries: List[LibraryClause]):
-		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to function {GREEN}{0}{NOCOLOR}:".format(self._name, **LineTerminal().Foreground))
+		if (DEBUG is True) and (len(libraries) > 0): print("{DARK_CYAN}Adding libraries to function {GREEN}{0}{NOCOLOR}:".format(self._name, **LineTerminal().Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **LineTerminal().Foreground))
 			self._libraries.append(library._library)
 
 	def AddUses(self, uses: List[PackageReference]):
-		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to function {GREEN}{0}{NOCOLOR}:".format(self._name, **LineTerminal().Foreground))
+		if (DEBUG is True) and (len(uses) > 0): print("{DARK_CYAN}Adding uses to function {GREEN}{0}{NOCOLOR}:".format(self._name, **LineTerminal().Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **LineTerminal().Foreground))
 			self._uses.append(use)
@@ -147,12 +147,12 @@ class Function(FunctionModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{item}{NOCOLOR};".format(indent=indentation, lib=use._configuration, pack=use._function, item=use._item, **LineTerminal().Foreground))
 		print()
 		print("{indent}{DARK_CYAN}FUNCTION{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **LineTerminal().Foreground))
-		if (len(self._genericItems) > 0):
+		if len(self._genericItems) > 0:
 			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **LineTerminal().Foreground))
 			for generic in self._genericItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **LineTerminal().Foreground))
 			print("{indent}  );".format(indent=indentation))
-		if (len(self._declaredItems) > 0):
+		if len(self._declaredItems) > 0:
 			for item in self._declaredItems:
 				item.Print(indent+1)
 		print("{indent}{DARK_CYAN}END FUNCTION{NOCOLOR};".format(indent=indentation, name=self._name, **LineTerminal().Foreground))

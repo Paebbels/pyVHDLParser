@@ -39,7 +39,7 @@ class CommentGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
-			if (not isinstance(block, CommentBlock)):
+			if not isinstance(block, CommentBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
 				parserState.ReIssue =   True
@@ -53,7 +53,7 @@ class WhitespaceGroup(Group):
 	@classmethod
 	def stateParse(cls, parserState: ParserState):
 		for block in parserState.GetBlockIterator:
-			if (not isinstance(block, (WhitespaceBlock, LinebreakBlock, IndentationBlock))):
+			if not isinstance(block, (WhitespaceBlock, LinebreakBlock, IndentationBlock)):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block.PreviousBlock)
 				parserState.Pop()
 				parserState.ReIssue =   True

@@ -161,13 +161,13 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.CurrentNode.AddPort(portName)
 
 	def AddLibraries(self, libraries: List[LibraryClause]):
-		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(libraries) > 0): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraries.append(library._library)
 
 	def AddUses(self, uses: List[PackageReference]):
-		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(uses) > 0): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
 			self._packageReferences.append(use)
@@ -184,7 +184,7 @@ class PackageBody(PackageBodyVHDLModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
-		if (len(self._declaredItems) > 0):
+		if len(self._declaredItems) > 0:
 			for item in self._declaredItems:
 				item.Print(indent+1)
 		print("{indent}{DARK_CYAN}END PACKAGE BODY{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))

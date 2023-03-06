@@ -100,6 +100,18 @@ News
 
 .. only:: html
 
+   Mar. 2023 - Enhancements
+   ========================
+
+.. only:: latex
+
+   .. rubric:: Mar. 2023 - Enhancements
+
+* Bumped dependencies to pyVHDLModel and updated interfaces.
+* CLI entrypoint will be installed as a binary.
+
+.. only:: html
+
    Jun. 2021 - Enhancements
    ========================
 
@@ -108,7 +120,6 @@ News
    .. rubric:: Jun. 2021 - Enhancements
 
 * Added infrastructure to run example code provided in issues as testcase.
-*
 * New Single-File GitHub Action workflow (pipeline).
 * Added Dependabot configuration file.
 * Updated dependencies

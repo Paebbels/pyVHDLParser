@@ -105,7 +105,7 @@ class ParserState:
 		startBlock =        next(self._iterator)
 		startGroup =        StartOfDocumentGroup(startBlock)
 
-		if (not isinstance(startBlock, StartOfDocumentBlock)):
+		if not isinstance(startBlock, StartOfDocumentBlock):
 			raise GroupParserException("First block is not a StartOfDocumentBlock.", startBlock)
 
 		self.Block =        None
@@ -147,7 +147,7 @@ class ParserState:
 
 	@property
 	def BlockMarker(self) -> 'Block':
-		if ((self.NewBlock is not None) and (self._blockMarker is self.Block)):
+		if (self.NewBlock is not None) and (self._blockMarker is self.Block):
 			# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
 			self._blockMarker = self.NewBlock
 		return self._blockMarker
@@ -173,9 +173,9 @@ class ParserState:
 		self._blockMarker = top[1]
 		self.NextGroup =    top[2]
 		# print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
-		if (self.NextGroup.InnerGroup is None):
+		if self.NextGroup.InnerGroup is None:
 			self.NextGroup.InnerGroup = self.NewGroup
-		if (self.NewGroup.__class__ not in self.NextGroup._subGroups):
+		if self.NewGroup.__class__ not in self.NextGroup._subGroups:
 			raise GroupParserException("Group '{group1}' not supported in {group2}.".format(
 				group1=self.NewGroup.__class__,
 				group2=self.NextGroup.__class__.__qualname__
@@ -192,7 +192,7 @@ class ParserState:
 
 		for block in self._iterator:
 			# an empty marker means: set on next yield run
-			if (self._blockMarker is None):
+			if self._blockMarker is None:
 				# if self.debug: print("  new block marker: None -> {0!s}".format(block))
 				self._blockMarker = block
 
@@ -205,12 +205,12 @@ class ParserState:
 				self.NextState(self)
 
 				# yield a new group
-				if (self.NewGroup is not None):
+				if self.NewGroup is not None:
 					yield self.NewGroup
 					self.LastGroup = self.NewGroup
 					self.NewGroup = None
 
-					if (isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.LastGroup, EndOfDocumentGroup)):
+					if isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.LastGroup, EndOfDocumentGroup):
 						return
 
 		else:
@@ -223,7 +223,7 @@ class MetaGroup(type):
 	def __new__(cls, className, baseClasses, classMembers: dict):
 		states = []
 		for memberName, memberObject in classMembers.items():
-			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
+			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
 		classMembers['__STATES__'] = states
@@ -260,9 +260,9 @@ class Group(metaclass=MetaGroup):
 	def __iter__(self):   # XXX: return type; iterator vs. generator
 		block = self.StartBlock
 		print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartBlock.StartToken, self.EndBlock.EndToken))
-		while (block is not self.EndBlock):
+		while block is not self.EndBlock:
 			yield block
-			if (block.NextBlock is None):
+			if block.NextBlock is None:
 				raise GroupParserException("Token after {0!r} <- {1!r} <- {2!r} is empty (None).".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
 			block = block.NextBlock
 
@@ -286,7 +286,7 @@ class Group(metaclass=MetaGroup):
 
 	def GetSubGroups(self, groupTypes=None):  # XXX: return type
 		group = self.InnerGroup
-		while (group is not None):
+		while group is not None:
 			yield group
 			group = group.NextGroup
 

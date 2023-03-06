@@ -94,7 +94,7 @@ class EnumerationType(Type):
 
 		def Pos(self, value):
 			for pos,enumValue in enumerate(self._enum._enumeration):
-				if (enumValue == value):
+				if enumValue == value:
 					return pos
 
 		def Val(self, pos):
@@ -129,7 +129,7 @@ class ArrayType(Type):
 	@property
 	def IsConstrained(self):
 		for range in self._ranges:
-			if (not range.IsConstrained):
+			if not range.IsConstrained:
 				return False
 		return self._elementType.IsConstrained
 
@@ -153,7 +153,7 @@ class RecordType(Type):
 	@property
 	def IsContrained(self):
 		for member in self._members:
-			if (not member.IsConstrained):
+			if not member.IsConstrained:
 				return False
 		return True
 
@@ -211,7 +211,7 @@ class EnumerationSubType(SubType):
 
 
 	def __init__(self, name, subType, range=None, resolutionFunction=None):
-		if (range is None):
+		if range is None:
 			range = subType._range
 		super().__init__(name, subType, range, resolutionFunction)
 
@@ -228,7 +228,7 @@ class Range:
 	def __init__(self, baseType, direction=None, left=None, right=None):
 		self._baseType =  baseType
 
-		if (direction is None):
+		if direction is None:
 			self.Direction = None
 			self.Left =      None
 			self.Right =     None

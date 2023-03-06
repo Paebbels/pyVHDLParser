@@ -66,7 +66,7 @@ class TestSuite:
 
 			file = self._vhdlDirectory / testCase.__FILENAME__
 
-			if (not file.exists()):
+			if not file.exists():
 				print("    {RED}File '{0!s}' does not exist.{NOCOLOR}".format(file, **Console.Foreground))
 				continue
 
@@ -134,8 +134,8 @@ class TestSuite:
 		try:
 			blockIterator = iter(vhdlBlockStream)
 			firstBlock =    next(blockIterator)
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):              print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
-			elif (not isinstance(firstBlock.StartToken, StartOfDocumentToken)): print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
+			if not isinstance(firstBlock, StartOfDocumentBlock):              print("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **Console.Foreground))
+			elif not isinstance(firstBlock.StartToken, StartOfDocumentToken): print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstBlock.StartToken, **Console.Foreground))
 
 			lastBlock = None
 			lastToken = firstBlock.StartToken
@@ -146,15 +146,15 @@ class TestSuite:
 				tokenIterator = iter(vhdlBlock)
 
 				for token in tokenIterator:
-					if (token.NextToken is None):                 print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
-					elif (lastToken.NextToken is not token):      print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
-					elif (token.PreviousToken is not lastToken):  print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
+					if token.NextToken is None:                 print("{RED}Token has an open end.{NOCOLOR}".format(**Console.Foreground))
+					elif lastToken.NextToken is not token:      print("{RED}Last token is not connected to the current one.{NOCOLOR}".format(**Console.Foreground))
+					elif token.PreviousToken is not lastToken:  print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**Console.Foreground))
 					lastToken = token
 			else:
 				print("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**Console.Foreground))
 
-			if (not isinstance(lastBlock, EndOfDocumentBlock)):              print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
-			elif (not isinstance(lastBlock.StartToken, EndOfDocumentToken)): print("{RED}Last block is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
+			if not isinstance(lastBlock, EndOfDocumentBlock):              print("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=lastBlock, **Console.Foreground))
+			elif not isinstance(lastBlock.StartToken, EndOfDocumentToken): print("{RED}Last block is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastBlock.StartToken, **Console.Foreground))
 
 		except ParserException as ex:     print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))
 		except NotImplementedError as ex: print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **Console.Foreground))

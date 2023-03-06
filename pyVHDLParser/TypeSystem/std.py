@@ -49,7 +49,7 @@ UniversatReal =         RealType("universat_real")
 Real =                  IntegerSubType("real", UniversatReal, Range(UniversatReal, Direction.To, -10.0, 10.0))
 
 
-if (vhdlVersion < VHDLVersion.VHDL2008):
+if vhdlVersion < VHDLVersion.VHDL2008:
 	Std_Decl = PackageDeclation("std", [
 		Boolean,
 		Integer,
@@ -58,7 +58,7 @@ if (vhdlVersion < VHDLVersion.VHDL2008):
 	])
 	Std_Body = PackageBody(Std_Decl, [])
 
-elif (vhdlVersion >= VHDLVersion.VHDL2008):
+elif vhdlVersion >= VHDLVersion.VHDL2008:
 	Boolean_Vector =      ArrayType("boolean_vector", Range(Natural), Boolean)
 	Integer_Vector =      ArrayType("integer_vector", Range(Natural), Integer)
 

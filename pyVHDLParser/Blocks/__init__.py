@@ -94,7 +94,7 @@ class ParserState:
 		startToken =        next(self._iterator)
 		startBlock =        StartOfDocumentBlock(startToken)
 
-		if (not isinstance(startToken, StartOfDocumentToken)):
+		if not isinstance(startToken, StartOfDocumentToken):
 			raise BlockParserException("First token is not a StartOfDocumentToken.", startToken)
 
 		self.Token =        startBlock.StartToken
@@ -121,7 +121,7 @@ class ParserState:
 
 	@property
 	def TokenMarker(self) -> Token:
-		if ((self.NewToken is not None) and (self._tokenMarker is self.Token)):
+		if (self.NewToken is not None) and (self._tokenMarker is self.Token):
 			LineTerminal().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **LineTerminal.Foreground))
 			self._tokenMarker = self.NewToken
 		return self._tokenMarker
@@ -167,10 +167,10 @@ class ParserState:
 			self.Token = token
 
 			# overwrite an existing token and connect the next token with the new one
-			if (self.NewToken is not None):
+			if self.NewToken is not None:
 				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 				# update topmost TokenMarker
-				if (self._tokenMarker is token.PreviousToken):
+				if self._tokenMarker is token.PreviousToken:
 					# XXX: LineTerminal().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
 					self._tokenMarker = self.NewToken
 
@@ -178,19 +178,19 @@ class ParserState:
 				self.NewToken =       None
 
 			# an empty marker means: fill on next yield run
-			if (self._tokenMarker is None):
+			if self._tokenMarker is None:
 				LineTerminal().WriteDebug("  new token marker: None -> {0!s}".format(token))
 				self._tokenMarker = token
 
 			# a new block is assembled
-			while (self.NewBlock is not None):
-				if (isinstance(self.NewBlock, LinebreakBlock) and isinstance(self.LastBlock, (LinebreakBlock, EmptyLineBlock))):
+			while self.NewBlock is not None:
+				if isinstance(self.NewBlock, LinebreakBlock) and isinstance(self.LastBlock, (LinebreakBlock, EmptyLineBlock)):
 					self.LastBlock = EmptyLineBlock(self.LastBlock, self.NewBlock.StartToken)
 					self.LastBlock.NextBlock = self.NewBlock.NextBlock
 				else:
 					self.LastBlock = self.NewBlock
 
-				self.NewBlock =  self.NewBlock.NextBlock
+				self.NewBlock = self.NewBlock.NextBlock
 				yield self.LastBlock
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
@@ -199,7 +199,7 @@ class ParserState:
 			self.NextState(self)
 
 		else:
-			if (isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock)):
+			if isinstance(self.Token, EndOfDocumentToken) and isinstance(self.NewBlock, EndOfDocumentBlock):
 				yield self.NewBlock
 			else:
 				raise BlockParserException("Unexpected end of document.", self.Token)
@@ -223,7 +223,7 @@ class MetaBlock(type):
 
 		states = []
 		for memberName, memberObject in classMembers.items():
-			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
+			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
 		classMembers['__STATES__'] = states
@@ -253,7 +253,7 @@ class BlockIterator:
 
 	def __next__(self) -> 'Block':
 		# in last call of '__next__', the last block in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		block = self.currentBlock
@@ -265,7 +265,7 @@ class BlockIterator:
 			self.state =        2
 		else:
 			self.currentBlock = block.NextBlock
-			if (self.currentBlock is None):
+			if self.currentBlock is None:
 				raise ParserException("Found open end while iterating block sequence.")  # FIXME: how to append last block?
 
 		return block
@@ -291,7 +291,7 @@ class BlockReverseIterator:
 
 	def __next__(self) -> 'Block':
 		# in last call of '__next__', the last block in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		block = self.currentBlock
@@ -303,7 +303,7 @@ class BlockReverseIterator:
 			self.state =        2
 		else:
 			self.currentBlock = block.PreviousBlock
-			if (self.currentBlock is None):
+			if self.currentBlock is None:
 				raise ParserException("Found open end while iterating block sequence.")  # FIXME: how to append last block?
 
 		return block
@@ -502,7 +502,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 			tokenValue = token.Value.lower()
 
 			for keyword in cls.KEYWORDS:
-				if (tokenValue == keyword.__KEYWORD__):
+				if tokenValue == keyword.__KEYWORD__:
 					newToken =                keyword(fromExistingToken=token)
 					parserState.PushState =   cls.KEYWORDS[keyword]
 					parserState.NewToken =    newToken

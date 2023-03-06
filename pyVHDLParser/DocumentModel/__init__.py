@@ -69,8 +69,8 @@ class Document(DocumentModel):
 		self.__uses  =      []
 
 	def Parse(self, content=None):  # FIXME: parameter type
-		if (content is None):
-			if (not self._path.exists()):
+		if content is None:
+			if not self._path.exists():
 				raise DOMParserException("File '{0!s}' does not exist.".format(self._path))\
 					from FileNotFoundError(str(self._path))
 
@@ -94,9 +94,9 @@ class Document(DocumentModel):
 		firstGroup =      groups[0]
 		lastGroup =       groups[-1]
 
-		if (not isinstance(firstGroup, StartOfDocumentGroup)):
+		if not isinstance(firstGroup, StartOfDocumentGroup):
 			raise DOMParserException("Expected group is not a StartOfDocumentGroup.", firstGroup)
-		elif (not isinstance(lastGroup, EndOfDocumentGroup)):
+		elif not isinstance(lastGroup, EndOfDocumentGroup):
 			raise DOMParserException("Expected group is not an EndOfDocumentGroup.", lastGroup)
 
 		# run recursively (node, group)
@@ -162,10 +162,10 @@ class Document(DocumentModel):
 
 	def Print(self, indent: int=0):
 		_indent = "  " * indent
-		if (len(self.__libraries) > 0):
+		if len(self.__libraries) > 0:
 			for library in self.__libraries:
 				print("{indent}-- unused LIBRARY {lib};".format(indent=_indent, lib=library))
-		if (len(self.__uses) > 0):
+		if len(self.__uses) > 0:
 			for use in self.__uses:
 				print("{indent}-- unused USE {lib}.{pack}.{obj};".format(indent=_indent, lib=use.Library, pack=use.Package, obj=use.Item))
 		print()

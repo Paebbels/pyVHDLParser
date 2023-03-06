@@ -51,7 +51,7 @@ class TokenStreamHandlers:
 
 		file = Path(args.Filename)
 
-		if (not file.exists()):
+		if not file.exists():
 			print(f"File '{file}' does not exist.")
 
 		with file.open('r') as fileHandle:
@@ -176,7 +176,7 @@ class TokenStreamHandlers:
 
 		file = Path(args.Filename)
 
-		if (not file.exists()):
+		if not file.exists():
 			print("File '{0!s}' does not exist.".format(file))
 
 		with file.open('r') as fileHandle:
@@ -194,9 +194,9 @@ class TokenStreamHandlers:
 			except StopIteration:
 				pass
 
-			if (not isinstance(firstToken, StartOfDocumentToken)):
+			if not isinstance(firstToken, StartOfDocumentToken):
 				print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.Foreground))
-			if (firstToken.NextToken is None):
+			if firstToken.NextToken is None:
 				print("{RED}First token has an open end.{NOCOLOR}".format(**self.Foreground))
 
 			tokenIterator = firstToken.GetIterator()
@@ -204,26 +204,26 @@ class TokenStreamHandlers:
 			token =     firstToken
 
 			for newToken in tokenIterator:
-				if (token.NextToken is None):
+				if token.NextToken is None:
 					print("{RED}Token has an open end.{NOCOLOR}".format(**self.Foreground))
 					print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
-				elif ((token is not firstToken) and (lastToken.NextToken is not token)):
+				elif (token is not firstToken) and (lastToken.NextToken is not token):
 					print("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
 					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
 					print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
 					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
 					print("{RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
-					if (lastToken.NextToken is None):
+					if lastToken.NextToken is None:
 						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
 					else:
 						print(
 							"{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken.NextToken, **self.Foreground))
-					if (token.PreviousToken is None):
+					if token.PreviousToken is None:
 						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
 					else:
 						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken.PreviousToken,
 						                                                    **self.Foreground))
-				elif (token.PreviousToken is not lastToken):
+				elif token.PreviousToken is not lastToken:
 					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
 					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
 					print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
@@ -239,10 +239,10 @@ class TokenStreamHandlers:
 			else:
 				print("{RED}No EndOfDocumentToken found.{NOCOLOR}".format(**self.Foreground))
 
-			if (not isinstance(token, EndOfDocumentToken)):
+			if not isinstance(token, EndOfDocumentToken):
 				print(
 					"{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-			elif (token.PreviousToken is not lastToken):
+			elif token.PreviousToken is not lastToken:
 				print("{RED}EndOfDocumentToken is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
 				print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
 				print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))

@@ -1,15 +1,7 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
-
-# -- Path setup --------------------------------------------------------------
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
+from importlib.util import find_spec
 from json    import loads
 from os.path import abspath
 from pathlib import Path
@@ -17,11 +9,12 @@ from sys     import path as sys_path
 
 from pyTooling.Packaging import extractVersionInformation
 
+ROOT = Path(__file__).resolve().parent
+
 sys_path.insert(0, abspath('.'))
 sys_path.insert(0, abspath('..'))
 sys_path.insert(0, abspath('../pyVHDLParser'))
 sys_path.insert(0, abspath('_extensions'))
-#sys_path.insert(0, os.path.abspath('_themes/sphinx_rtd_theme'))
 
 
 # ==============================================================================
@@ -32,7 +25,7 @@ sys_path.insert(0, abspath('_extensions'))
 # built documents.
 project = "pyVHDLParser"
 
-packageInformationFile = Path(f"../{project}/__init__.py")
+packageInformationFile = Path(f"../{project.replace('.', '/')}/__init__.py")
 versionInformation = extractVersionInformation(packageInformationFile)
 
 author =    versionInformation.Author
@@ -61,7 +54,7 @@ exclude_patterns = [
 ]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'stata-dark'
+pygments_style = "manni"
 
 
 # ==============================================================================
@@ -80,23 +73,38 @@ except Exception as ex:
 # ==============================================================================
 # Options for HTML output
 # ==============================================================================
-html_theme_options = {
-    'home_breadcrumbs': True,
-    'vcs_pageview_mode': 'blob',
-}
-
 html_context = {}
-ctx = Path(__file__).resolve().parent / 'context.json'
+ctx = ROOT / "context.json"
 if ctx.is_file():
 	html_context.update(loads(ctx.open('r').read()))
 
-html_theme_path = ["."]
-html_theme = "_theme"
+if (ROOT / "_theme").is_dir():
+	html_theme_path = ["."]
+	html_theme = "_theme"
+	html_theme_options = {
+		"logo_only": True,
+		"home_breadcrumbs": False,
+		"vcs_pageview_mode": 'blob',
+#		"body_max_width": None
+#		"navigation_depth": 5,
+	}
+elif find_spec("sphinx_rtd_theme") is not None:
+	html_theme = "sphinx_rtd_theme"
+	html_theme_options = {
+		"logo_only": True,
+		"vcs_pageview_mode": 'blob',
+#		"navigation_depth": 5,
+	}
+else:
+	html_theme = "alabaster"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_logo = str(Path(html_static_path[0]) / "logo.svg")
+html_favicon = str(Path(html_static_path[0]) / "favicon.svg")
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyVHDLParserDoc'
@@ -105,6 +113,14 @@ htmlhelp_basename = 'pyVHDLParserDoc'
 # bottom, using the given strftime format.
 # The empty string is equivalent to '%b %d, %Y'.
 html_last_updated_fmt = "%d.%m.%Y"
+
+
+# ==============================================================================
+# Python settings
+# ==============================================================================
+modindex_common_prefix = [
+	f"{project}."
+]
 
 
 # ==============================================================================
@@ -161,46 +177,32 @@ latex_documents = [
 extensions = [
 # Standard Sphinx extensions
 	"sphinx.ext.autodoc",
-	'sphinx.ext.extlinks',
-	'sphinx.ext.intersphinx',
-	'sphinx.ext.inheritance_diagram',
-	'sphinx.ext.todo',
-	'sphinx.ext.graphviz',
-	'sphinx.ext.mathjax',
-	'sphinx.ext.ifconfig',
-	'sphinx.ext.viewcode',
-#	'sphinx.ext.duration',
-
+	"sphinx.ext.coverage",
+	"sphinx.ext.extlinks",
+	"sphinx.ext.intersphinx",
+	"sphinx.ext.inheritance_diagram",
+	"sphinx.ext.todo",
+	"sphinx.ext.graphviz",
+	"sphinx.ext.mathjax",
+	"sphinx.ext.ifconfig",
+	"sphinx.ext.viewcode",
 # SphinxContrib extensions
-# 'sphinxcontrib.actdiag',
-	'sphinxcontrib.mermaid',
-# 'sphinxcontrib.seqdiag',
-# 'sphinxcontrib.textstyle',
-# 'sphinxcontrib.spelling',
-# 'changelog',
-
-# BuildTheDocs extensions
-#	'btd.sphinx.autoprogram',
-#	'btd.sphinx.graphviz',
-#	'btd.sphinx.inheritance_diagram',
-
+	"sphinxcontrib.mermaid",
 # Other extensions
-#	'DocumentMember',
-	'sphinx_fontawesome',
-	'sphinx_autodoc_typehints',
-
-# local extensions (patched)
-#	'autoapi.sphinx',
-
-# local extensions
-#	'DocumentMember'
+	"sphinx_fontawesome",
+	"sphinx_autodoc_typehints",
+	"autoapi.sphinx",
 ]
+
 
 # ==============================================================================
 # Sphinx.Ext.InterSphinx
 # ==============================================================================
 intersphinx_mapping = {
-	'python':   ('https://docs.python.org/3', None),
+	'python': ('https://docs.python.org/3', None),
+	'vasg':   ('https://IEEE-P1076.gitlab.io/', None),
+	'pyTool': ('https://pyTooling.github.io/pyTooling/', None),
+	'ghdl':   ('https://GHDL.github.io/ghdl/', None),
 }
 
 
@@ -208,7 +210,16 @@ intersphinx_mapping = {
 # Sphinx.Ext.AutoDoc
 # ==============================================================================
 # see: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#configuration
+#autodoc_default_options = {
+#	"private-members": True,
+#	"special-members": True,
+#	"inherited-members": True,
+#	"exclude-members": "__weakref__"
+#}
+autodoc_class_signature = "separated"
 autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
+autodoc_typehints = "both"
+#autoclass_content = "both"
 
 
 # ==============================================================================
@@ -227,6 +238,26 @@ extlinks = {
 graphviz_output_format = "svg"
 
 
+# ==============================================================================
+# SphinxContrib.Mermaid
+# ==============================================================================
+mermaid_params = [
+	'--backgroundColor', 'transparent',
+]
+mermaid_verbose = True
+
+
+# ==============================================================================
+# Sphinx.Ext.Inheritance_Diagram
+# ==============================================================================
+inheritance_node_attrs = {
+#	"shape": "ellipse",
+#	"fontsize": 14,
+#	"height": 0.75,
+	"color": "dodgerblue1",
+	"style": "filled"
+}
+
 
 # ==============================================================================
 # Sphinx.Ext.ToDo
@@ -235,6 +266,11 @@ graphviz_output_format = "svg"
 todo_include_todos = True
 todo_link_only = True
 
+
+# ==============================================================================
+# Sphinx.Ext.Coverage
+# ==============================================================================
+coverage_show_missing_items = True
 
 
 # ==============================================================================
