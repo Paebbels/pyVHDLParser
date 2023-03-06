@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parent
 sys_path.insert(0, abspath('.'))
 sys_path.insert(0, abspath('..'))
 sys_path.insert(0, abspath('../pyVHDLParser'))
-sys_path.insert(0, abspath('_extensions'))
 
 
 # ==============================================================================
@@ -38,17 +37,17 @@ release =   versionInformation.Version
 # Miscellaneous settings
 # ==============================================================================
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = [
 	"_build",
-	"_themes",
+	"_theme",
 	"Thumbs.db",
 	".DS_Store"
 ]
@@ -170,7 +169,6 @@ latex_documents = [
 ]
 
 
-
 # ==============================================================================
 # Extensions
 # ==============================================================================
@@ -228,7 +226,7 @@ autodoc_typehints = "both"
 extlinks = {
 	"ghissue": ('https://GitHub.com/Paebbels/pyVHDLParser/issues/%s', 'issue #'),
 	"ghpull":  ('https://GitHub.com/Paebbels/pyVHDLParser/pull/%s', 'pull request #'),
-	"ghsrc":   ('https://GitHub.com/Paebbels/pyVHDLParser/blob/main/%s?ts=2', None),
+	"ghsrc":   ('https://GitHub.com/Paebbels/pyVHDLParser/blob/main/%s?ts=2', ""),
 }
 
 
@@ -277,5 +275,9 @@ coverage_show_missing_items = True
 # AutoAPI.Sphinx
 # ==============================================================================
 autoapi_modules = {
-  'pyVHDLParser':  {'output': "pyVHDLParser", "override": True}
+	"pyVHDLModel":  {
+#		"template": "module",
+		"output": "pyVHDLParser",
+		"override": True
+	}
 }
