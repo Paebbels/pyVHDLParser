@@ -30,7 +30,7 @@
 from typing                                         import List
 
 from pyTooling.TerminalUI                           import LineTerminal
-from pyVHDLModel.SyntaxModel                        import Function as FunctionModel
+from pyVHDLModel.Subprogram                         import Function as FunctionModel
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
@@ -42,7 +42,9 @@ from pyVHDLParser.DocumentModel.ObjectDeclaration   import Constant
 from pyVHDLParser.DocumentModel.Reference           import LibraryClause, PackageReference
 
 # Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
+class ParserState:
+	pass
+# ParserState = GroupToModelParser.GroupParserState
 
 
 class Function(FunctionModel):

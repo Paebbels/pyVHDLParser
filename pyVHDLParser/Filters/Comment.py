@@ -27,8 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from collections import Generator
-from typing import Any
+from typing import Generator, Any
 
 from pyVHDLParser.Blocks           import BlockParserException, CommentBlock, Block
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock

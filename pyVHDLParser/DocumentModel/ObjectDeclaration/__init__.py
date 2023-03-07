@@ -29,15 +29,17 @@
 #
 from pyTooling.TerminalUI                           import LineTerminal
 
-from pyVHDLModel.SyntaxModel                        import Constant as ConstantBase
+from pyVHDLModel.Object                             import Constant as ConstantBase
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBlock
-from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
+# from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
+class ParserState:
+	pass
+# ParserState = GroupToModelParser.GroupParserState
 
 
 class Constant(ConstantBase):
