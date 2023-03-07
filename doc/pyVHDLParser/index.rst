@@ -1,13 +1,8 @@
+Python Class Reference
+######################
+
+Reference of all packages and modules:
+
 .. toctree::
 
    pyVHDLParser
-
-
-------------------
-
-.. automodule:: pyVHDLParser
-   :show-inheritance:
-   :members:
-   :undoc-members:
-.. #
-   :inherited-members:

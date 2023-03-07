@@ -223,6 +223,7 @@ This library is licensed under **Apache License 2.0**.
    UseCases
    Concepts
    Installation
+   Dependency
    TestApplication/index
 
 .. raw:: latex
@@ -266,6 +267,7 @@ This library is licensed under **Apache License 2.0**.
 
    ChangeLog/index
    License
+   Doc-License
    Glossary
    TODOs
    genindex
