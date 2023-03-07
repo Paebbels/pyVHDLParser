@@ -27,9 +27,9 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 
-from pyVHDLModel.SyntaxModel                import Context as ContextVHDLModel
+from pyVHDLModel.DesignUnit                 import Context as ContextVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException

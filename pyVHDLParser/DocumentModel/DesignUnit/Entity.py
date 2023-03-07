@@ -30,7 +30,7 @@
 from pyTooling.Decorators                   import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import Entity as EntityVHDLModel
+from pyVHDLModel.DesignUnit                 import Entity as EntityVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException

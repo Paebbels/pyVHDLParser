@@ -27,10 +27,10 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import Architecture as ArchitectureVHDLModel
+from pyVHDLModel.DesignUnit                 import Architecture as ArchitectureVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException

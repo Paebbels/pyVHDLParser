@@ -275,7 +275,7 @@ coverage_show_missing_items = True
 # AutoAPI.Sphinx
 # ==============================================================================
 autoapi_modules = {
-	"pyVHDLModel":  {
+	"pyVHDLParser":  {
 #		"template": "module",
 		"output": "pyVHDLParser",
 		"override": True
