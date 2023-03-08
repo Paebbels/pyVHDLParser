@@ -269,9 +269,9 @@ This library is licensed under **Apache License 2.0**.
    License
    Doc-License
    Glossary
-   TODOs
    genindex
-   py-modindex
+   Python Module Index <modindex>
+   TODOs
 
 .. #
    ifconfig:: visibility in ('Internal')

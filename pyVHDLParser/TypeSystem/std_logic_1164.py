@@ -27,7 +27,6 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLParser.Common                import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package    import Parameter, FunctionDeclaration, Function, PackageDeclation, PackageBody, Package
 from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, Range, SubType, EnumerationSubType
 from pyVHDLParser.TypeSystem.std        import Natural
@@ -89,11 +88,11 @@ Func_Resolved =           Function(Func_Resolved_Decl, Resolution)
 
 Std_Logic =               EnumerationSubType("std_logic", Std_ULogic, resolutionFunction=Func_Resolved)
 
-if vhdlVersion < VHDLVersion.VHDL2008:
-	Std_Logic_Vector =      ArrayType("std_logic_vector", Range(Natural), Std_Logic)
-else:
-	pass
-	# Std_Logic_Vector =      ArraySubType("std_logic_vector", Std_ULogic_Vector, resolutionFunction=Func_Resolved)
+# if vhdlVersion < VHDLVersion.VHDL2008:
+Std_Logic_Vector =      ArrayType("std_logic_vector", Range(Natural), Std_Logic)
+# else:
+# 	pass
+# 	# Std_Logic_Vector =      ArraySubType("std_logic_vector", Std_ULogic_Vector, resolutionFunction=Func_Resolved)
 
 
 

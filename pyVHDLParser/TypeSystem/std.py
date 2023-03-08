@@ -27,7 +27,6 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLParser.Common                import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package    import PackageDeclation, PackageBody, Package
 from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, IntegerType, RealType, Direction, SubType, Range, IntegerSubType
 
@@ -49,28 +48,28 @@ UniversatReal =         RealType("universat_real")
 Real =                  IntegerSubType("real", UniversatReal, Range(UniversatReal, Direction.To, -10.0, 10.0))
 
 
-if vhdlVersion < VHDLVersion.VHDL2008:
-	Std_Decl = PackageDeclation("std", [
-		Boolean,
-		Integer,
-		Positive,
-		Natural
-	])
-	Std_Body = PackageBody(Std_Decl, [])
+# if vhdlVersion < VHDLVersion.VHDL2008:
+# 	Std_Decl = PackageDeclation("std", [
+# 		Boolean,
+# 		Integer,
+# 		Positive,
+# 		Natural
+# 	])
+# 	Std_Body = PackageBody(Std_Decl, [])
+#
+# elif vhdlVersion >= VHDLVersion.VHDL2008:
+Boolean_Vector =      ArrayType("boolean_vector", Range(Natural), Boolean)
+Integer_Vector =      ArrayType("integer_vector", Range(Natural), Integer)
 
-elif vhdlVersion >= VHDLVersion.VHDL2008:
-	Boolean_Vector =      ArrayType("boolean_vector", Range(Natural), Boolean)
-	Integer_Vector =      ArrayType("integer_vector", Range(Natural), Integer)
 
-
-	Std_Decl =              PackageDeclation("std", [
-		Boolean,
-		Boolean_Vector,
-		Integer,
-		Positive,
-		Natural
-	])
-	Std_Body =              PackageBody(Std_Decl, [])
+Std_Decl =              PackageDeclation("std", [
+	Boolean,
+	Boolean_Vector,
+	Integer,
+	Positive,
+	Natural
+])
+Std_Body =              PackageBody(Std_Decl, [])
 
 
 
