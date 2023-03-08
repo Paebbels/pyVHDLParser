@@ -254,7 +254,7 @@ This library is licensed under **Apache License 2.0**.
    :caption: References
    :hidden:
 
-   pyVHDLParser/index
+   pyVHDLParser/pyVHDLParser
    References/index
 
 .. raw:: latex

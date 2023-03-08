@@ -276,8 +276,16 @@ coverage_show_missing_items = True
 # ==============================================================================
 autoapi_modules = {
 	"pyVHDLParser":  {
-#		"template": "module",
+		"template": "package",
 		"output": "pyVHDLParser",
 		"override": True
 	}
 }
+
+for directory in [mod for mod in Path("../pyVHDLParser").iterdir() if mod.is_dir() and mod.name != "__pycache__"]:
+	print(f"Adding module rule for '{project}.{directory.name}'")
+	autoapi_modules[f"{project}.{directory.name}"] = {
+		"template": "module",
+		"output": "pyVHDLParser",
+		"override": True
+	}
