@@ -8,7 +8,7 @@ search path.
 
 
 .. #
-   This files requires a Python module called 'Frontend-AutoProgram' to be
+   This files requires a Python module called 'VHDLParser-AutoProgram' to be
    located in the 'doc' root folder. It expects a variable 'parser' of type
    ArgumentParser.
 

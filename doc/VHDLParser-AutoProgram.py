@@ -30,5 +30,5 @@ sys_path.append("..")
 
 from pyVHDLParser.CLI.VHDLParser import Application
 
-# entry point
-parser = Application(sphinx=True).MainParser
+# Create application instance, but do not run it.
+parser = Application().MainParser

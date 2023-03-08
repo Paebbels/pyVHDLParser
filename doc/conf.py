@@ -11,9 +11,10 @@ from pyTooling.Packaging import extractVersionInformation
 
 ROOT = Path(__file__).resolve().parent
 
-sys_path.insert(0, abspath('.'))
-sys_path.insert(0, abspath('..'))
-sys_path.insert(0, abspath('../pyVHDLParser'))
+sys_path.insert(0, abspath("."))
+sys_path.insert(0, abspath(".."))
+sys_path.insert(0, abspath("../pyVHDLParser"))
+sys_path.insert(0, abspath("_extensions"))
 
 
 # ==============================================================================
@@ -190,6 +191,8 @@ extensions = [
 	"sphinx_fontawesome",
 	"sphinx_autodoc_typehints",
 	"autoapi.sphinx",
+
+	"autoprogram"
 ]
 
 
