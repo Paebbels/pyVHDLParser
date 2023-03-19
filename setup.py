@@ -56,5 +56,8 @@ DescribePythonPackageHostedOnGitHub(
 		"Topic :: Software Development :: Compilers",
 		"Topic :: Software Development :: Testing",
 		"Topic :: Utilities"
-	]
+	],
+	dataFiles={
+		packageName: ["py.typed"]
+	}
 )

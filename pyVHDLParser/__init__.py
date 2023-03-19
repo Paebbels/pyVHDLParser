@@ -34,7 +34,7 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany\nCopyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.7.0"
+__version__ =   "0.8.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
 
 from pyTooling.Decorators import export
