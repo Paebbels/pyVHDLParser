@@ -315,15 +315,15 @@ class Block(metaclass=MetaBlock):
 	Base-class for all :term:`block` classes.
 	"""
 
-	__STATES__:      List =   None   #: List of all `state...` methods in this class.
+	__STATES__:      List    #: List of all `state...` methods in this class.
 
-	_previousBlock: 'Block' = None   #: Reference to the previous block.
-	NextBlock:      'Block' = None   #: Reference to the next block.
-	StartToken:     Token =   None   #: Reference to the first token in the scope of this block.
-	EndToken:       Token =   None   #: Reference to the last token in the scope of this block.
-	MultiPart:      bool =    None   #: True, if this block has multiple parts.
+	_previousBlock: 'Block'  #: Reference to the previous block.
+	NextBlock:      'Block'  #: Reference to the next block.
+	StartToken:     Token    #: Reference to the first token in the scope of this block.
+	EndToken:       Token    #: Reference to the last token in the scope of this block.
+	MultiPart:      bool     #: True, if this block has multiple parts.
 
-	def __init__(self, previousBlock, startToken, endToken=None, multiPart=False):
+	def __init__(self, previousBlock: 'Block', startToken: Token, endToken: Token = None, multiPart: bool = False):
 		"""Base-class constructor for a new block instance."""
 
 		previousBlock.NextBlock =       self
@@ -440,16 +440,12 @@ class StartOfBlock(Block):
 class EndOfBlock(Block):
 	"""Base-class for a last block in a sequence of double-linked blocks."""
 
-	def __init__(self, endToken):
-		self._previousBlock =     None
-		self.NextBlock =          None
-		self.StartToken =         None
-		self.EndToken =           endToken
-		self.MultiPart =          False
+	def __init__(self, previousBlock, endToken):
+		super().__init__(previousBlock, endToken)
 
 	# TODO: needs review: should TokenIterator be used?
-	def __iter__(self):
-		yield self.EndToken
+	def __iter__(self) -> Iterator[Token]:
+		yield self.StartToken
 
 	def __len__(self) -> int:
 		return 0
@@ -510,7 +506,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 					return
 
 		elif isinstance(token, EndOfDocumentToken):
-			parserState.NewBlock =    EndOfDocumentBlock(token)
+			parserState.NewBlock =    EndOfDocumentBlock(parserState.LastBlock, token)
 			return
 
 		raise BlockParserException(
