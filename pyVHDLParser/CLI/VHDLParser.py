@@ -69,8 +69,8 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 	# TODO: use pyTooling Platform
 	__PLATFORM =  platform_system()
 
-	def __init__(self, debug=False, verbose=False, quiet=False, sphinx=False):
-		super().__init__(verbose, debug, quiet)
+	def __init__(self):
+		super().__init__()
 
 		# Late-initialize Block classes
 		# --------------------------------------------------------------------------
@@ -103,11 +103,6 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 			formatter_class=HelpFormatter,
 			add_help=False
 		)
-
-		# If executed in Sphinx to auto-document CLI arguments, exit now
-		# --------------------------------------------------------------------------
-		if sphinx:
-			return
 
 		# Change error and warning reporting
 		# --------------------------------------------------------------------------
@@ -199,13 +194,14 @@ def main():  # mccabe:disable=MC0001
 	"""
 	from sys import argv as sys_argv
 
-	debug =   "-d" in sys_argv
-	verbose = "-v" in sys_argv
-	quiet =   "-q" in sys_argv
-
 	try:
 		# handover to a class instance
 		app = Application()  # debug, verbose, quiet)
+		app.Configure(
+			verbose="-v" in sys_argv,
+			debug="-d" in sys_argv,
+			quiet="-q" in sys_argv
+		)
 		app.Run()
 		app.exit()
 

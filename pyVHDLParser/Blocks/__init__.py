@@ -241,7 +241,7 @@ class BlockIterator:
 
 	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
 
-	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, stopBlock: 'Block'=None):
+	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, inclusiveStopBlock: bool=True, stopBlock: 'Block'=None):
 		self.startBlock =   startBlock
 		self.currentBlock = startBlock if inclusiveStartBlock else startBlock.NextBlock
 		self.stopBlock =    stopBlock
@@ -257,7 +257,7 @@ class BlockIterator:
 			raise StopIteration(self.state)
 
 		block = self.currentBlock
-		if block is self.stopToken:
+		if block is self.stopBlock:
 			self.currentBlock = None
 			self.state =        1
 		elif isinstance(self.currentBlock, EndOfBlock):
@@ -341,11 +341,11 @@ class Block(metaclass=MetaBlock):
 		"""Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`."""
 		return TokenIterator(self.StartToken, inclusiveStartToken=True, stopToken=self.EndToken)
 
-	def GetIterator(self, stopBlock: 'Block'=None) -> BlockIterator:
-		return BlockIterator(self, stopBlock=stopBlock)
+	def GetIterator(self, inclusiveStartBlock: bool = False, inclusiveStopBlock: bool = True, stopBlock: 'Block'=None) -> BlockIterator:
+		return BlockIterator(self, inclusiveStartBlock=inclusiveStartBlock, inclusiveStopBlock=inclusiveStopBlock, stopBlock=stopBlock)
 
-	def GetReverseIterator(self, stopBlock: 'Block'=None) -> BlockReverseIterator:
-		return BlockReverseIterator(self, stopBlock=stopBlock)
+	def GetReverseIterator(self, inclusiveStartBlock: bool = False, inclusiveStopBlock: bool = True, stopBlock: 'Block'=None) -> BlockReverseIterator:
+		return BlockReverseIterator(self, inclusiveStartBlock=inclusiveStartBlock, inclusiveStopBlock=inclusiveStopBlock, stopBlock=stopBlock)
 
 	def __str__(self) -> str:
 		buffer = ""

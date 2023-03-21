@@ -31,6 +31,7 @@ from pathlib import Path
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
+from .GraphML import GraphML
 from ..Base                   import ParserException
 from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
 from ..Token.Parser           import Tokenizer
@@ -53,6 +54,8 @@ class BlockStreamHandlers:
 	def HandleBlockStreaming(self: FrontEndProtocol, args):
 		self.PrintHeadline()
 
+		# self._writeLevel = Severity.Verbose
+
 		file = Path(args.Filename)
 
 		if not file.exists():
@@ -64,8 +67,22 @@ class BlockStreamHandlers:
 		tokenStream = Tokenizer.GetVHDLTokenizer(content)
 		blockStream = TokenToBlockParser.Transform(tokenStream)
 
+		blockIterator = iter(blockStream)
+		firstBlock = next(blockIterator)
+
 		try:
-			for block in blockStream:
+			while next(blockIterator):
+				pass
+		except StopIteration:
+			pass
+
+		if isinstance(firstBlock, StartOfDocumentBlock):
+			print("{YELLOW}{block!r}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
+			print("  {YELLOW}{token!r}{NOCOLOR}".format(token=firstBlock.StartToken, **self.Foreground))
+
+		try:
+			blockIterator = firstBlock.GetIterator(inclusiveStopBlock=False)
+			for block in blockIterator:
 				if isinstance(block, (LinebreakBlock, IndentationBlock)):
 					self.WriteNormal("{DARK_GRAY}{block!r}{NOCOLOR}".format(block=block, **self.Foreground))
 				elif isinstance(block, CommentBlock):
@@ -84,10 +101,21 @@ class BlockStreamHandlers:
 				for token in block:
 					self.WriteVerbose(repr(token))
 
+			blockIterator = block.GetIterator()
+			lastBlock = next(blockIterator)
+			if isinstance(lastBlock, EndOfDocumentBlock):
+				print("{YELLOW}{block!r}{NOCOLOR}".format(block=lastBlock, **self.Foreground))
+				print("  {YELLOW}{token!r}{NOCOLOR}".format(token=lastBlock.StartToken, **self.Foreground))
+
 		except ParserException as ex:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+
+		exporter = GraphML()
+		exporter.AddTokenStream(firstBlock.StartToken)
+		# exporter.AddBlockStream(firstBlock)
+		exporter.WriteDocument(Path.cwd() / "temp/BlockStream.graphml")
 
 		self.exit()
 

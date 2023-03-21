@@ -28,16 +28,18 @@
 # ==================================================================================================================== #
 #
 from pathlib        import Path
-from textwrap       import dedent
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
+from pyTooling.Graph import Graph, Vertex, Subgraph
+from pyTooling.Graph.GraphML         import GraphMLDocument
 
-from ..Base         import ParserException
-from ..Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-from ..Token        import CharacterTranslation, SingleLineCommentToken
-from ..Token.Parser import Tokenizer
+from pyVHDLParser.Base         import ParserException
+from pyVHDLParser.CLI.GraphML import GraphML
+from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token        import CharacterTranslation, SingleLineCommentToken
+from pyVHDLParser.Token.Parser import Tokenizer
 
-from .              import FrontEndProtocol, FilenameAttribute, translate
+from pyVHDLParser.CLI              import FrontEndProtocol, FilenameAttribute, translate
 
 
 class TokenStreamHandlers:
@@ -94,75 +96,9 @@ class TokenStreamHandlers:
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 
-		nodeFormat="t_{line}_{id}"
-		nodeID = 0
-		line =   0
-		node =   nodeFormat.format(line=line, id=nodeID)
-		graphvizBuffer = dedent("""\
-			digraph TokenStream {{
-				graph [rankdir=LR splines=ortho]
-			  node [shape=record];
-
-		    {node} [style=filled, fillcolor=gold, label="{caption}|{{None|None|Next}}"];
-			""").format(
-			node=node,
-			caption=firstToken.__class__.__qualname__
-		)
-		lline =      0
-		sameRanked = [node]
-		lineStarts = [node]
-
-		tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
-		for token in tokenIterator:
-			nodeID += 1
-			nnode=nodeFormat.format(line=line, id=nodeID)
-			graphvizBuffer += dedent("""\
-			  {lnode} -> {node};
-			  {node} [style=filled, fillcolor={color}, label="{caption}|{{Prev|{content}|Next}}"];
-			""").format(
-				node=nnode,
-				lnode=node,
-				color=translate(token),
-				caption=token.__class__.__qualname__,
-				content=CharacterTranslation(str(token))
-			)
-			node = nnode
-			if len(sameRanked) == 0:
-				lineStarts.append(node)
-			sameRanked.append(node)
-
-			if isinstance(token, (LinebreakToken, SingleLineCommentToken)):
-				# graphvizBuffer += dedent("""\
-				#
-				#   {{ rank=same {nodes} }}
-				#
-				# """).format(nodes=" ".join(sameRanked))
-
-				sameRanked = []
-				line += 1
-			else:
-				lline = line
-
-		tokenIterator = token.GetIterator()
-		lastToken = next(tokenIterator)
-
-		graphvizBuffer += dedent("""\
-		  t_{lline}_{lid} -> t_{line}_00;
-		  t_{line}_00 [style=filled, fillcolor=gold, label="{caption}|{{Prev|None|None}}"];
-
-		  {{ rank=same {nodes} }}
-		}}
-		""").format(
-			line=line,
-			lline=lline,
-			lid=nodeID - 1,
-			caption=lastToken.__class__.__qualname__,
-			nodes=" ".join(lineStarts)
-		)
-
-		gvFile = file.with_suffix('.gv')
-		with gvFile.open('w') as fileHandle:
-			fileHandle.write(graphvizBuffer)
+		exporter = GraphML()
+		exporter.AddTokenStream(firstToken)
+		exporter.WriteDocument(Path.cwd() / "temp/TokenStream.graphml")
 
 		self.exit()
 
