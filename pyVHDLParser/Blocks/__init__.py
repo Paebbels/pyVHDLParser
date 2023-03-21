@@ -235,18 +235,20 @@ class MetaBlock(type):
 
 @export
 class BlockIterator:
-	startBlock:   'Block'
-	currentBlock: 'Block'
-	stopBlock:    'Block'
+	startBlock:         'Block'
+	currentBlock:       'Block'
+	stopBlock:          'Block'
+	inclusiveStopBlock: bool
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
+	state:              int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
 
 	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, inclusiveStopBlock: bool=True, stopBlock: 'Block'=None):
-		self.startBlock =   startBlock
-		self.currentBlock = startBlock if inclusiveStartBlock else startBlock.NextBlock
-		self.stopBlock =    stopBlock
+		self.startBlock =         startBlock
+		self.currentBlock =       startBlock if inclusiveStartBlock else startBlock.NextBlock
+		self.stopBlock =          stopBlock
+		self.inclusiveStopBlock = inclusiveStopBlock
 
-		self.state =        0
+		self.state =              0
 
 	def __iter__(self) -> 'BlockIterator':
 		return self
@@ -258,11 +260,17 @@ class BlockIterator:
 
 		block = self.currentBlock
 		if block is self.stopBlock:
-			self.currentBlock = None
-			self.state =        1
+			if not self.inclusiveStopBlock:
+				raise StopIteration(1)
+			else:
+				self.currentBlock = None
+				self.state = 1
 		elif isinstance(self.currentBlock, EndOfBlock):
-			self.currentBlock = None
-			self.state =        2
+			if not self.inclusiveStopBlock:
+				raise StopIteration(2)
+			else:
+				self.currentBlock = None
+				self.state = 2
 		else:
 			self.currentBlock = block.NextBlock
 			if self.currentBlock is None:
@@ -277,7 +285,7 @@ class BlockReverseIterator:
 	currentBlock: 'Block'
 	stopBlock:    'Block'
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
+	state:        int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached StartOfBlock
 
 	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, stopBlock: 'Block'=None):
 		self.startBlock =   startBlock

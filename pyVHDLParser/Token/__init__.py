@@ -77,7 +77,7 @@ class TokenIterator:
 	stopToken:          'Token'
 	inclusiveStopToken: bool
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+	state:              int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
 
 	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
 		self.startToken =         startToken
@@ -118,11 +118,12 @@ class TokenIterator:
 
 @export
 class TokenReverseIterator:
-	startToken:   'Token'
-	currentToken: 'Token'
-	stopToken:    'Token'
+	startToken:         'Token'
+	currentToken:       'Token'
+	stopToken:          'Token'
+	inclusiveStopToken: bool
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+	state:              int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached StartOfToken
 
 	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
 		self.startToken =         startToken

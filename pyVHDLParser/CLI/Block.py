@@ -113,8 +113,8 @@ class BlockStreamHandlers:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 
 		exporter = GraphML()
-		exporter.AddTokenStream(firstBlock.StartToken)
-		# exporter.AddBlockStream(firstBlock)
+		tokenStreamSubgraph = exporter.AddTokenStream(firstBlock.StartToken)
+		blockStreamSubgraph = exporter.AddBlockStream(firstBlock, tokenStreamSubgraph)
 		exporter.WriteDocument(Path.cwd() / "temp/BlockStream.graphml")
 
 		self.exit()
