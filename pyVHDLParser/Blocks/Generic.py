@@ -27,6 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing import Any
+
 from pyTooling.Decorators                 import export
 
 from pyVHDLParser.Token                   import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
@@ -43,10 +45,10 @@ from pyVHDLParser.Blocks.Generic1         import EndBlock, BeginBlock
 class DeclarativeRegion(metaclass=MetaBlock):
 	"""Base-class for all declarative region blocks."""
 
-	BEGIN_BLOCK: BeginBlock = None
-	END_BLOCK:   EndBlock =   None
+	BEGIN_BLOCK: BeginBlock
+	END_BLOCK:   EndBlock
 
-	KEYWORDS = None
+	KEYWORDS: Any  # TODO: what type?
 
 	@classmethod
 	def __cls_init__(cls):

@@ -38,6 +38,7 @@ __version__ =   "0.8.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
 
 from pyTooling.Decorators import export
+from pyTooling.MetaClasses import ExtendedType
 
 
 @export
@@ -63,7 +64,7 @@ class SourceCodePosition:
 
 
 @export
-class StartOf:
+class StartOf(metaclass=ExtendedType, useSlots=True):
 	"""Base-class (mixin) for all StartOf*** classes."""
 
 
@@ -78,7 +79,7 @@ class StartOfSnippet(StartOf):
 
 
 @export
-class EndOf:
+class EndOf(metaclass=ExtendedType, useSlots=True):
 	"""Base-class (mixin) for all EndOf*** classes."""
 
 

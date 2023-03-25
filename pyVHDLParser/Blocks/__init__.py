@@ -57,18 +57,6 @@ class BlockParserException(ParserException):
 		return self._token
 
 
-# @export
-# class TokenToBlockParser:
-# 	"""Wrapping class to offer some class methods."""
-#
-# 	@staticmethod
-# 	def Transform(tokenGenerator: Iterator[Token]) -> Generator['Block', Token, None]:
-# 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
-#
-# 		state = ParserState(tokenGenerator)
-# 		return state.GetGenerator()
-
-
 @export
 class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
 	"""Represents the current state of a token-to-block parser."""
@@ -209,7 +197,7 @@ class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
 
 
 @export
-class MetaBlock(type):
+class MetaBlock(ExtendedType):
 	"""
 	A :term:`meta-class` to construct *Block* classes.
 
@@ -223,16 +211,16 @@ class MetaBlock(type):
 
 	def __new__(cls, className, baseClasses, classMembers: dict):
 		# """Register all state*** methods in a list called `__STATES__`."""
-
 		states = []
 		for memberName, memberObject in classMembers.items():
 			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
-		classMembers['__STATES__'] = states
+		block = super().__new__(cls, className, baseClasses, classMembers, useSlots=True)
+		block.__STATES__ = states
 
-		block = super().__new__(cls, className, baseClasses, classMembers)
 		cls.BLOCKS.append(block)
+
 		return block
 
 

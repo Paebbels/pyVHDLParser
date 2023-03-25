@@ -27,6 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing import Any
+
 from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, WordToken, MultiLineCommentToken, IndentationToken
@@ -328,9 +330,9 @@ class EndBlock(FinalBlock):
 
 @export
 class BeginBlock(Block):
-	END_BLOCK: EndBlock = None
+	END_BLOCK: EndBlock
 
-	KEYWORDS = None
+	KEYWORDS: Any  # TODO: what type?
 
 	@classmethod
 	def stateStatementRegion(cls, parserState: TokenToBlockParser):

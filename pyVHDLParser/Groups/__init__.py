@@ -218,7 +218,7 @@ class BlockToGroupParser(metaclass=ExtendedType, useSlots=True):
 
 
 @export
-class MetaGroup(type):
+class MetaGroup(ExtendedType):
 	"""Register all state*** methods in an array called '__STATES__'"""
 	def __new__(cls, className, baseClasses, classMembers: dict):
 		states = []
@@ -226,8 +226,9 @@ class MetaGroup(type):
 			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
-		classMembers['__STATES__'] = states
-		return super().__new__(cls, className, baseClasses, classMembers)
+		group = super().__new__(cls, className, baseClasses, classMembers, useSlots=True)
+		group.__STATES__ = states
+		return group
 
 
 @export

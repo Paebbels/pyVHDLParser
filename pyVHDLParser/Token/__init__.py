@@ -30,6 +30,7 @@
 from typing                   import Iterator
 
 from pyTooling.Decorators     import export
+from pyTooling.MetaClasses import ExtendedType
 
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base        import ParserException
@@ -71,7 +72,7 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 
 
 @export
-class TokenIterator:
+class TokenIterator(metaclass=ExtendedType, useSlots=True):
 	startToken:         'Token'
 	currentToken:       'Token'
 	stopToken:          'Token'
@@ -117,7 +118,7 @@ class TokenIterator:
 
 
 @export
-class TokenReverseIterator:
+class TokenReverseIterator(metaclass=ExtendedType, useSlots=True):
 	startToken:         'Token'
 	currentToken:       'Token'
 	stopToken:          'Token'
@@ -163,7 +164,7 @@ class TokenReverseIterator:
 
 
 @export
-class Token:
+class Token(metaclass=ExtendedType, useSlots=True):
 	"""Base-class for all token classes."""
 
 	_previousToken:  'Token'              #: Reference to the previous token

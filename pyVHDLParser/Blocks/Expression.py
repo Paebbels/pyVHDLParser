@@ -88,9 +88,9 @@ class ExpressionBlock(Block):
 
 @export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
-	EXIT_CHAR:  str =   None
-	EXIT_TOKEN: Token = None
-	EXIT_BLOCK: Block = None
+	EXIT_CHAR:  str
+	EXIT_TOKEN: Token
+	EXIT_BLOCK: Block
 
 	@classmethod
 	def stateBeforeExpression(cls, parserState: TokenToBlockParser):
