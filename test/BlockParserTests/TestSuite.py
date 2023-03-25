@@ -89,7 +89,7 @@ class TestSuite:
 		# History check
 		counter =         testCase.GetExpectedBlocks()
 		wordTokenStream = Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
+		vhdlBlockStream = TokenToBlockParser(wordTokenStream)()
 
 		try:
 			for vhdlBlock in vhdlBlockStream:
@@ -109,7 +109,7 @@ class TestSuite:
 
 		counter =             testCase.GetExpectedBlocksAfterStrip()
 		wordTokenStream =     Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
-		vhdlBlockStream =     TokenToBlockParser.Transform(wordTokenStream)
+		vhdlBlockStream =     TokenToBlockParser(wordTokenStream)()
 		strippedBlockStream = StripAndFuse(vhdlBlockStream)
 
 		try:
@@ -129,7 +129,7 @@ class TestSuite:
 	def _RunConnectivityCheck(self, testCase, content):
 		# Connectivity check
 		wordTokenStream = Tokenizer.GetVHDLTokenizer(content, alphaCharacters=self.__ALPHA_CHARACTERS__, numberCharacters="")
-		vhdlBlockStream = TokenToBlockParser.Transform(wordTokenStream)
+		vhdlBlockStream = TokenToBlockParser(wordTokenStream)()
 
 		try:
 			blockIterator = iter(vhdlBlockStream)

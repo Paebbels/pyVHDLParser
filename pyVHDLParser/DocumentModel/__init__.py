@@ -78,8 +78,8 @@ class Document(DocumentModel):
 				content = fileHandle.read()
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
-		vhdlGroupStream = BlockToGroupParser.Transform(vhdlBlockStream)
+		vhdlBlockStream = TokenToBlockParser(vhdlTokenStream)()
+		vhdlGroupStream = BlockToGroupParser(vhdlBlockStream)()
 		try:
 			groups =          [group for group in vhdlGroupStream]
 		except BlockParserException as ex:

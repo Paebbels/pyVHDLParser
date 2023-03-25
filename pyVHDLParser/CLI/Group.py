@@ -91,17 +91,17 @@ class GroupStreamHandlers:
 
 			self.WriteVerbose("Reading and buffering blocks...")
 			try:
-				blockStream = [block for block in TokenToBlockParser.Transform(tokenStream)]
+				blockStream = [block for block in TokenToBlockParser(tokenStream)()]
 			except ParserException as ex:
 				print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 			except NotImplementedError as ex:
 				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		else:
 			tokenStream = Tokenizer.GetVHDLTokenizer(content)
-			blockStream = TokenToBlockParser.Transform(tokenStream)
+			blockStream = TokenToBlockParser(tokenStream)()
 
 		self.WriteVerbose("Transforming blocks to groups...")
-		groupStream = BlockToGroupParser.Transform(blockStream)
+		groupStream = BlockToGroupParser(blockStream)()
 
 		try:
 			for group in groupStream:

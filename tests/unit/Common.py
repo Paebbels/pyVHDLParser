@@ -172,7 +172,7 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 	def test_BlockSequence(self) -> None:
 		# test['name']
 		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
-		blockStream = TokenToBlockParser.Transform(tokenStream)
+		blockStream = TokenToBlockParser(tokenStream)()
 
 		blockIterator = iter(blockStream)
 		listIterator =  iter(self.blockStream.blocks)
@@ -216,7 +216,7 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 	def test_BlockSequenceError(self) -> None:
 		# test['name']
 		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
-		blockStream = TokenToBlockParser.Transform(tokenStream)
+		blockStream = TokenToBlockParser(tokenStream)()
 
 		blockIterator = iter(blockStream)
 		listIterator =  iter(self.blockStream.blocks)
@@ -263,7 +263,7 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 
 		with self.assertRaises(BlockParserException) as ex:
 			tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
-			blockStream = TokenToBlockParser.Transform(tokenStream)
+			blockStream = TokenToBlockParser(tokenStream)()
 
 			blockIterator = iter(blockStream)
 			firstBlock = next(blockIterator)
@@ -317,7 +317,7 @@ class BlockLinking(ITestcase): #, ExpectedDataMixin):
 	def test_BlockLinking(self) -> None:
 		# test['name']
 		tokenStream = Tokenizer.GetVHDLTokenizer(self.code)
-		blockStream = TokenToBlockParser.Transform(tokenStream)
+		blockStream = TokenToBlockParser(tokenStream)()
 
 		blockIterator = iter(blockStream)
 		firstBlock = next(blockIterator)
