@@ -33,7 +33,7 @@ from pyVHDLParser.Token               import SpaceToken, LinebreakToken, Comment
 from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
 from pyVHDLParser.Token.Keywords      import IdentifierToken, BoundaryToken, DelimiterToken
-from pyVHDLParser.Blocks              import Block, ParserState, CommentBlock, BlockParserException
+from pyVHDLParser.Blocks              import Block, TokenToBlockParser, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket
 
@@ -46,7 +46,7 @@ class InterfaceObjectBlock(Block):
 	DELIMITER_BLOCK = None
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -78,7 +78,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected interface {0} name (identifier).".format(cls.OBJECT_KIND), token)
 
 	@classmethod
-	def stateObjectName(cls, parserState: ParserState):
+	def stateObjectName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -99,7 +99,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected whitespace after interface {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ":"):
 			parserState.NewToken =      DelimiterToken(fromExistingToken=token)
@@ -128,7 +128,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected ':' after interface {0} name.".format(cls.OBJECT_KIND), token)
 
 	@classmethod
-	def stateColon1(cls, parserState: ParserState):
+	def stateColon1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			try:
@@ -154,7 +154,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected subtype indication or whitespace after colon.", token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
@@ -192,7 +192,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected subtype indication or keyword IN.", token)
 
 	@classmethod
-	def stateModeKeyword(cls, parserState: ParserState):
+	def stateModeKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace4
@@ -208,7 +208,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -240,7 +240,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected subtype indication (name).", token)
 
 	@classmethod
-	def stateSubtypeIndication(cls, parserState: ParserState):
+	def stateSubtypeIndication(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken) and (token == ":="):
 			parserState.NewToken =      VariableAssignmentKeyword(fromExistingToken=token)
@@ -278,7 +278,7 @@ class InterfaceObjectBlock(Block):
 		raise BlockParserException("Expected ';', ':=' or whitespace after subtype indication.", token)
 
 	@classmethod
-	def stateWhitespace5(cls, parserState: ParserState):
+	def stateWhitespace5(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken) and (token == ":="):
 			parserState.NewToken =      VariableAssignmentKeyword(fromExistingToken=token)
@@ -332,7 +332,7 @@ class InterfaceConstantBlock(InterfaceObjectBlock):
 	}
 
 	@classmethod
-	def stateConstantKeyword(cls, parserState: ParserState):
+	def stateConstantKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1
@@ -358,7 +358,7 @@ class InterfaceVariableBlock(InterfaceObjectBlock):
 	}
 
 	@classmethod
-	def stateVariableKeyword(cls, parserState: ParserState):
+	def stateVariableKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1
@@ -386,7 +386,7 @@ class InterfaceSignalBlock(InterfaceObjectBlock):
 	}
 
 	@classmethod
-	def stateSignalKeyword(cls, parserState: ParserState):
+	def stateSignalKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1
@@ -407,7 +407,7 @@ class InterfaceTypeBlock(Block):
 	DELIMITER_BLOCK = None
 
 	@classmethod
-	def stateTypeKeyword(cls, parserState: ParserState):
+	def stateTypeKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NextState =   cls.stateWhitespace1
@@ -423,7 +423,7 @@ class InterfaceTypeBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword CONSTANT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -455,7 +455,7 @@ class InterfaceTypeBlock(Block):
 		raise BlockParserException("Expected interface type name (identifier).", token)
 
 	@classmethod
-	def stateTypeName(cls, parserState: ParserState):
+	def stateTypeName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == ';':
@@ -485,7 +485,7 @@ class InterfaceTypeBlock(Block):
 		raise BlockParserException("Expected ';', ')' or whitespace after interface type name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == ';':

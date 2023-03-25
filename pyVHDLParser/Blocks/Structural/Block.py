@@ -33,7 +33,7 @@ from pyVHDLParser.Token                    import CharacterToken, SpaceToken, Wo
 from pyVHDLParser.Token.Keywords           import BoundaryToken, IdentifierToken, EndToken
 from pyVHDLParser.Token.Keywords           import SignalKeyword, ConstantKeyword, VariableKeyword, SharedKeyword, ProcessKeyword, AssertKeyword, BlockKeyword
 from pyVHDLParser.Token.Keywords           import IsKeyword, EndKeyword, BlockKeyword, BeginKeyword
-from pyVHDLParser.Blocks                   import Block, BlockParserException, ParserState
+from pyVHDLParser.Blocks                   import Block, BlockParserException, TokenToBlockParser
 from pyVHDLParser.Blocks.Common            import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment           import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase, ConcurrentDeclarativeRegion, ConcurrentBeginBlock
@@ -62,7 +62,7 @@ class DeclarativeRegion(ConcurrentDeclarativeRegion):
 @export
 class NameBlock(Block):
 	@classmethod
-	def stateBlockKeyword(cls, parserState: ParserState):
+	def stateBlockKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword "
 		if isinstance(token, CharacterToken):
@@ -96,7 +96,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected block name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -136,7 +136,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateBlockName(cls, parserState: ParserState):
+	def stateBlockName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword "
 		if isinstance(token, CharacterToken):
@@ -169,7 +169,7 @@ class NameBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after block name."
 		if isinstance(token, CharacterToken):

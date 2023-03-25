@@ -33,7 +33,7 @@ from pyVHDLParser.Token                     import CharacterToken, SpaceToken, W
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords            import BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
-from pyVHDLParser.Blocks                    import Block, BlockParserException, ParserState
+from pyVHDLParser.Blocks                    import Block, BlockParserException, TokenToBlockParser
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generate           import EndGenerateBlock as EndGenerateBlockBase
@@ -45,7 +45,7 @@ from pyVHDLParser.Blocks.Sequential         import Process
 @export
 class IfConditionBlock(Block):
 	@classmethod
-	def stateGenerateKeyword(cls, parserState: ParserState):
+	def stateGenerateKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -79,7 +79,7 @@ class IfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -118,7 +118,7 @@ class IfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateGenerateName(cls, parserState: ParserState):
+	def stateGenerateName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -151,7 +151,7 @@ class IfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
@@ -191,7 +191,7 @@ class IfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -241,7 +241,7 @@ class IfConditionBlock(Block):
 @export
 class BeginBlock(Block):
 	@classmethod
-	def stateBeginKeyword(cls, parserState: ParserState):
+	def stateBeginKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected label or one of these keywords: assert, process."
 		if isinstance(token, CharacterToken):
@@ -287,7 +287,7 @@ class BeginBlock(Block):
 @export
 class ElsIfConditionBlock(Block):
 	@classmethod
-	def stateGenerateKeyword(cls, parserState: ParserState):
+	def stateGenerateKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -321,7 +321,7 @@ class ElsIfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -360,7 +360,7 @@ class ElsIfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateGenerateName(cls, parserState: ParserState):
+	def stateGenerateName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -393,7 +393,7 @@ class ElsIfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
@@ -433,7 +433,7 @@ class ElsIfConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -483,7 +483,7 @@ class ElsIfConditionBlock(Block):
 @export
 class ElsIfBeginBlock(Block):
 	@classmethod
-	def stateBeginKeyword(cls, parserState: ParserState):
+	def stateBeginKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected label or one of these keywords: assert, process."
 		if isinstance(token, CharacterToken):
@@ -529,7 +529,7 @@ class ElsIfBeginBlock(Block):
 @export
 class ElseGenerateBlock(Block):
 	@classmethod
-	def stateGenerateKeyword(cls, parserState: ParserState):
+	def stateGenerateKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -563,7 +563,7 @@ class ElseGenerateBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generate name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -602,7 +602,7 @@ class ElseGenerateBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateGenerateName(cls, parserState: ParserState):
+	def stateGenerateName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword GENERATE."
 		if isinstance(token, CharacterToken):
@@ -635,7 +635,7 @@ class ElseGenerateBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after generate name."
 		if isinstance(token, CharacterToken):
@@ -675,7 +675,7 @@ class ElseGenerateBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
@@ -725,7 +725,7 @@ class ElseGenerateBlock(Block):
 @export
 class ElseGenerateBeginBlock(Block):
 	@classmethod
-	def stateBeginKeyword(cls, parserState: ParserState):
+	def stateBeginKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected label or one of these keywords: assert, process."
 		if isinstance(token, CharacterToken):

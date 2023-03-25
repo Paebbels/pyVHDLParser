@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CommentToken, CharacterToken, SpaceToken, LinebreakToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, EndToken
-from pyVHDLParser.Blocks              import Block, ParserState, BlockParserException, CommentBlock
+from pyVHDLParser.Blocks              import Block, TokenToBlockParser, BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Generic1     import EndOfStatementBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedBySemicolon
@@ -50,7 +50,7 @@ class ReturnExpressionBlock(ExpressionBlockEndedBySemicolon):
 @export
 class ReturnBlock(Block):
 	@classmethod
-	def stateReturnKeyword(cls, parserState: ParserState):
+	def stateReturnKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if  (token == ";"):
@@ -80,7 +80,7 @@ class ReturnBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace after keyword RETURN.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and  (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)

@@ -38,7 +38,7 @@ from pyVHDLParser.Token.Keywords  import MatchingLessThanOrEqualOperator, Matchi
 from pyVHDLParser.Token.Keywords  import NorOperator, AndOperator, NandOperator, XorOperator, XnorOperator, SlaOperator, SllOperator, SraOperator, SrlOperator
 from pyVHDLParser.Token.Keywords  import NotOperator, AbsOperator, OpeningRoundBracketToken, BoundaryToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords  import LoopKeyword, ToKeyword, DowntoKeyword, EndToken
-from pyVHDLParser.Blocks          import Block, ParserState, BlockParserException, CommentBlock
+from pyVHDLParser.Blocks          import Block, TokenToBlockParser, BlockParserException, CommentBlock
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
@@ -93,7 +93,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 	EXIT_BLOCK: Block = None
 
 	@classmethod
-	def stateBeforeExpression(cls, parserState: ParserState):
+	def stateBeforeExpression(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == "(":
@@ -132,7 +132,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		raise BlockParserException("Expected '(', unary operator, identifier, literal or whitespace.", token)
 
 	@classmethod
-	def stateExpression(cls, parserState: ParserState):
+	def stateExpression(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			try:
@@ -197,7 +197,7 @@ class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
 		raise BlockParserException("Expected ?????????????.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			try:
@@ -288,7 +288,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 	EXIT_BLOCK =    None
 
 	@classmethod
-	def stateExpression(cls, parserState: ParserState):
+	def stateExpression(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
@@ -334,7 +334,7 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
@@ -405,7 +405,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 	EXIT_BLOCK =    None
 
 	@classmethod
-	def stateExpression(cls, parserState: ParserState):
+	def stateExpression(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
@@ -468,7 +468,7 @@ class ExpressionBlockEndedByKeywordOrToOrDownto(ExpressionBlock):
 		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
@@ -555,7 +555,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 	END_BLOCK = None
 
 	@classmethod
-	def stateExpression(cls, parserState: ParserState):
+	def stateExpression(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
@@ -606,7 +606,7 @@ class ExpressionBlockEndedBySemicolon(ExpressionBlock):
 		raise BlockParserException("Expected operator, '(', ')', ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, FusedCharacterToken):
 			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)

@@ -30,13 +30,13 @@
 from pyTooling.Decorators             import export
 
 from pyVHDLParser.Blocks.Reference    import Library, Use
-from pyVHDLParser.Groups              import ParserState, GroupParserException, Group
+from pyVHDLParser.Groups              import BlockToGroupParser, GroupParserException, Group
 
 
 @export
 class LibraryGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, Library.EndBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
@@ -49,7 +49,7 @@ class LibraryGroup(Group):
 @export
 class UseGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, Use.EndBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)

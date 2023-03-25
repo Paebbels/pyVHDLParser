@@ -30,7 +30,7 @@
 from pyTooling.Decorators     import export
 
 from pyVHDLParser.Token       import SpaceToken, IndentationToken
-from pyVHDLParser.Blocks      import ParserState, SkipableBlock
+from pyVHDLParser.Blocks      import TokenToBlockParser, SkipableBlock
 
 
 @export
@@ -50,7 +50,7 @@ class WhitespaceBlock(SkipableBlock):
 @export
 class LinebreakBlock(WhitespaceBlock):
 	@classmethod
-	def stateLinebreak(cls, parserState: ParserState):
+	def stateLinebreak(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken = IndentationToken(fromExistingToken=token)

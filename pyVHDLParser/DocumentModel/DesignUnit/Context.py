@@ -34,7 +34,7 @@ from pyVHDLModel.DesignUnit                 import Context as ContextVHDLModel
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Reference          import Context as ContextBlocks
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
@@ -83,7 +83,7 @@ class Context(ContextVHDLModel):
 
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState): #document, group):
+	def stateParseGenericList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -97,7 +97,7 @@ class Context(ContextVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState): #document, group):
+	def stateParseGeneric(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
@@ -112,7 +112,7 @@ class Context(ContextVHDLModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	@classmethod
-	def stateParsePortList(cls, parserState: ParserState): #document, group):
+	def stateParsePortList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -126,7 +126,7 @@ class Context(ContextVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParsePort(cls, parserState: ParserState): #document, group):
+	def stateParsePort(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)

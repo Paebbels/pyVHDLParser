@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -39,7 +39,7 @@ from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCo
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateGenericKeyword(cls, parserState: ParserState):
+	def stateGenericKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace or '(' after keyword GENERIC."
 		if isinstance(token, CharacterToken):
@@ -79,7 +79,7 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected  '(' after keyword GENERIC."
 		if isinstance(token, CharacterToken):
@@ -124,7 +124,7 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generic name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -169,7 +169,7 @@ class OpenBlock(Block):
 @export
 class ItemBlock(Block):
 	@classmethod
-	def stateItemRemainder(cls, parserState: ParserState):
+	def stateItemRemainder(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == "(":
@@ -197,7 +197,7 @@ class ItemBlock(Block):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generic name (identifier)."
 
@@ -223,7 +223,7 @@ class DelimiterBlock(SkipableBlock):
 @export
 class CloseBlock(Block):
 	@classmethod
-	def stateClosingParenthesis(cls, parserState: ParserState):
+	def stateClosingParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
@@ -258,7 +258,7 @@ class CloseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

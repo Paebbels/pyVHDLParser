@@ -32,7 +32,7 @@ from pyTooling.Decorators                   import export
 from pyVHDLParser.Token                     import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import ComponentKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import EndBlock as EndBlockBase
 
@@ -52,7 +52,7 @@ class NameBlock(Block):
 		}
 
 	@classmethod
-	def stateComponentKeyword(cls, parserState: ParserState):
+	def stateComponentKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -69,7 +69,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword COMPONENT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -101,7 +101,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected component name (identifier).", token)
 
 	@classmethod
-	def stateComponentName(cls, parserState: ParserState):
+	def stateComponentName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -118,7 +118,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after component name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)
@@ -150,7 +150,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected keyword IS after component name.", token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 
 		token = parserState.Token
 		if isinstance(token, SpaceToken):

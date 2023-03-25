@@ -33,7 +33,7 @@ from pyVHDLParser.Token                   import CharacterToken, LinebreakToken,
 from pyVHDLParser.Token.Keywords          import BoundaryToken, ConstantKeyword, TypeKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Token.Parser            import SpaceToken, WordToken
-from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
@@ -48,7 +48,7 @@ class CloseBlock(CloseBlockBase):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if token <= "constant":
@@ -116,7 +116,7 @@ class GenericListInterfaceTypeBlock(InterfaceTypeBlock):
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateGenericKeyword(cls, parserState: ParserState):
+	def stateGenericKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -138,7 +138,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
@@ -170,7 +170,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' after keyword GENERIC.", token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ")"):
 			# if parserState.TokenMarker != token:

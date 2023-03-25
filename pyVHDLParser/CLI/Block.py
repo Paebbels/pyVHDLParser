@@ -35,7 +35,7 @@ from .GraphML import GraphML
 from ..Base                   import ParserException
 from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
 from ..Token.Parser           import Tokenizer
-from ..Blocks                 import TokenToBlockParser, Block, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
+from ..Blocks                 import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from ..Blocks.Common          import LinebreakBlock, IndentationBlock
 from ..Blocks.List            import GenericList, PortList
 from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
@@ -65,7 +65,7 @@ class BlockStreamHandlers:
 			content = fileHandle.read()
 
 		tokenStream = Tokenizer.GetVHDLTokenizer(content)
-		blockStream = TokenToBlockParser.Transform(tokenStream)
+		blockStream = TokenToBlockParser(tokenStream)()
 
 		blockIterator = iter(blockStream)
 		firstBlock = next(blockIterator)
@@ -137,7 +137,7 @@ class BlockStreamHandlers:
 			content = fileHandle.read()
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
+		vhdlBlockStream = TokenToBlockParser(vhdlTokenStream)()
 
 		try:
 			blockIterator = iter(vhdlBlockStream)

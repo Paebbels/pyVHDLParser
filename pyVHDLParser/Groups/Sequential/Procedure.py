@@ -40,7 +40,7 @@ from pyVHDLParser.Blocks.Object.Constant  import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Procedure
-from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException, EndOfDocumentGroup
+from pyVHDLParser.Groups                  import BlockToGroupParser, Group, GroupParserException, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
 from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
@@ -81,7 +81,7 @@ class ProcedureGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		# consume OpenBlock
@@ -94,7 +94,7 @@ class ProcedureGroup(Group):
 			raise GroupParserException("Begin of procedure expected.", currentBlock)
 
 	@classmethod
-	def stateParseGenerics(cls, parserState: ParserState):
+	def stateParseGenerics(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
@@ -102,15 +102,13 @@ class ProcedureGroup(Group):
 			parserState.PushState =   GenericListGroup.stateParse
 			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, ParameterList.OpenBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   ParameterListGroup.stateParse
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, Procedure.VoidBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			return
@@ -118,14 +116,12 @@ class ProcedureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -135,7 +131,7 @@ class ProcedureGroup(Group):
 
 
 	@classmethod
-	def stateParseParameters(cls, parserState: ParserState):
+	def stateParseParameters(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
@@ -143,20 +139,17 @@ class ProcedureGroup(Group):
 			parserState.PushState =   ParameterListGroup.stateParse
 			parserState.NextGroup =   ParameterListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -165,7 +158,7 @@ class ProcedureGroup(Group):
 		raise GroupParserException("End of parameters not found.", currentBlock)
 
 	@classmethod
-	def stateParseDeclarations(cls, parserState: ParserState):
+	def stateParseDeclarations(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Procedure.BeginBlock):
@@ -180,30 +173,26 @@ class ProcedureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -212,7 +201,7 @@ class ProcedureGroup(Group):
 		raise GroupParserException("End of procedure declarative region not found.", currentBlock)
 
 	@classmethod
-	def stateParseStatements(cls, parserState: ParserState):
+	def stateParseStatements(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Procedure.EndBlock):
@@ -224,30 +213,26 @@ class ProcedureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.STATEMENT_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.STATEMENT_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)

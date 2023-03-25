@@ -32,7 +32,7 @@ from pyTooling.Decorators                 import export
 from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
-from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
@@ -47,7 +47,7 @@ class CloseBlock(CloseBlockBase):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if token <= "signal":
@@ -97,7 +97,7 @@ class PortListInterfaceSignalBlock(InterfaceSignalBlock):
 @export
 class OpenBlock(Block):
 	@classmethod
-	def statePortKeyword(cls, parserState: ParserState):
+	def statePortKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -119,7 +119,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' or whitespace after keyword PORT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -151,7 +151,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' after keyword PORT.", token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ")"):
 			# if parserState.TokenMarker != token:

@@ -33,7 +33,7 @@ from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
-from pyVHDLParser.Groups            import ParserState, GroupParserException, Group, EndOfDocumentGroup
+from pyVHDLParser.Groups            import BlockToGroupParser, GroupParserException, Group, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment    import WhitespaceGroup, CommentGroup
 
 
@@ -49,7 +49,7 @@ class GenericListGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
@@ -58,8 +58,7 @@ class GenericListGroup(Group):
 			parserState.PushState =   GenericListItemGroup.stateParse
 			parserState.NextGroup =   GenericListItemGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, GenericList.CloseBlock):
 			parserState.Pop()
 			return
@@ -67,14 +66,12 @@ class GenericListGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -86,7 +83,7 @@ class GenericListGroup(Group):
 @export
 class GenericListItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, GenericList.DelimiterBlock):
 				parserState.Pop()
@@ -94,8 +91,7 @@ class GenericListItemGroup(Group):
 			elif isinstance(block, GenericList.CloseBlock):
 				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
-				parserState.ReIssue = True
-				return
+				return True
 
 		raise GroupParserException("End of generic not found.", block)
 
@@ -103,7 +99,7 @@ class GenericListItemGroup(Group):
 @export
 class GenericMapGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -112,7 +108,7 @@ class GenericMapGroup(Group):
 @export
 class GenericMapItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -130,7 +126,7 @@ class PortListGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, PortList.OpenBlock):
@@ -144,14 +140,12 @@ class PortListGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -163,7 +157,7 @@ class PortListGroup(Group):
 @export
 class PortListItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, PortList.DelimiterBlock):
 				parserState.Pop()
@@ -171,8 +165,7 @@ class PortListItemGroup(Group):
 			elif isinstance(block, PortList.CloseBlock):
 				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
-				parserState.ReIssue = True
-				return
+				return True
 
 		raise GroupParserException("End of port not found.", block)
 
@@ -180,7 +173,7 @@ class PortListItemGroup(Group):
 @export
 class PortMapGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -189,7 +182,7 @@ class PortMapGroup(Group):
 @export
 class PortMapItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -207,7 +200,7 @@ class ParameterListGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, ParameterList.OpenBlock):
@@ -221,14 +214,12 @@ class ParameterListGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -240,7 +231,7 @@ class ParameterListGroup(Group):
 @export
 class ParameterListItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if isinstance(block, ParameterList.DelimiterBlock):
 				parserState.Pop()
@@ -248,8 +239,7 @@ class ParameterListItemGroup(Group):
 			elif isinstance(block, ParameterList.CloseBlock):
 				# parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
-				parserState.ReIssue = True
-				return
+				return True
 
 		raise GroupParserException("End of parameter not found.", block)
 
@@ -257,7 +247,7 @@ class ParameterListItemGroup(Group):
 @export
 class ParameterMapGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -266,7 +256,7 @@ class ParameterMapGroup(Group):
 @export
 class ParameterMapItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -284,7 +274,7 @@ class SensitivityListGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, SensitivityList.OpenBlock):
@@ -298,14 +288,12 @@ class SensitivityListGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -317,7 +305,7 @@ class SensitivityListGroup(Group):
 @export
 class SensitivityListItemGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))

@@ -28,9 +28,10 @@
 # ==================================================================================================================== #
 #
 from types                          import FunctionType
-from typing                         import List, Callable, Iterator, Generator
+from typing import List, Callable, Iterator, Generator, Tuple, Any
 
 from pyTooling.Decorators           import export
+from pyTooling.MetaClasses import ExtendedType
 from pyTooling.TerminalUI           import LineTerminal
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
@@ -56,35 +57,35 @@ class BlockParserException(ParserException):
 		return self._token
 
 
+# @export
+# class TokenToBlockParser:
+# 	"""Wrapping class to offer some class methods."""
+#
+# 	@staticmethod
+# 	def Transform(tokenGenerator: Iterator[Token]) -> Generator['Block', Token, None]:
+# 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
+#
+# 		state = ParserState(tokenGenerator)
+# 		return state.GetGenerator()
+
+
 @export
-class TokenToBlockParser:
-	"""Wrapping class to offer some class methods."""
-
-	@staticmethod
-	def Transform(tokenGenerator: Iterator[Token]) -> Generator['Block', Token, None]:
-		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
-
-		state = ParserState(tokenGenerator)
-		return state.GetGenerator()
-
-
-@export
-class ParserState:
+class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
 	"""Represents the current state of a token-to-block parser."""
 
 	_iterator:     Iterator[Token]
-	_stack:        List[Callable]
+	_stack:        List[Tuple[Callable[['TokenToBlockParser'], None], int]]
 	_tokenMarker:  Token
 
 	Token:         Token
-	NextState:     Callable
-	ReIssue:       bool
+	NextState:     Callable[['TokenToBlockParser'], None]
+	# ReIssue:       bool
 	NewToken:      Token
 	NewBlock:      'Block'
 	LastBlock:     'Block'
 	Counter:       int
 
-	def __init__(self, tokenGenerator):
+	def __init__(self, tokenGenerator: Iterator[Token]):
 		"""Initializes the parser state."""
 
 		self._iterator =    iter(tokenGenerator)
@@ -92,25 +93,26 @@ class ParserState:
 		self._tokenMarker = None
 
 		startToken =        next(self._iterator)
-		startBlock =        StartOfDocumentBlock(startToken)
 
 		if not isinstance(startToken, StartOfDocumentToken):
 			raise BlockParserException("First token is not a StartOfDocumentToken.", startToken)
 
+		startBlock =        StartOfDocumentBlock(startToken)
+
 		self.Token =        startBlock.StartToken
 		self.NextState =    StartOfDocumentBlock.stateDocument
-		self.ReIssue =      False
+		# self.ReIssue =      False
 		self.NewToken =     None
 		self.NewBlock =     startBlock
 		self.LastBlock =    None
 		self.Counter =      0
 
-
 	@property
-	def PushState(self) -> Callable:
+	def PushState(self) -> Callable[['TokenToBlockParser'], None]:
 		return self.NextState
+
 	@PushState.setter
-	def PushState(self, value):
+	def PushState(self, value: Callable[['TokenToBlockParser'], None]):
 		self._stack.append((
 			self.NextState,
 			self.Counter
@@ -125,17 +127,22 @@ class ParserState:
 			LineTerminal().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **LineTerminal.Foreground))
 			self._tokenMarker = self.NewToken
 		return self._tokenMarker
+
 	@TokenMarker.setter
-	def TokenMarker(self, value):
+	def TokenMarker(self, value: Token):
 		self._tokenMarker = value
 
-	def __eq__(self, other) -> bool:
+	def __eq__(self, other: Any) -> bool:
 		"""Implement a '==' operator for the current state."""
 		return self.NextState is other
 
+	def __ne__(self, other: Any) -> bool:
+		"""Implement a '!=' operator for the current state."""
+		return self.NextState is not other
+
 	def __str__(self) -> str:
 		"""Returns the current state (function name) as str."""
-		return "{state}".format(state=self.NextState.__func__.__qualname__)
+		return f"{self.NextState.__func__.__qualname__}"
 
 	def __repr__(self) -> str:
 		"""Returns the current state (full) as str."""
@@ -147,19 +154,15 @@ class ParserState:
 			newBlock=self.NewBlock,
 		)
 
-	def Pop(self, n=1, tokenMarker=None):
-		top = None
+	def Pop(self, n: int = 1, tokenMarker: Token = None) -> None:
 		for i in range(n):
 			top = self._stack.pop()
 			LineTerminal().WriteDebug("popped: " + str(top[0]))
-		self.NextState =    top[0]
-		self.Counter =      top[1]
+		self.NextState, self.Counter = top
 		self._tokenMarker = tokenMarker
 
-
-	def GetGenerator(self) -> Generator['Block', Token, None]:
+	def __call__(self) -> Generator['Block', Token, None]:
 		from pyVHDLParser.Token             import EndOfDocumentToken
-		from pyVHDLParser.Blocks            import BlockParserException, EndOfDocumentBlock
 		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
 
 		for token in self._iterator:
@@ -235,48 +238,63 @@ class MetaBlock(type):
 
 @export
 class BlockIterator:
-	startBlock:         'Block'
-	currentBlock:       'Block'
-	stopBlock:          'Block'
-	inclusiveStopBlock: bool
+	_startBlock:         'Block'
+	_currentBlock:       'Block'
+	_stopBlock:          'Block'
+	_inclusiveStopBlock: bool
 
-	state:              int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
+	_state:              int     #: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock
 
 	def __init__(self, startBlock: 'Block', inclusiveStartBlock: bool=False, inclusiveStopBlock: bool=True, stopBlock: 'Block'=None):
-		self.startBlock =         startBlock
-		self.currentBlock =       startBlock if inclusiveStartBlock else startBlock.NextBlock
-		self.stopBlock =          stopBlock
-		self.inclusiveStopBlock = inclusiveStopBlock
+		self._startBlock =         startBlock if inclusiveStartBlock else startBlock.NextBlock
+		self._currentBlock =       self._startBlock
+		self._stopBlock =          stopBlock
+		self._inclusiveStopBlock = inclusiveStopBlock
 
-		self.state =              0
+		self._state =              0
 
 	def __iter__(self) -> 'BlockIterator':
 		return self
 
 	def __next__(self) -> 'Block':
 		# in last call of '__next__', the last block in the sequence was returned
-		if self.state > 0:
-			raise StopIteration(self.state)
+		if self._state > 0:
+			raise StopIteration(self._state)
 
-		block = self.currentBlock
-		if block is self.stopBlock:
-			if not self.inclusiveStopBlock:
+		block = self._currentBlock
+		if block is self._stopBlock:
+			if not self._inclusiveStopBlock:
 				raise StopIteration(1)
 			else:
-				self.currentBlock = None
-				self.state = 1
-		elif isinstance(self.currentBlock, EndOfBlock):
-			if not self.inclusiveStopBlock:
+				self._currentBlock = None
+				self._state = 1
+		elif isinstance(self._currentBlock, EndOfBlock):
+			if not self._inclusiveStopBlock:
 				raise StopIteration(2)
 			else:
-				self.currentBlock = None
-				self.state = 2
+				self._currentBlock = None
+				self._state = 2
 		else:
-			self.currentBlock = block.NextBlock
-			if self.currentBlock is None:
+			self._currentBlock = block.NextBlock
+			if self._currentBlock is None:
 				raise ParserException("Found open end while iterating block sequence.")  # FIXME: how to append last block?
 
 		return block
+
+	@property
+	def StartBlock(self) -> 'Block':
+		return self._startBlock
+
+	@property
+	def CurrentBlock(self) -> 'Block':
+		return self._currentBlock
+
+	@property
+	def StopBlock(self) -> 'Block':
+		return self._stopBlock
+
+	def Reset(self):
+		self._currentBlock = self._startBlock
 
 
 @export
@@ -399,7 +417,7 @@ class Block(metaclass=MetaBlock):
 		return self.__STATES__
 
 	@classmethod
-	def stateError(cls, parserState: ParserState):
+	def stateError(cls, parserState: TokenToBlockParser):
 		"""Predefined state to catch error situations."""
 		raise BlockParserException("Reached unreachable state!")
 
@@ -488,7 +506,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 		}
 
 	@classmethod
-	def stateDocument(cls, parserState: ParserState):
+	def stateDocument(cls, parserState: TokenToBlockParser):
 		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 
 		token = parserState.Token
@@ -514,7 +532,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 					return
 
 		elif isinstance(token, EndOfDocumentToken):
-			parserState.NewBlock =    EndOfDocumentBlock(parserState.LastBlock, token)
+			parserState.NewBlock = EndOfDocumentBlock(parserState.LastBlock, token)
 			return
 
 		raise BlockParserException(

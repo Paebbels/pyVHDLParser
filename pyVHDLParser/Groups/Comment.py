@@ -31,19 +31,18 @@ from pyTooling.Decorators         import export
 
 from pyVHDLParser.Blocks          import CommentBlock
 from pyVHDLParser.Blocks.Common   import WhitespaceBlock, LinebreakBlock, IndentationBlock
-from pyVHDLParser.Groups          import ParserState, GroupParserException, Group
+from pyVHDLParser.Groups          import BlockToGroupParser, GroupParserException, Group
 
 
 @export
 class CommentGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if not isinstance(block, CommentBlock):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block)
 				parserState.Pop()
-				parserState.ReIssue =   True
-				return
+				return True
 
 		raise GroupParserException("End of library clause not found.", block)
 
@@ -51,12 +50,11 @@ class CommentGroup(Group):
 @export
 class WhitespaceGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		for block in parserState.GetBlockIterator:
 			if not isinstance(block, (WhitespaceBlock, LinebreakBlock, IndentationBlock)):
 				parserState.NextGroup = cls(parserState.LastGroup, parserState.BlockMarker, block.PreviousBlock)
 				parserState.Pop()
-				parserState.ReIssue =   True
-				return
+				return True
 
 		raise GroupParserException("End of library clause not found.", block)

@@ -32,7 +32,7 @@ from pyTooling.Decorators         import export
 from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, WordToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token           import SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EndToken, BoundaryToken, LabelToken, IdentifierToken
-from pyVHDLParser.Blocks          import FinalBlock, ParserState, CommentBlock, BlockParserException, Block
+from pyVHDLParser.Blocks          import FinalBlock, TokenToBlockParser, CommentBlock, BlockParserException, Block
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
@@ -44,7 +44,7 @@ class EndBlock(FinalBlock):
 	EXPECTED_NAME_KIND =  "keyword"  # keyword label
 
 	@classmethod
-	def stateEndKeyword(cls, parserState: ParserState):
+	def stateEndKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (cls.KEYWORD_IS_OPTIONAL is True) and (token == ";"):
@@ -71,7 +71,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (cls.KEYWORD_IS_OPTIONAL is True) and (token == ";"):
@@ -127,7 +127,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateKeyword1(cls, parserState: ParserState):
+	def stateKeyword1(cls, parserState: TokenToBlockParser):
 		IS_DOUBLE_KEYWORD = isinstance(cls.KEYWORD, tuple)
 		nextState = cls.stateWhitespace2 if IS_DOUBLE_KEYWORD else cls.stateWhitespace3;
 		token = parserState.Token
@@ -156,7 +156,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if (cls.KEYWORD_IS_OPTIONAL is True) and (not isinstance(cls.KEYWORD, tuple)) and (token == ";"):
@@ -203,7 +203,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateKeyword2(cls, parserState: ParserState):
+	def stateKeyword2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
@@ -229,7 +229,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == ";":
@@ -268,7 +268,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or {0} name.".format(cls.EXPECTED_NAME), token)
 
 	@classmethod
-	def stateSimpleName(cls, parserState: ParserState):
+	def stateSimpleName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
@@ -294,7 +294,7 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == ";":
@@ -333,14 +333,14 @@ class BeginBlock(Block):
 	KEYWORDS = None
 
 	@classmethod
-	def stateStatementRegion(cls, parserState: ParserState):
+	def stateStatementRegion(cls, parserState: TokenToBlockParser):
 		pass
 
 
 @export
 class CloseBlock(Block):
 	@classmethod
-	def stateClosingParenthesis(cls, parserState: ParserState):
+	def stateClosingParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
@@ -361,7 +361,7 @@ class CloseBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)

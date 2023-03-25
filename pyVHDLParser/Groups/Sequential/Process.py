@@ -40,7 +40,7 @@ from pyVHDLParser.Blocks.Object.Constant  import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference        import Use
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
 from pyVHDLParser.Blocks.Sequential       import Process
-from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException, EndOfDocumentGroup
+from pyVHDLParser.Groups                  import BlockToGroupParser, Group, GroupParserException, EndOfDocumentGroup
 from pyVHDLParser.Groups.Comment          import WhitespaceGroup, CommentGroup
 from pyVHDLParser.Groups.List             import GenericListGroup, ParameterListGroup, SensitivityListGroup
 from pyVHDLParser.Groups.Object           import ConstantGroup, VariableGroup
@@ -81,7 +81,7 @@ class ProcessGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		# consume OpenBlock
@@ -94,7 +94,7 @@ class ProcessGroup(Group):
 			raise GroupParserException("Begin of process expected.", currentBlock)
 
 	@classmethod
-	def stateParseSensitivityList(cls, parserState: ParserState):
+	def stateParseSensitivityList(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, SensitivityList.OpenBlock):
@@ -102,20 +102,17 @@ class ProcessGroup(Group):
 			parserState.PushState =   SensitivityListGroup.stateParse
 			parserState.NextGroup =   SensitivityListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -124,7 +121,7 @@ class ProcessGroup(Group):
 		raise GroupParserException("End of process sensitivity list not found.", currentBlock)
 
 	@classmethod
-	def stateParseDeclarations(cls, parserState: ParserState):
+	def stateParseDeclarations(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Process.BeginBlock):
@@ -139,30 +136,26 @@ class ProcessGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -171,7 +164,7 @@ class ProcessGroup(Group):
 		raise GroupParserException("End of process declarative region not found.", currentBlock)
 
 	@classmethod
-	def stateParseStatements(cls, parserState: ParserState):
+	def stateParseStatements(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Process.EndBlock):
@@ -183,30 +176,26 @@ class ProcessGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.STATEMENT_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.STATEMENT_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -219,7 +208,7 @@ class ProcessGroup(Group):
 @export
 class IfGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -228,7 +217,7 @@ class IfGroup(Group):
 @export
 class IfBranchGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -237,7 +226,7 @@ class IfBranchGroup(Group):
 @export
 class ElsIfBranchGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -246,7 +235,7 @@ class ElsIfBranchGroup(Group):
 @export
 class ElseBranchGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -255,7 +244,7 @@ class ElseBranchGroup(Group):
 @export
 class CaseGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -264,7 +253,7 @@ class CaseGroup(Group):
 @export
 class ChoiceGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -273,7 +262,7 @@ class ChoiceGroup(Group):
 @export
 class ForLoopGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -282,7 +271,7 @@ class ForLoopGroup(Group):
 @export
 class WhileLoopGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -291,7 +280,7 @@ class WhileLoopGroup(Group):
 @export
 class NextGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -300,7 +289,7 @@ class NextGroup(Group):
 @export
 class ExitGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -309,7 +298,7 @@ class ExitGroup(Group):
 @export
 class ReturnGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -318,7 +307,7 @@ class ReturnGroup(Group):
 @export
 class VariableAssignmentGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))
@@ -327,7 +316,7 @@ class VariableAssignmentGroup(Group):
 @export
 class SignalAssignmentGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))

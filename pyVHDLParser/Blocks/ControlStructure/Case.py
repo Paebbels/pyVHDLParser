@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
-from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
@@ -49,11 +49,11 @@ class ArrowBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def stateArrowKeyword(cls, parserState: ParserState):
+	def stateArrowKeyword(cls, parserState: TokenToBlockParser):
 		cls.stateSequentialRegion(parserState)
 
 	@classmethod
-	def stateSequentialRegion(cls, parserState: ParserState):
+	def stateSequentialRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "when"):
 			newToken =                WhenKeyword(fromExistingToken=token)
@@ -77,7 +77,7 @@ class WhenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def stateWhenKeyword(cls, parserState: ParserState):
+	def stateWhenKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -106,7 +106,7 @@ class WhenBlock(SequentialBeginBlock):
 			return
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, LinebreakToken):
 			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
@@ -142,7 +142,7 @@ class IsBlock(SequentialBeginBlock):
 	END_BLOCK = None
 
 	@classmethod
-	def stateIsKeyword(cls, parserState: ParserState):
+	def stateIsKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -160,7 +160,7 @@ class IsBlock(SequentialBeginBlock):
 		raise BlockParserException("Expected whitespace after keyword IS.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
@@ -207,7 +207,7 @@ class CaseExpressionBlock(ExpressionBlockEndedByKeywordORClosingRoundBracket):
 @export
 class CaseBlock(Block):
 	@classmethod
-	def stateCaseKeyword(cls, parserState: ParserState):
+	def stateCaseKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -236,7 +236,7 @@ class CaseBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, LinebreakToken):
 			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):

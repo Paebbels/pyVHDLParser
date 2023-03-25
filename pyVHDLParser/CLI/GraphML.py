@@ -1,5 +1,7 @@
 from pyTooling.Graph import Graph, Subgraph, Vertex
 from pyTooling.Graph.GraphML import GraphMLDocument
+from pyVHDLParser.Groups import Group
+
 from pyVHDLParser.Blocks import Block
 
 from pyVHDLParser.Token import Token
@@ -83,6 +85,47 @@ class GraphML:
 		lastVertex.EdgeToVertex(blockStreamSubgraph._verticesWithID[id(lastBlock.PreviousBlock)], edgeID=f"n{blockID + 1}_prev")
 
 		return blockStreamSubgraph
+
+	def AddGroupStream(self, firstGroup: Group, blockStreamSubgraph: Subgraph):
+		groupStreamSubgraph = Subgraph(name="GroupStream", graph=self._graph)
+
+		firstVertex = Vertex(vertexID=id(firstGroup), value=f"{firstGroup}", subgraph=groupStreamSubgraph)
+		firstVertex["order"] = 0
+		firstVertex["kind"] = type(firstGroup).__name__
+		firstLink = firstVertex.LinkToVertex(blockStreamSubgraph._verticesWithID[id(firstGroup.StartToken)])
+		firstLink["kind"] = "group2block"
+
+		groupIterator = firstGroup.GetIterator(inclusiveStopBlock=False)
+		for groupID, group in enumerate(groupIterator, start=1):
+			vertex = Vertex(vertexID=id(group), value=f"{group!s}", subgraph=groupStreamSubgraph)
+			vertex["order"] = groupID
+			vertex["kind"] = type(group).__name__
+			startBlockLink = vertex.LinkToVertex(blockStreamSubgraph._verticesWithID[id(group.StartToken)])
+			startBlockLink["kind"] = "group2block"
+			if group.EndToken is not group.StartToken:
+				endBlockLink = vertex.LinkToVertex(blockStreamSubgraph._verticesWithID[id(group.EndToken)])
+				endBlockLink["kind"] = "group2block"
+
+		groupIterator = group.GetIterator()
+		lastGroup = next(groupIterator)
+		lastVertex = Vertex(vertexID=id(lastGroup), value=f"{lastGroup}", subgraph=groupStreamSubgraph)
+		lastVertex["order"] = groupID + 1
+		lastVertex["kind"] = type(lastGroup).__name__
+		lastLink = lastVertex.LinkToVertex(blockStreamSubgraph._verticesWithID[id(lastGroup.StartToken)])
+		lastLink["kind"] = "group2block"
+
+		firstVertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(firstGroup.NextBlock)], edgeID=f"n0_next")
+		groupIterator = firstGroup.GetIterator(inclusiveStopBlock=False)
+		for groupID, group in enumerate(groupIterator, start=1):
+			vertex = groupStreamSubgraph._verticesWithID[id(group)]
+			vertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(group.PreviousBlock)], edgeID=f"n{groupID}_prev")
+			vertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(group.NextBlock)], edgeID=f"n{groupID}_next")
+		groupIterator = group.GetIterator()
+		lastGroup = next(groupIterator)
+		lastVertex = groupStreamSubgraph._verticesWithID[id(lastGroup)]
+		lastVertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(lastGroup.PreviousBlock)], edgeID=f"n{groupID + 1}_prev")
+
+		return groupStreamSubgraph
 
 	def WriteDocument(self, path):
 		graphMLDocument = GraphMLDocument("Streams")

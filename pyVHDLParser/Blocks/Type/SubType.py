@@ -31,7 +31,7 @@ from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token           import CharacterToken, LinebreakToken, SpaceToken, WordToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, VariableAssignmentKeyword, EndToken
-from pyVHDLParser.Blocks          import Block, ParserState
+from pyVHDLParser.Blocks          import Block, TokenToBlockParser
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -39,7 +39,7 @@ from pyVHDLParser.Blocks.Comment  import SingleLineCommentBlock, MultiLineCommen
 @export
 class SubTypeBlock(Block):
 	@classmethod
-	def stateSubTypeKeyword(cls, parserState: ParserState):
+	def stateSubTypeKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword SUBTYPE."
 		if isinstance(token, CharacterToken):
@@ -73,7 +73,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected subtype name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -112,7 +112,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateSubTypeName(cls, parserState: ParserState):
+	def stateSubTypeName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';' after library name."
 		if isinstance(token, CharacterToken):
@@ -149,7 +149,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected subtype name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -192,7 +192,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateColon1(cls, parserState: ParserState):
+	def stateColon1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected typemark or whitespace after ':'."
 		if isinstance(token, CharacterToken):
@@ -230,7 +230,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected subtype name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -269,7 +269,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateTypeMarkName(cls, parserState: ParserState):
+	def stateTypeMarkName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ':=' or whitespace after type mark."
 		if isinstance(token, CharacterToken):
@@ -306,7 +306,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ':=' after type mark."
 		if isinstance(token, CharacterToken):
@@ -345,7 +345,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def statePossibleVariableAssignment(cls, parserState: ParserState):
+	def statePossibleVariableAssignment(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == "="):
 			parserState.NewToken =      VariableAssignmentKeyword(parserState.TokenMarker)
@@ -356,7 +356,7 @@ class SubTypeBlock(Block):
 		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
 
 	@classmethod
-	def stateVariableAssignment(cls, parserState: ParserState):
+	def stateVariableAssignment(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ':=' or whitespace after type mark."
 		if isinstance(token, CharacterToken):
@@ -389,7 +389,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace5(cls, parserState: ParserState):
+	def stateWhitespace5(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected expression after ':='."
 		if isinstance(token, CharacterToken):
@@ -427,7 +427,7 @@ class SubTypeBlock(Block):
 		raise TokenParserException(errorMessage, token)
 
 	@classmethod
-	def stateExpressionEnd(cls, parserState: ParserState):
+	def stateExpressionEnd(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

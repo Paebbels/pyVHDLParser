@@ -32,7 +32,7 @@ from pyTooling.Decorators                   import export
 from pyVHDLParser.Token                     import CharacterToken, SpaceToken, LinebreakToken, CommentToken, IndentationToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
-from pyVHDLParser.Blocks                    import Block, CommentBlock, BlockParserException, ParserState
+from pyVHDLParser.Blocks                    import Block, CommentBlock, BlockParserException, TokenToBlockParser
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
@@ -61,7 +61,7 @@ class DeclarativeRegion(SequentialDeclarativeRegion):
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateProcessKeyword(cls, parserState: ParserState):
+	def stateProcessKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -84,7 +84,7 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' or whitespace after keyword PROCESS.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -161,7 +161,7 @@ class OpenBlock2(Block):
 		}
 
 	@classmethod
-	def stateAfterSensitivityList(cls, parserState: ParserState):
+	def stateAfterSensitivityList(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
@@ -202,7 +202,7 @@ class OpenBlock2(Block):
 		raise BlockParserException("Expected whitespace after keyword ENTITY.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()

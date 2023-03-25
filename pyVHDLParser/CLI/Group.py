@@ -31,12 +31,13 @@ from pathlib import Path
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
+from .GraphML import GraphML
 from ..Base                   import ParserException
 from ..Token                  import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
 from ..Token.Parser           import Tokenizer
 from ..Token.Keywords         import BoundaryToken, EndToken, KeywordToken, DelimiterToken
 from ..Blocks                 import TokenToBlockParser
-from ..Groups                 import BlockToGroupParser
+from ..Groups import BlockToGroupParser, StartOfDocumentGroup
 
 from .                        import FrontEndProtocol, WithTokensAttribute, WithBlocksAttribute, FilenameAttribute
 
@@ -59,6 +60,24 @@ class GroupStreamHandlers:
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
+
+		tokenStream = Tokenizer.GetVHDLTokenizer(content)
+		blockStream = TokenToBlockParser(tokenStream)()
+		groupStream = BlockToGroupParser(blockStream)()
+
+		groupIterator = iter(groupStream)
+		firstGroup = next(groupIterator)
+
+		try:
+			while next(groupIterator):
+				pass
+		except StopIteration:
+			pass
+
+		if isinstance(firstGroup, StartOfDocumentGroup):
+			print("{YELLOW}{group!r}{NOCOLOR}".format(block=firstGroup, **self.Foreground))
+			print("  {YELLOW}{block!r}{NOCOLOR}".format(block=firstGroup.StartBlock, **self.Foreground))
+			print("    {YELLOW}{token!r}{NOCOLOR}".format(token=firstGroup.StartBlock.StartToken, **self.Foreground))
 
 		buffered = True
 		if buffered:
@@ -103,5 +122,11 @@ class GroupStreamHandlers:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+
+		exporter = GraphML()
+		tokenStreamSubgraph = exporter.AddTokenStream(firstBlock.StartToken)
+		blockStreamSubgraph = exporter.AddBlockStream(firstBlock, tokenStreamSubgraph)
+		blockStreamSubgraph = exporter.AddGroupStream(firstBlock, blockStreamSubgraph)
+		exporter.WriteDocument(Path.cwd() / "temp/BlockStream.graphml")
 
 		self.exit()

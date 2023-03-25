@@ -33,7 +33,7 @@ from pyVHDLParser.Token               import CharacterToken, LinebreakToken, Ind
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Parser        import SpaceToken, WordToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, TokenToBlockParser
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
@@ -43,7 +43,7 @@ from pyVHDLParser.Blocks.List         import GenericList, PortList
 @export
 class ConditionBlock(Block):
 	@classmethod
-	def stateWhileKeyword(cls, parserState: ParserState):
+	def stateWhileKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
@@ -77,7 +77,7 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected while name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -116,7 +116,7 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhileName(cls, parserState: ParserState):
+	def stateWhileName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
@@ -149,7 +149,7 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after while name."
 		if isinstance(token, CharacterToken):
@@ -189,7 +189,7 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):

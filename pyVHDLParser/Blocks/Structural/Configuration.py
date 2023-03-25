@@ -32,7 +32,7 @@ from pyTooling.Decorators                   import export
 from pyVHDLParser.Token                     import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import ConfigurationKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic            import ConcurrentBeginBlock, EndBlock as EndBlockBase
 
@@ -54,7 +54,7 @@ class NameBlock(Block):
 		}
 
 	@classmethod
-	def stateConfigurationKeyword(cls, parserState: ParserState):
+	def stateConfigurationKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -71,7 +71,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword CONFIGURATION.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -103,7 +103,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected configuration name (identifier).", token)
 
 	@classmethod
-	def stateConfigurationName(cls, parserState: ParserState):
+	def stateConfigurationName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -120,7 +120,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after configuration name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)
@@ -152,7 +152,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected keyword IS after configuration name.", token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 
 		token = parserState.Token
 		if isinstance(token, SpaceToken):

@@ -32,7 +32,7 @@ from pyTooling.Decorators           import export
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token             import WordToken, ExtendedIdentifier, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken, WhenKeyword
-from pyVHDLParser.Blocks            import Block, ParserState, CommentBlock, BlockParserException
+from pyVHDLParser.Blocks            import Block, TokenToBlockParser, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1   import EndOfStatementBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
@@ -51,7 +51,7 @@ class ExitConditionBlock(ExpressionBlockEndedBySemicolon):
 @export
 class ExitBlock(Block):
 	@classmethod
-	def stateExitKeyword(cls, parserState: ParserState):
+	def stateExitKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
@@ -75,7 +75,7 @@ class ExitBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace after keyword EXIT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
@@ -111,7 +111,7 @@ class ExitBlock(Block):
 		raise BlockParserException("Expected ';', keyword WHEN or loop label.", token)
 
 	@classmethod
-	def stateExitLoopLabel(cls, parserState: ParserState):
+	def stateExitLoopLabel(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
@@ -135,7 +135,7 @@ class ExitBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace after loop label.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
@@ -162,7 +162,7 @@ class ExitBlock(Block):
 		raise BlockParserException("Expected ';' or keyword WHEN.", token)
 
 	@classmethod
-	def stateWhenKeyword(cls, parserState: ParserState):
+	def stateWhenKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if  (token == ";"):
@@ -192,7 +192,7 @@ class ExitBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace after keyword RETURN.", token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and  (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)

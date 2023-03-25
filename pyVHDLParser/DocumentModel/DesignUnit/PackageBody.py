@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import PackageBody as PackageBodyBlock
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
@@ -51,7 +51,7 @@ class PackageBody(PackageBodyVHDLModel):
 		self._name = packageBodyName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState): #document, group):
+	def stateParse(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 		cls.stateParsePackageBodyName(parserState)
 
@@ -79,7 +79,7 @@ class PackageBody(PackageBodyVHDLModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageBodyName(cls, parserState: ParserState): #document, group):
+	def stateParsePackageBodyName(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
@@ -103,7 +103,7 @@ class PackageBody(PackageBodyVHDLModel):
 		oldNode.PackageReferences.clear()
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState): #document, group):
+	def stateParseGenericList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -117,7 +117,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState): #document, group):
+	def stateParseGeneric(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
@@ -132,7 +132,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	@classmethod
-	def stateParsePortList(cls, parserState: ParserState): #document, group):
+	def stateParsePortList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -146,7 +146,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParsePort(cls, parserState: ParserState): #document, group):
+	def stateParsePort(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)

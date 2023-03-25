@@ -33,7 +33,7 @@ from pyVHDLParser.Token                   import LinebreakToken, WordToken, Spac
 from pyVHDLParser.Token.Keywords          import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords          import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords          import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
-from pyVHDLParser.Blocks                  import BlockParserException, CommentBlock, ParserState, MetaBlock
+from pyVHDLParser.Blocks                  import BlockParserException, CommentBlock, TokenToBlockParser, MetaBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks.Object.Variable  import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Generic1         import EndBlock, BeginBlock
@@ -67,7 +67,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -159,12 +159,12 @@ class ConcurrentBeginBlock(BeginBlock):
 		}
 
 	@classmethod
-	def stateStatementRegion(cls, parserState: ParserState):
+	def stateStatementRegion(cls, parserState: TokenToBlockParser):
 		parserState.NextState = cls.stateConcurrentRegion
 		parserState.NextState(parserState)
 
 	@classmethod
-	def stateConcurrentRegion(cls, parserState: ParserState):
+	def stateConcurrentRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
@@ -229,15 +229,15 @@ class SequentialBeginBlock(BeginBlock):
 		}
 
 	@classmethod
-	def stateStatementRegion(cls, parserState: ParserState):
+	def stateStatementRegion(cls, parserState: TokenToBlockParser):
 		cls.stateAnyRegion(parserState)
 
 	@classmethod
-	def stateSequentialRegion(cls, parserState: ParserState):
+	def stateSequentialRegion(cls, parserState: TokenToBlockParser):
 		cls.stateAnyRegion(parserState)
 
 	@classmethod
-	def stateAnyRegion(cls, parserState: ParserState):
+	def stateAnyRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock

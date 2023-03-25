@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CommentToken, SpaceToken, LinebreakToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
-from pyVHDLParser.Blocks              import Block, CommentBlock, BlockParserException, ParserState
+from pyVHDLParser.Blocks              import Block, CommentBlock, BlockParserException, TokenToBlockParser
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
 
@@ -50,7 +50,7 @@ class NameBlock(Block):
 			LibraryKeyword: Library.StartBlock.stateLibraryKeyword
 		}
 	@classmethod
-	def stateContextKeyword(cls, parserState: ParserState):
+	def stateContextKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -67,7 +67,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword CONTEXT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -100,7 +100,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected context name (identifier).", token)
 
 	@classmethod
-	def stateContextName(cls, parserState: ParserState):
+	def stateContextName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
@@ -117,7 +117,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after context name (identifier).", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)
@@ -148,7 +148,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected keyword IS after context name.", token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock

@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IfKeyword, ThenKeyword, ElsIfKeyword, ElseKeyword
-from pyVHDLParser.Blocks              import Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks              import Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic      import SequentialBeginBlock
 from pyVHDLParser.Blocks.Generic1     import EndBlock as EndBlockBase
@@ -49,11 +49,11 @@ class ThenBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def stateThenKeyword(cls, parserState: ParserState):
+	def stateThenKeyword(cls, parserState: TokenToBlockParser):
 		cls.stateSequentialRegion(parserState)
 
 	@classmethod
-	def stateSequentialRegion(cls, parserState: ParserState):
+	def stateSequentialRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
@@ -80,7 +80,7 @@ class ElseBlock(SequentialBeginBlock):
 	END_BLOCK = EndBlock
 
 	@classmethod
-	def stateElseKeyword(cls, parserState: ParserState):
+	def stateElseKeyword(cls, parserState: TokenToBlockParser):
 		cls.stateSequentialRegion(parserState)
 
 
@@ -93,7 +93,7 @@ class ExpressionBlockEndedByThen(ExpressionBlockEndedByKeywordORClosingRoundBrac
 @export
 class IfConditionBlock(Block):
 	@classmethod
-	def stateIfKeyword(cls, parserState: ParserState):
+	def stateIfKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -122,7 +122,7 @@ class IfConditionBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, LinebreakToken):
 			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
@@ -156,7 +156,7 @@ class IfConditionBlock(Block):
 @export
 class ElsIfConditionBlock(Block):
 	@classmethod
-	def stateElsIfKeyword(cls, parserState: ParserState):
+	def stateElsIfKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -185,7 +185,7 @@ class ElsIfConditionBlock(Block):
 			return
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, LinebreakToken):
 			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):

@@ -41,7 +41,7 @@ from pyVHDLParser.Blocks.Reference            import Context, Library, Use
 from pyVHDLParser.Blocks.Reporting.Assert     import AssertBlock
 from pyVHDLParser.Blocks.Sequential           import Package, PackageBody, Function, Procedure, Process
 from pyVHDLParser.Blocks.Structural           import Entity, Architecture, Component, Configuration
-from pyVHDLParser.Groups                      import GroupParserException, Group, EndOfDocumentGroup, ParserState
+from pyVHDLParser.Groups                      import GroupParserException, Group, EndOfDocumentGroup, BlockToGroupParser
 from pyVHDLParser.Groups.Comment              import CommentGroup, WhitespaceGroup
 from pyVHDLParser.Groups.Concurrent           import AssertGroup
 from pyVHDLParser.Groups.List                 import GenericListGroup, ParameterListGroup, PortListGroup
@@ -70,7 +70,7 @@ class ContextGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Context.NameBlock):
@@ -87,22 +87,19 @@ class ContextGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -145,7 +142,7 @@ class EntityGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		# consume OpenBlock
@@ -158,7 +155,7 @@ class EntityGroup(Group):
 			raise GroupParserException("Begin of entity expected.", currentBlock)
 
 	@classmethod
-	def stateParseGenerics(cls, parserState: ParserState):
+	def stateParseGenerics(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, GenericList.OpenBlock):
@@ -166,27 +163,23 @@ class EntityGroup(Group):
 			parserState.PushState =   GenericListGroup.stateParse
 			parserState.NextGroup =   GenericListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, PortList.OpenBlock):
 			parserState.NextState =   cls.stateParseDeclarations
 			parserState.PushState =   PortListGroup.stateParse
 			parserState.NextGroup =   PortListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -195,7 +188,7 @@ class EntityGroup(Group):
 		raise GroupParserException("End of generic clause not found.", currentBlock)
 
 	@classmethod
-	def stateParsePorts(cls, parserState: ParserState):
+	def stateParsePorts(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, PortList.OpenBlock):
@@ -203,20 +196,17 @@ class EntityGroup(Group):
 			parserState.PushState =   PortListGroup.stateParse
 			parserState.NextGroup =   PortListGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, (LinebreakBlock, IndentationBlock)):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -225,7 +215,7 @@ class EntityGroup(Group):
 		raise GroupParserException("End of port clause not found.", currentBlock)
 
 	@classmethod
-	def stateParseDeclarations(cls, parserState: ParserState):
+	def stateParseDeclarations(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Entity.BeginBlock):
@@ -240,30 +230,26 @@ class EntityGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -272,7 +258,7 @@ class EntityGroup(Group):
 		raise GroupParserException("End of entity declarative region not found.", currentBlock)
 
 	@classmethod
-	def stateParseStatements(cls, parserState: ParserState):
+	def stateParseStatements(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Entity.EndBlock):
@@ -284,30 +270,26 @@ class EntityGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.STATEMENT_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.STATEMENT_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -351,7 +333,7 @@ class ArchitectureGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Architecture.NameBlock):
@@ -361,14 +343,12 @@ class ArchitectureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup =   EndOfDocumentGroup(currentBlock)
 			return
@@ -378,7 +358,7 @@ class ArchitectureGroup(Group):
 		), currentBlock)
 
 	@classmethod
-	def stateParseDeclarations(cls, parserState: ParserState):
+	def stateParseDeclarations(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Architecture.BeginBlock):
@@ -388,30 +368,26 @@ class ArchitectureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -422,7 +398,7 @@ class ArchitectureGroup(Group):
 		), currentBlock)
 
 	@classmethod
-	def stateParseStatements(cls, parserState: ParserState):
+	def stateParseStatements(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Architecture.EndBlock):
@@ -434,30 +410,26 @@ class ArchitectureGroup(Group):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for block in cls.STATEMENT_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.STATEMENT_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.STATEMENT_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.STATEMENT_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -496,7 +468,7 @@ class PackageGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Package.NameBlock):
@@ -510,30 +482,26 @@ class PackageGroup(Group):
 			parserState.PushState = WhitespaceGroup.stateParse
 			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState = CommentGroup.stateParse
 			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.DECLARATION_COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -572,7 +540,7 @@ class PackageBodyGroup(Group):
 		))
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, PackageBody.NameBlock):
@@ -586,22 +554,19 @@ class PackageBodyGroup(Group):
 			parserState.PushState = WhitespaceGroup.stateParse
 			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState = CommentGroup.stateParse
 			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		else:
 			for block in cls.DECLARATION_SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.DECLARATION_SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.DECLARATION_COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
@@ -609,8 +574,7 @@ class PackageBodyGroup(Group):
 					parserState.PushState =   group.stateParse
 					parserState.NextGroup =   group(parserState.LastGroup, parserState.BlockMarker, currentBlock)
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -641,7 +605,7 @@ class ComponentGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Component.NameBlock):
@@ -655,30 +619,26 @@ class ComponentGroup(Group):
 			parserState.PushState = WhitespaceGroup.stateParse
 			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState = CommentGroup.stateParse
 			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		else:
 			for block in cls.SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.SIMPLE_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for block in cls.COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group =                   cls.COMPOUND_BLOCKS[block]
 					parserState.PushState =   group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)
@@ -709,7 +669,7 @@ class ConfigurationGroup(Group):
 		}
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		currentBlock = parserState.Block
 
 		if isinstance(currentBlock, Configuration.NameBlock):
@@ -723,30 +683,26 @@ class ConfigurationGroup(Group):
 			parserState.PushState = WhitespaceGroup.stateParse
 			parserState.NextGroup = WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState = CommentGroup.stateParse
 			parserState.NextGroup = CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue = True
-			return
+			return True
 		else:
 			for block in cls.SIMPLE_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.SIMPLE_BLOCKS[block]
 					parserState.PushState = group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue = True
-					return
+					return True
 
 			for block in cls.COMPOUND_BLOCKS:
 				if isinstance(currentBlock, block):
 					group = cls.COMPOUND_BLOCKS[block]
 					parserState.PushState = group.stateParse
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue = True
-					return
+					return True
 
 		if isinstance(currentBlock, EndOfDocumentBlock):
 			parserState.NextGroup = EndOfDocumentGroup(currentBlock)

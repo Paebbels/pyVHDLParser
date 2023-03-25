@@ -33,7 +33,7 @@ from pyVHDLParser.Token             import LinebreakToken, WordToken, SpaceToken
 from pyVHDLParser.Token.Keywords    import PackageKeyword, IsKeyword, EndKeyword, GenericKeyword, BodyKeyword, UseKeyword, VariableKeyword, SignalKeyword
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken
 from pyVHDLParser.Token.Keywords    import ConstantKeyword, SharedKeyword, ProcedureKeyword, FunctionKeyword, PureKeyword, ImpureKeyword
-from pyVHDLParser.Blocks            import BlockParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks            import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic    import SequentialDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1   import EndBlock as EndBlockBase
@@ -65,7 +65,7 @@ class DeclarativeRegion(SequentialDeclarativeRegion):
 @export
 class NameBlock(Block):
 	@classmethod
-	def statePackageKeyword(cls, parserState: ParserState):
+	def statePackageKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -82,7 +82,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword PACKAGE.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			if token <= "body":
@@ -115,7 +115,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected package name (identifier).", token)
 
 	@classmethod
-	def statePackageName(cls, parserState: ParserState):
+	def statePackageName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -132,7 +132,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after package name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)

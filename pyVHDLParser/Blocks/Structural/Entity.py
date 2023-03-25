@@ -32,7 +32,7 @@ from pyTooling.Decorators         import export
 from pyVHDLParser.Token           import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EntityKeyword, IsKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken
-from pyVHDLParser.Blocks          import BlockParserException, Block, CommentBlock, ParserState
+from pyVHDLParser.Blocks          import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic  import ConcurrentBeginBlock, ConcurrentDeclarativeRegion
 from pyVHDLParser.Blocks.Generic1 import EndBlock as EndBlockBase
@@ -72,7 +72,7 @@ class DeclarativeRegion(ConcurrentDeclarativeRegion):
 @export
 class NameBlock(Block):
 	@classmethod
-	def stateEntityKeyword(cls, parserState: ParserState):
+	def stateEntityKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -89,7 +89,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword ENTITY.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -122,7 +122,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected entity name (identifier).", token)
 
 	@classmethod
-	def stateEntityName(cls, parserState: ParserState):
+	def stateEntityName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -139,7 +139,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after entity name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)

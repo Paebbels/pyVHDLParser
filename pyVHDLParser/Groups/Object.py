@@ -34,13 +34,13 @@ from pyVHDLParser.Blocks.Object.Signal      import SignalDeclarationBlock
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Reference.Library  import EndBlock, StartBlock
 from pyVHDLParser.Blocks.Reference.Use      import EndBlock, StartBlock
-from pyVHDLParser.Groups                    import ParserState, GroupParserException, Group
+from pyVHDLParser.Groups                    import BlockToGroupParser, GroupParserException, Group
 
 
 @export
 class ConstantGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
@@ -60,7 +60,7 @@ class ConstantGroup(Group):
 @export
 class VariableGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
@@ -80,7 +80,7 @@ class VariableGroup(Group):
 @export
 class SignalGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:

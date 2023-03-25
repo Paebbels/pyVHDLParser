@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, FinalBlock, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, TokenToBlockParser, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -39,7 +39,7 @@ from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCo
 @export
 class EntityInstantiationBlock(Block):
 	@classmethod
-	def stateEntityInstantiationKeyword(cls, parserState: ParserState):
+	def stateEntityInstantiationKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword EntityInstantiation."
 		if isinstance(token, CharacterToken):
@@ -73,7 +73,7 @@ class EntityInstantiationBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected entityInstantiation name (identifier)."
 		if isinstance(token, CharacterToken):
@@ -112,7 +112,7 @@ class EntityInstantiationBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateEntityInstantiationName(cls, parserState: ParserState):
+	def stateEntityInstantiationName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';' after entityInstantiation name."
 		if isinstance(token, CharacterToken):
@@ -150,7 +150,7 @@ class EntityInstantiationBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):

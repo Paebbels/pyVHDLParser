@@ -32,7 +32,7 @@ from pyTooling.Decorators                   import export
 from pyVHDLParser.Token                     import SpaceToken, LinebreakToken, CommentToken, CharacterToken, IndentationToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IdentifierToken, GenericKeyword, ParameterKeyword, ProcedureKeyword, EndKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import UseKeyword, ConstantKeyword, VariableKeyword, IsKeyword, EndToken, BeginKeyword, FunctionKeyword, ReportKeyword
-from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, ParserState
+from pyVHDLParser.Blocks                    import Block, BlockParserException, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop, Return
 from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
@@ -61,7 +61,7 @@ class DeclarativeRegion(SequentialDeclarativeRegion):
 @export
 class NameBlock(Block):
 	@classmethod
-	def stateProcedureKeyword(cls, parserState: ParserState):
+	def stateProcedureKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
@@ -78,7 +78,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword PROCEDURE.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -106,7 +106,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected procedure name (designator).", token)
 
 	@classmethod
-	def stateProcedureName(cls, parserState: ParserState):
+	def stateProcedureName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == "(":
@@ -139,7 +139,7 @@ class NameBlock(Block):
 		raise BlockParserException("Expected ';', '(' or whitespace after procedure name.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
 			if token == "(":
@@ -203,7 +203,7 @@ class NameBlock(Block):
 @export
 class VoidBlock(Block):
 	@classmethod
-	def stateAfterParameterList(cls, parserState: ParserState):
+	def stateAfterParameterList(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
@@ -230,7 +230,7 @@ class VoidBlock(Block):
 		raise BlockParserException("Expected keyword RETURN.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)
