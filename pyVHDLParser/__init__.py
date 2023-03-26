@@ -42,7 +42,7 @@ from pyTooling.MetaClasses import ExtendedType
 
 
 @export
-class SourceCodePosition:
+class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
 	"""Represent a position (row, column, absolute) in a source code file."""
 
 	Row:       int    #: Row in the source code file
