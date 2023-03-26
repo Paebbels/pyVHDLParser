@@ -45,7 +45,7 @@ from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKe
 class BlockParserException(ParserException):
 	"""Base-class for exceptions when reading tokens and generating blocks."""
 
-	_token: Token = None   #: Token that was involved in an exception situation
+	_token: Token   #: Token that was involved in an exception situation
 
 	def __init__(self, message, token):
 		super().__init__(message)
