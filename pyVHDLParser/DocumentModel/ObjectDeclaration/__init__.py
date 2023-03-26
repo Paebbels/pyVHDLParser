@@ -73,7 +73,7 @@ class Constant(ConstantBase):
 		parserState.CurrentNode = constant
 
 	def __str__(self):
-		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subType, **LineTerminal().Foreground)
+		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subtype, **LineTerminal().Foreground)
 
 	def Print(self, indent=0):
 		indentation = "  " * indent
