@@ -29,6 +29,8 @@
 #
 from pyTooling.Decorators             import export
 
+from pyVHDLParser.Blocks.Type.ResolutionIndication import RecordResolutionIndicationBlock, \
+	SimpleResolutionIndicationBlock
 from pyVHDLParser.Token               import SpaceToken, LinebreakToken, CommentToken, WordToken, ExtendedIdentifier, MultiLineCommentToken
 from pyVHDLParser.Token               import IndentationToken, SingleLineCommentToken, CharacterToken, FusedCharacterToken
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
@@ -195,7 +197,12 @@ class InterfaceObjectBlock(Block):
 	def stateModeKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
-			parserState.NextState =   cls.stateWhitespace4
+			parserState.NextState =   cls.stateSubtypeIndication
+			parserState.PushState =   SimpleResolutionIndicationBlock.stateResolutionFunction
+			return
+		elif isinstance(token, CharacterToken) and (token == "("):
+			parserState.NextState =   cls.stateSubtypeIndication
+			parserState.PushState =   RecordResolutionIndicationBlock.stateOpeningParentesis
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
 			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
@@ -251,7 +258,15 @@ class InterfaceObjectBlock(Block):
 			parserState.Counter =       0
 			return
 		elif isinstance(token, CharacterToken):
-			if (token == ';'):
+			if token == '(':
+			# 	parserState.NewToken = BoundaryToken(fromExistingToken=token)
+			# 	parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker,
+			# 														 endToken=parserState.NewToken.PreviousToken)
+			# 	parserState.TokenMarker = parserState.NewToken
+			# 	parserState.NextState = LoopBlock.stateSequentialRegion
+			# 	parserState.PushState = ExpressionBlockEndedByLoopORToORDownto.stateExpression
+			# 	return
+			# elif token == ';':
 				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)

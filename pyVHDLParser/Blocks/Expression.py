@@ -388,7 +388,145 @@ class ExpressionBlockEndedByKeywordORClosingRoundBracket(ExpressionBlock):
 				parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
+			return
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
+			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.TokenMarker =   None
+			return
+
+		raise BlockParserException("Expected ????????????.", token)
+
+
+@export
+class ExpressionBlockEndedByToOrDownto(ExpressionBlock):
+	EXIT_BLOCK =    None
+
+	@classmethod
+	def stateExpression(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+		if isinstance(token, FusedCharacterToken):
+			parserState.NewToken = cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
+			return
+		elif isinstance(token, CharacterToken):
+			if token == "(":
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
+				parserState.Counter +=    1
+				return
+			elif token == ")":
+				parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
+				parserState.Counter -=  1
+				return
+			else:
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
+				return
+		elif isinstance(token, WordToken):
+			tokenValue = token.Value.lower()
+			if tokenValue == "to":
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
+				parserState.NewToken =    ToKeyword(fromExistingToken=token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.Pop(1, parserState.NewToken)
+				return
+			elif tokenValue == "downto":
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
+				parserState.NewToken =    DowntoKeyword(fromExistingToken=token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.Pop(1, parserState.NewToken)
+				return
+			else:
+				try:
+					parserState.NewToken =    cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
+				except KeyError:
+					parserState.NewToken =    IdentifierToken(fromExistingToken=token)
+				return
+		elif isinstance(token, LiteralToken):
+			return
+		elif isinstance(token, SpaceToken):
+			parserState.NextState =     cls.stateWhitespace1
+			return
+		elif isinstance(token, (LinebreakToken, CommentToken)):
+			block =                     LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
+			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+			_ =                         block(parserState.NewBlock, token)
+			parserState.TokenMarker =   None
+			parserState.NextState =     cls.stateWhitespace1
+			return
+
+		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
+
+	@classmethod
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+		if isinstance(token, FusedCharacterToken):
+			parserState.NewToken =    cls.FUSED_CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
+			parserState.NextState =   cls.stateExpression
+			return
+		elif isinstance(token, CharacterToken):
+			if token == "(":
+				parserState.NewToken =    OpeningRoundBracketToken(fromExistingToken=token)
+				parserState.Counter +=    1
+				parserState.NextState =   cls.stateExpression
+				return
+			elif token == ")":
+				parserState.NewToken =  ClosingRoundBracketToken(fromExistingToken=token)
+				parserState.Counter -=  1
+				parserState.NextState = cls.stateExpression
+				return
+			else:
+				parserState.NewToken =    cls.CHARACTER_TRANSLATION[token.Value](fromExistingToken=token)
+				parserState.NextState =   cls.stateExpression
+				return
+		elif isinstance(token, WordToken):
+			tokenValue = token.Value.lower()
+			if tokenValue == "to":
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
+				parserState.NewToken =    ToKeyword(fromExistingToken=token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.Pop()
+				return
+			elif tokenValue == "downto":
+				from pyVHDLParser.Blocks.ControlStructure.ForLoop import LoopIterationDirectionBlock
+
+				parserState.NewToken =    DowntoKeyword(fromExistingToken=token)
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
+				_ =                       LoopIterationDirectionBlock(parserState.NewBlock, parserState.NewToken)
+				parserState.Pop()
+				return
+			else:
+				try:
+					parserState.NewToken =  cls.OPERATOR_TRANSLATIONS[token.Value](fromExistingToken=token)
+				except KeyError:
+					parserState.NewToken =  IdentifierToken(fromExistingToken=token)
+				parserState.NextState =   cls.stateExpression
+				return
+		elif isinstance(token, LiteralToken):
+			parserState.NextState =     cls.stateExpression
+			return
+		elif isinstance(token, LinebreakToken):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				_ =                       LinebreakBlock(parserState.NewBlock, token)
+			else:
+				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, CommentToken):
+			if not isinstance(parserState.LastBlock, LinebreakBlock):
+				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
+				_ =                       CommentBlock(parserState.NewBlock, token)
+			else:
+				parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
+			parserState.TokenMarker =   None
+			return
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
 		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)

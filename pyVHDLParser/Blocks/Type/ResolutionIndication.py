@@ -27,95 +27,23 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-import functools
-import time
-from typing import Dict
+from pyTooling.Decorators import export
+
+from pyVHDLParser.Blocks import Block
 
 
-class ExecutionTimer:
-	_times: Dict = None
-
-	def __init__(self):
-		self._times = {}
-
-	def AddExecutionTime(self, function, executionTime):
-		try:
-			self._times[function].append(executionTime)
-		except ValueError:
-			self._times[function] = [ executionTime ]
+@export
+class SimpleResolutionIndicationBlock(Block):
+	def stateResolutionFunction(self):
+		pass
 
 
-class ExecutionCounter:
-	_counts: Dict = None
-
-	def __init__(self):
-		self._counts = {}
-
-	def IncrementCallCounter(self, function):
-		try:
-			self._counts[function] += 1
-		except ValueError:
-			self._counts[function] = 1
+@export
+class ArrayResolutionIndicationBlock(Block):
+	pass
 
 
-def LogExecutionTime(function):
-	"""Measure the runtime execution time of functions and methods."""
-
-	@functools.wraps(function)
-	def wrapper(*args, **kwargs):
-		start_time = time.perf_counter()
-		value = function(*args, **kwargs)
-		end_time = time.perf_counter()
-
-		__TIMER__.AddExecutionTime(function, end_time - start_time)
-
-		return value
-
-	return wrapper
-
-def LogExecutionCount(function):
-	"""Count how often a functions or methods was called."""
-
-	@functools.wraps(function)
-	def wrapper(*args, **kwargs):
-		value = function(*args, **kwargs)
-
-		__COUNTER__.IncrementCallCounter(function)
-
-		return value
-
-	return wrapper
-
-__TIMER__ =   ExecutionTimer()
-__COUNTER__ = ExecutionCounter()
-
-# def debug(func):
-# 	"""Print the function signature and return value"""
-# 	@functools.wraps(func)
-# 	def wrapper_debug(*args, **kwargs):
-# 		args_repr = [repr(a) for a in args]                      # 1
-# 		kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]  # 2
-# 		signature = ", ".join(args_repr + kwargs_repr)           # 3
-# 		print(f"Calling {func.__name__}({signature})")
-# 		value = func(*args, **kwargs)
-# 		print(f"{func.__name__!r} returned {value!r}")           # 4
-# 		return value
-# 	return wrapper_debug
-
-# class CountCalls:
-# 	def __init__(self, func):
-# 		functools.update_wrapper(self, func)
-# 		self.func = func
-# 		self.num_calls = 0
-#
-# 	def __call__(self, *args, **kwargs):
-# 		self.num_calls += 1
-# 		print(f"Call {self.num_calls} of {self.func.__name__!r}")
-# 		return self.func(*args, **kwargs)
-#
-# def set_unit(unit):
-#     """Register a unit on a function"""
-#     def decorator_set_unit(func):
-#         func.unit = unit
-#         return func
-#     return decorator_set_unit
+@export
+class RecordResolutionIndicationBlock(Block):
+	def stateOpeningParentesis(self):
+		pass
