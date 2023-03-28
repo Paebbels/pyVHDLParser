@@ -51,9 +51,9 @@ streaming-parser implemented with Python generators.
 
 7. Build dependencies
 
-   * :fa:`square-o` Analyze order
+   * :fa:`check-square-o` Analyze order
    * :fa:`square-o` Type hierarchy
-   * :fa:`square-o` Instance hierarchy
+   * :fa:`check-square-o` Instance hierarchy
 
 8. Checkers
 
