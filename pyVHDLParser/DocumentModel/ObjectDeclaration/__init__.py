@@ -29,15 +29,17 @@
 #
 from pyTooling.TerminalUI                           import LineTerminal
 
-from pyVHDLModel.SyntaxModel                        import Constant as ConstantBase
+from pyVHDLModel.Object                             import Constant as ConstantBase
 
 from pyVHDLParser.Token.Keywords                    import IdentifierToken
 from pyVHDLParser.Blocks                            import BlockParserException
 from pyVHDLParser.Blocks.Object.Constant            import ConstantDeclarationBlock
-from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
+# from pyVHDLParser.DocumentModel.Parser              import GroupToModelParser
 
 # Type alias for type hinting
-ParserState = GroupToModelParser.GroupParserState
+class ParserState:
+	pass
+# ParserState = GroupToModelParser.GroupParserState
 
 
 class Constant(ConstantBase):
@@ -71,7 +73,7 @@ class Constant(ConstantBase):
 		parserState.CurrentNode = constant
 
 	def __str__(self):
-		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subType, **LineTerminal().Foreground)
+		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subtype, **LineTerminal().Foreground)
 
 	def Print(self, indent=0):
 		indentation = "  " * indent

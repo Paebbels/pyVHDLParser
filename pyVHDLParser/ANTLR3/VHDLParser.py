@@ -1,0 +1,3 @@
+
+class VHDLParser:
+	pass

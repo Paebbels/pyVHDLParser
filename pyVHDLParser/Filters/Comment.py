@@ -27,8 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from collections import Generator
-from typing import Any
+from typing import Generator, Any
 
 from pyVHDLParser.Blocks           import BlockParserException, CommentBlock, Block
 from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
@@ -46,17 +45,17 @@ def StripAndFuse(generator: Generator[Block, Any, None]) -> Generator[Block, Any
 		if isinstance(block, (IndentationBlock, CommentBlock, LinebreakBlock)):
 			continue
 		else:
-			if (block.MultiPart == True):
+			if block.MultiPart == True:
 				while True:
 					nextBlock = next(iterator)
 					if isinstance(nextBlock, (WhitespaceBlock, CommentBlock)):
 						continue
-					if (type(block) is not type(nextBlock)):
+					if type(block) is not type(nextBlock):
 						raise BlockParserException("Error in multipart blocks. {0} <-> {1}".format(type(block), type(nextBlock)), None)   # TODO: review exception type
 
 					nextBlock.StartToken.PreviousToken = block.EndToken
 					block.EndToken = nextBlock.EndToken
-					if (nextBlock.MultiPart == False):
+					if nextBlock.MultiPart == False:
 						break
 
 			block.PreviousBlock = lastBlock

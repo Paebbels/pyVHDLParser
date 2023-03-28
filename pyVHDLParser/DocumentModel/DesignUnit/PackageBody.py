@@ -27,10 +27,10 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import PackageBody as PackageBodyVHDLModel
+from pyTooling.Decorators                   import export
+from pyVHDLModel.DesignUnit                 import PackageBody as PackageBodyVHDLModel
 
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks, PortList as PortListBlocks
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import PackageBody as PackageBodyBlock
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
@@ -51,7 +51,7 @@ class PackageBody(PackageBodyVHDLModel):
 		self._name = packageBodyName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState): #document, group):
+	def stateParse(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 		cls.stateParsePackageBodyName(parserState)
 
@@ -79,7 +79,7 @@ class PackageBody(PackageBodyVHDLModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageBodyName(cls, parserState: ParserState): #document, group):
+	def stateParsePackageBodyName(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBodyBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
@@ -103,7 +103,7 @@ class PackageBody(PackageBodyVHDLModel):
 		oldNode.PackageReferences.clear()
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState): #document, group):
+	def stateParseGenericList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -117,7 +117,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState): #document, group):
+	def stateParseGeneric(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
@@ -132,7 +132,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	@classmethod
-	def stateParsePortList(cls, parserState: ParserState): #document, group):
+	def stateParsePortList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -146,7 +146,7 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParsePort(cls, parserState: ParserState): #document, group):
+	def stateParsePort(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
@@ -161,13 +161,13 @@ class PackageBody(PackageBodyVHDLModel):
 		parserState.CurrentNode.AddPort(portName)
 
 	def AddLibraries(self, libraries: List[LibraryClause]):
-		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(libraries) > 0): print("{DARK_CYAN}Adding libraries to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraries.append(library._library)
 
 	def AddUses(self, uses: List[PackageReference]):
-		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(uses) > 0): print("{DARK_CYAN}Adding uses to package body {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
 			self._packageReferences.append(use)
@@ -184,7 +184,7 @@ class PackageBody(PackageBodyVHDLModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE BODY{NOCOLOR} {GREEN}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
-		if (len(self._declaredItems) > 0):
+		if len(self._declaredItems) > 0:
 			for item in self._declaredItems:
 				item.Print(indent+1)
 		print("{indent}{DARK_CYAN}END PACKAGE BODY{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))

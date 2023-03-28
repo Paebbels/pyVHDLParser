@@ -28,8 +28,9 @@
 # ==================================================================================================================== #
 #
 from types                                  import FunctionType
-from typing                                 import Iterator, Callable, List, Generator, Any, Dict
+from typing import Iterator, Callable, List, Generator, Any, Dict, Tuple
 
+from pyTooling.MetaClasses import ExtendedType
 from pyTooling.TerminalUI                   import LineTerminal
 
 from pyTooling.Decorators                   import export
@@ -50,22 +51,22 @@ class GroupParserException(ParserException):
 		self._block = block
 
 
-@export
-class BlockToGroupParser:
-	"""Wrapping class to offer some class methods."""
-
-	@staticmethod
-	def Transform(blockGenerator: Generator[Block, Any, None]) -> Generator['Group', Any, None]:
-		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
-
-		state = ParserState(blockGenerator)
-		return state.GetGenerator()
+# @export
+# class BlockToGroupParser:
+# 	"""Wrapping class to offer some class methods."""
+#
+# 	@staticmethod
+# 	def Transform(blockGenerator: Generator[Block, Any, None]) -> Generator['Group', Any, None]:
+# 		"""Returns a generator, that reads from a token generator and emits a chain of blocks."""
+#
+# 		state = ParserState(blockGenerator)
+# 		return state.GetGenerator()
 
 
 @export
 class BlockIterator:
 	def __init__(self, parserState, blockGenerator: Iterator):
-		self._parserState: ParserState = parserState
+		self._parserState: BlockToGroupParser = parserState
 		#self._blockIterator             = iter(FastForward(groupGenerator))
 		self._blockIterator             = iter(blockGenerator)
 
@@ -79,21 +80,20 @@ class BlockIterator:
 
 
 @export
-class ParserState:
+class BlockToGroupParser(metaclass=ExtendedType, useSlots=True):
 	"""Represents the current state of a block-to-group parser."""
 
-	_iterator:   Iterator
-	_stack:      List[Callable]
+	_iterator:    Iterator
+	_stack:       List[Tuple[Callable[['BlockToGroupParser'], bool], Block, 'Group']]
 	_blockMarker: Block
 
-	Block:       Block
-	NextState:   Callable
-	ReIssue:     bool
+	Block:        Block
+	NextState:    Callable[['BlockToGroupParser'], bool]
 
-	NewBlock:    Block
-	NewGroup:    'Group'
-	LastGroup:   'Group'
-	NextGroup:   'Group'
+	NewBlock:     Block
+	NewGroup:     'Group'
+	LastGroup:    'Group'
+	NextGroup:    'Group'
 
 	def __init__(self, blockGenerator: Generator[Block, Any, None]):
 		"""Initializes the parser state."""
@@ -105,22 +105,22 @@ class ParserState:
 		startBlock =        next(self._iterator)
 		startGroup =        StartOfDocumentGroup(startBlock)
 
-		if (not isinstance(startBlock, StartOfDocumentBlock)):
+		if not isinstance(startBlock, StartOfDocumentBlock):
 			raise GroupParserException("First block is not a StartOfDocumentBlock.", startBlock)
 
 		self.Block =        None
 		self.NextState =    StartOfDocumentGroup.stateDocument
-		self.ReIssue =      False
 		self.NewBlock =     None
 		self.NewGroup =     None
 		self.LastGroup =    None
 		self.NextGroup =    startGroup
 
 	@property
-	def PushState(self) -> 'Group':
+	def PushState(self) -> Callable[['BlockToGroupParser'], bool]:
 		return self.NextState
+
 	@PushState.setter
-	def PushState(self, value: Callable):
+	def PushState(self, value: Callable[['BlockToGroupParser'], bool]):
 		assert (self.NextGroup is not None)
 		self._stack.append((
 			self.NextState,
@@ -147,35 +147,38 @@ class ParserState:
 
 	@property
 	def BlockMarker(self) -> 'Block':
-		if ((self.NewBlock is not None) and (self._blockMarker is self.Block)):
+		if (self.NewBlock is not None) and (self._blockMarker is self.Block):
 			# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, self.NewBlock, **Console.Foreground))
 			self._blockMarker = self.NewBlock
 		return self._blockMarker
+
 	@BlockMarker.setter
 	def BlockMarker(self, value: Block):
 		# if self.debug: print("  {DARK_GREEN}@BlockMarker: {0!s} --> {GREEN}{1!s}{NOCOLOR}".format(self._blockMarker, value, **Console.Foreground))
 		self._blockMarker = value
 
-	def __eq__(self, other: Callable) -> bool:
+	def __eq__(self, other: Callable[['ParserState'], bool]) -> bool:
 		"""Return true if parser state is equal to the second operand."""
 		return self.NextState is other
+
+	def __ne__(self, other: Callable[['ParserState'], bool]) -> bool:
+		"""Return true if parser state is not equal to the second operand."""
+		return self.NextState is not other
 
 	def __str__(self) -> str:
 		return self.NextState.__func__.__qualname__
 
-	def Pop(self, n: int=1):
-		self.NewGroup =     self.NextGroup
+	def Pop(self, n: int = 1) -> None:
+		self.NewGroup = self.NextGroup
 
-		top = None
 		for i in range(n):
 			top = self._stack.pop()
-		self.NextState =    top[0]
-		self._blockMarker = top[1]
-		self.NextGroup =    top[2]
+		self.NextState, self._blockMarker, self.NextGroup = top
+
 		# print("{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}".format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))
-		if (self.NextGroup.InnerGroup is None):
+		if self.NextGroup.InnerGroup is None:
 			self.NextGroup.InnerGroup = self.NewGroup
-		if (self.NewGroup.__class__ not in self.NextGroup._subGroups):
+		if self.NewGroup.__class__ not in self.NextGroup._subGroups:
 			raise GroupParserException("Group '{group1}' not supported in {group2}.".format(
 				group1=self.NewGroup.__class__,
 				group2=self.NextGroup.__class__.__qualname__
@@ -183,34 +186,31 @@ class ParserState:
 
 		self.NextGroup._subGroups[self.NewGroup.__class__].append(self.NewGroup)
 
-	def GetGenerator(self):  # XXX: return type
-		from pyVHDLParser.Groups            import GroupParserException
-
+	def __call__(self) -> Generator['Group', None, None]:
 		# yield StartOfDocumentGroup
 		self.LastGroup = self.NextGroup
 		yield self.LastGroup
 
 		for block in self._iterator:
 			# an empty marker means: set on next yield run
-			if (self._blockMarker is None):
+			if self._blockMarker is None:
 				# if self.debug: print("  new block marker: None -> {0!s}".format(block))
 				self._blockMarker = block
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
 			# execute a state and reissue execution if needed
-			self.ReIssue = True
-			while self.ReIssue:
-				self.ReIssue = False
+			reissue = True
+			while reissue:
 				LineTerminal().WriteDryRun("{DARK_GRAY}reissue state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **LineTerminal.Foreground))
-				self.NextState(self)
+				reissue = self.NextState(self)
 
 				# yield a new group
-				if (self.NewGroup is not None):
+				if self.NewGroup is not None:
 					yield self.NewGroup
 					self.LastGroup = self.NewGroup
 					self.NewGroup = None
 
-					if (isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.LastGroup, EndOfDocumentGroup)):
+					if isinstance(self.Block, EndOfDocumentBlock) and isinstance(self.LastGroup, EndOfDocumentGroup):
 						return
 
 		else:
@@ -218,16 +218,17 @@ class ParserState:
 
 
 @export
-class MetaGroup(type):
+class MetaGroup(ExtendedType):
 	"""Register all state*** methods in an array called '__STATES__'"""
 	def __new__(cls, className, baseClasses, classMembers: dict):
 		states = []
 		for memberName, memberObject in classMembers.items():
-			if (isinstance(memberObject, FunctionType) and (memberName[:5] == "state")):
+			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
-		classMembers['__STATES__'] = states
-		return super().__new__(cls, className, baseClasses, classMembers)
+		group = super().__new__(cls, className, baseClasses, classMembers, useSlots=True)
+		group.__STATES__ = states
+		return group
 
 
 @export
@@ -260,9 +261,9 @@ class Group(metaclass=MetaGroup):
 	def __iter__(self):   # XXX: return type; iterator vs. generator
 		block = self.StartBlock
 		print("group={0}({1})  start={2!s}  end={3!s}".format(self.__class__.__name__, self.__class__.__module__, self.StartBlock.StartToken, self.EndBlock.EndToken))
-		while (block is not self.EndBlock):
+		while block is not self.EndBlock:
 			yield block
-			if (block.NextBlock is None):
+			if block.NextBlock is None:
 				raise GroupParserException("Token after {0!r} <- {1!r} <- {2!r} is empty (None).".format(block, block.PreviousToken, block.PreviousToken.PreviousToken), block)
 			block = block.NextBlock
 
@@ -286,7 +287,7 @@ class Group(metaclass=MetaGroup):
 
 	def GetSubGroups(self, groupTypes=None):  # XXX: return type
 		group = self.InnerGroup
-		while (group is not None):
+		while group is not None:
 			yield group
 			group = group.NextGroup
 
@@ -385,7 +386,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 		}
 
 	@classmethod
-	def stateDocument(cls, parserState: ParserState):
+	def stateDocument(cls, parserState: BlockToGroupParser):
 		from pyVHDLParser.Groups.DesignUnit     import ContextGroup, EntityGroup, ArchitectureGroup, PackageGroup, PackageBodyGroup, ConfigurationGroup
 		from pyVHDLParser.Groups.Reference      import LibraryGroup, UseGroup
 		from pyVHDLParser.Groups.Comment import CommentGroup, WhitespaceGroup
@@ -409,14 +410,12 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 			parserState.PushState =   WhitespaceGroup.stateParse
 			parserState.NextGroup =   WhitespaceGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		elif isinstance(currentBlock, CommentBlock):
 			parserState.PushState =   CommentGroup.stateParse
 			parserState.NextGroup =   CommentGroup(parserState.LastGroup, currentBlock)
 			parserState.BlockMarker = currentBlock
-			parserState.ReIssue =     True
-			return
+			return True
 		else:
 			for blk in SIMPLE_BLOCKS:
 				if isinstance(currentBlock, blk):
@@ -424,8 +423,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 					parserState.PushState =   group.stateParse
 					parserState.NextGroup =   group(parserState.LastGroup, currentBlock)
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			for blk in COMPOUND_BLOCKS:
 				if isinstance(currentBlock, blk):
@@ -433,8 +431,7 @@ class StartOfDocumentGroup(StartOfGroup, StartOfDocument):
 					parserState.PushState =   group.stateParse
 					parserState.NextGroup =   group(parserState.LastGroup, currentBlock)
 					parserState.BlockMarker = currentBlock
-					parserState.ReIssue =     True
-					return
+					return True
 
 			if isinstance(currentBlock, EndOfDocumentBlock):
 				parserState.NewGroup = EndOfDocumentGroup(currentBlock)

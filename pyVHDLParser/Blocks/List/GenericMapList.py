@@ -31,7 +31,7 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken, OpeningRoundBracketToken, ClosingRoundBracketToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -39,18 +39,18 @@ from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCo
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateGenericKeyword(cls, parserState: ParserState):
+	def stateGenericKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace or '(' after keyword GENERIC."
 		if isinstance(token, CharacterToken):
-			if (token == "("):
+			if token == "(":
 				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.NextState =   CloseBlock.stateClosingParenthesis
 				parserState.PushState =   OpenBlock.stateOpeningParenthesis
 				parserState.Counter =     1
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -58,14 +58,14 @@ class OpenBlock(Block):
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -79,20 +79,20 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected  '(' after keyword GENERIC."
 		if isinstance(token, CharacterToken):
-			if (token == "("):
+			if token == "(":
 				parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.NextState =   CloseBlock.stateClosingParenthesis
 				parserState.PushState =   OpenBlock.stateOpeningParenthesis
 				parserState.Counter =     1
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
-				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				if not isinstance(parserState.LastBlock, MultiLineCommentBlock):
 					parserState.NewBlock =  OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
@@ -101,21 +101,21 @@ class OpenBlock(Block):
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    OpenBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -124,28 +124,28 @@ class OpenBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generic name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == ")"):
-				# if (parserState.TokenMarker != token):
+			if token == ")":
+				# if parserState.TokenMarker != token:
 				# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
 				parserState.Pop()
 				parserState.TokenMarker = token
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
@@ -159,7 +159,7 @@ class OpenBlock(Block):
 			parserState.TokenMarker =   parserState.NewToken
 			parserState.NextState =     ItemBlock.stateItemRemainder
 
-			# if (parserState.TokenMarker != token):
+			# if parserState.TokenMarker != token:
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token)
 			return
 
@@ -169,23 +169,23 @@ class OpenBlock(Block):
 @export
 class ItemBlock(Block):
 	@classmethod
-	def stateItemRemainder(cls, parserState: ParserState):
+	def stateItemRemainder(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == "("):
+			if token == "(":
 				parserState.NewToken =      OpeningRoundBracketToken(fromExistingToken=token)
 				parserState.Counter += 1
-			elif (token == ")"):
+			elif token == ")":
 				parserState.Counter -= 1
-				if (parserState.Counter == 0):
+				if parserState.Counter == 0:
 					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					parserState.Pop()
 					parserState.TokenMarker = parserState.NewToken
 				else:
 					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
-			elif (token == ";"):
-				if (parserState.Counter == 1):
+			elif token == ";":
+				if parserState.Counter == 1:
 					parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
@@ -197,11 +197,11 @@ class ItemBlock(Block):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected generic name (identifier)."
 
-		if (isinstance(token, CharacterToken) and (token == "\n")):
+		if isinstance(token, CharacterToken) and (token == "\n"):
 			parserState.NewToken =      LinebreakToken(fromExistingToken=token)
 			parserState.NewBlock =      LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -223,28 +223,28 @@ class DelimiterBlock(SkipableBlock):
 @export
 class CloseBlock(Block):
 	@classmethod
-	def stateClosingParenthesis(cls, parserState: ParserState):
+	def stateClosingParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';' or whitespace."
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -258,34 +258,34 @@ class CloseBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				# TODO: review this linebreak case
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None

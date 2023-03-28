@@ -31,17 +31,17 @@ from pyTooling.Decorators                 import export
 
 from pyVHDLParser.Blocks.Reporting.Assert import AssertBlock
 from pyVHDLParser.Blocks.Reporting.Report import ReportBlock
-from pyVHDLParser.Groups                  import ParserState, Group, GroupParserException
+from pyVHDLParser.Groups                  import BlockToGroupParser, Group, GroupParserException
 
 
 @export
 class AssertGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, AssertBlock) and not block.MultiPart):
+				if isinstance(block, AssertBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:
@@ -57,11 +57,11 @@ class AssertGroup(Group):
 @export
 class ReportGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		marker = parserState.Block
 		if parserState.Block.MultiPart:
 			for block in parserState.GetBlockIterator:
-				if (isinstance(block, ReportBlock) and not block.MultiPart):
+				if isinstance(block, ReportBlock) and not block.MultiPart:
 					marker2 = block
 					break
 			else:
@@ -77,7 +77,7 @@ class ReportGroup(Group):
 @export
 class SignalAssignmentGroup(Group):
 	@classmethod
-	def stateParse(cls, parserState: ParserState):
+	def stateParse(cls, parserState: BlockToGroupParser):
 		block = parserState.Block
 
 		raise NotImplementedError("State=Parse: {0!r}".format(block))

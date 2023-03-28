@@ -44,7 +44,7 @@ from pyVHDLParser.CLI.Token           import TokenStreamHandlers
 from pyVHDLParser.CLI.Block           import BlockStreamHandlers
 from pyVHDLParser.CLI.Group           import GroupStreamHandlers
 from pyVHDLParser.CLI.CodeDOM         import CodeDOMHandlers
-# from pyVHDLParser.CLI.ANTLR           import ANTLRHandlers
+from pyVHDLParser.CLI.ANTLR           import ANTLRHandlers
 
 
 @export
@@ -53,24 +53,24 @@ def printImportError(ex) -> NoReturn:
 	platform = platform_system()
 	print("IMPORT ERROR: One or more Python packages are not available in your environment.")
 	print("Missing package: '{0}'\n".format(ex.name))
-	if (platform == "Windows"):
+	if platform == "Windows":
 		print("Run: 'py.exe -3 -m pip install -r requirements.txt'\n")
-	elif (platform == "Linux"):
+	elif platform == "Linux":
 		print("Run: 'python3 -m pip install -r requirements.txt'\n")
 
 	exit(1)
 
 
 @export
-class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers):  # , ANTLRHandlers):
+class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers, ANTLRHandlers):
 	HeadLine =    "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)
 	# TODO: use pyTooling Platform
 	__PLATFORM =  platform_system()
 
-	def __init__(self, debug=False, verbose=False, quiet=False, sphinx=False):
-		super().__init__(verbose, debug, quiet)
+	def __init__(self):
+		super().__init__()
 
 		# Late-initialize Block classes
 		# --------------------------------------------------------------------------
@@ -103,11 +103,6 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 			formatter_class=HelpFormatter,
 			add_help=False
 		)
-
-		# If executed in Sphinx to auto-document CLI arguments, exit now
-		# --------------------------------------------------------------------------
-		if sphinx:
-			return
 
 		# Change error and warning reporting
 		# --------------------------------------------------------------------------
@@ -155,9 +150,9 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 	def HandleHelp(self, args):
 		self.PrintHeadline()
 
-		if (args.Command is None):
+		if args.Command is None:
 			self.MainParser.print_help()
-		elif (args.Command == "help"):
+		elif args.Command == "help":
 			self.WriteError("This is a recursion ...")
 		else:
 			try:
@@ -199,13 +194,14 @@ def main():  # mccabe:disable=MC0001
 	"""
 	from sys import argv as sys_argv
 
-	debug =   "-d" in sys_argv
-	verbose = "-v" in sys_argv
-	quiet =   "-q" in sys_argv
-
 	try:
 		# handover to a class instance
 		app = Application()  # debug, verbose, quiet)
+		app.Configure(
+			verbose="-v" in sys_argv,
+			debug="-d" in sys_argv,
+			quiet="-q" in sys_argv
+		)
 		app.Run()
 		app.exit()
 
@@ -219,10 +215,10 @@ def main():  # mccabe:disable=MC0001
 	# 	elif isinstance(cause, ParserException):
 	# 		print("{YELLOW}  ParserException:{NOCOLOR} {cause}".format(cause=str(cause), **Init.Foreground))
 	# 		cause = cause.__cause__
-	# 		if (cause is not None):
+	# 		if cause is not None:
 	# 			print("{YELLOW}    {name}:{NOCOLOR} {cause}".format(name=cause.__class__.__name__, cause= str(cause), **Init.Foreground))
 	#
-	# 	if (not (verbose or debug)):
+	# 	if not (verbose or debug):
 	# 		print()
 	# 		print("{CYAN}  Use '-v' for verbose or '-d' for debug to print out extended messages.{NOCOLOR}".format(**Init.Foreground))
 	# 	LineTerminal.exit(1)

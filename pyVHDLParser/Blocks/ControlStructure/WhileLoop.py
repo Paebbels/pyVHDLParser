@@ -33,7 +33,7 @@ from pyVHDLParser.Token               import CharacterToken, LinebreakToken, Ind
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, LoopKeyword
 from pyVHDLParser.Token.Keywords      import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Token.Parser        import SpaceToken, WordToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, ParserState
+from pyVHDLParser.Blocks              import BlockParserException, Block, TokenToBlockParser
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment      import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generic      import EndBlock as EndBlockBase
@@ -43,11 +43,11 @@ from pyVHDLParser.Blocks.List         import GenericList, PortList
 @export
 class ConditionBlock(Block):
 	@classmethod
-	def stateWhileKeyword(cls, parserState: ParserState):
+	def stateWhileKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -55,14 +55,14 @@ class ConditionBlock(Block):
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -77,13 +77,13 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected while name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
-				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				if not isinstance(parserState.LastBlock, MultiLineCommentBlock):
 					parserState.NewBlock =  ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
@@ -91,13 +91,13 @@ class ConditionBlock(Block):
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
@@ -107,7 +107,7 @@ class ConditionBlock(Block):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateWhileName
 			return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -116,11 +116,11 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhileName(cls, parserState: ParserState):
+	def stateWhileName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword WHILE."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -128,14 +128,14 @@ class ConditionBlock(Block):
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
@@ -149,13 +149,13 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected keyword IS after while name."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
-				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				if not isinstance(parserState.LastBlock, MultiLineCommentBlock):
 					parserState.NewBlock =  ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
@@ -163,24 +163,24 @@ class ConditionBlock(Block):
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, WordToken) and (token <= "is")):
+		elif isinstance(token, WordToken) and (token <= "is"):
 			parserState.NewToken =      IsKeyword(fromExistingToken=token)
 			parserState.NewBlock =      ConditionBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     cls.stateDeclarativeRegion
 			return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -189,20 +189,20 @@ class ConditionBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateDeclarativeRegion(cls, parserState: ParserState):
+	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		errorMessage = "Expected one of these keywords: generic, port, begin, end."
 		token = parserState.Token
 		if isinstance(parserState.Token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, parserState.NewToken)
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
@@ -212,13 +212,13 @@ class ConditionBlock(Block):
 			return
 		elif isinstance(token, WordToken):
 			keyword = token.Value.lower()
-			if (keyword == "generic"):
+			if keyword == "generic":
 				newToken =              GenericKeyword(fromExistingToken=token)
 				parserState.PushState = GenericList.OpenBlock.stateGenericKeyword
-			elif (keyword == "port"):
+			elif keyword == "port":
 				newToken =              PortKeyword(fromExistingToken=token)
 				parserState.PushState = PortList.OpenBlock.statePortKeyword
-			elif (keyword == "end"):
+			elif keyword == "end":
 				newToken =              EndKeyword(fromExistingToken=token)
 				parserState.NextState = EndBlock.stateEndKeyword
 			else:

@@ -32,9 +32,9 @@ from pyTooling.Decorators             import export
 
 @export
 class Parameter:
-	def __init__(self, name, subType):
+	def __init__(self, name, subtype):
 		self._name = name
-		self._subType = subType
+		self._subtype = subtype
 
 
 @export

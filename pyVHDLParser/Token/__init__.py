@@ -30,6 +30,7 @@
 from typing                   import Iterator
 
 from pyTooling.Decorators     import export
+from pyTooling.MetaClasses import ExtendedType
 
 from pyVHDLParser             import SourceCodePosition, StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base        import ParserException
@@ -41,9 +42,9 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 	charIterator = iter(value)
 	try:
 		while char := next(charIterator):
-			if (char == "\r"):
+			if char == "\r":
 				nextChar = next(charIterator)
-				if (nextChar == "\n"):
+				if nextChar == "\n":
 					buffer += "«\\r\\n»"
 					if not oneLiner:
 						buffer += "\n"
@@ -52,15 +53,15 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 					if not oneLiner:
 						buffer += "\n"
 
-					if (nextChar == "\t"):
+					if nextChar == "\t":
 						buffer += "«\\n»"
 					else:
 						buffer += nextChar
-			elif (char == "\n"):
+			elif char == "\n":
 				buffer += "«\\n»"
 				if not oneLiner:
 					buffer += "\n"
-			elif (char == "\t"):
+			elif char == "\t":
 				buffer += "«\\t»"
 			else:
 				buffer += char
@@ -71,13 +72,13 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 
 
 @export
-class TokenIterator:
+class TokenIterator(metaclass=ExtendedType, useSlots=True):
 	startToken:         'Token'
 	currentToken:       'Token'
 	stopToken:          'Token'
 	inclusiveStopToken: bool
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+	state:              int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
 
 	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
 		self.startToken =         startToken
@@ -92,7 +93,7 @@ class TokenIterator:
 
 	def __next__(self) -> 'Token':
 		# in last call of '__next__', the last token in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		token = self.currentToken
@@ -110,19 +111,20 @@ class TokenIterator:
 				self.state = 2
 		else:
 			self.currentToken = token.NextToken
-			if (self.currentToken is None):
+			if self.currentToken is None:
 				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
 
 		return token
 
 
 @export
-class TokenReverseIterator:
-	startToken:   'Token'
-	currentToken: 'Token'
-	stopToken:    'Token'
+class TokenReverseIterator(metaclass=ExtendedType, useSlots=True):
+	startToken:         'Token'
+	currentToken:       'Token'
+	stopToken:          'Token'
+	inclusiveStopToken: bool
 
-	state:        int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached EndOfToken
+	state:              int     #: internal states: 0 = normal, 1 = reached stopToken, 2 = reached StartOfToken
 
 	def __init__(self, startToken: 'Token', inclusiveStartToken: bool=False, inclusiveStopToken: bool=True, stopToken: 'Token'=None):
 		self.startToken =         startToken
@@ -137,7 +139,7 @@ class TokenReverseIterator:
 
 	def __next__(self) -> 'Token':
 		# in last call of '__next__', the last token in the sequence was returned
-		if (self.state > 0):
+		if self.state > 0:
 			raise StopIteration(self.state)
 
 		token = self.currentToken
@@ -155,14 +157,14 @@ class TokenReverseIterator:
 				self.currentToken = None
 		else:
 			self.currentToken = token.PreviousToken
-			if (self.currentToken is None):
+			if self.currentToken is None:
 				raise ParserException("Found open end while iterating token sequence.")  # FIXME: how to append last token?
 
 		return token
 
 
 @export
-class Token:
+class Token(metaclass=ExtendedType, useSlots=True):
 	"""Base-class for all token classes."""
 
 	_previousToken:  'Token'              #: Reference to the previous token
@@ -179,7 +181,6 @@ class Token:
 		* link this token to previous token.
 		* link previous token to this token.
 		"""
-
 		previousToken.NextToken = self
 		self._previousToken =     previousToken
 		self.NextToken =          None
@@ -189,15 +190,16 @@ class Token:
 	def __len__(self) -> int:
 		return self.End.Absolute - self.Start.Absolute + 1
 
-	def GetIterator(self, inclusiveStartToken:bool=False, inclusiveStopToken:bool=True, stopToken:'Token'=None) -> Iterator['Token']:
+	def GetIterator(self, inclusiveStartToken: bool = False, inclusiveStopToken: bool = True, stopToken: 'Token' = None) -> Iterator['Token']:
 		return TokenIterator(self, inclusiveStartToken=inclusiveStartToken, inclusiveStopToken=inclusiveStopToken, stopToken=stopToken)
 
-	def GetReverseIterator(self, inclusiveStartToken:bool=False, inclusiveStopToken:bool=True, stopToken:'Token'=None) -> Iterator['Token']:
+	def GetReverseIterator(self, inclusiveStartToken: bool = False, inclusiveStopToken: bool = True, stopToken: 'Token' = None) -> Iterator['Token']:
 		return TokenReverseIterator(self, inclusiveStartToken=inclusiveStartToken, inclusiveStopToken=inclusiveStopToken, stopToken=stopToken)
 
 	@property
 	def PreviousToken(self) -> 'Token':
 		return self._previousToken
+
 	@PreviousToken.setter
 	def PreviousToken(self, value: 'Token'):
 		self._previousToken = value
@@ -208,10 +210,7 @@ class Token:
 		return len(self)
 
 	def __str__(self) -> str:
-		return "{name} at {pos}".format(
-			name=self.__class__.__qualname__,
-			pos=str(self.Start)
-		)
+		return f"{self.__class__.__qualname__} at {self.Start!s}"
 
 	def __repr__(self) -> str:
 		return self.__str__()
@@ -227,9 +226,8 @@ class ValuedToken(Token):
 
 	Value: str  #: String value of this token.
 
-	def __init__(self, previousToken: Token, value: str, start: SourceCodePosition, end: SourceCodePosition=None):
+	def __init__(self, previousToken: Token, value: str, start: SourceCodePosition, end: SourceCodePosition = None):
 		"""Initializes a *valued* token object."""
-
 		super().__init__(previousToken, start, end)
 		self.Value = value
 
@@ -251,11 +249,8 @@ class ValuedToken(Token):
 		return self.Value
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-				name=self.__class__.__name__,
-				value="'" + CharacterTranslation(self.Value) + "'  ",
-				pos=self.Start
-			)
+		value = "'" + CharacterTranslation(self.Value) + "'  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -264,7 +259,6 @@ class StartOfToken(Token):
 
 	def __init__(self):
 		"""Initializes a StartOfToken object."""
-
 		self._previousToken = None
 		self.NextToken =      None
 		self.Start =          SourceCodePosition(1, 1, 1)
@@ -275,9 +269,7 @@ class StartOfToken(Token):
 		return 0
 
 	def __str__(self) -> str:
-		return "<{name}>".format(
-				name=self.__class__.__name__
-			)
+		return f"<{self.__class__.__name__}>"
 
 
 @export
@@ -293,9 +285,7 @@ class EndOfToken(Token):
 		return 0
 
 	def __str__(self) -> str:
-		return "<{name}>".format(
-				name=self.__class__.__name__
-			)
+		return f"<{self.__class__.__name__}>"
 
 
 @export
@@ -334,11 +324,8 @@ class CharacterToken(ValuedToken):
 		return 1
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {char:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			char="'" + CharacterTranslation(self.Value) + "'  ",
-			pos=self.Start
-		)
+		char = "'" + CharacterTranslation(self.Value) + "'  "
+		return f"<{self.__class__.__name__: <50}  {char:.<59} at {self.Start!r}>"
 
 
 @export
@@ -355,11 +342,8 @@ class FusedCharacterToken(CharacterToken):
 		return len(self.Value)
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {char:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			char="'" + self.Value + "'  ",
-			pos=self.Start
-		)
+		char = "'" + self.Value + "'  "
+		return f"<{self.__class__.__name__: <50}  {char:.<59} at {self.Start!r}>"
 
 
 @export
@@ -367,11 +351,8 @@ class SpaceToken(ValuedToken):
 	"""Token representing a space (space or tab)."""
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			value="'" + self.Value + "'  ",
-			pos=self.Start
-		)
+		value = "'" + self.Value + "'  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -398,11 +379,8 @@ class WordToken(ValuedToken):
 		return super().__hash__()
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			value="'" + self.Value + "'  ",
-			pos=self.Start
-		)
+		value = "'" + self.Value + "'  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -419,11 +397,8 @@ class CommentToken(VHDLToken):
 		value = value.replace("\n", "\\n")
 		value = value.replace("\r", "\\r")
 		value = value.replace("\t", "\\t")
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-				name=self.__class__.__name__,
-				value="'" + value + "'  ",
-				pos=self.Start
-			)
+		value = "'" + value + "'  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -450,11 +425,8 @@ class LiteralToken(VHDLToken):
 		return super().__hash__()
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			value=self.Value + "  ",
-			pos=self.Start
-		)
+		value = self.Value + "  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -480,11 +452,8 @@ class CharacterLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			value="'" + self.Value + "'  ",
-			pos=self.Start
-		)
+		value = "'" + self.Value + "'  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -500,11 +469,8 @@ class StringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-			name=self.__class__.__name__,
-			value="\"" + self.Value + "\"  ",
-			pos=self.Start
-		)
+		value = "\"" + self.Value + "\"  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export
@@ -520,11 +486,8 @@ class BitStringLiteralToken(LiteralToken):
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
 	def __repr__(self) -> str:
-		return "<{name: <50}  {value:.<59} at {pos!r}>".format(
-				name=self.__class__.__name__,
-			value="\"" + self.Value + "\"  ",
-			pos=self.Start
-		)
+		value = "\"" + self.Value + "\"  "
+		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
 
 
 @export

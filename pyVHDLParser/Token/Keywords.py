@@ -411,7 +411,7 @@ class KeywordToken(VHDLToken):
 
 			super().__init__(previousToken, value, str, end)
 		else:
-			if (not (isinstance(fromExistingToken, WordToken) and (fromExistingToken <= self.__KEYWORD__))):
+			if not (isinstance(fromExistingToken, WordToken) and (fromExistingToken <= self.__KEYWORD__)):
 				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), fromExistingToken)
 
 			super().__init__(fromExistingToken.PreviousToken, self.__KEYWORD__, fromExistingToken.Start, fromExistingToken.End)

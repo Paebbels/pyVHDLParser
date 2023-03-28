@@ -31,10 +31,11 @@ from pathlib import Path
 
 from pyAttributes.ArgParseAttributes import CommandAttribute
 
+from .GraphML import GraphML
 from ..Base                   import ParserException
 from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
 from ..Token.Parser           import Tokenizer
-from ..Blocks                 import TokenToBlockParser, Block, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
+from ..Blocks                 import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
 from ..Blocks.Common          import LinebreakBlock, IndentationBlock
 from ..Blocks.List            import GenericList, PortList
 from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
@@ -53,19 +54,35 @@ class BlockStreamHandlers:
 	def HandleBlockStreaming(self: FrontEndProtocol, args):
 		self.PrintHeadline()
 
+		# self._writeLevel = Severity.Verbose
+
 		file = Path(args.Filename)
 
-		if (not file.exists()):
+		if not file.exists():
 			print("File '{0!s}' does not exist.".format(file))
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
 		tokenStream = Tokenizer.GetVHDLTokenizer(content)
-		blockStream = TokenToBlockParser.Transform(tokenStream)
+		blockStream = TokenToBlockParser(tokenStream)()
+
+		blockIterator = iter(blockStream)
+		firstBlock = next(blockIterator)
 
 		try:
-			for block in blockStream:
+			while next(blockIterator):
+				pass
+		except StopIteration:
+			pass
+
+		if isinstance(firstBlock, StartOfDocumentBlock):
+			print("{YELLOW}{block!r}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
+			print("  {YELLOW}{token!r}{NOCOLOR}".format(token=firstBlock.StartToken, **self.Foreground))
+
+		try:
+			blockIterator = firstBlock.GetIterator(inclusiveStopBlock=False)
+			for block in blockIterator:
 				if isinstance(block, (LinebreakBlock, IndentationBlock)):
 					self.WriteNormal("{DARK_GRAY}{block!r}{NOCOLOR}".format(block=block, **self.Foreground))
 				elif isinstance(block, CommentBlock):
@@ -84,10 +101,21 @@ class BlockStreamHandlers:
 				for token in block:
 					self.WriteVerbose(repr(token))
 
+			blockIterator = block.GetIterator()
+			lastBlock = next(blockIterator)
+			if isinstance(lastBlock, EndOfDocumentBlock):
+				print("{YELLOW}{block!r}{NOCOLOR}".format(block=lastBlock, **self.Foreground))
+				print("  {YELLOW}{token!r}{NOCOLOR}".format(token=lastBlock.StartToken, **self.Foreground))
+
 		except ParserException as ex:
 			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 		except NotImplementedError as ex:
 			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+
+		exporter = GraphML()
+		tokenStreamSubgraph = exporter.AddTokenStream(firstBlock.StartToken)
+		blockStreamSubgraph = exporter.AddBlockStream(firstBlock, tokenStreamSubgraph)
+		exporter.WriteDocument(Path.cwd() / "temp/BlockStream.graphml")
 
 		self.exit()
 
@@ -102,26 +130,26 @@ class BlockStreamHandlers:
 
 		file = Path(args.Filename)
 
-		if (not file.exists()):
+		if not file.exists():
 			print("File '{0!s}' does not exist.".format(file))
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
 
 		vhdlTokenStream = Tokenizer.GetVHDLTokenizer(content)
-		vhdlBlockStream = TokenToBlockParser.Transform(vhdlTokenStream)
+		vhdlBlockStream = TokenToBlockParser(vhdlTokenStream)()
 
 		try:
 			blockIterator = iter(vhdlBlockStream)
 			firstBlock = next(blockIterator)
 			self.WriteVerbose(str(firstBlock))
 
-			if (not isinstance(firstBlock, StartOfDocumentBlock)):
+			if not isinstance(firstBlock, StartOfDocumentBlock):
 				self.WriteError("{RED}First block is not StartOfDocumentBlock: {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
 				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
 			startToken = firstBlock.StartToken
 			self.WriteDebug(str(startToken))
-			if (not isinstance(startToken, StartOfDocumentToken)):
+			if not isinstance(startToken, StartOfDocumentToken):
 				self.WriteError("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
 				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=startToken, **self.Foreground))
 
@@ -142,11 +170,11 @@ class BlockStreamHandlers:
 				for token in tokenIterator:
 					self.WriteVerbose(str(token))
 
-					#					if (token.NextToken is None):
+					#					if token.NextToken is None:
 					#						self.WriteError("{RED}Token has an open end (NextToken).{NOCOLOR}".format(**self.Foreground))
 					#						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
 					#					el
-					if (lastToken.NextToken is not token):
+					if lastToken.NextToken is not token:
 						self.WriteError("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
 						self.WriteError("{YELLOW}  Last:   {token!s}{NOCOLOR}".format(token=lastToken, **self.Foreground))
 						self.WriteError("{YELLOW}    Next: {token!s}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
@@ -154,10 +182,10 @@ class BlockStreamHandlers:
 						self.WriteError("{YELLOW}  Cur.:   {token!s}{NOCOLOR}".format(token=token, **self.Foreground))
 						self.WriteError("")
 
-					if (token.PreviousToken is None):
+					if token.PreviousToken is None:
 						self.WriteError("{RED}Token has an open end (PreviousToken).{NOCOLOR}".format(**self.Foreground))
 						self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
-					elif (token.PreviousToken is not lastToken):
+					elif token.PreviousToken is not lastToken:
 						print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
 						# print("{RED}  Block:  {block}{NOCOLOR}".format(block=vhdlBlock, **self.Foreground))
 						print("{YELLOW}  Cur.:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
@@ -173,10 +201,10 @@ class BlockStreamHandlers:
 			else:
 				self.WriteError("{RED}No EndOfDocumentBlock found.{NOCOLOR}".format(**self.Foreground))
 
-			if (not isinstance(endBlock, EndOfDocumentBlock)):
+			if not isinstance(endBlock, EndOfDocumentBlock):
 				self.WriteError("{RED}Last block is not EndOfDocumentBlock: {block}{NOCOLOR}".format(block=endBlock, **self.Foreground))
 				self.WriteError("{YELLOW}  Block:  {block}{NOCOLOR}".format(block=firstBlock, **self.Foreground))
-			elif (not isinstance(endBlock.EndToken, EndOfDocumentToken)):
+			elif not isinstance(endBlock.EndToken, EndOfDocumentToken):
 				self.WriteError("{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
 				self.WriteError("{YELLOW}  Token:  {token}{NOCOLOR}".format(token=endBlock.EndToken, **self.Foreground))
 

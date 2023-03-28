@@ -27,16 +27,16 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import Architecture as ArchitectureVHDLModel
+from pyVHDLModel.DesignUnit                 import Architecture as ArchitectureVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Structural         import Architecture as ArchitectureBlocks
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
 
@@ -50,7 +50,7 @@ class Architecture(ArchitectureVHDLModel):
 		self._entity =  entityName
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState): #document, group):
+	def stateParse(cls, parserState: BlockToGroupParser): #document, group):
 		# cls.stateParseArchitectureName(parserState)
 		#
 		# for block in parserState.GroupIterator:
@@ -67,7 +67,7 @@ class Architecture(ArchitectureVHDLModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParseArchitectureName(cls, parserState: ParserState): #document, group):
+	def stateParseArchitectureName(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, ArchitectureBlock.NameBlock)
 
 		tokenIterator = iter(parserState)

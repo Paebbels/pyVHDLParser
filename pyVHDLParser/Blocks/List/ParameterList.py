@@ -32,7 +32,7 @@ from pyTooling.Decorators                 import export
 from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, DelimiterToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords          import ConstantKeyword, SignalKeyword, VariableKeyword, TypeKeyword
-from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock, InterfaceConstantBlock, InterfaceVariableBlock
@@ -41,9 +41,9 @@ from pyVHDLParser.Blocks.InterfaceObject  import InterfaceSignalBlock, Interface
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateParameterKeyword(cls, parserState: ParserState):
+	def stateParameterKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "(")):
+		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
@@ -64,16 +64,16 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' or whitespace after keyword PARAMETER.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == "(")):
+		if isinstance(token, CharacterToken) and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.PushState =   cls.stateOpeningParenthesis
 			parserState.Counter =     1
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -85,9 +85,9 @@ class OpenBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -96,22 +96,22 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' after keyword PARAMETER.", token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			if (token <= "constant"):
+			if token <= "constant":
 				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "variable"):
+			elif token <= "variable":
 				parserState.NewToken =    VariableKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "signal"):
+			elif token <= "signal":
 				parserState.NewToken =    SignalKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
@@ -145,14 +145,14 @@ class OpenBlock(Block):
 @export
 class ItemBlock(Block):
 	@classmethod
-	def stateItemRemainder(cls, parserState: ParserState):
+	def stateItemRemainder(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == "("):
+			if token == "(":
 				parserState.Counter += 1
-			elif (token == ")"):
+			elif token == ")":
 				parserState.Counter -= 1
-				if (parserState.Counter == 0):
+				if parserState.Counter == 0:
 					parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       CloseBlock(parserState.NewBlock, parserState.NewToken)
@@ -162,8 +162,8 @@ class ItemBlock(Block):
 					parserState.NewToken =    ClosingRoundBracketToken(fromExistingToken=token)
 					# parserState.NewBlock =    CloseBlock(parserState.LastBlock, parserState.NewToken)
 					# parserState.Pop()
-			elif (token == ";"):
-				if (parserState.Counter == 1):
+			elif token == ";":
+				if parserState.Counter == 1:
 					parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 					parserState.NewBlock =    ItemBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 					_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
@@ -178,37 +178,37 @@ class DelimiterBlock(SkipableBlock):
 		super().__init__(previousBlock, startToken, startToken)
 
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
-			if (tokenValue == "constant"):
+			if tokenValue == "constant":
 				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (tokenValue == "variable"):
+			elif tokenValue == "variable":
 				parserState.NewToken =    VariableKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceVariableBlock.stateVariableKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (tokenValue == "signal"):
+			elif tokenValue == "signal":
 				parserState.NewToken =    SignalKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceSignalBlock.stateSignalKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (tokenValue == "type"):
+			elif tokenValue == "type":
 				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.PushState =   ParameterListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (tokenValue == "procedure"):
+			elif tokenValue == "procedure":
 				raise NotImplementedError("Generic procedures are not supported.")
-			elif (tokenValue == "function"):
+			elif tokenValue == "function":
 				raise NotImplementedError("Generic functions are not supported.")
-			elif (tokenValue == "impure"):
+			elif tokenValue == "impure":
 				raise NotImplementedError("Generic impure functions are not supported.")
-			elif (tokenValue == "pure"):
+			elif tokenValue == "pure":
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(fromExistingToken=token)

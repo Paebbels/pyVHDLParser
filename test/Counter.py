@@ -55,7 +55,7 @@ class Counter:
 				self._failing[key] = (0, expectedCount)
 				continue
 
-			if (count != expectedCount):
+			if count != expectedCount:
 				good = False
 				self._failing[key] = (count, expectedCount)
 			self._history.pop(key)
@@ -67,9 +67,9 @@ class Counter:
 
 	def PrintReport(self):
 		for key,(count,expectedCount) in self._failing.items():
-			if (count == 0):
+			if count == 0:
 				print("      {DARK_GRAY}Missing {expectedCount} {type}{NOCOLOR}".format(expectedCount=expectedCount, type=key.__name__, **Console.Foreground))
-			elif (expectedCount == 0):
+			elif expectedCount == 0:
 				print("      {DARK_GRAY}Found {count} unexpected {type}{NOCOLOR}".format(count=count, type=key.__name__, **Console.Foreground))
 			else:
 				print("      {DARK_GRAY}Expected {expectedCount} of {type}; found {count}{NOCOLOR}".format(count=count, expectedCount=expectedCount, type=key.__name__, **Console.Foreground))

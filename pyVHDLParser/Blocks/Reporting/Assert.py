@@ -32,14 +32,14 @@ from pyTooling.Decorators         import export
 from pyVHDLParser.Token           import SpaceToken, LinebreakToken, WordToken, IndentationToken, CharacterToken
 from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, ReportKeyword, EndToken, SeverityKeyword
-from pyVHDLParser.Blocks          import Block, CommentBlock, ParserState, BlockParserException
+from pyVHDLParser.Blocks          import Block, CommentBlock, TokenToBlockParser, BlockParserException
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
 @export
 class AssertBlock(Block):
 	@classmethod
-	def stateAssertKeyword(cls, parserState: ParserState):
+	def stateAssertKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -56,14 +56,14 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword ASSERT.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateAssertion
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -75,9 +75,9 @@ class AssertBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -86,7 +86,7 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected assertion (expression).", token)
 
 	@classmethod
-	def stateAssertion(cls, parserState: ParserState):
+	def stateAssertion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -103,14 +103,14 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected whitespace after assertion (expression).", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, WordToken) and (token <= "report")):
+		if isinstance(token, WordToken) and (token <= "report"):
 			parserState.NewToken =      ReportKeyword(fromExistingToken=token)
 			parserState.NextState =     cls.stateReportKeyword
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -122,9 +122,9 @@ class AssertBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -133,7 +133,7 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected keyword REPORT after assertion (expression).", token)
 
 	@classmethod
-	def stateReportKeyword(cls, parserState: ParserState):
+	def stateReportKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -150,14 +150,14 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword REPORT.", token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateMessage
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -169,9 +169,9 @@ class AssertBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -180,9 +180,9 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected report message (expression) after keyword REPORT.", token)
 
 	@classmethod
-	def stateMessage(cls, parserState: ParserState):
+	def stateMessage(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ";")):
+		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -202,19 +202,19 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected whitespace after report message (expression).", token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ";")):
+		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif (isinstance(token, WordToken) and (token <= "severity")):
+		elif isinstance(token, WordToken) and (token <= "severity"):
 			parserState.NewToken =    SeverityKeyword(fromExistingToken=token)
 			parserState.NextState =   cls.stateSeverityKeyword
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                     LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -226,9 +226,9 @@ class AssertBlock(Block):
 			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -237,7 +237,7 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected keyword SEVERITY after report message (expression).", token)
 
 	@classmethod
-	def stateSeverityKeyword(cls, parserState: ParserState):
+	def stateSeverityKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -254,14 +254,14 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword SEVERITY.", token)
 
 	@classmethod
-	def stateWhitespace5(cls, parserState: ParserState):
+	def stateWhitespace5(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateSeverityLevel
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -273,9 +273,9 @@ class AssertBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -284,9 +284,9 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected severity level (expression) after keyword SEVERITY.", token)
 
 	@classmethod
-	def stateSeverityLevel(cls, parserState: ParserState):
+	def stateSeverityLevel(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
+		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -306,15 +306,15 @@ class AssertBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace after severity level (expression).", token)
 
 	@classmethod
-	def stateWhitespace6(cls, parserState: ParserState):
+	def stateWhitespace6(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ";")):
+		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -326,9 +326,9 @@ class AssertBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None

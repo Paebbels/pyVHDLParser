@@ -31,7 +31,7 @@ from pyTooling.Decorators              import export
 
 from pyVHDLParser.Token                import CharacterToken, SpaceToken, WordToken, LinebreakToken
 from pyVHDLParser.Token.Keywords       import BoundaryToken, IdentifierToken, EndToken
-from pyVHDLParser.Blocks               import BlockParserException, Block, ParserState
+from pyVHDLParser.Blocks               import BlockParserException, Block, TokenToBlockParser
 from pyVHDLParser.Blocks.Common        import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineCommentBlock
 
@@ -39,11 +39,11 @@ from pyVHDLParser.Blocks.Comment       import SingleLineCommentBlock, MultiLineC
 @export
 class SignalAssignmentBlock(Block):
 	@classmethod
-	def stateSignalAssignmentKeyword(cls, parserState: ParserState):
+	def stateSignalAssignmentKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected whitespace after keyword SignalAssignment."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -51,14 +51,14 @@ class SignalAssignmentBlock(Block):
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace1
@@ -73,13 +73,13 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected signalAssignment name (identifier)."
 		if isinstance(token, CharacterToken):
-			if (token == "\n"):
+			if token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
-				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				if not isinstance(parserState.LastBlock, MultiLineCommentBlock):
 					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
@@ -87,13 +87,13 @@ class SignalAssignmentBlock(Block):
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
@@ -103,7 +103,7 @@ class SignalAssignmentBlock(Block):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
 			parserState.NextState =     cls.stateSignalAssignmentName
 			return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -112,16 +112,16 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateSignalAssignmentName(cls, parserState: ParserState):
+	def stateSignalAssignmentName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';' after signalAssignment name."
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
 				_ =                       LinebreakBlock(parserState.NewBlock, parserState.NewToken)
@@ -129,14 +129,14 @@ class SignalAssignmentBlock(Block):
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.NextState =   cls.stateWhitespace2
@@ -150,18 +150,18 @@ class SignalAssignmentBlock(Block):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		errorMessage = "Expected ';'."
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-			elif (token == "\n"):
+			elif token == "\n":
 				parserState.NewToken =    LinebreakToken(fromExistingToken=token)
-				if (not isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+				if not isinstance(parserState.LastBlock, MultiLineCommentBlock):
 					parserState.NewBlock =  SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 					_ =                     LinebreakBlock(parserState.NewBlock, parserState.NewToken)
 				else:
@@ -169,19 +169,19 @@ class SignalAssignmentBlock(Block):
 				parserState.TokenMarker = None
 				parserState.PushState =   LinebreakBlock.stateLinebreak
 				return
-			elif (token == "-"):
+			elif token == "-":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   SingleLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-			elif (token == "/"):
+			elif token == "/":
 				parserState.NewBlock =    SignalAssignmentBlock(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				parserState.TokenMarker = None
 				parserState.PushState =   MultiLineCommentBlock.statePossibleCommentStart
 				parserState.TokenMarker = token
 				return
-		elif (isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock)):
+		elif isinstance(token, SpaceToken) and isinstance(parserState.LastBlock, MultiLineCommentBlock):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None

@@ -94,7 +94,7 @@ class EnumerationType(Type):
 
 		def Pos(self, value):
 			for pos,enumValue in enumerate(self._enum._enumeration):
-				if (enumValue == value):
+				if enumValue == value:
 					return pos
 
 		def Val(self, pos):
@@ -129,7 +129,7 @@ class ArrayType(Type):
 	@property
 	def IsConstrained(self):
 		for range in self._ranges:
-			if (not range.IsConstrained):
+			if not range.IsConstrained:
 				return False
 		return self._elementType.IsConstrained
 
@@ -153,16 +153,16 @@ class RecordType(Type):
 	@property
 	def IsContrained(self):
 		for member in self._members:
-			if (not member.IsConstrained):
+			if not member.IsConstrained:
 				return False
 		return True
 
 
 @export
-class SubType:
+class Subtype:
 	class _Attributes(_Attributes):
-		def __init__(self, subType):
-			self._subType = subType
+		def __init__(self, subtype):
+			self._subtype = subtype
 
 		def Low(self):
 			raise NotImplementedError()
@@ -171,9 +171,9 @@ class SubType:
 			raise NotImplementedError()
 
 
-	def __init__(self, name, subType, range=None, resolutionFunction=None):
+	def __init__(self, name, subtype, range=None, resolutionFunction=None):
 		self._name =                name
-		self._subType =             subType
+		self._subtype =             subtype
 		self._range =               range
 		self._resolutionFunction =  resolutionFunction
 		self.Attributes =           self._Attributes(self)
@@ -188,32 +188,32 @@ class SubType:
 
 
 @export
-class IntegerSubType(SubType):
-	class _Attributes(SubType._Attributes):
+class IntegerSubtype(Subtype):
+	class _Attributes(Subtype._Attributes):
 		def Left(self):
-			return self._subType._range.Left
+			return self._subtype._range.Left
 
 		def Right(self):
-			return self._subType._range.Right
+			return self._subtype._range.Right
 
 
 @export
-class EnumerationSubType(SubType):
-	class _Attributes(SubType._Attributes):
+class EnumerationSubtype(Subtype):
+	class _Attributes(Subtype._Attributes):
 		def Low(self):
-			return self._subType._range.Left
+			return self._subtype._range.Left
 
 		def High(self):
-			return self._subType._range.Right
+			return self._subtype._range.Right
 
 		def Value(self, str):
-			return self._subType._subType.Attributes.Value(str)
+			return self._subtype._subtype.Attributes.Value(str)
 
 
-	def __init__(self, name, subType, range=None, resolutionFunction=None):
-		if (range is None):
-			range = subType._range
-		super().__init__(name, subType, range, resolutionFunction)
+	def __init__(self, name, subtype, range=None, resolutionFunction=None):
+		if range is None:
+			range = subtype._range
+		super().__init__(name, subtype, range, resolutionFunction)
 
 
 @export
@@ -228,7 +228,7 @@ class Range:
 	def __init__(self, baseType, direction=None, left=None, right=None):
 		self._baseType =  baseType
 
-		if (direction is None):
+		if direction is None:
 			self.Direction = None
 			self.Left =      None
 			self.Right =     None

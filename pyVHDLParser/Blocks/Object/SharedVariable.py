@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators           import export
 
-from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
+from pyVHDLParser.Blocks            import TokenToBlockParser, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, WordToken
@@ -48,7 +48,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	END_BLOCK =   SharedVariableDeclarationEndMarkerBlock
 
 	@classmethod
-	def stateSharedKeyword(cls, parserState: ParserState):
+	def stateSharedKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -65,7 +65,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 		raise BlockParserException("Expected whitespace after keyword SHARED.", token)
 
 	@classmethod
-	def stateWhitespace0(cls, parserState: ParserState):
+	def stateWhitespace0(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(fromExistingToken=token)
@@ -75,7 +75,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NextState =   cls.stateVariableKeyword
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                     LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -86,7 +86,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -95,7 +95,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 		raise BlockParserException("Expected whitespace after keyword SHARED.", token)
 
 	@classmethod
-	def stateVariableKeyword(cls, parserState: ParserState):
+	def stateVariableKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -112,9 +112,9 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 		raise BlockParserException("Expected whitespace after keyword VARIABLE.", token)
 
 	@classmethod
-	def stateSubtypeIndication(cls, parserState: ParserState):
+	def stateSubtypeIndication(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ';')):
+		if isinstance(token, CharacterToken) and (token == ';'):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 			_ =                       cls.END_BLOCK(parserState.NewBlock, parserState.NewToken)
@@ -135,15 +135,15 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 		raise BlockParserException("Expected ';' or whitespace after subtype indication.", token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
+		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                     LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -154,7 +154,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None

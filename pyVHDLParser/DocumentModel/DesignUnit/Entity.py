@@ -30,7 +30,7 @@
 from pyTooling.Decorators                   import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import Entity as EntityVHDLModel
+from pyVHDLModel.DesignUnit                 import Entity as EntityVHDLModel
 
 from pyVHDLParser.Token.Keywords            import IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException
@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks.List               import GenericList as GenericListBlo
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.Structural         import Entity as EntityBlocks
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.Groups.List               import GenericListGroup, PortListGroup
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
@@ -51,7 +51,7 @@ class Entity(EntityVHDLModel):
 		super().__init__(entityName)
 
 	@classmethod
-	def stateParse(cls, parserState: ParserState): #document, group):
+	def stateParse(cls, parserState: BlockToGroupParser): #document, group):
 		for block in parserState.CurrentGroup:
 			if isinstance(block, EntityBlocks.NameBlock):
 				for token in block:
@@ -94,7 +94,7 @@ class Entity(EntityVHDLModel):
 
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState): #document, group):
+	def stateParseGenericList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -108,7 +108,7 @@ class Entity(EntityVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState): #document, group):
+	def stateParseGeneric(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
@@ -123,7 +123,7 @@ class Entity(EntityVHDLModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	@classmethod
-	def stateParsePortList(cls, parserState: ParserState): #document, group):
+	def stateParsePortList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PortListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -137,7 +137,7 @@ class Entity(EntityVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParsePort(cls, parserState: ParserState): #document, group):
+	def stateParsePort(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceSignalBlock)
 
 		tokenIterator = iter(parserState)
@@ -173,12 +173,12 @@ class Entity(EntityVHDLModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{obj}{NOCOLOR};".format(indent=indentation, lib=lib, pack=pack, obj=obj, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}ENTITY{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(name=self._name, indent=indentation, **Console.Foreground))
-		if (len(self._genericItems) > 0):
+		if len(self._genericItems) > 0:
 			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for generic in self._genericItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
 			print("{indent}  );".format(indent=indentation, **Console.Foreground))
-		if (len(self._portItems) > 0):
+		if len(self._portItems) > 0:
 			print("{indent}  {DARK_CYAN}PORT{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for port in self._portItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=port, type="", **Console.Foreground))

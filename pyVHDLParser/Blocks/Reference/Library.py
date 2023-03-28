@@ -31,14 +31,14 @@ from pyTooling.Decorators             import export
 
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, EndToken, DelimiterToken
-from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, ParserState, FinalBlock, SkipableBlock
+from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, TokenToBlockParser, FinalBlock, SkipableBlock
 from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
 
 
 @export
 class StartBlock(Block):
 	@classmethod
-	def stateLibraryKeyword(cls, parserState: ParserState):
+	def stateLibraryKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
@@ -57,7 +57,7 @@ class StartBlock(Block):
 		raise BlockParserException("Expected whitespace after keyword LIBRARY.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =    IdentifierToken(fromExistingToken=token)
@@ -72,9 +72,9 @@ class StartBlock(Block):
 			parserState.NewBlock =    block(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -86,16 +86,16 @@ class StartBlock(Block):
 @export
 class LibraryNameBlock(Block):
 	@classmethod
-	def stateLibraryName(cls, parserState: ParserState):
+	def stateLibraryName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == ","):
+			if token == ",":
 				parserState.NewToken =  DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				_ =                     DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.NextState = DelimiterBlock.stateDelimiter
 				return
-			elif (token == ";"):
+			elif token == ";":
 				parserState.NewToken =  EndToken(fromExistingToken=token)
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				_ =                     EndBlock(parserState.NewBlock, parserState.NewToken)
@@ -116,16 +116,16 @@ class LibraryNameBlock(Block):
 		raise BlockParserException("Expected ';' after library name.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == ","):
+			if token == ",":
 				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				_ =                       DelimiterBlock(parserState.NewBlock, parserState.NewToken)
 				parserState.NextState =   DelimiterBlock.stateDelimiter
 				return
-			elif (token == ";"):
+			elif token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
 				_ =                       EndBlock(parserState.NewBlock, parserState.NewToken)
@@ -140,9 +140,9 @@ class LibraryNameBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -154,7 +154,7 @@ class LibraryNameBlock(Block):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateDelimiter(cls, parserState: ParserState):
+	def stateDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -183,7 +183,7 @@ class DelimiterBlock(SkipableBlock):
 		raise BlockParserException("Expected library name (identifier).", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
 			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
@@ -198,9 +198,9 @@ class DelimiterBlock(SkipableBlock):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None

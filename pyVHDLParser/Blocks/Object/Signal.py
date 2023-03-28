@@ -31,7 +31,7 @@ from pyTooling.Decorators           import export
 
 from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken
-from pyVHDLParser.Blocks            import ParserState, CommentBlock, BlockParserException
+from pyVHDLParser.Blocks            import TokenToBlockParser, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Common     import LinebreakBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
@@ -54,7 +54,7 @@ class SignalDeclarationBlock(ObjectDeclarationBlock):
 	END_BLOCK =         SignalDeclarationEndMarkerBlock
 
 	@classmethod
-	def stateSignalKeyword(cls, parserState: ParserState):
+	def stateSignalKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, SpaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)

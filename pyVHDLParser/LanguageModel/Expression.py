@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLModel.SyntaxModel import (
+from pyVHDLModel.Expression import (
 	AndExpression as ModelAndExpression
 )
 

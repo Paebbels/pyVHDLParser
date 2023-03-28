@@ -27,12 +27,14 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing import Any
+
 from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token           import CharacterToken, SpaceToken, LinebreakToken, CommentToken, WordToken, MultiLineCommentToken, IndentationToken
 from pyVHDLParser.Token           import SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords  import EndToken, BoundaryToken, LabelToken, IdentifierToken
-from pyVHDLParser.Blocks          import FinalBlock, ParserState, CommentBlock, BlockParserException, Block
+from pyVHDLParser.Blocks          import FinalBlock, TokenToBlockParser, CommentBlock, BlockParserException, Block
 from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
 
 
@@ -44,10 +46,10 @@ class EndBlock(FinalBlock):
 	EXPECTED_NAME_KIND =  "keyword"  # keyword label
 
 	@classmethod
-	def stateEndKeyword(cls, parserState: ParserState):
+	def stateEndKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if ((cls.KEYWORD_IS_OPTIONAL is True) and (token == ";")):
+			if (cls.KEYWORD_IS_OPTIONAL is True) and (token == ";"):
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
@@ -71,10 +73,10 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if ((cls.KEYWORD_IS_OPTIONAL is True) and (token == ";")):
+			if (cls.KEYWORD_IS_OPTIONAL is True) and (token == ";"):
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
@@ -82,10 +84,10 @@ class EndBlock(FinalBlock):
 		elif isinstance(token, WordToken):
 			IS_SINGLE_KEYWORD = isinstance(cls.KEYWORD, tuple)
 			KW = cls.KEYWORD[0] if IS_SINGLE_KEYWORD else cls.KEYWORD
-			if (token <= KW.__KEYWORD__):
+			if token <= KW.__KEYWORD__:
 				parserState.NewToken =    KW(fromExistingToken=token)
 				parserState.NextState =   cls.stateKeyword1
-			elif (cls.EXPECTED_NAME_KIND == "label"):
+			elif cls.EXPECTED_NAME_KIND == "label":
 				parserState.NewToken =    LabelToken(fromExistingToken=token)
 				parserState.NextState =   cls.stateSimpleName
 			else:
@@ -93,7 +95,7 @@ class EndBlock(FinalBlock):
 				parserState.NextState =   cls.stateSimpleName
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -105,21 +107,21 @@ class EndBlock(FinalBlock):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
 
-		if (cls.KEYWORD_IS_OPTIONAL is True):
-			if (cls.EXPECTED_NAME_KIND == "label"):
+		if cls.KEYWORD_IS_OPTIONAL is True:
+			if cls.EXPECTED_NAME_KIND == "label":
 				errorMessage = "Expected ';', {0} keyword or {1} label.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 			else:
 				errorMessage = "Expected ';', {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 		else:
-			if (cls.EXPECTED_NAME_KIND == "label"):
+			if cls.EXPECTED_NAME_KIND == "label":
 				errorMessage = "Expected {0} keyword or {1} label.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 			else:
 				errorMessage = "Expected {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
@@ -127,12 +129,12 @@ class EndBlock(FinalBlock):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateKeyword1(cls, parserState: ParserState):
+	def stateKeyword1(cls, parserState: TokenToBlockParser):
 		IS_DOUBLE_KEYWORD = isinstance(cls.KEYWORD, tuple)
 		nextState = cls.stateWhitespace2 if IS_DOUBLE_KEYWORD else cls.stateWhitespace3;
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (not isinstance(cls.KEYWORD, tuple) and (token == ";")):
+			if not isinstance(cls.KEYWORD, tuple) and (token == ";"):
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
@@ -156,20 +158,20 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace2(cls, parserState: ParserState):
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if ((cls.KEYWORD_IS_OPTIONAL is True) and (not isinstance(cls.KEYWORD, tuple)) and (token == ";")):
+			if (cls.KEYWORD_IS_OPTIONAL is True) and (not isinstance(cls.KEYWORD, tuple)) and (token == ";"):
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
-		elif (isinstance(token, WordToken) and (token <= cls.KEYWORD[1].__KEYWORD__)):
+		elif isinstance(token, WordToken) and (token <= cls.KEYWORD[1].__KEYWORD__):
 			parserState.NewToken =    cls.KEYWORD[1](fromExistingToken=token)
 			parserState.NextState =   cls.stateKeyword2
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -181,21 +183,21 @@ class EndBlock(FinalBlock):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
 			return
 
-		if (cls.KEYWORD_IS_OPTIONAL is True):
-			if (cls.EXPECTED_NAME_KIND == "label"):
+		if cls.KEYWORD_IS_OPTIONAL is True:
+			if cls.EXPECTED_NAME_KIND == "label":
 				errorMessage = "Expected ';', {0} keyword or {1} label.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 			else:
 				errorMessage = "Expected ';', {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 		else:
-			if (cls.EXPECTED_NAME_KIND == "label"):
+			if cls.EXPECTED_NAME_KIND == "label":
 				errorMessage = "Expected {0} keyword or {1} label.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
 			else:
 				errorMessage = "Expected {0} keyword or {1} name.".format(cls.EXPECTED_NAME.upper(), cls.EXPECTED_NAME)
@@ -203,9 +205,9 @@ class EndBlock(FinalBlock):
 		raise BlockParserException(errorMessage, token)
 
 	@classmethod
-	def stateKeyword2(cls, parserState: ParserState):
+	def stateKeyword2(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ";")):
+		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -229,10 +231,10 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace3(cls, parserState: ParserState):
+	def stateWhitespace3(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
@@ -245,7 +247,7 @@ class EndBlock(FinalBlock):
 			parserState.NextState =   cls.stateSimpleName
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =  cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                     LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -257,9 +259,9 @@ class EndBlock(FinalBlock):
 			_ =                       CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -268,9 +270,9 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or {0} name.".format(cls.EXPECTED_NAME), token)
 
 	@classmethod
-	def stateSimpleName(cls, parserState: ParserState):
+	def stateSimpleName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
+		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =      EndToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -294,16 +296,16 @@ class EndBlock(FinalBlock):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace4(cls, parserState: ParserState):
+	def stateWhitespace4(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, CharacterToken):
-			if (token == ";"):
+			if token == ";":
 				parserState.NewToken =    EndToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 				parserState.Pop()
 				return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -315,9 +317,9 @@ class EndBlock(FinalBlock):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -328,21 +330,21 @@ class EndBlock(FinalBlock):
 
 @export
 class BeginBlock(Block):
-	END_BLOCK: EndBlock = None
+	END_BLOCK: EndBlock
 
-	KEYWORDS = None
+	KEYWORDS: Any  # TODO: what type?
 
 	@classmethod
-	def stateStatementRegion(cls, parserState: ParserState):
+	def stateStatementRegion(cls, parserState: TokenToBlockParser):
 		pass
 
 
 @export
 class CloseBlock(Block):
 	@classmethod
-	def stateClosingParenthesis(cls, parserState: ParserState):
+	def stateClosingParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken) and (token == ";")):
+		if isinstance(token, CharacterToken) and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -361,9 +363,9 @@ class CloseBlock(Block):
 		raise BlockParserException("Expected ';' or whitespace.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ";")):
+		if isinstance(token, CharacterToken)and (token == ";"):
 			parserState.NewToken =    EndToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
@@ -377,9 +379,9 @@ class CloseBlock(Block):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = token
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None

@@ -33,7 +33,7 @@ from pyVHDLParser.Token                   import CharacterToken, LinebreakToken,
 from pyVHDLParser.Token.Keywords          import BoundaryToken, ConstantKeyword, TypeKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Token.Parser            import SpaceToken, WordToken
-from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, ParserState, SkipableBlock
+from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, TokenToBlockParser, SkipableBlock
 from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Generic1         import CloseBlock as CloseBlockBase
 from pyVHDLParser.Blocks.Expression       import ExpressionBlockEndedByCharORClosingRoundBracket
@@ -48,26 +48,26 @@ class CloseBlock(CloseBlockBase):
 @export
 class DelimiterBlock(SkipableBlock):
 	@classmethod
-	def stateItemDelimiter(cls, parserState: ParserState):
+	def stateItemDelimiter(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
 		if isinstance(token, WordToken):
-			if (token <= "constant"):
+			if token <= "constant":
 				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "type"):
+			elif token <= "type":
 				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "procedure"):
+			elif token <= "procedure":
 				raise NotImplementedError("Generic procedures are not supported.")
-			elif (token <= "function"):
+			elif token <= "function":
 				raise NotImplementedError("Generic functions are not supported.")
-			elif (token <= "impure"):
+			elif token <= "impure":
 				raise NotImplementedError("Generic impure functions are not supported.")
-			elif (token <= "pure"):
+			elif token <= "pure":
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(fromExistingToken=token)
@@ -116,9 +116,9 @@ class GenericListInterfaceTypeBlock(InterfaceTypeBlock):
 @export
 class OpenBlock(Block):
 	@classmethod
-	def stateGenericKeyword(cls, parserState: ParserState):
+	def stateGenericKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "(")):
+		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
@@ -138,16 +138,16 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' or whitespace after keyword GENERIC.", token)
 
 	@classmethod
-	def stateWhitespace1(cls, parserState: ParserState):
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == "(")):
+		if isinstance(token, CharacterToken)and (token == "("):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.NextState =     CloseBlock.stateClosingParenthesis
 			parserState.PushState =     cls.stateOpeningParenthesis
 			return
 		elif isinstance(token, LinebreakToken):
-			if (not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
 				_ =                       LinebreakBlock(parserState.NewBlock, token)
 			else:
@@ -159,9 +159,9 @@ class OpenBlock(Block):
 			_ =                         CommentBlock(parserState.NewBlock, token)
 			parserState.TokenMarker =   None
 			return
-		elif (isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken))):
+		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
+		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -170,33 +170,33 @@ class OpenBlock(Block):
 		raise BlockParserException("Expected '(' after keyword GENERIC.", token)
 
 	@classmethod
-	def stateOpeningParenthesis(cls, parserState: ParserState):
+	def stateOpeningParenthesis(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if (isinstance(token, CharacterToken)and (token == ")")):
-			# if (parserState.TokenMarker != token):
+		if isinstance(token, CharacterToken) and (token == ")"):
+			# if parserState.TokenMarker != token:
 			# 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
 			parserState.Pop(1, token)
 			return
 		elif isinstance(token, WordToken):
-			if (token <= "constant"):
+			if token <= "constant":
 				parserState.NewToken =    ConstantKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceConstantBlock.stateConstantKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "type"):
+			elif token <= "type":
 				parserState.NewToken =    TypeKeyword(fromExistingToken=token)
 				parserState.NextState =   DelimiterBlock.stateItemDelimiter
 				parserState.PushState =   GenericListInterfaceTypeBlock.stateTypeKeyword
 				parserState.TokenMarker = parserState.NewToken
 				return
-			elif (token <= "procedure"):
+			elif token <= "procedure":
 				raise NotImplementedError("Generic procedures are not supported.")
-			elif (token <= "function"):
+			elif token <= "function":
 				raise NotImplementedError("Generic functions are not supported.")
-			elif (token <= "impure"):
+			elif token <= "impure":
 				raise NotImplementedError("Generic impure functions are not supported.")
-			elif (token <= "pure"):
+			elif token <= "pure":
 				raise NotImplementedError("Generic pure functions are not supported.")
 			else:
 				parserState.NewToken =    IdentifierToken(fromExistingToken=token)

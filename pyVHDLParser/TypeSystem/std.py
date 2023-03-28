@@ -27,9 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyVHDLParser.Common                import VHDLVersion, vhdlVersion
 from pyVHDLParser.TypeSystem.Package    import PackageDeclation, PackageBody, Package
-from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, IntegerType, RealType, Direction, SubType, Range, IntegerSubType
+from pyVHDLParser.TypeSystem.TypeSystem import EnumerationType, ArrayType, IntegerType, RealType, Direction, Subtype, Range, IntegerSubtype
 
 
 Boolean_Values = [
@@ -41,36 +40,36 @@ Boolean =               EnumerationType("boolean", Boolean_Values)
 
 
 UniversatInteger =      IntegerType("universat_integer")
-Integer =               IntegerSubType("integer",  UniversatInteger, Range(UniversatInteger, Direction.To, -2**31, 2*31))
-Natural =               IntegerSubType("natural",  Integer, Range(UniversatInteger, Direction.To, 0, Integer.Attributes.Right))
-Positive =              IntegerSubType("positive", Integer, Range(UniversatInteger, Direction.To, 1, Integer.Attributes.Right))
+Integer =               IntegerSubtype("integer",  UniversatInteger, Range(UniversatInteger, Direction.To, -2**31, 2*31))
+Natural =               IntegerSubtype("natural",  Integer, Range(UniversatInteger, Direction.To, 0, Integer.Attributes.Right))
+Positive =              IntegerSubtype("positive", Integer, Range(UniversatInteger, Direction.To, 1, Integer.Attributes.Right))
 
 UniversatReal =         RealType("universat_real")
-Real =                  IntegerSubType("real", UniversatReal, Range(UniversatReal, Direction.To, -10.0, 10.0))
+Real =                  IntegerSubtype("real", UniversatReal, Range(UniversatReal, Direction.To, -10.0, 10.0))
 
 
-if (vhdlVersion < VHDLVersion.VHDL2008):
-	Std_Decl = PackageDeclation("std", [
-		Boolean,
-		Integer,
-		Positive,
-		Natural
-	])
-	Std_Body = PackageBody(Std_Decl, [])
+# if vhdlVersion < VHDLVersion.VHDL2008:
+# 	Std_Decl = PackageDeclation("std", [
+# 		Boolean,
+# 		Integer,
+# 		Positive,
+# 		Natural
+# 	])
+# 	Std_Body = PackageBody(Std_Decl, [])
+#
+# elif vhdlVersion >= VHDLVersion.VHDL2008:
+Boolean_Vector =      ArrayType("boolean_vector", Range(Natural), Boolean)
+Integer_Vector =      ArrayType("integer_vector", Range(Natural), Integer)
 
-elif (vhdlVersion >= VHDLVersion.VHDL2008):
-	Boolean_Vector =      ArrayType("boolean_vector", Range(Natural), Boolean)
-	Integer_Vector =      ArrayType("integer_vector", Range(Natural), Integer)
 
-
-	Std_Decl =              PackageDeclation("std", [
-		Boolean,
-		Boolean_Vector,
-		Integer,
-		Positive,
-		Natural
-	])
-	Std_Body =              PackageBody(Std_Decl, [])
+Std_Decl =              PackageDeclation("std", [
+	Boolean,
+	Boolean_Vector,
+	Integer,
+	Positive,
+	Natural
+])
+Std_Body =              PackageBody(Std_Decl, [])
 
 
 

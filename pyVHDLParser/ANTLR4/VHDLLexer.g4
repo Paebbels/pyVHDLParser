@@ -11,7 +11,7 @@
 //                                                                                                                    //
 // License:                                                                                                           //
 // ================================================================================================================== //
-// Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                          //
+// Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                          //
 // Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                             //
 //                                                                                                                    //
 // Licensed under the Apache License, Version 2.0 (the "License");                                                    //
@@ -218,13 +218,13 @@ OP_XOR:           'xor';
 OP_EQ: '=';
 OP_NE: '/=';
 OP_LT: '<';
-OP_LE: '<=)';
+//OP_LE: '<=';
 OP_GT: '>';
 OP_GE: '>=';
 OP_IEQ: '?=';
 OP_INE: '?/=';
 OP_ILT: '?<';
-OP_ILE: '?<=)';
+OP_ILE: '?<=';
 OP_IGT: '?>';
 OP_IGE: '?>=';
 OP_PLUS: '+';
@@ -307,7 +307,7 @@ LIT_OTHER_CHARACTER
 */
 
 fragment BasicIdentifier:    [a-z] ('_'? [a-z0-9])* ;
-fragment ExtendedIdentifier: '\\' ([a-z0-9] | '_')+ '\\'      ;
+fragment ExtendedIdentifier: '\\' .+? '\\' ;
 
 LIT_IDENTIFIER
 	: BasicIdentifier

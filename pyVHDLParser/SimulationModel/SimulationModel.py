@@ -94,9 +94,9 @@ class Path:
 
 @export
 class Signal:
-	def __init__(self, path, subType, initializer=None):
+	def __init__(self, path, subtype, initializer=None):
 		self._path =              path
-		self._subType =           subType
+		self._subtype =           subtype
 		self._initializer =       initializer
 		self._drivingValue =      None
 		self._projectedWaveform = ProjectedWaveform(self)
@@ -104,10 +104,10 @@ class Signal:
 		self.Simulator =          None
 
 	def Initialize(self):
-		if (self._initializer is not None):
+		if self._initializer is not None:
 			result = self._initializer()
 		else:
-			result = self._subType.Attributes.Low()
+			result = self._subtype.Attributes.Low()
 		self._waveform.Initialize(result)
 
 	def SetValue(self, value):

@@ -27,10 +27,10 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pydecor                                import export
+from pyTooling.Decorators                   import export
 from typing                                 import List
 
-from pyVHDLModel.SyntaxModel                import Package as PackageVHDLModel
+from pyVHDLModel.DesignUnit                 import Package as PackageVHDLModel
 
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Token.Keywords            import IdentifierToken
@@ -38,7 +38,7 @@ from pyVHDLParser.Blocks                    import BlockParserException
 from pyVHDLParser.Blocks.List               import GenericList as GenericListBlocks
 from pyVHDLParser.Blocks.Object.Constant    import ConstantDeclarationBlock
 from pyVHDLParser.Blocks.Sequential         import Package as PackageBlock
-from pyVHDLParser.Groups                    import ParserState
+from pyVHDLParser.Groups                    import BlockToGroupParser
 from pyVHDLParser.Groups.List               import GenericListGroup
 from pyVHDLParser.DocumentModel.Reference   import LibraryClause, PackageReference
 
@@ -77,7 +77,7 @@ class Package(PackageVHDLModel):
 		# parserState.CurrentBlock = None
 
 	@classmethod
-	def stateParsePackageName(cls, parserState: ParserState): #document, group):
+	def stateParsePackageName(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, PackageBlock.NameBlock)
 
 		tokenIterator = iter(parserState)
@@ -100,7 +100,7 @@ class Package(PackageVHDLModel):
 		oldNode.PackageReferences.clear()
 
 	@classmethod
-	def stateParseGenericList(cls, parserState: ParserState): #document, group):
+	def stateParseGenericList(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, GenericListBlocks.OpenBlock)
 
 		for block in parserState.GroupIterator:
@@ -114,7 +114,7 @@ class Package(PackageVHDLModel):
 		parserState.Pop()
 
 	@classmethod
-	def stateParseGeneric(cls, parserState: ParserState): #document, group):
+	def stateParseGeneric(cls, parserState: BlockToGroupParser): #document, group):
 		assert isinstance(parserState.CurrentGroup, pyVHDLParser.Blocks.InterfaceObject.InterfaceConstantBlock)
 
 		tokenIterator = iter(parserState)
@@ -128,13 +128,13 @@ class Package(PackageVHDLModel):
 		parserState.CurrentNode.AddGeneric(genericName)
 
 	def AddLibraryReferences(self, libraries : List[LibraryClause]):
-		if ((DEBUG is True) and (len(libraries) > 0)): print("{DARK_CYAN}Adding libraries to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(libraries) > 0): print("{DARK_CYAN}Adding libraries to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for library in libraries:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(library, **Console.Foreground))
 			self._libraryReferences.append(library._library)
 
 	def AddUses(self, uses : List[PackageReference]):
-		if ((DEBUG is True) and (len(uses) > 0)): print("{DARK_CYAN}Adding uses to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
+		if (DEBUG is True) and (len(uses) > 0): print("{DARK_CYAN}Adding uses to package {GREEN}{0}{NOCOLOR}:".format(self._name, **Console.Foreground))
 		for use in uses:
 			if DEBUG: print("  {GREEN}{0!s}{NOCOLOR}".format(use, **Console.Foreground))
 			self._packageReferences.append(use)
@@ -163,12 +163,12 @@ class Package(PackageVHDLModel):
 			print("{indent}{DARK_CYAN}USE {GREEN}{lib}{NOCOLOR}.{GREEN}{pack}{NOCOLOR}.{GREEN}{item}{NOCOLOR};".format(indent=indentation, lib=use._library, pack=use._package, item=use._item, **Console.Foreground))
 		print()
 		print("{indent}{DARK_CYAN}PACKAGE{NOCOLOR} {YELLOW}{name}{NOCOLOR} {DARK_CYAN}IS{NOCOLOR}".format(indent=indentation, name=self._name, **Console.Foreground))
-		if (len(self._genericItems) > 0):
+		if len(self._genericItems) > 0:
 			print("{indent}  {DARK_CYAN}GENERIC{NOCOLOR} (".format(indent=indentation, **Console.Foreground))
 			for generic in self._genericItems:
 				print("{indent}    {YELLOW}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR}".format(indent=indentation, name=generic, type="", **Console.Foreground))
 			print("{indent}  );".format(indent=indentation))
-		if (len(self._declaredItems) > 0):
+		if len(self._declaredItems) > 0:
 			for item in self._declaredItems:
 				item.Print(indent+1)
 		print("{indent}{DARK_CYAN}END PACKAGE{NOCOLOR};".format(indent=indentation, name=self._name, **Console.Foreground))
