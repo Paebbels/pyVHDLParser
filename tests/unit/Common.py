@@ -144,7 +144,7 @@ class TokenLinking(ITestcase): #, ExpectedDataMixin):
 		tokenIterator = iter(tokenStream)
 		startToken =    next(tokenIterator)
 
-		self.assertIsInstance(startToken, StartOfDocumentToken, msg="First token is not StartOfDocumentToken: {token}".format(token=startToken))
+		self.assertIsInstance(startToken, StartOfDocumentToken, msg=f"First token is not StartOfDocumentToken: {startToken}")
 		self.assertIsNone(startToken.PreviousToken, msg="First token has no open start.")
 
 		lastToken: Token = startToken
@@ -155,17 +155,17 @@ class TokenLinking(ITestcase): #, ExpectedDataMixin):
 				endToken = token
 				break
 
-			self.assertEqual(lastToken.NextToken, token, msg="Last token is not connected to the current token: {token}".format(token=token))
-			self.assertEqual(lastToken, token.PreviousToken, msg="Current token is not connected to lastToken: {token}".format(token=token))
+			self.assertIs(lastToken.NextToken, token, msg=f"Last token is not connected to the current token: {token}")
+			self.assertIs(lastToken, token.PreviousToken, msg=f"Current token is not connected to lastToken: {token}")
 
 			lastToken = token
 		else:
 			self.fail(msg="No EndOfDocumentToken found.")
 
-		self.assertIsInstance(endToken, EndOfDocumentToken, msg="End token is not EndOfDocumentToken: {token}".format(token=endToken))
-		self.assertEqual(lastToken.NextToken, endToken, msg="Last token is not connected to the end token: {token}".format(token=token))
-		self.assertEqual(lastToken, endToken.PreviousToken, msg="End token is not connected to lastToken: {token}".format(token=token))
-		self.assertIsNone(endToken.NextToken, msg="End token has no open end: {token}".format(token=endToken.NextToken))
+		self.assertIsInstance(endToken, EndOfDocumentToken, msg=f"End token is not EndOfDocumentToken: {endToken}")
+		self.assertIs(lastToken.NextToken, endToken, msg=f"Last token is not connected to the end token: {token}")
+		self.assertIs(lastToken, endToken.PreviousToken, msg=f"End token is not connected to lastToken: {token}")
+		self.assertIsNone(endToken.NextToken, msg=f"End token has no open end: {endToken.NextToken}")
 
 
 class BlockSequence(ITestcase): #, ExpectedDataMixin):
@@ -184,11 +184,7 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 
 				self.assertIsInstance(
 					block, item[0],
-				  msg="Block has not expected type.\n  Actual:   {actual!s}\n  Expected: {expected}".format(
-#						actual=block.__class__.__qualname__,
-						actual=block,
-						expected=item[0].__qualname__
-				  )
+				  msg=f"Block has not expected type.\n  Actual:   {block!s}\n  Expected: {item[0].__qualname__}"
 				)
 				if item[1] is not None:
 					blockValue = str(block)
@@ -201,15 +197,15 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 					)
 
 		except TokenizerException as ex:
-			self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
+			self.fail(msg=f"Unexpected 'TokenizerException' at {ex.Position}")
 		except BlockParserException as ex:
-			self.fail(msg="Unexpected 'BlockParserException' at {pos}".format(pos=ex.Token.Start))
+			self.fail(msg=f"Unexpected 'BlockParserException' at {ex.Token.Start}")
 		except StopIteration:
 			pass
 		except AssertionError:
 			raise
 		except Exception as ex:
-			self.fail(msg="Unexpected exception '{exname}' := {ex!s}.".format(ex=ex, exname=ex.__class__.__qualname__))
+			self.fail(msg=f"Unexpected exception '{ex.__class__.__qualname__}' := {ex!s}.")
 
 
 class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
@@ -229,11 +225,7 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 
 					self.assertIsInstance(
 						block, item[0],
-					  msg="Block has not expected type.\n  Actual:   {actual!s}\n  Expected: {expected}".format(
-	#						actual=block.__class__.__qualname__,
-							actual=block,
-							expected=item[0].__qualname__
-					  )
+					  msg=f"Block has not expected type.\n  Actual:   {block!s}\n  Expected: {item[0].__qualname__}"
 					)
 					if item[1] is not None:
 						blockValue = str(block)
@@ -246,7 +238,7 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 						)
 
 			except TokenizerException as ex:
-				self.fail(msg="Unexpected 'TokenizerException' at {pos}".format(pos=ex.Position))
+				self.fail(msg=f"Unexpected 'TokenizerException' at {ex.Position}")
 			except BlockParserException:
 				raise
 			except StopIteration:
@@ -254,7 +246,7 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 			except AssertionError:
 				raise
 			except Exception as ex:
-				self.fail(msg="Unexpected exception '{exname}' := {ex!s}.".format(ex=ex, exname=ex.__class__.__qualname__))
+				self.fail(msg=f"Unexpected exception '{ex.__class__.__qualname__}' := {ex!s}.")
 
 		print(ex)
 
@@ -268,10 +260,10 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 			blockIterator = iter(blockStream)
 			firstBlock = next(blockIterator)
 
-			self.assertIsInstance(firstBlock, StartOfDocumentBlock, msg="First block is not StartOfDocumentBlock: {block}".format(block=firstBlock))
+			self.assertIsInstance(firstBlock, StartOfDocumentBlock, msg=f"First block is not StartOfDocumentBlock: {firstBlock}")
 
 			startToken = firstBlock.StartToken
-			self.assertIsInstance(startToken, StartOfDocumentToken, msg="First token is not StartOfDocumentToken: {token}".format(token=startToken))
+			self.assertIsInstance(startToken, StartOfDocumentToken, msg=f"First token is not StartOfDocumentToken: {startToken}")
 
 			lastBlock: Block = firstBlock
 			endBlock: Block = None
@@ -283,19 +275,19 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 					break
 
 				# Block checks
-				self.assertEqual(lastBlock.NextBlock, block,
-				                 msg="Last block is not connected to the current block: {block}".format(block=block))
-				self.assertEqual(lastBlock, block.PreviousBlock,
-				                 msg="Current block is not connected to last block: {block}".format(block=block))
+				self.assertIs(lastBlock.NextBlock, block,
+				                 msg=f"Last block is not connected to the current block: {block}")
+				self.assertIs(lastBlock, block.PreviousBlock,
+				                 msg=f"Current block is not connected to last block: {block}")
 
 				# Token checks
 				tokenIterator = iter(block)
 
 				for token in tokenIterator:
-					self.assertIsNotNone(token.NextToken, msg="Token has an open end (token).".format(token=token.NextToken))
-					self.assertEqual(lastToken.NextToken, token, msg="Last token is not connected to the current token.")
+					self.assertIsNotNone(token.NextToken, msg="Token has an open end (token).")
+					self.assertIs(lastToken.NextToken, token, msg="Last token is not connected to the current token.")
 					self.assertIsNotNone(token.PreviousToken, msg="Token has an open end (PreviousToken).")
-					self.assertEqual(token.PreviousToken, lastToken, msg="Current token is not connected to lastToken.")
+					self.assertIs(token.PreviousToken, lastToken, msg="Current token is not connected to lastToken.")
 
 					lastToken = token
 
@@ -304,13 +296,13 @@ class BlockSequenceWithParserError(ITestcase): #, ExpectedDataMixin):
 				self.fail(msg="No EndOfDocumentBlock found.")
 
 			# Block checks
-			self.assertIsInstance(endBlock, EndOfDocumentBlock, msg="End block is not EndOfDocumentblock: {token}".format(token=endBlock))
-			self.assertIsInstance(endBlock.EndToken, EndOfDocumentToken, msg="End block's token is not EndOfDocumentToken: {token}".format(token=endBlock.EndToken))
+			self.assertIsInstance(endBlock, EndOfDocumentBlock, msg=f"End block is not EndOfDocumentblock: {endBlock}")
+			self.assertIsInstance(endBlock.EndToken, EndOfDocumentToken, msg=f"End block's token is not EndOfDocumentToken: {endBlock.EndToken}")
 
 			# Token checks
-			self.assertEqual(lastToken.NextToken, endBlock.EndToken, msg="Last token is not connected to the end token.")
-			self.assertEqual(lastToken, endBlock.EndToken.PreviousToken, msg="End token is not connected to lastToken.")
-			self.assertIsNone(endBlock.EndToken.NextToken, msg="End token has no open end: {token}".format(token=endBlock.EndToken.NextToken))
+			self.assertIs(lastToken.NextToken, endBlock.EndToken, msg="Last token is not connected to the end token.")
+			self.assertIs(lastToken, endBlock.EndToken.PreviousToken, msg="End token is not connected to lastToken.")
+			self.assertIsNone(endBlock.EndToken.NextToken, msg=f"End token has no open end: {endBlock.EndToken.NextToken}")
 
 
 class BlockLinking(ITestcase): #, ExpectedDataMixin):
@@ -322,10 +314,10 @@ class BlockLinking(ITestcase): #, ExpectedDataMixin):
 		blockIterator = iter(blockStream)
 		firstBlock = next(blockIterator)
 
-		self.assertIsInstance(firstBlock, StartOfDocumentBlock, msg="First block is not StartOfDocumentBlock: {block}".format(block=firstBlock))
+		self.assertIsInstance(firstBlock, StartOfDocumentBlock, msg=f"First block is not StartOfDocumentBlock: {firstBlock}")
 
 		startToken = firstBlock.StartToken
-		self.assertIsInstance(startToken, StartOfDocumentToken, msg="First token is not StartOfDocumentToken: {token}".format(token=startToken))
+		self.assertIsInstance(startToken, StartOfDocumentToken, msg=f"First token is not StartOfDocumentToken: {startToken}")
 
 		lastBlock: Block = firstBlock
 		endBlock: Block = None
@@ -337,19 +329,19 @@ class BlockLinking(ITestcase): #, ExpectedDataMixin):
 				break
 
 			# Block checks
-			self.assertEqual(lastBlock.NextBlock, block,
-			                 msg="Last block is not connected to the current block: {block}".format(block=block))
-			self.assertEqual(lastBlock, block.PreviousBlock,
-			                 msg="Current block is not connected to last block: {block}".format(block=block))
+			self.assertIs(lastBlock.NextBlock, block,
+			                 msg=f"Last block is not connected to the current block: {block}")
+			self.assertIs(lastBlock, block.PreviousBlock,
+			                 msg=f"Current block is not connected to last block: {block}")
 
 			# Token checks
 			tokenIterator = iter(block)
 
 			for token in tokenIterator:
-				self.assertIsNotNone(token.NextToken, msg="Token has an open end (token).".format(token=token.NextToken))
-				self.assertEqual(lastToken.NextToken, token, msg="Last token is not connected to the current token.")
+				self.assertIsNotNone(token.NextToken, msg="Token has an open end (token).")
+				self.assertIs(lastToken.NextToken, token, msg="Last token is not connected to the current token.")
 				self.assertIsNotNone(token.PreviousToken, msg="Token has an open end (PreviousToken).")
-				self.assertEqual(token.PreviousToken, lastToken, msg="Current token is not connected to lastToken.")
+				self.assertIs(token.PreviousToken, lastToken, msg="Current token is not connected to lastToken.")
 
 				lastToken = token
 
@@ -358,14 +350,13 @@ class BlockLinking(ITestcase): #, ExpectedDataMixin):
 			self.fail(msg="No EndOfDocumentBlock found.")
 
 		# Block checks
-		self.assertIsInstance(endBlock, EndOfDocumentBlock, msg="End block is not EndOfDocumentblock: {token}".format(token=endBlock))
-		self.assertIsInstance(endBlock.EndToken, EndOfDocumentToken, msg="End block's token is not EndOfDocumentToken: {token}".format(
-			                      token=endBlock.EndToken))
+		self.assertIsInstance(endBlock, EndOfDocumentBlock, msg=f"End block is not EndOfDocumentblock: {endBlock}")
+		self.assertIsInstance(endBlock.EndToken, EndOfDocumentToken, msg=f"End block's token is not EndOfDocumentToken: {endBlock.EndToken}")
 
 		# Token checks
-		self.assertEqual(lastToken.NextToken, endBlock.EndToken, msg="Last token is not connected to the end token.")
-		self.assertEqual(lastToken, endBlock.EndToken.PreviousToken, msg="End token is not connected to lastToken.")
-		self.assertIsNone(endBlock.EndToken.NextToken, msg="End token has no open end: {token}".format(token=endBlock.EndToken.NextToken))
+		self.assertIs(lastToken.NextToken, endBlock.EndToken, msg="Last token is not connected to the end token.")
+		self.assertIs(lastToken, endBlock.EndToken.PreviousToken, msg="End token is not connected to lastToken.")
+		self.assertIsNone(endBlock.EndToken.NextToken, msg=f"End token has no open end: {endBlock.EndToken.NextToken}")
 
 
 class LinkingTests(TokenLinking, BlockLinking):
