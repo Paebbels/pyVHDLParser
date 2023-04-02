@@ -36,7 +36,7 @@ from pyVHDLParser.Token               import IndentationToken, SingleLineComment
 from pyVHDLParser.Token.Keywords      import InKeyword, VariableAssignmentKeyword, OutKeyword, InoutKeyword, BufferKeyword, LinkageKeyword
 from pyVHDLParser.Token.Keywords      import IdentifierToken, BoundaryToken, DelimiterToken
 from pyVHDLParser.Blocks              import Block, TokenToBlockParser, CommentBlock, BlockParserException
-from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace       import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Expression   import ExpressionBlockEndedByCharORClosingRoundBracket
 
 

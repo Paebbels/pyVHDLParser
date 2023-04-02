@@ -1,5 +1,5 @@
-4. Pass - Code-DOM
-##################
+4. Pass - Groups ⇒ Code-DOM
+###########################
 
 A Code-DOM is a Document-Object-Model for source code files.
 

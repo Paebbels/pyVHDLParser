@@ -33,10 +33,10 @@ from pyVHDLParser.Token                     import CharacterToken, SpaceToken, L
 from pyVHDLParser.Token.Keywords            import WordToken, BoundaryToken, IsKeyword, UseKeyword, ConstantKeyword, ImpureKeyword, PureKeyword
 from pyVHDLParser.Token.Keywords            import VariableKeyword, ProcessKeyword, BeginKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Blocks                    import Block, CommentBlock, BlockParserException, TokenToBlockParser
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.ControlStructure   import If, Case, ForLoop, WhileLoop
-from pyVHDLParser.Blocks.Generic            import SequentialBeginBlock, SequentialDeclarativeRegion
-from pyVHDLParser.Blocks.Generic1           import EndBlock as EndBlockBase
+from pyVHDLParser.Blocks.Region            import SequentialBeginBlock, SequentialDeclarativeRegion
+from pyVHDLParser.Blocks.Generic           import EndBlock as EndBlockBase
 from pyVHDLParser.Blocks.List               import SensitivityList
 
 

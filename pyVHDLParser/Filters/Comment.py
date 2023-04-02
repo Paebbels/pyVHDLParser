@@ -30,7 +30,7 @@
 from typing import Generator, Any
 
 from pyVHDLParser.Blocks           import BlockParserException, CommentBlock, Block
-from pyVHDLParser.Blocks.Common    import IndentationBlock, LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace    import IndentationBlock, LinebreakBlock, WhitespaceBlock
 # from pyVHDLParser.Blocks.Document  import CommentBlock
 
 

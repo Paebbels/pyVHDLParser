@@ -33,7 +33,7 @@ from pyVHDLParser.Token           import SpaceToken, LinebreakToken, WordToken, 
 from pyVHDLParser.Token           import CommentToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token.Keywords  import BoundaryToken, IdentifierToken, ReportKeyword, EndToken, SeverityKeyword
 from pyVHDLParser.Blocks          import Block, CommentBlock, TokenToBlockParser, BlockParserException
-from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace   import LinebreakBlock, WhitespaceBlock
 
 
 @export

@@ -27,45 +27,64 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyTooling.Decorators           import export
+from pyTooling.Decorators     import export
 
-from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
-from pyVHDLParser.Token.Keywords    import BoundaryToken
-from pyVHDLParser.Blocks            import TokenToBlockParser, CommentBlock, BlockParserException
-from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock
-from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
-from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
+from pyVHDLParser.Token       import SpaceToken, IndentationToken
+from pyVHDLParser.Blocks      import TokenToBlockParser, SkipableBlock
 
 
 @export
-class SignalDeclarationEndMarkerBlock(ObjectDeclarationEndMarkerBlock):
+class WhitespaceBlock(SkipableBlock):
+	def __init__(self, previousBlock, startToken):
+		super().__init__(previousBlock, startToken, startToken)
+
+	def __repr__(self):
+		return "[{blockName: <50s}  {stream} at {start!s} .. {end!s}]".format(
+			blockName=type(self).__name__,
+			stream=" "*61,
+			start=self.StartToken.Start,
+			end=self.EndToken.End
+		)
+
+
+@export
+class LinebreakBlock(WhitespaceBlock):
+	@classmethod
+	def stateLinebreak(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+		if isinstance(token, SpaceToken):
+			parserState.NewToken = IndentationToken(fromExistingToken=token)
+			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.Pop()
+			# print("  {GREEN}continue: {0!s}{NOCOLOR}".format(parserState, **Console.Foreground))
+		else:
+			parserState.Pop()
+			if parserState.TokenMarker is None:
+				# print("  {DARK_GREEN}set marker: {GREEN}LinebreakBlock.stateLinebreak    {DARK_GREEN}marker {GREEN}{0!s}{NOCOLOR}".format(token, **Console.Foreground))
+				parserState.TokenMarker = token
+			# print("  {DARK_GREEN}re-issue:   {GREEN}{state!s: <20s}    {DARK_GREEN}token  {GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+			parserState.NextState(parserState)
+
+
+@export
+class EmptyLineBlock(LinebreakBlock):
 	pass
 
 
 @export
-class SignalDeclarationDefaultExpressionBlock(ExpressionBlockEndedBySemicolon):
-	END_BLOCK = SignalDeclarationEndMarkerBlock
+class IndentationBlock(WhitespaceBlock):
+	__TABSIZE__ = 2
 
+	def __repr__(self):
+		length = len(self.StartToken.Value)
+		actual = sum([(self.__TABSIZE__ if (c == "\t") else 1) for c in self.StartToken.Value])
 
-@export
-class SignalDeclarationBlock(ObjectDeclarationBlock):
-	OBJECT_KIND =       "signal"
-	EXPRESSION_BLOCK =  SignalDeclarationDefaultExpressionBlock
-	END_BLOCK =         SignalDeclarationEndMarkerBlock
-
-	@classmethod
-	def stateSignalKeyword(cls, parserState: TokenToBlockParser):
-		token = parserState.Token
-		if isinstance(token, SpaceToken):
-			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
-			parserState.NextState =   cls.stateWhitespace1
-			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken)
-			_ =                       block(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace1
-			return
-
-		raise BlockParserException("Expected whitespace after keyword SIGNAL.", token)
+		return "[{blockName: <50s}  length={len: <53}  at {start!s} .. {end!s}]".format(
+				blockName=type(self).__name__,
+				len="{len} ({actual}) ".format(
+					len=length,
+					actual=actual
+				),
+				start=self.StartToken.Start,
+				end=self.EndToken.End
+			)

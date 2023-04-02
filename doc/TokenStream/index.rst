@@ -1,46 +1,54 @@
 .. _tokstm:
 
-1. Pass - Tokens
-################
+1. Pass - String ⇒ Tokens
+#########################
 
-In the :ref:`first pass <concept-passes>` a source file is sliced into a chain
-of double-linked objects of base-class :class:`~pyVHDLParser.Token.Token`. While
-token creation, the start and end position of a token is preserved as a
-:class:`~pyVHDLParser.SourceCodePosition` object within each token.
+In the :ref:`first pass <concept-passes>` a source file (string) is sliced into a chain of double-linked token objects
+of base-class :class:`~pyVHDLParser.Token.Token`. While creating tokens, the start and end position of the token is
+preserved as two :class:`~pyVHDLParser.SourceCodePosition` object within each token.
 
-In contrast to ordinary parsers, pyVHDLParser preserves cases, whitespaces (space,
-tab, ...), linebreaks and comments.
+In contrast to ordinary lexers/parsers, pyVHDLParser preserves cases, whitespaces (space, tab, ...), linebreaks and
+comments.
 
 
 **Condensed definition of class** :class:`~pyVHDLParser.SourceCodePosition`:
 
 .. code-block:: Python
 
-   @Export
-   class SourceCodePosition:
+   @export
+   class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
      """Represent a position (row, column, absolute) in a source code file."""
-     Row :       int = None    #: Row in the source code file
-     Column :    int = None    #: Column (character) in the source code file's line
-     Absolute :  int = None    #: Absolute character position regardless of linebreaks.
+
+     Row:       int    #: Row in the source code file (starting at 1)
+     Column:    int    #: Column (character) in the source code file's line (starting at 1)
+     Absolute:  int    #: Absolute character position regardless of linebreaks.
 
 
 **Condensed definition of class** :class:`~pyVHDLParser.Token.Token`:
 
 .. code-block:: Python
 
-   @Export
-   class Token:
+   @export
+   class Token(metaclass=ExtendedType, useSlots=True):
      """Base-class for all token classes."""
-     _previousToken :  Token =               None    #: Reference to the previous token
-     _NextToken :      Token =               None    #: Reference to the next token
-     Start :           SourceCodePosition =  None    #: Position for the token start
-     End :             SourceCodePosition =  None    #: Position for the token end
+
+     _previousToken:  Token                #: Reference to the previous token (backward pointer)
+     NextToken:       Nullable[Token]      #: Reference to the next token (forward pointer)
+     Start:           SourceCodePosition   #: Position in the file for the token start
+     End:             SourceCodePosition   #: Position in the file for the token end
 
      def __init__(self, previousToken : Token, start : SourceCodePosition, end : SourceCodePosition = None):
-     def __len__(self):
+     def __len__(self) -> int:
+     def __iter__(self) -> Iterator[Token]:
+
+     def GetIterator(self, inclusiveStartToken: bool = False, inclusiveStopToken: bool = True, stopToken: Token = None) -> Iterator[Token]:
+     def GetReverseIterator(self, inclusiveStartToken: bool = False, inclusiveStopToken: bool = True, stopToken: Token = None) -> Iterator[Token]:
 
      @property
-     def PreviousToken(self):
+     def PreviousToken(self) -> Token:
+
+     @property
+     def Length(self) -> int:
 
 
 

@@ -39,7 +39,7 @@ from pyVHDLParser.Token.Keywords  import NorOperator, AndOperator, NandOperator,
 from pyVHDLParser.Token.Keywords  import NotOperator, AbsOperator, OpeningRoundBracketToken, BoundaryToken, ClosingRoundBracketToken, IdentifierToken
 from pyVHDLParser.Token.Keywords  import LoopKeyword, ToKeyword, DowntoKeyword, EndToken
 from pyVHDLParser.Blocks          import Block, TokenToBlockParser, BlockParserException, CommentBlock
-from pyVHDLParser.Blocks.Common   import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace   import LinebreakBlock, WhitespaceBlock
 
 
 @export

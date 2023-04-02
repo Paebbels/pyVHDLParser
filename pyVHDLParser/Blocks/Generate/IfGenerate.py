@@ -34,7 +34,7 @@ from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToke
 from pyVHDLParser.Token.Keywords            import BeginKeyword, ProcessKeyword, AssertKeyword
 from pyVHDLParser.Token.Keywords            import IsKeyword, EndKeyword, GenericKeyword, PortKeyword
 from pyVHDLParser.Blocks                    import Block, BlockParserException, TokenToBlockParser
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace             import LinebreakBlock, IndentationBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Comment            import SingleLineCommentBlock, MultiLineCommentBlock
 from pyVHDLParser.Blocks.Generate           import EndGenerateBlock as EndGenerateBlockBase
 from pyVHDLParser.Blocks.List               import GenericList, PortList

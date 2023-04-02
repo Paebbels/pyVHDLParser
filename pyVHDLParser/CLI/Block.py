@@ -36,7 +36,7 @@ from ..Base                   import ParserException
 from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
 from ..Token.Parser           import Tokenizer
 from ..Blocks                 import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from ..Blocks.Common          import LinebreakBlock, IndentationBlock
+from ..Blocks.Whitespace          import LinebreakBlock, IndentationBlock
 from ..Blocks.List            import GenericList, PortList
 from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
 from ..Blocks.Structural      import Entity

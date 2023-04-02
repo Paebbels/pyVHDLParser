@@ -33,7 +33,7 @@ from pyVHDLParser.Blocks.List           import PortList
 from pyVHDLParser.Blocks.List.PortList  import PortListInterfaceSignalBlock
 from pyVHDLParser.Token                 import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks                import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common         import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace         import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural     import Entity
 
 from tests.unit.Common                  import Initializer, ExpectedDataMixin, LinkingTests, TokenLinking, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream

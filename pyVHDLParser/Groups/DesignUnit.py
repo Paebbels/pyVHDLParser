@@ -33,7 +33,7 @@ from itertools                                import chain
 from pyTooling.Decorators                     import export
 
 from pyVHDLParser.Blocks                      import CommentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common               import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace               import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List                 import GenericList, ParameterList, PortList
 from pyVHDLParser.Blocks.Object.Signal        import SignalDeclarationBlock
 from pyVHDLParser.Blocks.Object.Constant      import ConstantDeclarationBlock

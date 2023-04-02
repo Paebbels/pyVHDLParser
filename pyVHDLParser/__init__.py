@@ -37,6 +37,8 @@ __license__ =   "Apache License, Version 2.0"
 __version__ =   "0.9.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
 
+from typing import Any
+
 from pyTooling.Decorators import export
 from pyTooling.MetaClasses import ExtendedType
 

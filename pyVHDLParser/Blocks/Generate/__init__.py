@@ -30,7 +30,7 @@
 from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token.Keywords  import GenerateKeyword
-from pyVHDLParser.Blocks.Generic  import EndBlock
+from pyVHDLParser.Blocks.Region  import EndBlock
 
 
 @export

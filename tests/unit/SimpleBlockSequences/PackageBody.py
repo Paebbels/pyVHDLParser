@@ -32,7 +32,7 @@ from unittest                       import TestCase
 
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List       import GenericList
 from pyVHDLParser.Blocks.Sequential import PackageBody
 

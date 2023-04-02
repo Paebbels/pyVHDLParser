@@ -31,7 +31,7 @@ from unittest   import TestCase
 
 from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, StringLiteralToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Reporting  import Assert
 from pyVHDLParser.Blocks.Structural import Architecture
 

@@ -29,7 +29,7 @@
 #
 from unittest                       import TestCase
 
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Reference  import Use, Context
 from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock

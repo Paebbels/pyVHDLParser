@@ -32,7 +32,7 @@ from pyTooling.Decorators             import export
 from pyVHDLParser.Token               import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords      import BoundaryToken, IdentifierToken, DelimiterToken, EndToken, AllKeyword
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, TokenToBlockParser, FinalBlock, SkipableBlock
-from pyVHDLParser.Blocks.Common       import LinebreakBlock, WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace       import LinebreakBlock, WhitespaceBlock
 
 
 @export

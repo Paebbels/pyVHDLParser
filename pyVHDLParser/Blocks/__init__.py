@@ -151,7 +151,7 @@ class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
 
 	def __call__(self) -> Generator['Block', Token, None]:
 		from pyVHDLParser.Token             import EndOfDocumentToken
-		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
+		from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock, EmptyLineBlock
 
 		for token in self._iterator:
 			# set parserState.Token to current token
@@ -478,7 +478,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
+		from pyVHDLParser.Blocks.Whitespace     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 		from pyVHDLParser.Blocks.Reference  import Library, Use, Context
 		from pyVHDLParser.Blocks.Sequential import Package
 		from pyVHDLParser.Blocks.Structural import Entity, Architecture
@@ -495,7 +495,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 	@classmethod
 	def stateDocument(cls, parserState: TokenToBlockParser):
-		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
+		from pyVHDLParser.Blocks.Whitespace     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 
 		token = parserState.Token
 		if isinstance(token, SpaceToken):

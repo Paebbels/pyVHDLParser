@@ -38,7 +38,7 @@ from pyTooling.Decorators                   import export
 from pyVHDLParser                           import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base                      import ParserException
 from pyVHDLParser.Blocks                    import Block, CommentBlock, StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common             import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace             import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Reference          import Context, Library, Use
 from pyVHDLParser.Blocks.Sequential         import Package, PackageBody
 from pyVHDLParser.Blocks.Structural         import Entity, Architecture, Configuration
