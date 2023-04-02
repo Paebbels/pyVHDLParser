@@ -30,7 +30,7 @@
 from unittest                       import TestCase
 
 from pyVHDLParser.Blocks.Reference  import Library
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
 
 from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
@@ -50,7 +50,7 @@ class Library_OneLine_SingleLibrary(TestCase, ExpectedDataMixin, LinkingTests, T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "library"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -70,16 +70,16 @@ class Library_OneLine_TripleLibrary(TestCase, ExpectedDataMixin, LinkingTests, T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "library"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
 			(CharacterToken,       ","),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib1"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ","),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib2"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
 		]

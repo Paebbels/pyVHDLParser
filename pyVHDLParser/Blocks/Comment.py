@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators             import export
 
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, IndentationToken
+from pyVHDLParser.Token               import CharacterToken, WhitespaceToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from pyVHDLParser.Blocks              import CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Whitespace       import IndentationBlock
@@ -61,7 +61,7 @@ class SingleLineCommentBlock(CommentBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken = IndentationToken(fromExistingToken=token)
 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()

@@ -33,7 +33,7 @@ from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBl
 from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Object     import Constant
 from pyVHDLParser.Blocks.Structural import Architecture
-from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, IntegerLiteralToken
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, WhitespaceToken, CharacterToken, EndOfDocumentToken, IntegerLiteralToken
 
 from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
 
@@ -53,30 +53,30 @@ class SimpleConstantInArchitecture_OneLine(TestCase, ExpectedDataMixin, LinkingT
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "of"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "constant"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "c"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "bit"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":="),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(IntegerLiteralToken,  "0"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "begin"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

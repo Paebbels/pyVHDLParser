@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators           import export
 
-from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
+from pyVHDLParser.Token             import WhitespaceToken, LinebreakToken, CommentToken, IndentationToken, SingleLineCommentToken, MultiLineCommentToken
 from pyVHDLParser.Token             import WordToken, ExtendedIdentifier, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken, WhenKeyword
 from pyVHDLParser.Blocks            import Block, TokenToBlockParser, CommentBlock, BlockParserException
@@ -58,7 +58,7 @@ class ExitBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken, multiPart=True)
 			# parserState.TokenMarker = None
@@ -102,7 +102,7 @@ class ExitBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -118,7 +118,7 @@ class ExitBlock(Block):
 			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			# parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token, multiPart=True)
 			# parserState.TokenMarker = None
@@ -153,7 +153,7 @@ class ExitBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -177,7 +177,7 @@ class ExitBlock(Block):
 				parserState.NextState =   EndBlock.stateError
 				parserState.PushState =   ExitConditionBlock.stateExpression
 				return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace3
 			return
@@ -214,7 +214,7 @@ class ExitBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif (isinstance(token, SpaceToken) and (
+		elif (isinstance(token, WhitespaceToken) and (
 			isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken))):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)

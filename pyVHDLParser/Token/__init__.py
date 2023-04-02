@@ -583,7 +583,7 @@ class FusedCharacterToken(CharacterToken):
 
 
 @export
-class SpaceToken(ValuedToken):
+class WhitespaceToken(ValuedToken):
 	"""Token representing a whitespace (space or tab)."""
 
 	def __repr__(self) -> str:
@@ -775,7 +775,7 @@ class LinebreakToken(VHDLToken):
 
 
 @export
-class IndentationToken(SpaceToken):
+class IndentationToken(WhitespaceToken):
 	"""Token representing an indentation in a source code line."""
 
 	def __repr__(self) -> str:

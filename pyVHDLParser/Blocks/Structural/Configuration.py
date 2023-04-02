@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators                   import export
 
-from pyVHDLParser.Token                     import LinebreakToken, WordToken, SpaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token                     import LinebreakToken, WordToken, WhitespaceToken, CommentToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords            import ConfigurationKeyword, IsKeyword, EndKeyword, GenericKeyword, PortKeyword, UseKeyword, BeginKeyword
 from pyVHDLParser.Token.Keywords            import BoundaryToken, IdentifierToken
 from pyVHDLParser.Blocks                    import BlockParserException, Block, CommentBlock, TokenToBlockParser
@@ -56,7 +56,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateConfigurationKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -94,7 +94,7 @@ class NameBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -105,7 +105,7 @@ class NameBlock(Block):
 	@classmethod
 	def stateConfigurationName(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace2
 			return
@@ -143,7 +143,7 @@ class NameBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -155,7 +155,7 @@ class NameBlock(Block):
 	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
 			return

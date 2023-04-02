@@ -36,7 +36,7 @@ from pyTooling.TerminalUI           import LineTerminal
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
+from pyVHDLParser.Token             import CharacterToken, Token, WhitespaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
 from pyVHDLParser.Token             import WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
@@ -498,7 +498,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 		from pyVHDLParser.Blocks.Whitespace     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None

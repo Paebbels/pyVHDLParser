@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators             import export
 
-from pyVHDLParser.Token               import CharacterToken, LinebreakToken, SpaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
+from pyVHDLParser.Token               import CharacterToken, LinebreakToken, WhitespaceToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken
 from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, CaseKeyword, WhenKeyword, IsKeyword, EndKeyword, MapAssociationKeyword
 from pyVHDLParser.Blocks              import BlockParserException, Block, CommentBlock, TokenToBlockParser
 from pyVHDLParser.Blocks.Whitespace       import LinebreakBlock, IndentationBlock, WhitespaceBlock
@@ -86,7 +86,7 @@ class WhenBlock(SequentialBeginBlock):
 			parserState.NextState =   ArrowBlock.stateArrowKeyword
 			parserState.PushState =   WhenExpressionBlock.stateExpression
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -123,7 +123,7 @@ class WhenBlock(SequentialBeginBlock):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -144,7 +144,7 @@ class IsBlock(SequentialBeginBlock):
 	@classmethod
 	def stateIsKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None
@@ -189,7 +189,7 @@ class IsBlock(SequentialBeginBlock):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -216,7 +216,7 @@ class CaseBlock(Block):
 			parserState.NextState =   IsBlock.stateIsKeyword
 			parserState.PushState =   CaseExpressionBlock.stateExpression
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -253,7 +253,7 @@ class CaseBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None

@@ -32,7 +32,7 @@ from pyTooling.Decorators           import export
 from pyVHDLParser.Blocks            import TokenToBlockParser, CommentBlock, BlockParserException
 from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock, WhitespaceBlock
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
-from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken, WordToken
+from pyVHDLParser.Token             import WhitespaceToken, LinebreakToken, CommentToken, WordToken
 from pyVHDLParser.Token             import ExtendedIdentifier, MultiLineCommentToken, CharacterToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken, IdentifierToken, EndToken
 
@@ -50,7 +50,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	@classmethod
 	def stateSharedKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace0
 			return
@@ -86,7 +86,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None
@@ -97,7 +97,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 	@classmethod
 	def stateVariableKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return
@@ -120,7 +120,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			_ =                       cls.END_BLOCK(parserState.NewBlock, parserState.NewToken)
 			parserState.Pop()
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace4
 			return
@@ -154,7 +154,7 @@ class SharedVariableDeclarationBlock(ObjectDeclarationBlock):
 			parserState.NewBlock =    CommentBlock(parserState.LastBlock, token)
 			parserState.TokenMarker = None
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =    WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker = None

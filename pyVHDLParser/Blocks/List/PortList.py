@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators                 import export
 
-from pyVHDLParser.Token                   import CharacterToken, WordToken, SpaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
+from pyVHDLParser.Token                   import CharacterToken, WordToken, WhitespaceToken, LinebreakToken, IndentationToken, CommentToken, MultiLineCommentToken, SingleLineCommentToken, ExtendedIdentifier
 from pyVHDLParser.Token.Keywords          import BoundaryToken, SignalKeyword, DelimiterToken
 from pyVHDLParser.Token.Keywords          import IdentifierToken
 from pyVHDLParser.Blocks                  import BlockParserException, Block, CommentBlock, TokenToBlockParser, SkipableBlock
@@ -63,7 +63,7 @@ class DelimiterBlock(SkipableBlock):
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =     PortListInterfaceSignalBlock.stateObjectName
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NextState =     OpenBlock.stateOpeningParenthesis
 			return
 		elif isinstance(token, LinebreakToken):
@@ -105,7 +105,7 @@ class OpenBlock(Block):
 			parserState.NextState =   CloseBlock.stateClosingParenthesis
 			parserState.PushState =   cls.stateOpeningParenthesis
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			parserState.NextState =   cls.stateWhitespace1
 			return
 		elif isinstance(token, (LinebreakToken, CommentToken)):
@@ -142,7 +142,7 @@ class OpenBlock(Block):
 			return
 		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
 			return
-		elif isinstance(token, SpaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
+		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
 			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
 			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.TokenMarker =   None
@@ -175,7 +175,7 @@ class OpenBlock(Block):
 		elif isinstance(token, ExtendedIdentifier):
 			parserState.NextState =   PortListInterfaceSignalBlock.stateObjectName
 			return
-		elif isinstance(token, SpaceToken):
+		elif isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			return

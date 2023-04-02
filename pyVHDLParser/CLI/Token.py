@@ -35,7 +35,7 @@ from pyTooling.Graph.GraphML         import GraphMLDocument
 
 from pyVHDLParser.Base         import ParserException
 from pyVHDLParser.CLI.GraphML import GraphML
-from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
 from pyVHDLParser.Token        import CharacterTranslation, SingleLineCommentToken
 from pyVHDLParser.Token.Parser import Tokenizer
 
@@ -75,7 +75,7 @@ class TokenStreamHandlers:
 		try:
 			tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
 			for token in tokenIterator:
-				if isinstance(token, (LinebreakToken, SpaceToken, IndentationToken)):
+				if isinstance(token, (LinebreakToken, WhitespaceToken, IndentationToken)):
 					print("{DARK_GRAY}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
 				elif isinstance(token, CommentToken):
 					print("{DARK_GREEN}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))

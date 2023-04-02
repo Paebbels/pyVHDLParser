@@ -33,7 +33,7 @@ from pyAttributes                     import Attribute
 from pyAttributes.ArgParseAttributes  import ArgumentAttribute, SwitchArgumentAttribute
 
 from pyVHDLParser.Token               import LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
-from pyVHDLParser.Token               import IntegerLiteralToken, WordToken, Token, SpaceToken, CharacterToken
+from pyVHDLParser.Token               import IntegerLiteralToken, WordToken, Token, WhitespaceToken, CharacterToken
 from pyVHDLParser.Token.Keywords      import KeywordToken
 
 
@@ -73,7 +73,7 @@ class FrontEndProtocol(Protocol):
 TOKENTYPE_TO_COLOR_TRANSLATION = {
 	LinebreakToken:       "black",
 	IndentationToken:     "grey",
-	SpaceToken:           "lightblue1",
+	WhitespaceToken: "lightblue1",
 	CharacterToken:       "darkorange",
 	CommentToken:         "forestgreen",
 	StringLiteralToken:   "chocolate1",

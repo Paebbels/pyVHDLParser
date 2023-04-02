@@ -29,7 +29,7 @@
 #
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural import Architecture
@@ -53,26 +53,26 @@ class SimpleProcessInArchitecture_OneLine_NoIs(TestCase, ExpectedDataMixin, Link
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "of"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "begin"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "process"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "begin"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "process"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

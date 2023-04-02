@@ -29,7 +29,7 @@
 #
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Sequential import Package, Procedure
@@ -51,16 +51,16 @@ class SimpleProcedureInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, 
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "procedure"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

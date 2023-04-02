@@ -33,7 +33,7 @@ from pyAttributes.ArgParseAttributes import CommandAttribute
 
 from .GraphML import GraphML
 from ..Base                   import ParserException
-from ..Token                  import CharacterToken, SpaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from ..Token                  import CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
 from ..Token.Parser           import Tokenizer
 from ..Token.Keywords         import BoundaryToken, EndToken, KeywordToken, DelimiterToken
 from ..Blocks                 import TokenToBlockParser
@@ -113,7 +113,7 @@ class GroupStreamHandlers:
 						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
 					elif isinstance(block, KeywordToken):
 						print("{DARK_CYAN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
-					elif isinstance(block, (WordToken, SpaceToken, CharacterToken)):
+					elif isinstance(block, (WordToken, WhitespaceToken, CharacterToken)):
 						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
 					else:
 						print("{YELLOW}  {block}{NOCOLOR}".format(block=block, **self.Foreground))

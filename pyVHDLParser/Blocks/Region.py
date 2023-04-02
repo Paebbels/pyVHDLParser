@@ -31,7 +31,7 @@ from typing import Any
 
 from pyTooling.Decorators                 import export
 
-from pyVHDLParser.Token                   import LinebreakToken, WordToken, SpaceToken, CommentToken, IndentationToken
+from pyVHDLParser.Token                   import LinebreakToken, WordToken, WhitespaceToken, CommentToken, IndentationToken
 from pyVHDLParser.Token.Keywords          import AssertKeyword, EndKeyword, ProcessKeyword, ReportKeyword, IfKeyword, ForKeyword, ReturnKeyword, NextKeyword, NullKeyword
 from pyVHDLParser.Token.Keywords          import ExitKeyword, UseKeyword, SignalKeyword, ConstantKeyword, SharedKeyword, FunctionKeyword, ProcedureKeyword
 from pyVHDLParser.Token.Keywords          import ImpureKeyword, PureKeyword, VariableKeyword, BeginKeyword, CaseKeyword
@@ -71,7 +71,7 @@ class DeclarativeRegion(metaclass=MetaBlock):
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =      blockType(parserState.LastBlock, token)
 			parserState.TokenMarker =   None
@@ -168,7 +168,7 @@ class ConcurrentBeginBlock(BeginBlock):
 	@classmethod
 	def stateConcurrentRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None
@@ -241,7 +241,7 @@ class SequentialBeginBlock(BeginBlock):
 	@classmethod
 	def stateAnyRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None

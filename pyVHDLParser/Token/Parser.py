@@ -36,7 +36,7 @@ from pyVHDLParser             import SourceCodePosition
 from pyVHDLParser.Base        import ParserException
 from pyVHDLParser.Token       import StartOfDocumentToken, EndOfDocumentToken, IndentationToken, FusedCharacterToken
 from pyVHDLParser.Token       import CharacterLiteralToken, StringLiteralToken, ExtendedIdentifier, DirectiveToken, IntegerLiteralToken, RealLiteralToken
-from pyVHDLParser.Token       import CharacterToken, SpaceToken, WordToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
+from pyVHDLParser.Token       import CharacterToken, WhitespaceToken, WordToken, SingleLineCommentToken, MultiLineCommentToken, LinebreakToken
 
 
 @export
@@ -105,7 +105,7 @@ class Tokenizer:
 					if isinstance(previousToken, (LinebreakToken, SingleLineCommentToken, StartOfDocumentToken)):
 						previousToken = IndentationToken(previousToken, buffer, start, end)
 					else:
-						previousToken = SpaceToken(previousToken, buffer, start, end)
+						previousToken = WhitespaceToken(previousToken, buffer, start, end)
 					yield previousToken
 
 					start =   SourceCodePosition(row, column, absolute)
@@ -125,7 +125,7 @@ class Tokenizer:
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == ".":                    tokenKind = cls.TokenKind.PossibleRealLiteral
 					elif char == "\\":                   tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind = cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -159,7 +159,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                    tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind = cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -190,7 +190,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                    tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind = cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -220,7 +220,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                    tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind = cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -251,7 +251,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                     tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind =     cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -291,7 +291,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                     tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind =     cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -325,7 +325,7 @@ class Tokenizer:
 						buffer =        char
 						tokenKind =     cls.TokenKind.FuseableCharacter
 					elif char == "\\":                     tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind =     cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -440,7 +440,7 @@ class Tokenizer:
 					elif char in __FUSEABLE_CHARS__:
 						pass
 					elif char == "\\":                       tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-					elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 						tokenKind = cls.TokenKind.Directive
 					else:
 						previousToken = CharacterToken(previousToken, char, start)
@@ -465,7 +465,7 @@ class Tokenizer:
 					buffer =        char
 					tokenKind =     cls.TokenKind.FuseableCharacter
 				elif char == "\\":                       tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
-				elif (char == "`") and isinstance(previousToken, (SpaceToken, LinebreakToken)):
+				elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
 					tokenKind =     cls.TokenKind.Directive
 				else:
 					tokenKind =     cls.TokenKind.OtherChars
@@ -499,7 +499,7 @@ class Tokenizer:
 			if isinstance(previousToken, (LinebreakToken, SingleLineCommentToken, StartOfDocumentToken)):
 				previousToken = IndentationToken(previousToken, buffer, start, end)
 			else:
-				previousToken = SpaceToken(previousToken, buffer, start, end)
+				previousToken = WhitespaceToken(previousToken, buffer, start, end)
 			yield previousToken
 		elif tokenKind is cls.TokenKind.SingleLineComment:
 			previousToken = SingleLineCommentToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))

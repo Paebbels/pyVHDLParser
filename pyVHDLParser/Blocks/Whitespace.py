@@ -29,7 +29,7 @@
 #
 from pyTooling.Decorators     import export
 
-from pyVHDLParser.Token       import SpaceToken, IndentationToken
+from pyVHDLParser.Token       import WhitespaceToken, IndentationToken
 from pyVHDLParser.Blocks      import TokenToBlockParser, SkipableBlock
 
 
@@ -52,7 +52,7 @@ class LinebreakBlock(WhitespaceBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken = IndentationToken(fromExistingToken=token)
 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()
