@@ -734,6 +734,15 @@ class StringLiteralToken(LiteralToken):
 		"""
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
 
+	@property
+	def Length(self) -> int:
+		"""
+		A read-only property to return the length of the token.
+
+		:return: Length of the token.
+		"""
+		return len(self.Value)
+
 	def __repr__(self) -> str:
 		value = "\"" + self.Value + "\"  "
 		return f"<{self.__class__.__name__: <50}  {value:.<59} at {self.Start!r}>"
@@ -750,6 +759,15 @@ class BitStringLiteralToken(LiteralToken):
 		Double quotes are omitted in the :attr:`Value`.
 		"""
 		super().__init__(previousToken, value[1:-1], start=start, end=end)
+
+	@property
+	def Length(self) -> int:
+		"""
+		A read-only property to return the length of the token.
+
+		:return: Length of the token.
+		"""
+		return len(self.Value)
 
 	def __repr__(self) -> str:
 		value = "\"" + self.Value + "\"  "
