@@ -48,7 +48,7 @@ class TokenizerException(ParserException):
 		self.Position = position
 
 	def __str__(self) -> str:
-		return "{0!s}: {1}".format(self.Position, self._message)
+		return f"{self.Position!s}: {self._message}"
 
 
 @export
@@ -73,7 +73,6 @@ class Tokenizer:
 		Directive =                       14  #: Last char was a `` ` ``
 		FuseableCharacter =               15  #: Last char was a character that could be fused
 		OtherChars =                      16  #: Anything else
-
 
 	@classmethod
 	def GetVHDLTokenizer(cls, iterable: Iterator[str]):

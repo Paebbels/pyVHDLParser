@@ -46,7 +46,7 @@ class SingleLineCommentBlock(CommentBlock):
 			parserState.NextState =   cls.stateConsumeComment
 			return
 
-		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
+		raise NotImplementedError(f"State=PossibleCommentStart: {token!r}")
 
 	@classmethod
 	def stateConsumeComment(cls, parserState: TokenToBlockParser):

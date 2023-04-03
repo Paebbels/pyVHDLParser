@@ -77,7 +77,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected interface {0} name (identifier).".format(cls.OBJECT_KIND), token)
+		raise BlockParserException(f"Expected interface {cls.OBJECT_KIND} name (identifier).", token)
 
 	@classmethod
 	def stateObjectName(cls, parserState: TokenToBlockParser):
@@ -98,7 +98,7 @@ class InterfaceObjectBlock(Block):
 			parserState.NextState =   cls.stateWhitespace2
 			return
 
-		raise BlockParserException("Expected whitespace after interface {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException(f"Expected whitespace after interface {cls.OBJECT_KIND} name.", token)
 
 	@classmethod
 	def stateWhitespace2(cls, parserState: TokenToBlockParser):
@@ -127,7 +127,7 @@ class InterfaceObjectBlock(Block):
 			parserState.TokenMarker =   None
 			return
 
-		raise BlockParserException("Expected ':' after interface {0} name.".format(cls.OBJECT_KIND), token)
+		raise BlockParserException(f"Expected ':' after interface {cls.OBJECT_KIND} name.", token)
 
 	@classmethod
 	def stateColon1(cls, parserState: TokenToBlockParser):

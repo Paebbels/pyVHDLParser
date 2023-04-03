@@ -59,10 +59,10 @@ class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
 		self.Absolute = absolute
 
 	def __repr__(self) -> str:
-		return "{0}:{1}".format(self.Row, self.Column)
+		return f"{self.Row}:{self.Column}"
 
 	def __str__(self) -> str:
-		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
+		return f"(line: {self.Row: >3}, col: {self.Column: >2})"
 
 
 @export

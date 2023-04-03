@@ -437,11 +437,11 @@ class StartOfToken(Token):
 		Initializes the first token object in a chain of tokens.
 
 		As this is the first token in the token-chain, :data:`_previousToken` is set to ``None``, the :data:`Start` is set
-		to :pycode:`SourceCodePosition(1, 1, 1)` and :data:`End` is set to :data:`Start`.
+		to :pycode:`SourceCodePosition(0, 0, 0)` and :data:`End` is set to :data:`Start`.
 		"""
 		self._previousToken = None
 		self.NextToken =      None
-		self.Start =          SourceCodePosition(1, 1, 1)
+		self.Start =          SourceCodePosition(0, 0, 0)
 		self.End =            self.Start
 
 	def __len__(self) -> int:

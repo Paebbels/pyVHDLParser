@@ -291,9 +291,9 @@ class Tokenizer_ExceptionInKeyword(TestCase, ExpectedDataMixin, TokenSequence):
 		self.assertTrue(
 			token == "keyword",
 			msg="The token's value does not match.\n  Context:  {context}\n  Actual:   {actual}\n  Expected: {expected}".format(
-				context="at {pos!s}".format(pos=token.Start),
-				actual="'{token!r}' of {type}".format(token=token, type=token.__class__.__qualname__),
-				expected="'{value}' of {type}".format(value="keyword", type=WordToken.__qualname__)
+				context=f"at {token.Start!s}",
+				actual=f"'{token!r}' of {token.__class__.__qualname__}",
+				expected=f"'keyword' of {WordToken.__qualname__}"
 			)
 		)
 

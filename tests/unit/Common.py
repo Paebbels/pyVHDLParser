@@ -81,7 +81,7 @@ class ExpectedDataMixin:
 
 	@classmethod
 	def setUpClass(cls):
-		print("Starting testcases in {}.".format(cls.__qualname__))
+		print(f"Starting testcases in {cls.__qualname__}.")
 
 	def setUp(self):
 		print("Starting another test.")
@@ -120,20 +120,20 @@ class TokenSequence(ITestcase): #, ExpectedDataMixin):
 					self.assertTrue(
 						token == item[1],
 						msg="The token's value does not match.\n  Context:  {context}\n  Actual:   {actual}\n  Expected: {expected}".format(
-							context="at {pos!s}".format(pos=token.Start),
-							actual="'{token!r}' of {type}".format(token=token, type=token.__class__.__qualname__),
-							expected="'{value}' of {type}".format(value=item[1], type=item[0].__qualname__)
+							context=f"at {token.Start!s}",
+							actual=f"'{token!r}' of {token.__class__.__qualname__}",
+							expected=f"'{item[1]}' of {item[0].__qualname__}"
 						)
 					)
 
 		except TokenizerException as ex:
-			self.fail(msg="Unexpected 'TokenizerException' ({ex!s}) at {pos}".format(ex=ex, pos=ex.Position))
+			self.fail(msg=f"Unexpected 'TokenizerException' ({ex!s}) at {ex.Position}")
 		except StopIteration:
 			pass
 		except AssertionError:
 			raise
 		except Exception as ex:
-			self.fail(msg="Unexpected exception '{exname}' := {ex!s}.".format(ex=ex, exname=ex.__class__.__qualname__))
+			self.fail(msg=f"Unexpected exception '{ex.__class__.__qualname__}' := {ex!s}.")
 
 
 class TokenLinking(ITestcase): #, ExpectedDataMixin):
