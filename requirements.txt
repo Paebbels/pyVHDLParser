@@ -3,4 +3,4 @@ py-flags>=1.1.4
 
 pyTooling>=4.0.1, <5.0
 pyAttributes>=2.5.1
-pyVHDLModel==0.24.0
+pyVHDLModel==0.25.1
