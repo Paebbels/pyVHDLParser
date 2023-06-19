@@ -39,7 +39,6 @@ if __name__ == "__main__":  # pragma: no cover
 	exit(1)
 
 class Issue_18(TestCase, SingleFileIssue):
-	@mark.xfail
 	def test_Tokenizer(self):
 		file = Path(__file__).with_suffix(".vhdl")
 		self.check_Tokenizer(file)

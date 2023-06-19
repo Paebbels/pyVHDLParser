@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from typing                   import Iterator, Optional as Nullable
+from typing                   import Iterator, Union, Optional as Nullable
 
 from pyTooling.Decorators     import export
 from pyTooling.MetaClasses    import ExtendedType
@@ -391,29 +391,33 @@ class ValuedToken(Token):
 		"""
 		return iter(self.Value)
 
-	def __eq__(self, other: str) -> bool:
+	def __eq__(self, other: Union[str, "ValuedToken"]) -> bool:
 		"""
 		Returns true, if the token's internal value is equal to the second operand.
 
 		:param other:      Parameter to compare against.
 		:returns:          ``True``, if token's value and second operand are equal.
-		:raises TypeError: If second operand is not of type :py:class:`str`.
+		:raises TypeError: If second operand is not of type :py:class:`str` or :py:class:`ValuedToken`.
 		"""
 		if isinstance(other, str):
 			return self.Value == other
+		elif isinstance(other, ValuedToken):
+			return self.Value == other.Value
 		else:
 			raise TypeError(f"Second operand of type '{other.__class__.__name__}' is not supported by equal operator.")
 
-	def __ne__(self, other: str) -> bool:
+	def __ne__(self, other: Union[str, "ValuedToken"]) -> bool:
 		"""
 		Returns true, if the token's internal value is unequal to the second operand.
 
 		:param other:      Parameter to compare against.
 		:returns:          ``True``, if token's value and second operand are unequal.
-		:raises TypeError: If second operand is not of type :py:class:`str`.
+		:raises TypeError: If second operand is not of type :py:class:`str` or :py:class:`ValuedToken`.
 		"""
 		if isinstance(other, str):
 			return self.Value != other
+		elif isinstance(other, ValuedToken):
+			return self.Value != other.Value
 		else:
 			raise TypeError(f"Second operand of type '{other.__class__.__name__}' is not supported by unequal operator.")
 
