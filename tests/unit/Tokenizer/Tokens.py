@@ -256,6 +256,51 @@ class Sequence_5(TestCase, ExpectedDataMixin, TokenSequence):
          ]
 	)
 
+class Sequence_6(TestCase, ExpectedDataMixin, TokenSequence):
+	code = """if Clk'event and Clk = '1' then     -- rising clock edge\nname'attr1'attr2\nsignal reg_catch1   : std_logic_vector(flags_src1'range);"""
+	tokenStream = ExpectedTokenStream(
+		[ (StartOfDocumentToken,   None),
+			(WordToken,               "if"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "Clk"),
+			(CharacterToken,          "'"),
+			(WordToken,               "event"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "and"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "Clk"),
+			(WhitespaceToken,         " "),
+			(CharacterToken,          "="),
+			(WhitespaceToken,         " "),
+			(CharacterLiteralToken,   "1"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "then"),
+			(WhitespaceToken,         "     "),
+			(SingleLineCommentToken,  "-- rising clock edge\n"),
+			(WordToken,               "name"),
+			(CharacterToken,          "'"),
+			(WordToken,               "attr1"),
+			(CharacterToken,          "'"),
+			(WordToken,               "attr2"),
+			(LinebreakToken,          None),
+			(WordToken,               "signal"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "reg_catch1"),
+			(WhitespaceToken,         "   "),
+			(CharacterToken,          ":"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "std_logic_vector"),
+			(CharacterToken,          "("),
+			(WordToken,               "flags_src1"),
+			(CharacterToken,          "'"),
+			(WordToken,               "range"),
+			(CharacterToken,          ")"),
+			(CharacterToken,          ";"),
+			(EndOfDocumentToken,     None)
+		]
+	)
+
+
 class Tokenizer_ExceptionInKeyword(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """keyword"""
 	tokenStream = ExpectedTokenStream(
