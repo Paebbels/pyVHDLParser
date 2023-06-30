@@ -335,7 +335,13 @@ class Tokenizer:
 			elif tokenKind is cls.TokenKind.PossibleCharacterLiteral:
 				buffer += char
 				if len(buffer) == 2:
-					if buffer[1] == "'":
+					if buffer[1] == "(" and isinstance(previousToken, WordToken):
+						previousToken =   CharacterToken(previousToken, "'", start)
+						yield previousToken
+						previousToken =   CharacterToken(previousToken, "(", SourceCodePosition(row, column, absolute))
+						yield previousToken
+						tokenKind =       cls.TokenKind.OtherChars
+					elif buffer[1] == "'":
 						previousToken =   CharacterToken(previousToken, "'", start)
 						yield previousToken
 						previousToken =   CharacterToken(previousToken, "'", SourceCodePosition(row, column, absolute))
