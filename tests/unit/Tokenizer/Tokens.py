@@ -130,7 +130,7 @@ class Sequence_1(TestCase, ExpectedDataMixin, TokenSequence):
 	)
 
 class Sequence_2(TestCase, ExpectedDataMixin, TokenSequence):
-	code = """abc   \\def\\ \t 'a' "abc" /* help */ -- foo\n """
+	code = """abc   \\def\\ \t 'a' ''' "abc" "\"\"" "foo\"\"" /* help */ -- foo\n """
 	tokenStream = ExpectedTokenStream(
 		[(StartOfDocumentToken, None),
          (WordToken,               "abc"),
@@ -139,7 +139,13 @@ class Sequence_2(TestCase, ExpectedDataMixin, TokenSequence):
          (WhitespaceToken, " \t "),
          (CharacterLiteralToken,   "a"),
          (WhitespaceToken, " "),
+         (CharacterLiteralToken,   "'"),
+         (WhitespaceToken, " "),
          (StringLiteralToken,      "abc"),
+         (WhitespaceToken, " "),
+         (StringLiteralToken,      "\"\""),
+         (WhitespaceToken, " "),
+         (StringLiteralToken,      "foo\"\""),
          (WhitespaceToken, " "),
          (MultiLineCommentToken,   "/* help */"),
          (WhitespaceToken, " "),
@@ -303,7 +309,7 @@ class Sequence_6(TestCase, ExpectedDataMixin, TokenSequence):
 
 
 class Sequence_7(TestCase, ExpectedDataMixin, TokenSequence):
-	code = """constant BIT_STRING : UNSIGNED(0 downto 0) := UNSIGNED'(x\"0\");\nconstant LPAREN_CHAR : character := '(';\nfoo'('0')\nbar'('(')"""
+	code = """constant BIT_STRING : UNSIGNED(0 downto 0) := UNSIGNED'(x\"0\");\nconstant LPAREN_CHAR : character := '(';\nfoo'('0')\nbar'('(')\ncharacter'(''')"""
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken,   None),
 			(WordToken,               "constant"),
@@ -355,10 +361,15 @@ class Sequence_7(TestCase, ExpectedDataMixin, TokenSequence):
 			(CharacterToken,          "("),
 			(CharacterLiteralToken,   "("),
 			(CharacterToken,          ")"),
+			(LinebreakToken,          None),
+			(WordToken,               "character"),
+			(CharacterToken,          "'"),
+			(CharacterToken,          "("),
+			(CharacterLiteralToken,   "'"),
+			(CharacterToken,          ")"),
 			(EndOfDocumentToken,     None)
 		]
 	)
-
 
 class Tokenizer_ExceptionInKeyword(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """keyword"""
