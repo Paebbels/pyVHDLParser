@@ -44,7 +44,7 @@ from pyTooling.MetaClasses import ExtendedType
 
 
 @export
-class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
+class SourceCodePosition(metaclass=ExtendedType, slots=True):
 	"""Represent a position (row, column, absolute) in a source code file."""
 
 	Row:       int    #: Row in the source code file
@@ -66,30 +66,30 @@ class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
 
 
 @export
-class StartOf(metaclass=ExtendedType, useSlots=True):
+class StartOf(metaclass=ExtendedType, slots=True, mixin=True):
 	"""Base-class (mixin) for all StartOf*** classes."""
 
 
 @export
-class StartOfDocument(StartOf):
+class StartOfDocument(StartOf, mixin=True):
 	"""Base-class (mixin) for all StartOf***Document classes."""
 
 
 @export
-class StartOfSnippet(StartOf):
+class StartOfSnippet(StartOf, mixin=True):
 	"""Base-class (mixin) for all StartOf***Snippet classes."""
 
 
 @export
-class EndOf(metaclass=ExtendedType, useSlots=True):
+class EndOf(metaclass=ExtendedType, slots=True, mixin=True):
 	"""Base-class (mixin) for all EndOf*** classes."""
 
 
 @export
-class EndOfDocument(EndOf):
+class EndOfDocument(EndOf, mixin=True):
 	"""Base-class (mixin) for all EndOf***Document classes."""
 
 
 @export
-class EndOfSnippet(EndOf):
+class EndOfSnippet(EndOf, mixin=True):
 	"""Base-class (mixin) for all EndOf***Snippet classes."""

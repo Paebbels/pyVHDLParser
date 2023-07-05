@@ -58,7 +58,7 @@ class BlockParserException(ParserException):
 
 
 @export
-class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
+class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 	"""Represents the current state of a token-to-block parser."""
 
 	_iterator:     Iterator[Token]
@@ -216,7 +216,7 @@ class MetaBlock(ExtendedType):
 			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
-		block = super().__new__(cls, className, baseClasses, classMembers, useSlots=True)
+		block = super().__new__(cls, className, baseClasses, classMembers, slots=True)
 		block.__STATES__ = states
 
 		cls.BLOCKS.append(block)

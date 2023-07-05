@@ -72,7 +72,7 @@ def CharacterTranslation(value: str, oneLiner: bool = False) -> str:
 
 
 @export
-class TokenIterator(metaclass=ExtendedType, useSlots=True):
+class TokenIterator(metaclass=ExtendedType, slots=True):
 	"""A token iterator to iterate tokens in ascending/forward order."""
 
 	_startToken:          'Token'            #: First token for the iteration.
@@ -170,7 +170,7 @@ class TokenIterator(metaclass=ExtendedType, useSlots=True):
 
 
 @export
-class TokenReverseIterator(metaclass=ExtendedType, useSlots=True):
+class TokenReverseIterator(metaclass=ExtendedType, slots=True):
 	"""A token iterator to iterate tokens in descending/backward order."""
 
 	_startToken:          'Token'            #: First token for the iteration.
@@ -268,7 +268,7 @@ class TokenReverseIterator(metaclass=ExtendedType, useSlots=True):
 
 
 @export
-class Token(metaclass=ExtendedType, useSlots=True):
+class Token(metaclass=ExtendedType, slots=True):
 	"""Base-class for all token classes."""
 
 	_previousToken:  'Token'              #: Reference to the previous token (backward pointer)

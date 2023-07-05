@@ -16,7 +16,7 @@ comments.
 .. code-block:: Python
 
    @export
-   class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
+   class SourceCodePosition(metaclass=ExtendedType, slots=True):
      """Represent a position (row, column, absolute) in a source code file."""
 
      Row:       int    #: Row in the source code file (starting at 1)
@@ -29,7 +29,7 @@ comments.
 .. code-block:: Python
 
    @export
-   class Token(metaclass=ExtendedType, useSlots=True):
+   class Token(metaclass=ExtendedType, slots=True):
      """Base-class for all token classes."""
 
      _previousToken:  Token                #: Reference to the previous token (backward pointer)
