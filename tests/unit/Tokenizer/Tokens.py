@@ -256,6 +256,7 @@ class Sequence_5(TestCase, ExpectedDataMixin, TokenSequence):
          ]
 	)
 
+
 class Sequence_6(TestCase, ExpectedDataMixin, TokenSequence):
 	code = """if Clk'event and Clk = '1' then     -- rising clock edge\nname'attr1'attr2\nsignal reg_catch1   : std_logic_vector(flags_src1'range);"""
 	tokenStream = ExpectedTokenStream(
@@ -296,6 +297,64 @@ class Sequence_6(TestCase, ExpectedDataMixin, TokenSequence):
 			(WordToken,               "range"),
 			(CharacterToken,          ")"),
 			(CharacterToken,          ";"),
+			(EndOfDocumentToken,     None)
+		]
+	)
+
+
+class Sequence_7(TestCase, ExpectedDataMixin, TokenSequence):
+	code = """constant BIT_STRING : UNSIGNED(0 downto 0) := UNSIGNED'(x\"0\");\nconstant LPAREN_CHAR : character := '(';\nfoo'('0')\nbar'('(')"""
+	tokenStream = ExpectedTokenStream(
+		[ (StartOfDocumentToken,   None),
+			(WordToken,               "constant"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "BIT_STRING"),
+			(WhitespaceToken,         " "),
+			(CharacterToken,          ":"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "UNSIGNED"),
+			(CharacterToken,          "("),
+			(IntegerLiteralToken,     "0"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "downto"),
+			(WhitespaceToken,         " "),
+			(IntegerLiteralToken,     "0"),
+			(CharacterToken,          ")"),
+			(WhitespaceToken,         " "),
+			(FusedCharacterToken,     ":="),
+			(WhitespaceToken,         " "),
+			(WordToken,               "UNSIGNED"),
+			(CharacterToken,          "'"),
+			(CharacterToken,          "("),
+			(WordToken,               "x"),
+			(StringLiteralToken,      "0"),
+			(CharacterToken,          ")"),
+			(CharacterToken,          ";"),
+			(LinebreakToken,          None),
+			(WordToken,               "constant"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "LPAREN_CHAR"),
+			(WhitespaceToken,         " "),
+			(CharacterToken,          ":"),
+			(WhitespaceToken,         " "),
+			(WordToken,               "character"),
+			(WhitespaceToken,         " "),
+			(FusedCharacterToken,     ":="),
+			(WhitespaceToken,         " "),
+			(CharacterLiteralToken,   "("),
+			(CharacterToken,          ";"),
+			(LinebreakToken,          None),
+			(WordToken,               "foo"),
+			(CharacterToken,          "'"),
+			(CharacterToken,          "("),
+			(CharacterLiteralToken,   "0"),
+			(CharacterToken,          ")"),
+			(LinebreakToken,          None),
+			(WordToken,               "bar"),
+			(CharacterToken,          "'"),
+			(CharacterToken,          "("),
+			(CharacterLiteralToken,   "("),
+			(CharacterToken,          ")"),
 			(EndOfDocumentToken,     None)
 		]
 	)
