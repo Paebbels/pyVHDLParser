@@ -45,7 +45,7 @@ def StripAndFuse(generator: Generator[Block, Any, None]) -> Generator[Block, Any
 		if isinstance(block, (IndentationBlock, CommentBlock, LinebreakBlock)):
 			continue
 		else:
-			if block.MultiPart == True:
+			if block.MultiPart:
 				while True:
 					nextBlock = next(iterator)
 					if isinstance(nextBlock, (WhitespaceBlock, CommentBlock)):
@@ -55,7 +55,7 @@ def StripAndFuse(generator: Generator[Block, Any, None]) -> Generator[Block, Any
 
 					nextBlock.StartToken.PreviousToken = block.EndToken
 					block.EndToken = nextBlock.EndToken
-					if nextBlock.MultiPart == False:
+					if not nextBlock.MultiPart:
 						break
 
 			block.PreviousBlock = lastBlock
