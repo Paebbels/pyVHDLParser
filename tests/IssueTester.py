@@ -37,7 +37,7 @@ if __name__ == "__main__":  # pragma: no cover
 
 class SingleFileIssue(TokenizerChecks):
 	def check_Tokenizer(self, file):
-		self.assertTrue(file.exists(), "Sourcefile '{0!s}' does not exist.".format(file))
+		self.assertTrue(file.exists(), f"Sourcefile '{file!s}' does not exist.")
 
 		with file.open('r') as fileHandle:
 			self.code = fileHandle.read()

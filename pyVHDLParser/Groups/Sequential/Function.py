@@ -34,7 +34,7 @@ from pyTooling.Decorators                 import export
 
 from pyVHDLParser.Token.Keywords          import EndToken
 from pyVHDLParser.Blocks                  import CommentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common           import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace           import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List             import GenericList, ParameterList
 from pyVHDLParser.Blocks.Object.Variable  import VariableDeclarationBlock
 from pyVHDLParser.Blocks.Object.Constant  import ConstantDeclarationBlock

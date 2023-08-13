@@ -36,7 +36,7 @@ from pyTooling.TerminalUI           import LineTerminal
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
-from pyVHDLParser.Token             import CharacterToken, Token, SpaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
+from pyVHDLParser.Token             import CharacterToken, Token, WhitespaceToken, IndentationToken, LinebreakToken, CommentToken, TokenIterator
 from pyVHDLParser.Token             import WordToken, EndOfDocumentToken, StartOfDocumentToken
 from pyVHDLParser.Token.Keywords    import LibraryKeyword, UseKeyword, ContextKeyword, EntityKeyword, ArchitectureKeyword, PackageKeyword
 
@@ -58,7 +58,7 @@ class BlockParserException(ParserException):
 
 
 @export
-class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
+class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 	"""Represents the current state of a token-to-block parser."""
 
 	_iterator:     Iterator[Token]
@@ -151,7 +151,7 @@ class TokenToBlockParser(metaclass=ExtendedType, useSlots=True):
 
 	def __call__(self) -> Generator['Block', Token, None]:
 		from pyVHDLParser.Token             import EndOfDocumentToken
-		from pyVHDLParser.Blocks.Common     import LinebreakBlock, EmptyLineBlock
+		from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock, EmptyLineBlock
 
 		for token in self._iterator:
 			# set parserState.Token to current token
@@ -216,7 +216,7 @@ class MetaBlock(ExtendedType):
 			if isinstance(memberObject, FunctionType) and (memberName[:5] == "state"):
 				states.append(memberObject)
 
-		block = super().__new__(cls, className, baseClasses, classMembers, useSlots=True)
+		block = super().__new__(cls, className, baseClasses, classMembers, slots=True)
 		block.__STATES__ = states
 
 		cls.BLOCKS.append(block)
@@ -478,7 +478,7 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 	@classmethod
 	def __cls_init__(cls):
-		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
+		from pyVHDLParser.Blocks.Whitespace     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 		from pyVHDLParser.Blocks.Reference  import Library, Use, Context
 		from pyVHDLParser.Blocks.Sequential import Package
 		from pyVHDLParser.Blocks.Structural import Entity, Architecture
@@ -495,10 +495,10 @@ class StartOfDocumentBlock(StartOfBlock, StartOfDocument):
 
 	@classmethod
 	def stateDocument(cls, parserState: TokenToBlockParser):
-		from pyVHDLParser.Blocks.Common     import IndentationBlock, WhitespaceBlock, LinebreakBlock
+		from pyVHDLParser.Blocks.Whitespace     import IndentationBlock, WhitespaceBlock, LinebreakBlock
 
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			blockType =               IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
 			parserState.NewBlock =    blockType(parserState.LastBlock, token)
 			parserState.TokenMarker = None

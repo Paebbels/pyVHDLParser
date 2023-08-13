@@ -34,15 +34,17 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany\nCopyright 2016-2017 Patrick Lehmann - Dresden, Germany"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.8.0"
+__version__ =   "0.9.0"
 __keywords__ =  ["parser", "vhdl", "code generator", "hdl"]
+
+from typing import Any
 
 from pyTooling.Decorators import export
 from pyTooling.MetaClasses import ExtendedType
 
 
 @export
-class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
+class SourceCodePosition(metaclass=ExtendedType, slots=True):
 	"""Represent a position (row, column, absolute) in a source code file."""
 
 	Row:       int    #: Row in the source code file
@@ -57,37 +59,37 @@ class SourceCodePosition(metaclass=ExtendedType, useSlots=True):
 		self.Absolute = absolute
 
 	def __repr__(self) -> str:
-		return "{0}:{1}".format(self.Row, self.Column)
+		return f"{self.Row}:{self.Column}"
 
 	def __str__(self) -> str:
-		return "(line: {0: >3}, col: {1: >2})".format(self.Row, self.Column)
+		return f"(line: {self.Row: >3}, col: {self.Column: >2})"
 
 
 @export
-class StartOf(metaclass=ExtendedType, useSlots=True):
+class StartOf(metaclass=ExtendedType, slots=True, mixin=True):
 	"""Base-class (mixin) for all StartOf*** classes."""
 
 
 @export
-class StartOfDocument(StartOf):
+class StartOfDocument(StartOf, mixin=True):
 	"""Base-class (mixin) for all StartOf***Document classes."""
 
 
 @export
-class StartOfSnippet(StartOf):
+class StartOfSnippet(StartOf, mixin=True):
 	"""Base-class (mixin) for all StartOf***Snippet classes."""
 
 
 @export
-class EndOf(metaclass=ExtendedType, useSlots=True):
+class EndOf(metaclass=ExtendedType, slots=True, mixin=True):
 	"""Base-class (mixin) for all EndOf*** classes."""
 
 
 @export
-class EndOfDocument(EndOf):
+class EndOfDocument(EndOf, mixin=True):
 	"""Base-class (mixin) for all EndOf***Document classes."""
 
 
 @export
-class EndOfSnippet(EndOf):
+class EndOfSnippet(EndOf, mixin=True):
 	"""Base-class (mixin) for all EndOf***Snippet classes."""

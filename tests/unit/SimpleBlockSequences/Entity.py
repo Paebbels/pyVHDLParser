@@ -30,9 +30,9 @@
 from textwrap                       import dedent
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Structural import Entity
 from pyVHDLParser.Blocks.List       import GenericList
 
@@ -53,11 +53,11 @@ class SimpleEntity_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, To
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -75,19 +75,19 @@ class SimpleEntity_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, To
 class SimpleEntity_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
@@ -102,19 +102,19 @@ class SimpleEntity_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTe
 class SimpleEntity_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end e;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
@@ -129,21 +129,21 @@ class SimpleEntity_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests
 class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity e;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -158,19 +158,19 @@ class SimpleEntity_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, Li
 class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity is end entity e;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -185,19 +185,19 @@ class SimpleEntity_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMi
 class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity e end entity e;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -212,19 +212,19 @@ class SimpleEntity_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixi
 class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "entity e is entity e;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -239,21 +239,21 @@ class SimpleEntity_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMix
 class SimpleEntity_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "entity e is end entity a;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "e"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "entity"),  # entity
-			(SpaceToken,           " "),       #
-			(WordToken,            "a"),       # a
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "e"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "entity"),  # entity
+         (WhitespaceToken, " "),  #
+         (WordToken,            "a"),  # a
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -273,17 +273,17 @@ class SimpleEntity_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests,
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       "\n"),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       "\n"),
 			(EndOfDocumentToken,   None)
@@ -354,21 +354,21 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "generic"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -376,9 +376,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataMi
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
@@ -416,9 +416,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -426,9 +426,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -436,9 +436,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCas
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -475,9 +475,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -485,9 +485,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -495,9 +495,9 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(Te
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -534,30 +534,30 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(Te
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "generic"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -594,30 +594,30 @@ class SimpleEntity_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase, 
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "gen"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

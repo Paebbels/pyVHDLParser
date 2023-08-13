@@ -1,7 +1,7 @@
 .. _grpstm:
 
-3. Pass - Groups
-################
+3. Pass - Blocks ⇒ Groups
+#########################
 
 In the :ref:`third pass <concept-passes>` a stream of double-linked
 :class:`~pyVHDLParser.Block.Block` objects is read and grouped in another Python

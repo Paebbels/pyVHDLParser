@@ -29,9 +29,9 @@
 #
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import LinebreakBlock
+from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock
 from pyVHDLParser.Blocks.Reference  import Use
 
 from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
@@ -51,7 +51,7 @@ class Use_OneLine_SinglePackage_All(TestCase, ExpectedDataMixin, LinkingTests, T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "use"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
 			(CharacterToken,       "."),
 			(WordToken,            "pkg0"),
@@ -75,7 +75,7 @@ class Use_OneLine_SinglePackage_Const0(TestCase, ExpectedDataMixin, LinkingTests
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "use"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
 			(CharacterToken,       "."),
 			(WordToken,            "pkg0"),
@@ -99,24 +99,24 @@ class Use_OneLine_DoublePackage_All(TestCase, ExpectedDataMixin, LinkingTests, T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "use"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
 			(CharacterToken,       "."),
 			(WordToken,            "pkg0"),
 			(CharacterToken,       "."),
 			(WordToken,            "all"),
 			(CharacterToken,       ","),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "lib0"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "."),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "pkg1"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "."),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "all"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
 		]

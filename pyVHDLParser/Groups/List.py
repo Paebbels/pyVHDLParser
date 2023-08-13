@@ -30,7 +30,7 @@
 from pyTooling.Decorators           import export
 
 from pyVHDLParser.Blocks            import CommentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock, IndentationBlock
 import pyVHDLParser.Blocks.InterfaceObject
 from pyVHDLParser.Blocks.List       import GenericList, ParameterList, PortList, SensitivityList
 from pyVHDLParser.Groups            import BlockToGroupParser, GroupParserException, Group, EndOfDocumentGroup

@@ -29,9 +29,9 @@
 #
 from unittest   import TestCase
 
-from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, SpaceToken, CharacterToken, EndOfDocumentToken, StringLiteralToken
+from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, WhitespaceToken, CharacterToken, EndOfDocumentToken, StringLiteralToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Reporting  import Assert
 from pyVHDLParser.Blocks.Structural import Architecture
 
@@ -53,26 +53,26 @@ class SimpleAssertInArchitecture_OneLine_OnlyAssert(TestCase, ExpectedDataMixin,
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "architecture"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "a"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "of"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "begin"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "assert"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "true"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "report"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(StringLiteralToken,   "error"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

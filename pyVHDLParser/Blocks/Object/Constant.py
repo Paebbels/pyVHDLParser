@@ -29,10 +29,10 @@
 #
 from pyTooling.Decorators           import export
 
-from pyVHDLParser.Token             import SpaceToken, LinebreakToken, CommentToken
+from pyVHDLParser.Token             import WhitespaceToken, LinebreakToken, CommentToken
 from pyVHDLParser.Token.Keywords    import BoundaryToken
 from pyVHDLParser.Blocks            import TokenToBlockParser, CommentBlock, BlockParserException
-from pyVHDLParser.Blocks.Common     import LinebreakBlock
+from pyVHDLParser.Blocks.Whitespace     import LinebreakBlock
 from pyVHDLParser.Blocks.Expression import ExpressionBlockEndedBySemicolon
 from pyVHDLParser.Blocks.Object     import ObjectDeclarationEndMarkerBlock, ObjectDeclarationBlock
 
@@ -56,7 +56,7 @@ class ConstantDeclarationBlock(ObjectDeclarationBlock):
 	@classmethod
 	def stateConstantKeyword(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
 			parserState.NextState =   cls.stateWhitespace1
 			return

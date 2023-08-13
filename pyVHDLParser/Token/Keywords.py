@@ -407,12 +407,12 @@ class KeywordToken(VHDLToken):
 	def __init__(self, previousToken: Token = None, value: str = None, start: SourceCodePosition = None, end: SourceCodePosition = None, fromExistingToken: WordToken = None):
 		if fromExistingToken is None:
 			if value.lower() != self.__KEYWORD__:
-				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), None)
+				raise TokenizerException(f"Expected keyword {self.__KEYWORD__.upper()}.", None)
 
 			super().__init__(previousToken, value, str, end)
 		else:
 			if not (isinstance(fromExistingToken, WordToken) and (fromExistingToken <= self.__KEYWORD__)):
-				raise TokenizerException("Expected keyword {0}.".format(self.__KEYWORD__.upper()), fromExistingToken)
+				raise TokenizerException(f"Expected keyword {self.__KEYWORD__.upper()}.", fromExistingToken)
 
 			super().__init__(fromExistingToken.PreviousToken, self.__KEYWORD__, fromExistingToken.Start, fromExistingToken.End)
 

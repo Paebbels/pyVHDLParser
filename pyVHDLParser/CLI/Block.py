@@ -36,7 +36,7 @@ from ..Base                   import ParserException
 from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
 from ..Token.Parser           import Tokenizer
 from ..Blocks                 import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from ..Blocks.Common          import LinebreakBlock, IndentationBlock
+from ..Blocks.Whitespace          import LinebreakBlock, IndentationBlock
 from ..Blocks.List            import GenericList, PortList
 from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
 from ..Blocks.Structural      import Entity
@@ -59,7 +59,7 @@ class BlockStreamHandlers:
 		file = Path(args.Filename)
 
 		if not file.exists():
-			print("File '{0!s}' does not exist.".format(file))
+			print(f"File '{file!s}' does not exist.")
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()
@@ -131,7 +131,7 @@ class BlockStreamHandlers:
 		file = Path(args.Filename)
 
 		if not file.exists():
-			print("File '{0!s}' does not exist.".format(file))
+			print(f"File '{file!s}' does not exist.")
 
 		with file.open('r') as fileHandle:
 			content = fileHandle.read()

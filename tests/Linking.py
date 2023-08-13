@@ -40,7 +40,7 @@ class TokenizerChecks(ITestcase): #, ExpectedDataMixin):
 		tokenIterator = iter(tokenStream)
 		startToken =    next(tokenIterator)
 
-		self.assertIsInstance(startToken, StartOfDocumentToken, msg="First token is not StartOfDocumentToken: {token}".format(token=startToken))
+		self.assertIsInstance(startToken, StartOfDocumentToken, msg=f"First token is not StartOfDocumentToken: {startToken}")
 		self.assertIsNone(startToken.PreviousToken, msg="First token has no open start.")
 
 		lastToken: Token = startToken
@@ -51,14 +51,14 @@ class TokenizerChecks(ITestcase): #, ExpectedDataMixin):
 				endToken = token
 				break
 
-			self.assertEqual(lastToken.NextToken, token, msg="Last token is not connected to the current token: {token}".format(token=token))
-			self.assertEqual(lastToken, token.PreviousToken, msg="Current token is not connected to lastToken: {token}".format(token=token))
+			self.assertEqual(lastToken.NextToken, token, msg=f"Last token is not connected to the current token: {token}")
+			self.assertEqual(lastToken, token.PreviousToken, msg=f"Current token is not connected to lastToken: {token}")
 
 			lastToken = token
 		else:
 			self.fail(msg="No EndOfDocumentToken found.")
 
-		self.assertIsInstance(endToken, EndOfDocumentToken, msg="End token is not EndOfDocumentToken: {token}".format(token=endToken))
-		self.assertEqual(lastToken.NextToken, endToken, msg="Last token is not connected to the end token: {token}".format(token=token))
-		self.assertEqual(lastToken, endToken.PreviousToken, msg="End token is not connected to lastToken: {token}".format(token=token))
-		self.assertIsNone(endToken.NextToken, msg="End token has no open end: {token}".format(token=endToken.NextToken))
+		self.assertIsInstance(endToken, EndOfDocumentToken, msg=f"End token is not EndOfDocumentToken: {endToken}")
+		self.assertEqual(lastToken.NextToken, endToken, msg=f"Last token is not connected to the end token: {token}")
+		self.assertEqual(lastToken, endToken.PreviousToken, msg=f"End token is not connected to lastToken: {token}")
+		self.assertIsNone(endToken.NextToken, msg=f"End token has no open end: {endToken.NextToken}")

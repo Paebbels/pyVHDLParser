@@ -30,9 +30,9 @@
 from textwrap                       import dedent
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken, LinebreakToken, IndentationToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock, LinebreakBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock, LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.List       import GenericList
 from pyVHDLParser.Blocks.Sequential import Package
 
@@ -53,11 +53,11 @@ class SimplePackage_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -75,19 +75,19 @@ class SimplePackage_OneLine_OnlyEnd(TestCase, ExpectedDataMixin, LinkingTests, T
 class SimplePackage_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package p is end package;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # e
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # e
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
@@ -102,19 +102,19 @@ class SimplePackage_OneLine_EndWithKeyword(TestCase, ExpectedDataMixin, LinkingT
 class SimplePackage_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package p is end p;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),           #
@@ -129,21 +129,21 @@ class SimplePackage_OneLine_EndWithName(TestCase, ExpectedDataMixin, LinkingTest
 class SimplePackage_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package p is end package p;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -158,19 +158,19 @@ class SimplePackage_OneLine_EndWithKeywordAndName(TestCase, ExpectedDataMixin, L
 class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package is end package p;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -185,19 +185,19 @@ class SimplePackage_OneLine_NoName_EndWithKeywordAndName(TestCase, ExpectedDataM
 class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package p end package p;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -212,19 +212,19 @@ class SimplePackage_OneLine_NoIs_EndWithKeywordAndName(TestCase, ExpectedDataMix
 class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMixin, TokenLinking, TokenSequence, BlockSequenceWithParserError):
 	code = "package p is package p;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -239,21 +239,21 @@ class SimplePackage_OneLine_NoEnd_EndWithKeywordAndName(TestCase, ExpectedDataMi
 class SimplePackage_OneLine_EndWithKeywordAndName_WrongName(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
 	code = "package p is end package a;"
 	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),      #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "p"),       # p
-			(SpaceToken,           " "),       #
-			(WordToken,            "is"),      # is
-			(SpaceToken,           " "),       #
-			(WordToken,            "end"),     # end
-			(SpaceToken,           " "),       #
-			(WordToken,            "package"),  # package
-			(SpaceToken,           " "),       #
-			(WordToken,            "a"),       # a
-			(CharacterToken,       ";"),       # ;
-			(EndOfDocumentToken,   None)       #
-		]
+		[(StartOfDocumentToken, None),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "p"),  # p
+         (WhitespaceToken, " "),  #
+         (WordToken,            "is"),  # is
+         (WhitespaceToken, " "),  #
+         (WordToken,            "end"),  # end
+         (WhitespaceToken, " "),  #
+         (WordToken,            "package"),  # package
+         (WhitespaceToken, " "),  #
+         (WordToken,            "a"),  # a
+         (CharacterToken,       ";"),  # ;
+         (EndOfDocumentToken,   None)  #
+         ]
 	)
 	blockStream = ExpectedBlockStream(
 		[ (StartOfDocumentBlock, None),             #
@@ -273,17 +273,17 @@ class SimplePackage_MultiLine_LongForm(TestCase, ExpectedDataMixin, LinkingTests
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       "\n"),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       "\n"),
 			(EndOfDocumentToken,   None)
@@ -354,21 +354,21 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "generic"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -376,9 +376,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric(TestCase, ExpectedDataM
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
@@ -416,9 +416,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -426,9 +426,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -436,9 +436,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoGenericKeyword(TestCa
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -465,9 +465,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -475,9 +475,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -485,9 +485,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoOpeningRoundBracket(T
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -514,30 +514,30 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_NoClosingRoundBracket(T
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "generic"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -564,21 +564,21 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase,
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
 			(WordToken,            "gen"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t\t"),
 			(WordToken,            "G"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "integer"),
 			(LinebreakToken,       None),
 			(IndentationToken,     "\t"),
@@ -586,9 +586,9 @@ class SimplePackage_MultiLine_LongForm_WithSingleGeneric_TypoInGeneric(TestCase,
 			(CharacterToken,       ";"),
 			(LinebreakToken,       None),
 			(WordToken,            "end"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

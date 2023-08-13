@@ -29,10 +29,10 @@
 #
 from pyTooling.Decorators             import export
 
-from pyVHDLParser.Token               import CharacterToken, SpaceToken, IndentationToken
+from pyVHDLParser.Token               import CharacterToken, WhitespaceToken, IndentationToken
 from pyVHDLParser.Token.Keywords      import SingleLineCommentKeyword, MultiLineCommentStartKeyword, MultiLineCommentEndKeyword
 from pyVHDLParser.Blocks              import CommentBlock, TokenToBlockParser
-from pyVHDLParser.Blocks.Common       import IndentationBlock
+from pyVHDLParser.Blocks.Whitespace       import IndentationBlock
 
 
 @export
@@ -46,7 +46,7 @@ class SingleLineCommentBlock(CommentBlock):
 			parserState.NextState =   cls.stateConsumeComment
 			return
 
-		raise NotImplementedError("State=PossibleCommentStart: {0!r}".format(token))
+		raise NotImplementedError(f"State=PossibleCommentStart: {token!r}")
 
 	@classmethod
 	def stateConsumeComment(cls, parserState: TokenToBlockParser):
@@ -61,7 +61,7 @@ class SingleLineCommentBlock(CommentBlock):
 	@classmethod
 	def stateLinebreak(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, SpaceToken):
+		if isinstance(token, WhitespaceToken):
 			parserState.NewToken = IndentationToken(fromExistingToken=token)
 			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
 			parserState.Pop()

@@ -4,7 +4,7 @@ from antlr4 import CommonTokenStream, Token as antlrToken
 
 from .. import SourceCodePosition
 from ..Token import Token, StartOfDocumentToken, EndOfDocumentToken, FusedCharacterToken, IntegerLiteralToken, \
-	IndentationToken, LinebreakToken, SpaceToken, SingleLineCommentToken, MultiLineCommentToken, CharacterToken, \
+	IndentationToken, LinebreakToken, WhitespaceToken, SingleLineCommentToken, MultiLineCommentToken, CharacterToken, \
 	StringLiteralToken, BitStringLiteralToken
 from ..Token.Keywords import *
 
@@ -188,7 +188,7 @@ class ANTLR2Token:
 			elif aToken.type == VHDLLexer.LIT_BIT_STRING:
 				lastToken = BitStringLiteralToken(lastToken, aToken.text, start, start)
 			elif aToken.type == VHDLLexer.WHITESPACE:
-				tokenType = IndentationToken if isinstance(lastToken, LinebreakToken) else SpaceToken
+				tokenType = IndentationToken if isinstance(lastToken, LinebreakToken) else WhitespaceToken
 				lastToken = tokenType(lastToken, aToken.text, start)
 			elif aToken.type == VHDLLexer.LINEBREAK:
 				lastToken = LinebreakToken(lastToken, aToken.text, start)

@@ -1,7 +1,7 @@
 .. _blkstm:
 
-2. Pass - Blocks
-################
+2. Pass - Tokens ⇒ Blocks
+#########################
 
 In the :ref:`second pass <concept-passes>` a stream of double-linked
 :class:`~pyVHDLParser.Token.Token` objects is read and grouped in another Python

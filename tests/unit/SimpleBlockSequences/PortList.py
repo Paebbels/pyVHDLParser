@@ -31,9 +31,9 @@ from unittest                           import TestCase
 
 from pyVHDLParser.Blocks.List           import PortList
 from pyVHDLParser.Blocks.List.PortList  import PortListInterfaceSignalBlock
-from pyVHDLParser.Token                 import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Token                 import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks                import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common         import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace         import WhitespaceBlock
 from pyVHDLParser.Blocks.Structural     import Entity
 
 from tests.unit.Common                  import Initializer, ExpectedDataMixin, LinkingTests, TokenLinking, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
@@ -53,22 +53,22 @@ class SimplePortList_OneLine_SinglePort(TestCase, ExpectedDataMixin, LinkingTest
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "port"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(WordToken,            "port1"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "bit"),
 			(CharacterToken,       ")"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)
@@ -92,30 +92,30 @@ class SimplePortList_OneLine_DoublePort(TestCase, ExpectedDataMixin, TokenLinkin
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "entity"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "e"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "port"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       "("),
 			(WordToken,            "port1"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "bit"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "port2"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ":"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "boolean"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(CharacterToken,       ")"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

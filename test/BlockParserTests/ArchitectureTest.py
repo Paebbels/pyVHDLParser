@@ -26,7 +26,7 @@
 # ==============================================================================
 #
 # load dependencies
-from pyVHDLParser.Blocks.Common               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
+from pyVHDLParser.Blocks.Whitespace               import LinebreakBlock, EmptyLineBlock, WhitespaceBlock, IndentationBlock
 from pyVHDLParser.Blocks import StartOfDocumentBlock, EndOfDocumentBlock
 from pyVHDLParser.Blocks.Structural           import Architecture
 from test.TestCase                            import TestCase as TestCaseBase

@@ -29,9 +29,9 @@
 #
 from unittest                       import TestCase
 
-from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, SpaceToken, CharacterToken, EndOfDocumentToken
+from pyVHDLParser.Token             import WordToken, StartOfDocumentToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
 from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Common     import WhitespaceBlock
+from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
 from pyVHDLParser.Blocks.Sequential import Package, Function
 
 from tests.unit.Common              import Initializer, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence, ExpectedTokenStream, ExpectedBlockStream
@@ -51,20 +51,20 @@ class SimpleFunctionInPackage_OneLine_NoParameter(TestCase, ExpectedDataMixin, L
 	tokenStream = ExpectedTokenStream(
 		[ (StartOfDocumentToken, None),
 			(WordToken,            "package"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "p"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "is"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "function"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "f"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "return"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "bit"),
 			(CharacterToken,       ";"),
-			(SpaceToken,           " "),
+			(WhitespaceToken, " "),
 			(WordToken,            "end"),
 			(CharacterToken,       ";"),
 			(EndOfDocumentToken,   None)

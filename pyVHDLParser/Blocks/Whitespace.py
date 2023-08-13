@@ -27,67 +27,64 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from unittest                       import TestCase
+from pyTooling.Decorators     import export
 
-from pyVHDLParser.Token             import StartOfDocumentToken, WordToken, WhitespaceToken, CharacterToken, EndOfDocumentToken
-from pyVHDLParser.Blocks            import StartOfDocumentBlock, EndOfDocumentBlock
-from pyVHDLParser.Blocks.Whitespace     import WhitespaceBlock
-from pyVHDLParser.Blocks.Object     import Signal
-from pyVHDLParser.Blocks.Structural import Architecture
-
-from tests.unit.Common              import Initializer, ExpectedTokenStream, ExpectedBlockStream, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence
+from pyVHDLParser.Token       import WhitespaceToken, IndentationToken
+from pyVHDLParser.Blocks      import TokenToBlockParser, SkipableBlock
 
 
-if __name__ == "__main__":  # pragma: no cover
-	print("ERROR: you called a testcase declaration file as an executable module.")
-	print("Use: 'python -m unitest <testcase module>'")
-	exit(1)
+@export
+class WhitespaceBlock(SkipableBlock):
+	def __init__(self, previousBlock, startToken):
+		super().__init__(previousBlock, startToken, startToken)
+
+	def __repr__(self):
+		return "[{blockName: <50s}  {stream} at {start!s} .. {end!s}]".format(
+			blockName=type(self).__name__,
+			stream=" "*61,
+			start=self.StartToken.Start,
+			end=self.EndToken.End
+		)
 
 
-def setUpModule():
-	Initializer()
+@export
+class LinebreakBlock(WhitespaceBlock):
+	@classmethod
+	def stateLinebreak(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+		if isinstance(token, WhitespaceToken):
+			parserState.NewToken = IndentationToken(fromExistingToken=token)
+			parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)
+			parserState.Pop()
+			# print("  {GREEN}continue: {0!s}{NOCOLOR}".format(parserState, **Console.Foreground))
+		else:
+			parserState.Pop()
+			if parserState.TokenMarker is None:
+				# print("  {DARK_GREEN}set marker: {GREEN}LinebreakBlock.stateLinebreak    {DARK_GREEN}marker {GREEN}{0!s}{NOCOLOR}".format(token, **Console.Foreground))
+				parserState.TokenMarker = token
+			# print("  {DARK_GREEN}re-issue:   {GREEN}{state!s: <20s}    {DARK_GREEN}token  {GREEN}{token}{NOCOLOR}".format(state=parserState, token=parserState.Token, **Console.Foreground))
+			parserState.NextState(parserState)
 
 
-class SimpleSignalInArchitecture_OneLine_OnlyDeclaration(TestCase, ExpectedDataMixin, LinkingTests, TokenSequence, BlockSequence):
-	code = "architecture a of e is signal s : bit; begin end;"
-	tokenStream = ExpectedTokenStream(
-		[ (StartOfDocumentToken, None),
-			(WordToken,            "architecture"),
-			(WhitespaceToken, " "),
-			(WordToken,            "a"),
-			(WhitespaceToken, " "),
-			(WordToken,            "of"),
-			(WhitespaceToken, " "),
-			(WordToken,            "e"),
-			(WhitespaceToken, " "),
-			(WordToken,            "is"),
-			(WhitespaceToken, " "),
-			(WordToken,            "signal"),
-			(WhitespaceToken, " "),
-			(WordToken,            "s"),
-			(WhitespaceToken, " "),
-			(CharacterToken,       ":"),
-			(WhitespaceToken, " "),
-			(WordToken,            "bit"),
-			(CharacterToken,       ";"),
-			(WhitespaceToken, " "),
-			(WordToken,            "begin"),
-			(WhitespaceToken, " "),
-			(WordToken,            "end"),
-			(CharacterToken,       ";"),
-			(EndOfDocumentToken,   None)
-		]
-	)
-	blockStream = ExpectedBlockStream(
-		[ (StartOfDocumentBlock,    None),
-			(Architecture.NameBlock,  "architecture a of e is"),
-			(WhitespaceBlock,         " "),
-			(Signal.SignalDeclarationBlock,           "signal s : bit"),
-			(Signal.SignalDeclarationEndMarkerBlock,  ";"),
-			(WhitespaceBlock,         " "),
-			(Architecture.BeginBlock, "begin"),
-			(WhitespaceBlock,         " "),
-			(Architecture.EndBlock,   "end;"),
-			(EndOfDocumentBlock,      None)
-		]
-	)
+@export
+class EmptyLineBlock(LinebreakBlock):
+	pass
+
+
+@export
+class IndentationBlock(WhitespaceBlock):
+	__TABSIZE__ = 2
+
+	def __repr__(self):
+		length = len(self.StartToken.Value)
+		actual = sum([(self.__TABSIZE__ if (c == "\t") else 1) for c in self.StartToken.Value])
+
+		return "[{blockName: <50s}  length={len: <53}  at {start!s} .. {end!s}]".format(
+				blockName=type(self).__name__,
+				len="{len} ({actual}) ".format(
+					len=length,
+					actual=actual
+				),
+				start=self.StartToken.Start,
+				end=self.EndToken.End
+			)
