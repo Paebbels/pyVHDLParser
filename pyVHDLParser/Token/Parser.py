@@ -66,13 +66,14 @@ class Tokenizer:
 		PossibleRealLiteral =             7   #: Last char was a ``.``
 		PossibleCharacterLiteral =        8   #: Last char was a ``'``
 		PossibleStringLiteralStart =      9   #: Last char was a ``"``
-		PossibleExtendedIdentifierStart = 10  #: Last char was a ``\``
-		SingleLineComment =               11  #: Found ``--`` before
-		MultiLineComment =                12  #: Found ``/*`` before
-		Linebreak =                       13  #: Last char was a ``\n``
-		Directive =                       14  #: Last char was a `` ` ``
-		FuseableCharacter =               15  #: Last char was a character that could be fused
-		OtherChars =                      16  #: Anything else
+		PossibleStringLiteralEnd =        10  #: Last char was a ``"`` while being in state ``PossibleStringLiteralStart``
+		PossibleExtendedIdentifierStart = 11  #: Last char was a ``\``
+		SingleLineComment =               12  #: Found ``--`` before
+		MultiLineComment =                13  #: Found ``/*`` before
+		Linebreak =                       14  #: Last char was a ``\n``
+		Directive =                       15  #: Last char was a `` ` ``
+		FuseableCharacter =               16  #: Last char was a character that could be fused
+		OtherChars =                      17  #: Anything else
 
 	@classmethod
 	def GetVHDLTokenizer(cls, iterable: Iterator[str]):
@@ -336,24 +337,23 @@ class Tokenizer:
 				buffer += char
 				if len(buffer) == 2:
 					if buffer[1] == "(" and isinstance(previousToken, WordToken):
+						# An input of the form `<word>'(` always must be a qualified expression
+						# in order to be valid VHDL. There is not case where `'('` would be a valid character literal
+						# if preceeded by a word token
 						previousToken =   CharacterToken(previousToken, "'", start)
 						yield previousToken
 						previousToken =   CharacterToken(previousToken, "(", SourceCodePosition(row, column, absolute))
 						yield previousToken
 						tokenKind =       cls.TokenKind.OtherChars
-					elif buffer[1] == "'":
-						previousToken =   CharacterToken(previousToken, "'", start)
-						yield previousToken
-						previousToken =   CharacterToken(previousToken, "'", SourceCodePosition(row, column, absolute))
-						yield previousToken
-						tokenKind =       cls.TokenKind.OtherChars
 					else:
 						continue
 				elif (len(buffer) == 3) and (buffer[2] == "'"):
+					# Whatever is enclosed in single quotes, is the content of a character literal
 					previousToken =   CharacterLiteralToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
 					yield previousToken
 					tokenKind = cls.TokenKind.OtherChars
 				else:
+					# If the third entry of the buffer is not a closing single quote, the single quote must belong to an attribute
 					previousToken =   CharacterToken(previousToken, "'", start)
 					yield previousToken
 
@@ -371,9 +371,41 @@ class Tokenizer:
 			elif tokenKind is cls.TokenKind.PossibleStringLiteralStart:
 				buffer += char
 				if char == "\"":
-					previousToken = StringLiteralToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
+					tokenKind = cls.TokenKind.PossibleStringLiteralEnd
+
+			# State: PossibleStringLiteralEnd
+			elif tokenKind is cls.TokenKind.PossibleStringLiteralEnd:
+				if char == "\"":
+					buffer += char
+					tokenKind = cls.TokenKind.PossibleStringLiteralStart
+				else:
+					previousToken = StringLiteralToken(previousToken, buffer, start, SourceCodePosition(row, column-1, absolute-1))
 					yield previousToken
-					tokenKind = cls.TokenKind.OtherChars
+
+					start =   SourceCodePosition(row, column, absolute)
+					buffer =  char
+					if char in __WHITESPACE_CHARACTERS__: tokenKind = cls.TokenKind.SpaceChars
+					elif char in __NUMBER_CHARACTERS__:   tokenKind = cls.TokenKind.IntegerChars
+					elif char in __ALPHA_CHARACTERS__:    tokenKind = cls.TokenKind.AlphaChars
+					elif char == "'":                     tokenKind = cls.TokenKind.PossibleCharacterLiteral
+					elif char == "\"":                    tokenKind = cls.TokenKind.PossibleStringLiteralStart
+					elif char == "-":                     tokenKind = cls.TokenKind.PossibleSingleLineCommentStart
+					elif char == "\r":                    tokenKind = cls.TokenKind.PossibleLinebreak
+					elif char == "\n":
+						previousToken = LinebreakToken(previousToken, char, start, start)
+						yield previousToken
+						tokenKind = cls.TokenKind.OtherChars
+					elif char in __FUSEABLE_CHARS__:
+						buffer =        char
+						tokenKind =     cls.TokenKind.FuseableCharacter
+					elif char == ".":                     tokenKind = cls.TokenKind.PossibleRealLiteral
+					elif char == "\\":                    tokenKind = cls.TokenKind.PossibleExtendedIdentifierStart
+					elif (char == "`") and isinstance(previousToken, (WhitespaceToken, LinebreakToken)):
+						tokenKind = cls.TokenKind.Directive
+					else:
+						previousToken = CharacterToken(previousToken, char, start)
+						yield previousToken
+						tokenKind =     cls.TokenKind.OtherChars
 
 			# State: PossibleExtendedIdentifierStart
 			elif tokenKind is cls.TokenKind.PossibleExtendedIdentifierStart:
