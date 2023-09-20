@@ -259,14 +259,14 @@ class InterfaceObjectBlock(Block):
 			return
 		elif isinstance(token, CharacterToken):
 			if token == '(':
-			# 	parserState.NewToken = BoundaryToken(fromExistingToken=token)
-			# 	parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker,
-			# 														 endToken=parserState.NewToken.PreviousToken)
-			# 	parserState.TokenMarker = parserState.NewToken
-			# 	parserState.NextState = LoopBlock.stateSequentialRegion
-			# 	parserState.PushState = ExpressionBlockEndedByLoopORToORDownto.stateExpression
-			# 	return
-			# elif token == ';':
+				parserState.NewToken = BoundaryToken(fromExistingToken=token)
+				parserState.NewBlock = cls(parserState.LastBlock, parserState.TokenMarker,
+																	 endToken=parserState.NewToken.PreviousToken)
+				parserState.TokenMarker = parserState.NewToken
+				parserState.NextState = LoopBlock.stateSequentialRegion
+				parserState.PushState = ExpressionBlockEndedByLoopORToORDownto.stateExpression
+				return
+			elif token == ';':
 				parserState.NewToken =    DelimiterToken(fromExistingToken=token)
 				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken.PreviousToken)
 				_ =                       cls.DELIMITER_BLOCK(parserState.NewBlock, parserState.NewToken)
