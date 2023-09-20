@@ -184,7 +184,7 @@ class BlockSequence(ITestcase): #, ExpectedDataMixin):
 
 				self.assertIsInstance(
 					block, item[0],
-				  msg=f"Block has not expected type.\n  Actual:   {block!s}\n  Expected: {item[0].__qualname__}"
+				  msg=f"Block has not expected type.\n  Actual:   {type(block).__qualname__}\n  Expected: {item[0].__qualname__}"
 				)
 				if item[1] is not None:
 					blockValue = str(block)

@@ -25,3 +25,4 @@ coverage.xml
 /.idea/workspace.xml
 
 pyVHDLParser/Sven
+venv/

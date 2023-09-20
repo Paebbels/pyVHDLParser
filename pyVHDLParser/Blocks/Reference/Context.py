@@ -27,18 +27,309 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing                           import Type, Dict
+
 from pyTooling.Decorators             import export
 
-from pyVHDLParser.Token               import CommentToken, WhitespaceToken, LinebreakToken, MultiLineCommentToken, IndentationToken, SingleLineCommentToken, ExtendedIdentifier
-from pyVHDLParser.Token.Keywords      import WordToken, BoundaryToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword
-from pyVHDLParser.Blocks              import Block, CommentBlock, BlockParserException, TokenToBlockParser
-from pyVHDLParser.Blocks.Whitespace       import LinebreakBlock, IndentationBlock, WhitespaceBlock
-from pyVHDLParser.Blocks.Region      import EndBlock as EndBlockBase
+from pyVHDLParser.Token               import Token, CommentToken, WhitespaceToken, LinebreakToken, IndentationToken, ExtendedIdentifier, CharacterToken, ValuedToken
+from pyVHDLParser.Token.Keywords      import WordToken, IdentifierToken, IsKeyword, UseKeyword, EndKeyword, ContextKeyword, LibraryKeyword, EndToken, DelimiterToken, KeywordToken
+from pyVHDLParser.Blocks              import Block, BlockParserException, TokenToBlockParser, SkipableBlock, BLOCK_PARSER_STATE
+from pyVHDLParser.Blocks.Region       import EndBlock as EndBlockBase
+
+
+def _isNonCodeToken(token: Token) -> bool:
+	return isinstance(token, (LinebreakToken, WhitespaceToken, IndentationToken, CommentToken))
+
+
 
 
 @export
-class NameBlock(Block):
+class DelimiterBlock(SkipableBlock):
+	pass
+
+
+@export
+class StartBlock(Block):
+	"""
+	This block is used to disambiguate between context declarations and context references.
+
+	The states in this class only check whether the token stream represents a declaration or a reference.
+	They neither change :class:`Token`s nor do they create new :class:`Block`s.
+	After a decision can be made, the unhandled tokens (everything between :attr:`parserState.TokenMarker` and the current token)
+	are parsed a second time by either :attr:`ReferenceStartBlock.fromTokenMarker` or :attr:`DeclarationStartBlock.fromTokenMarker`.
+	"""
+	@classmethod
+	def stateContextKeyword(cls, parserState: TokenToBlockParser):
+		cls.stateWhitespace1(parserState)
+
+	@classmethod
+	def stateWhitespace1(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if _isNonCodeToken(token):
+			parserState.NextState = cls.stateContextName
+			return
+
+		raise BlockParserException("Expected whitespace after keyword CONTEXT.", token)
+
+	@classmethod
+	def stateContextName(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if _isNonCodeToken(token):
+			return
+
+		if isinstance(token, (WordToken, ExtendedIdentifier)):
+			parserState.NextState =     cls.stateWhitespaceOrSemicolonOrDot
+			return
+
+		raise BlockParserException("Expected context name (identifier).", token)
+
+	@classmethod
+	def stateWhitespaceOrSemicolonOrDot(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if _isNonCodeToken(token):
+			parserState.NextState =        cls.stateIsOrSemicolonOrDot
+			return
+
+		if isinstance(token, CharacterToken) and token == ";":
+			parserState.ReparseFromTokenMarker(ReferenceStartBlock.stateFromStartBlock)
+			parserState.Pop()
+			return
+		elif isinstance(token, CharacterToken) and token == ".":
+			parserState.ReparseFromTokenMarker(ReferenceStartBlock.stateFromStartBlock)
+			return
+
+		raise BlockParserException("Expected whitespace after context name (identifier).", token)
+
+	@classmethod
+	def stateIsOrSemicolonOrDot(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(cls):
+			return
+
+		if isinstance(token, WordToken) and (token == "is"):
+			parserState.ReparseFromTokenMarker(DeclarationStartBlock.stateFromStartBlock)
+			return
+		elif isinstance(token, CharacterToken) and token == ";":
+			parserState.ReparseFromTokenMarker(ReferenceStartBlock.stateFromStartBlock)
+			parserState.Pop()
+			return
+		elif isinstance(token, CharacterToken) and token == ".":
+			parserState.ReparseFromTokenMarker(ReferenceStartBlock.stateFromStartBlock)
+			return
+
+		raise BlockParserException("Expected context name (identifier).", token)
+
+
+#
+# Context references
+#
+@export
+class ReferenceStartBlock(Block):
+	@classmethod
+	def stateFromStartBlock(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if isinstance(token, ContextKeyword):
+			parserState.NextState =   cls.stateWhitespace
+			return
+
+		# The 'context' keyword was already detected. If it is not there anymore, we found a bug.
+		assert False, "Expected keyword CONTEXT."
+
+	@classmethod
+	def stateContextKeyword(cls, parserState: TokenToBlockParser):
+		cls.stateWhitespace(parserState)
+
+	@classmethod
+	def stateWhitespace(cls, parserState: TokenToBlockParser):
+		if parserState.HandleNonCodeTokens(cls, multiPart=False):
+			parserState.NextState =   ReferenceNameBlock.stateLibOrContextName
+			return
+
+		# This condition is also guaranteed. Otherwise `StartBlock.stateContextKeyword` would have thrown an error.
+		assert False, "Expected whitespace after keyword CONTEXT."
+
+
+@export
+class ReferenceNameBlock(Block):
 	KEYWORDS = None
+
+	@classmethod
+	def stateLibOrContextName(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(None):
+			return
+
+		if isinstance(token, WordToken):
+			parserState.NewToken  = IdentifierToken(fromExistingToken=token)
+			parserState.NextState = cls.stateCommaOrDotOrSemicolon
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState = cls.stateCommaOrDotOrSemicolon
+			return
+
+		raise BlockParserException("Expected context or library name (identifier).", token)
+
+	@classmethod
+	def stateCommaOrDotOrSemicolon(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(cls):
+			return
+
+		if isinstance(token, CharacterToken) and token == ".":
+			parserState.NewToken =      DelimiterToken(fromExistingToken=token)
+			parserState.NextState =     cls.stateContextName
+			return
+		elif isinstance(token, CharacterToken) and token == ";":
+			parserState.NewToken =      EndToken(fromExistingToken=token)
+			parserState.NewBlock =      ReferenceNameBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
+			_ =                         ReferenceEndBlock(parserState.NewBlock, parserState.NewToken, parserState.NewToken)
+			parserState.TokenMarker =   None
+			parserState.Pop()
+			return
+		elif isinstance(token, CharacterToken) and token == ",":
+			parserState.NewToken =      DelimiterToken(fromExistingToken=token)
+			parserState.NewBlock =      ReferenceNameBlock(parserState.LastBlock, parserState.TokenMarker, token.PreviousToken)
+			_ =                         DelimiterBlock(parserState.NewBlock, parserState.NewToken, parserState.NewToken)
+			parserState.NextState =     cls.stateLibOrContextName
+			parserState.TokenMarker =   None
+			return
+
+		raise BlockParserException("Expected either a comma, a dot or a semicolon separating or concluding a context reference (character).", token)
+
+	@classmethod
+	def stateContextName(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(cls):
+			return
+
+		if isinstance(token, WordToken):
+			parserState.NewToken =    IdentifierToken(fromExistingToken=token)
+			parserState.NewBlock =    ReferenceNameBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			parserState.NextState =   cls.stateCommaOrSemicolon
+			parserState.TokenMarker = None
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NewBlock =    ReferenceNameBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			parserState.NextState =   cls.stateCommaOrSemicolon
+			parserState.TokenMarker = None
+			return
+
+		raise BlockParserException("Expected context name (identifier).", token)
+
+	@classmethod
+	def stateCommaOrSemicolon(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(None):
+			return
+
+		if isinstance(token, CharacterToken) and token == ";":
+			parserState.NewToken =      EndToken(fromExistingToken=token)
+			parserState.NewBlock =      ReferenceEndBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			parserState.TokenMarker =   None
+			parserState.Pop()
+			return
+		elif isinstance(token, CharacterToken) and token == ",":
+			parserState.NewToken =      DelimiterToken(fromExistingToken=token)
+			parserState.NewBlock =      DelimiterBlock(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			parserState.NextState =     cls.stateLibOrContextName
+			parserState.TokenMarker =   None
+			return
+
+		raise BlockParserException("Expected either a comma or a semicolon separating or concluding a context reference (character).", token)
+
+
+@export
+class ReferenceEndBlock(Block):
+	pass
+
+
+
+#
+# Context declarations
+#
+@export
+class DeclarationStartBlock(Block):
+	@classmethod
+	def stateFromStartBlock(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if isinstance(token, ContextKeyword):
+			parserState.NextState =   cls.stateWhitespace
+			return
+
+		# The 'context' keyword was already detected. If it is not there anymore, we found a bug.
+		assert False, "Expected keyword CONTEXT."
+
+	@classmethod
+	def stateContextKeyword(cls, parserState: TokenToBlockParser):
+		cls.stateWhitespace(parserState)
+
+	@classmethod
+	def stateWhitespace(cls, parserState: TokenToBlockParser):
+		if parserState.HandleNonCodeTokens(cls):
+			parserState.NextState =   cls.stateContextName
+			return
+
+		# This condition is also guaranteed. Otherwise `StartBlock.stateContextKeyword` would have thrown an error.
+		assert False, "Expected whitespace after keyword CONTEXT."
+
+	@classmethod
+	def stateContextName(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(cls):
+			return
+
+		if isinstance(token, WordToken):
+			parserState.NewToken =    IdentifierToken(fromExistingToken=token)
+			parserState.NextState =   cls.stateWhitespace2
+			return
+		elif isinstance(token, ExtendedIdentifier):
+			parserState.NextState =   cls.stateWhitespace2
+			return
+
+		# This condition is also guaranteed. Otherwise `StartBlock.stateWhitespace1` would have thrown an error.
+		assert False, "Expected context name (identifier)."
+
+	@classmethod
+	def stateWhitespace2(cls, parserState: TokenToBlockParser):
+		if parserState.HandleNonCodeTokens(cls):
+			parserState.NextState =   cls.stateContextIs
+			return
+
+		# This condition is also guaranteed. Otherwise `StartBlock.stateContextName` would have thrown an error.
+		assert False, "Expected whitespace after context name."
+
+	@classmethod
+	def stateContextIs(cls, parserState: TokenToBlockParser):
+		token = parserState.Token
+
+		if parserState.HandleNonCodeTokens(cls):
+			return
+
+		if isinstance(token, WordToken) and token == "is":
+			parserState.NewToken =    IsKeyword(fromExistingToken=token)
+			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, parserState.NewToken)
+			parserState.NextState =   DeclarationBody.stateDeclarativeRegion
+			parserState.TokenMarker = None
+			return
+
+		# This condition is also guaranteed. Otherwise `StartBlock.stateWhitespace2` would have thrown an error.
+		assert False, "Expected keyword IS after context name."
+
+
+@export
+class DeclarationBody(Block):
+	KEYWORDS: Dict[Type[KeywordToken], BLOCK_PARSER_STATE]
 
 	@classmethod
 	def __cls_init__(cls):
@@ -47,119 +338,18 @@ class NameBlock(Block):
 		cls.KEYWORDS = {
 			# Keyword       Transition
 			UseKeyword:     Use.StartBlock.stateUseKeyword,
-			LibraryKeyword: Library.StartBlock.stateLibraryKeyword
+			LibraryKeyword: Library.StartBlock.stateLibraryKeyword,
+			ContextKeyword: ReferenceStartBlock.stateContextKeyword,
 		}
-	@classmethod
-	def stateContextKeyword(cls, parserState: TokenToBlockParser):
-		token = parserState.Token
-		if isinstance(token, WhitespaceToken):
-			parserState.NewToken =    BoundaryToken(fromExistingToken=token)
-			parserState.NextState =   cls.stateWhitespace1
-			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                   LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                       block(parserState.NewBlock, token)
-			parserState.TokenMarker = None
-			parserState.NextState =   cls.stateWhitespace1
-			return
-
-		raise BlockParserException("Expected whitespace after keyword CONTEXT.", token)
-
-	@classmethod
-	def stateWhitespace1(cls, parserState: TokenToBlockParser):
-		token = parserState.Token
-		if isinstance(token, WordToken):
-			parserState.NewToken =      IdentifierToken(fromExistingToken=token)
-			parserState.NextState =     cls.stateContextName
-			return
-		elif isinstance(token, ExtendedIdentifier):
-			parserState.NextState =     cls.stateContextName
-			return
-		elif isinstance(token, LinebreakToken):
-			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				_ =                       LinebreakBlock(parserState.NewBlock, token)
-			else:
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                         CommentBlock(parserState.NewBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
-			return
-		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
-			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
-			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker =   None
-			return
-
-		raise BlockParserException("Expected context name (identifier).", token)
-
-	@classmethod
-	def stateContextName(cls, parserState: TokenToBlockParser):
-		token = parserState.Token
-		if isinstance(token, WhitespaceToken):
-			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
-			parserState.NextState =     cls.stateWhitespace2
-			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                     LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                         block(parserState.NewBlock, token)
-			parserState.TokenMarker =   None
-			parserState.NextState =     cls.stateWhitespace2
-			return
-
-		raise BlockParserException("Expected whitespace after context name (identifier).", token)
-
-	@classmethod
-	def stateWhitespace2(cls, parserState: TokenToBlockParser):
-		token = parserState.Token
-		if isinstance(token, WordToken) and (token <= "is"):
-			parserState.NewToken =      IsKeyword(fromExistingToken=token)
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=parserState.NewToken)
-			parserState.NextState =     cls.stateDeclarativeRegion
-			return
-		elif isinstance(token, LinebreakToken):
-			if not (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
-				parserState.NewBlock =    cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-				_ =                       LinebreakBlock(parserState.NewBlock, token)
-			else:
-				parserState.NewBlock =    LinebreakBlock(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, CommentToken):
-			parserState.NewBlock =      cls(parserState.LastBlock, parserState.TokenMarker, endToken=token.PreviousToken, multiPart=True)
-			_ =                         CommentBlock(parserState.NewBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, IndentationToken) and isinstance(token.PreviousToken, (LinebreakToken, SingleLineCommentToken)):
-			return
-		elif isinstance(token, WhitespaceToken) and (isinstance(parserState.LastBlock, CommentBlock) and isinstance(parserState.LastBlock.StartToken, MultiLineCommentToken)):
-			parserState.NewToken =      BoundaryToken(fromExistingToken=token)
-			parserState.NewBlock =      WhitespaceBlock(parserState.LastBlock, parserState.NewToken)
-			parserState.TokenMarker =   None
-			return
-
-		raise BlockParserException("Expected keyword IS after context name.", token)
 
 	@classmethod
 	def stateDeclarativeRegion(cls, parserState: TokenToBlockParser):
 		token = parserState.Token
-		if isinstance(token, WhitespaceToken):
-			blockType =                 IndentationBlock if isinstance(token, IndentationToken) else WhitespaceBlock
-			parserState.NewBlock =      blockType(parserState.LastBlock, token)
+
+		if parserState.HandleNonCodeTokens(None):
 			return
-		elif isinstance(token, (LinebreakToken, CommentToken)):
-			block =                     LinebreakBlock if isinstance(token, LinebreakToken) else CommentBlock
-			parserState.NewBlock =      block(parserState.LastBlock, token)
-			parserState.TokenMarker =   None
-			return
-		elif isinstance(token, WordToken):
+
+		if isinstance(token, WordToken):
 			tokenValue = token.Value.lower()
 			for keyword in cls.KEYWORDS:
 				if tokenValue == keyword.__KEYWORD__:
@@ -172,9 +362,10 @@ class NameBlock(Block):
 			if tokenValue == "end":
 				parserState.NewToken =    EndKeyword(fromExistingToken=token)
 				parserState.TokenMarker = parserState.NewToken
-				parserState.NextState =   EndBlock.stateEndKeyword
+				parserState.NextState =   DeclarationEndBlock.stateEndKeyword
 				return
 
+		assert isinstance(token, ValuedToken)
 		raise BlockParserException(
 			"Expected one of these keywords: END, {keywords}. Found: '{tokenValue}'.".format(
 				keywords=", ".join(
@@ -185,6 +376,6 @@ class NameBlock(Block):
 
 
 @export
-class EndBlock(EndBlockBase):
+class DeclarationEndBlock(EndBlockBase):
 	KEYWORD =       ContextKeyword
 	EXPECTED_NAME = KEYWORD.__KEYWORD__
