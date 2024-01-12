@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concepts not defined by IEEE Std. 1076 &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Enumerations" href="Enumerations.html" />
+    <link rel="prev" title="VHDL Language Model" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">VHDL Language Model</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Concepts not defined by IEEE Std. 1076</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#librarystatement">LibraryStatement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sourcecode-file">Sourcecode File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Enumerations.html">Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DesignUnits.html">Design Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="InterfaceItems.html">Interface Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SubprogramDefinitions.html">Subprogram Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TypeDefinitions.html">Type Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ObjectDeclarations.html">Object Declartions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConcurrentStatements.html">Concurrent Statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SequentialStatements.html">Sequential Statements</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">VHDL Language Model</a> &raquo;</li>
+      <li>Concepts not defined by IEEE Std. 1076</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/LanguageModel/Miscellaneous.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="concepts-not-defined-by-ieee-std-1076">
+<span id="vhdlmodel-misc"></span><h1>Concepts not defined by IEEE Std. 1076<a class="headerlink" href="#concepts-not-defined-by-ieee-std-1076" title="Permalink to this heading">¶</a></h1>
+<p>Some features required for a holistic language model are not defined in
+the VHDL <a class="reference internal" href="../Glossary.html#term-LRM"><span class="xref std std-term">LRM</span></a> or made explicitly implementation specific to the implementer.</p>
+<section id="design">
+<span id="vhdlmodel-design"></span><h2>Design<a class="headerlink" href="#design" title="Permalink to this heading">¶</a></h2>
+<p>The root element in the language model is a design mode out of multiple
+sourcecode files (documents). Sourcecode files are compiled into libraries. Thus
+a design has the two child nodes: <code class="docutils literal notranslate"><span class="pre">Libraries</span></code> and <code class="docutils literal notranslate"><span class="pre">Documents</span></code>. Each is a
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>.</p>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">Design</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">Design</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">):</span>
+  <span class="n">_libraries</span> <span class="p">:</span>  <span class="n">List</span> <span class="o">=</span>  <span class="p">[]</span>    <span class="c1">#: List of all libraries defined for a design</span>
+  <span class="n">_documents</span> <span class="p">:</span>  <span class="n">List</span> <span class="o">=</span>  <span class="p">[]</span>    <span class="c1">#: List of all documents loaded for a design</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="librarystatement">
+<span id="vhdlmodel-library"></span><h2>LibraryStatement<a class="headerlink" href="#librarystatement" title="Permalink to this heading">¶</a></h2>
+<p>A library contains multiple <em>design units</em>. Each design unit listed in a library
+is a <em>primary</em> design unit like: <code class="docutils literal notranslate"><span class="pre">configuration</span></code>, <code class="docutils literal notranslate"><span class="pre">entity</span></code>, <code class="docutils literal notranslate"><span class="pre">package</span></code> or
+<code class="docutils literal notranslate"><span class="pre">context</span></code>.</p>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">LibraryStatement</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">LibraryStatement</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">):</span>
+  <span class="n">_contexts</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all contexts defined in a library.</span>
+  <span class="n">_configurations</span> <span class="p">:</span> <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all configurations defined in a library.</span>
+  <span class="n">_entities</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all entities defined in a library.</span>
+  <span class="n">_packages</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all packages defined in a library.</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Configurations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Entities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Packages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="sourcecode-file">
+<span id="vhdlmodel-sourcefile"></span><h2>Sourcecode File<a class="headerlink" href="#sourcecode-file" title="Permalink to this heading">¶</a></h2>
+<p>A source file contains multiple <em>design units</em>. Each design unit listed in a
+sourcecode file is a <em>primary</em> or <cite>secondary`design unit like: ``configuration`</cite>,
+<code class="docutils literal notranslate"><span class="pre">entity</span></code>, <code class="docutils literal notranslate"><span class="pre">architecture</span></code>, <code class="docutils literal notranslate"><span class="pre">package</span></code>, <code class="docutils literal notranslate"><span class="pre">package</span> <span class="pre">body</span></code> or <code class="docutils literal notranslate"><span class="pre">context</span></code>.</p>
+<p>Design unit may be preceded by a context made of <code class="docutils literal notranslate"><span class="pre">library</span></code>, <code class="docutils literal notranslate"><span class="pre">use</span></code> and
+<code class="docutils literal notranslate"><span class="pre">context</span></code> statements. These statements are not directly visible in the <code class="docutils literal notranslate"><span class="pre">Document</span></code>
+object, because design unit contexts are consumed by the design units. See the
+<code class="docutils literal notranslate"><span class="pre">Libraries</span></code> and <code class="docutils literal notranslate"><span class="pre">Uses</span></code> fields of each design unit to investigate the consumed
+contexts.</p>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">):</span>
+  <span class="n">_contexts</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all contexts defined in a document.</span>
+  <span class="n">_configurations</span> <span class="p">:</span> <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all configurations defined in a document.</span>
+  <span class="n">_entities</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all entities defined in a document.</span>
+  <span class="n">_architectures</span> <span class="p">:</span>  <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all architectures defined in a document.</span>
+  <span class="n">_packages</span> <span class="p">:</span>       <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all packages defined in a document.</span>
+  <span class="n">_packageBodies</span> <span class="p">:</span>  <span class="n">List</span> <span class="o">=</span>  <span class="kc">None</span>    <span class="c1">#: List of all package bodies defined in a document.</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Contexts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Configurations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Entities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Architectures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">Packages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">PackageBodies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="VHDL Language Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Enumerations.html" class="btn btn-neutral float-right" title="Enumerations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

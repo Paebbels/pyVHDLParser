@@ -1,0 +1,108 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================================
+pyVHDLParser.Blocks.ControlStructure.ForLoop
+============================================
+
+.. automodule:: pyVHDLParser.Blocks.ControlStructure.ForLoop
+
+
+.. currentmodule:: pyVHDLParser.Blocks.ControlStructure.ForLoop
+
+
+**Classes**
+
+- :py:class:`IteratorBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`EndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`LoopBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByLoopORToORDownto`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByLoop`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`LoopIterationDirectionBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: IteratorBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IteratorBlock
+      :parts: 1
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1
+
+.. autoclass:: LoopBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LoopBlock
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByLoopORToORDownto
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByLoopORToORDownto
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByLoop
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByLoop
+      :parts: 1
+
+.. autoclass:: LoopIterationDirectionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LoopIterationDirectionBlock
+      :parts: 1

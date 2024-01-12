@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.Blocks.InterfaceObject" href="pyVHDLParser.Blocks.InterfaceObject.html" />
+    <link rel="prev" title="pyVHDLParser.Blocks.Instantiation.PackageInstantiation" href="pyVHDLParser.Blocks.Instantiation.PackageInstantiation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Assignment.html">pyVHDLParser.Blocks.Assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Attribute.html">pyVHDLParser.Blocks.Attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Comment.html">pyVHDLParser.Blocks.Comment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Common.html">pyVHDLParser.Blocks.Common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.html">pyVHDLParser.Blocks.ControlStructure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Exception.html">pyVHDLParser.Blocks.Exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Expression.html">pyVHDLParser.Blocks.Expression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generate.html">pyVHDLParser.Blocks.Generate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generic.html">pyVHDLParser.Blocks.Generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generic1.html">pyVHDLParser.Blocks.Generic1</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pyVHDLParser.Blocks.Instantiation.html">pyVHDLParser.Blocks.Instantiation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.Instantiation.EntityInstantiation.html">pyVHDLParser.Blocks.Instantiation.EntityInstantiation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.Instantiation.FunctionInstantiation.html">pyVHDLParser.Blocks.Instantiation.FunctionInstantiation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.Instantiation.PackageInstantiation.html">pyVHDLParser.Blocks.Instantiation.PackageInstantiation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.InterfaceObject.html">pyVHDLParser.Blocks.InterfaceObject</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.List.html">pyVHDLParser.Blocks.List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Object.html">pyVHDLParser.Blocks.Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Reference.html">pyVHDLParser.Blocks.Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Reporting.html">pyVHDLParser.Blocks.Reporting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Sequential.html">pyVHDLParser.Blocks.Sequential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Structural.html">pyVHDLParser.Blocks.Structural</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Type.html">pyVHDLParser.Blocks.Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockParserException"><code class="docutils literal notranslate"><span class="pre">BlockParserException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser"><code class="docutils literal notranslate"><span class="pre">TokenToBlockParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.MetaBlock"><code class="docutils literal notranslate"><span class="pre">MetaBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockIterator"><code class="docutils literal notranslate"><span class="pre">BlockIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockReverseIterator"><code class="docutils literal notranslate"><span class="pre">BlockReverseIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block"><code class="docutils literal notranslate"><span class="pre">Block</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.SkipableBlock"><code class="docutils literal notranslate"><span class="pre">SkipableBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.FinalBlock"><code class="docutils literal notranslate"><span class="pre">FinalBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.CommentBlock"><code class="docutils literal notranslate"><span class="pre">CommentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock"><code class="docutils literal notranslate"><span class="pre">StartOfBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock"><code class="docutils literal notranslate"><span class="pre">EndOfBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfDocumentBlock"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfDocumentBlock"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfSnippetBlock"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfSnippetBlock"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+          <li><a href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a> &raquo;</li>
+          <li><a href="pyVHDLParser.Blocks.Instantiation.html">pyVHDLParser.Blocks.Instantiation</a> &raquo;</li>
+      <li>pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation">
+<span id="pyvhdlparser-blocks-instantiation-procedureinstantiation"></span><h1>pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation<a class="headerlink" href="#module-pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation" title="Permalink to this heading">¶</a></h1>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntityInstantiationBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericMapBeginBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericMapItemBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericMapDelimiterBlock</span></code></a>:
+Base-class for blocks that can be skipped in fast-forward scanning.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericMapEndBlock</span></code></a>:
+Base-class for blocks that are final in a fast-forward scanning.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">PortMapBeginBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">PortMapItemBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">PortMapDelimiterBlock</span></code></a>:
+Base-class for blocks that can be skipped in fast-forward scanning.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">PortMapEndBlock</span></code></a>:
+Base-class for blocks that are final in a fast-forward scanning.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock" title="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndBlock</span></code></a>:
+Base-class for blocks that are final in a fast-forward scanning.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">EntityInstantiationBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#EntityInstantiationBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-a48f2a46be8dad724d5a3829fc95e6c9805ecbf0.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EntityInstantiationBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EntityInstantiationBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">GenericMapBeginBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#GenericMapBeginBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-402be2ea61e75a52a5873bb2f106774230bd67f6.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of GenericMapBeginBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapBeginBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">GenericMapItemBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#GenericMapItemBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-f6e6e6cf3f1fabef9d421482c37d6b82dbe4dad9.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of GenericMapItemBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapItemBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">GenericMapDelimiterBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#GenericMapDelimiterBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-851f0fe8ea611e4bbcf9f29e3efc7f888788c592.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of GenericMapDelimiterBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapDelimiterBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">GenericMapEndBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#GenericMapEndBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-23bf447d88a065184f2fed2e79248e3f79ef32ae.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of GenericMapEndBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.GenericMapEndBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">PortMapBeginBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#PortMapBeginBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-f27e58c28c413cdd6d4939aaad7b2ca6768c70df.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of PortMapBeginBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapBeginBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">PortMapItemBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#PortMapItemBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-2d738f9cda617717df0bf39cdf25d8283db87c90.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of PortMapItemBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapItemBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">PortMapDelimiterBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#PortMapDelimiterBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-85a0e3d30317383e1d84f07c792f838d6dbbc5fc.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of PortMapDelimiterBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapDelimiterBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">PortMapEndBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#PortMapEndBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-71f46bf2597779161fb43d3162fc11273000047d.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of PortMapEndBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.PortMapEndBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.</span></span><span class="sig-name descname"><span class="pre">EndBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/Instantiation/ProcedureInstantiation.html#EndBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-85765ce00e7bb93e91748b65eef351a1da65d9b5.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EndBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation.EndBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.Blocks.Instantiation.PackageInstantiation.html" class="btn btn-neutral float-left" title="pyVHDLParser.Blocks.Instantiation.PackageInstantiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.Blocks.InterfaceObject.html" class="btn btn-neutral float-right" title="pyVHDLParser.Blocks.InterfaceObject" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

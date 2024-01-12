@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Use Cases &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Concepts" href="Concepts.html" />
+    <link rel="prev" title="Project Goals" href="ProjectGoals.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sourcecode-document-object-model">Sourcecode Document Object Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#language-model">Language Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependency-graphs-and-cross-references">Dependency Graphs and Cross-References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#syntax-highlighting">Syntax Highlighting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#syntax-checking">Syntax-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-extraction">Documentation Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-coverage-collection">Documentation Coverage Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#static-code-analysis">Static Code Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#document-transformation">Document Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-generation">Code Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-platform-for-new-language-revisions">Test Platform for new Language Revisions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Use Cases</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/UseCases.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="use-cases">
+<span id="usecase"></span><h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this heading">¶</a></h1>
+<p>The following list is an excerpt of possible use cases for pyVHDLParser.</p>
+<section id="sourcecode-document-object-model">
+<span id="usecase-codedom"></span><h2>Sourcecode Document Object Model<a class="headerlink" href="#sourcecode-document-object-model" title="Permalink to this heading">¶</a></h2>
+<p>A sourcecode document object model (Code-DOM) is a object-oriented programming
+model to represent a sourcecode file as a complex structure of object instances.
+A Code-DOM can offer an immutable access to source files e.g. to find identifiers
+and defined entities. This is called <em>introspection</em>.</p>
+<p>Bringing this idea to the next level, adds a modification API to the Code-DOM.
+Such an API also allows creating sourcecode from scratch with a Python API.</p>
+</section>
+<section id="language-model">
+<span id="usecase-vhdlmodel"></span><h2>Language Model<a class="headerlink" href="#language-model" title="Permalink to this heading">¶</a></h2>
+<p>While a Code-DOM focuses on a single file, a language model combines multiple
+files, thus Code-DOMs, to an overall project or design understanding. In such
+an extended scenario, a language model can offer several additional features
+compared to a Code-DOM like:</p>
+<ul class="simple">
+<li><p>Type analysis,</p></li>
+<li><p>Cross-references,</p></li>
+<li><p>Design hierarchy,</p></li>
+<li><p>Component and package dependencies, and</p></li>
+<li><p>Compile order detection.</p></li>
+</ul>
+</section>
+<section id="dependency-graphs-and-cross-references">
+<span id="usecase-graphs"></span><h2>Dependency Graphs and Cross-References<a class="headerlink" href="#dependency-graphs-and-cross-references" title="Permalink to this heading">¶</a></h2>
+<p>Using a language model, a tool can calculate and visualize the following
+dependency graphs:</p>
+<ul class="simple">
+<li><p>Compile order</p></li>
+<li><p>Component hierarchy</p></li>
+<li><p>Static call graph for functions</p></li>
+<li><p>Type system / type graphs</p></li>
+</ul>
+</section>
+<section id="syntax-highlighting">
+<span id="usecase-highlight"></span><h2>Syntax Highlighting<a class="headerlink" href="#syntax-highlighting" title="Permalink to this heading">¶</a></h2>
+<p>As a Code-DOM has already knowledge about comments, keywords, identifiers, etc.
+it’s straight forward to colorize a source document. While syntax-highlighting
+and cross-referencing based on pure Code-DOMs might be limited, it can be at
+full beauty if syntax highlighting is based on a language model.</p>
+</section>
+<section id="syntax-checking">
+<span id="usecase-syntax"></span><h2>Syntax-Checking<a class="headerlink" href="#syntax-checking" title="Permalink to this heading">¶</a></h2>
+<p>A parser is already checking the input for syntax correctness, but pyVHDLParser
+is not very strict at all parts of an input file, because some parts might not
+be parsed to its full depth. Therefore, the Code-DOM can get an additional syntax
+checking pass.</p>
+<p>As an example, pyVHDLParser considers any number as an integer literal,
+regardless of the integers value. Thus, an integer literal might exceed an
+(universal) integers value range. An additional check can catch such mistakes.</p>
+</section>
+<section id="documentation-extraction">
+<span id="usecase-doc"></span><h2>Documentation Extraction<a class="headerlink" href="#documentation-extraction" title="Permalink to this heading">¶</a></h2>
+<p>A Code-DOM, which still includes all comments, can be used in another pass for
+correlation of comments and language elements. The resulting mapping can be
+exported in various documentation format like JSON, XML, Restructured Text, …</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>A VHDL domain for Sphinx: <a class="reference external" href="https://github.com/Paebbels/sphinxcontrib-vhdldomain">sphinxcontrib-vhdldomain</a></p>
+</div>
+</section>
+<section id="documentation-coverage-collection">
+<span id="usecase-doccov"></span><h2>Documentation Coverage Collection<a class="headerlink" href="#documentation-coverage-collection" title="Permalink to this heading">¶</a></h2>
+<p>Simulators and frameworks like <a class="reference external" href="https://github.com/OSVVM/OSVVM">OSVVM</a> are
+collecting statement, branch and even functional coverage, but non of the tools
+is collecting documentation coverage.</p>
+<ul class="simple">
+<li><p>Are all Source files equipped with a file header?</p>
+<ul>
+<li><p>Does the file header match the style/pattern?</p></li>
+<li><p>Does the file header include necessary information (e.g. license)?</p></li>
+</ul>
+</li>
+<li><p>Are all entities documented?</p></li>
+<li><p>Are all public functions/procedures in a package documented?</p></li>
+<li><p>Are all user-defined types documented?</p></li>
+<li><p>Are all ports documented?</p></li>
+</ul>
+</section>
+<section id="static-code-analysis">
+<span id="usecase-analysis"></span><h2>Static Code Analysis<a class="headerlink" href="#static-code-analysis" title="Permalink to this heading">¶</a></h2>
+<p>The Code-DOM also allows for static checks like:</p>
+<ul class="simple">
+<li><p>Coding style</p></li>
+<li><p>Code statistics / complexity checks</p></li>
+</ul>
+</section>
+<section id="document-transformation">
+<span id="usecase-transform"></span><h2>Document Transformation<a class="headerlink" href="#document-transformation" title="Permalink to this heading">¶</a></h2>
+<p>As a combination of coding style checks and a Code-DOM or language model,
+source files can be manipulated or reformatted according to rules.</p>
+</section>
+<section id="code-generation">
+<span id="usecase-codegen"></span><h2>Code Generation<a class="headerlink" href="#code-generation" title="Permalink to this heading">¶</a></h2>
+<p>As a Code-DOM is a structure of object instances, a Code-DOM can be constructed
+from code itself. Thus, a sourcefile can be created from scratch purely in
+memory. By using a rule-based formatting from objects to text, a Code-DOM can
+be persisted as a VHDL source file.</p>
+</section>
+<section id="test-platform-for-new-language-revisions">
+<span id="usecase-upcoming"></span><h2>Test Platform for new Language Revisions<a class="headerlink" href="#test-platform-for-new-language-revisions" title="Permalink to this heading">¶</a></h2>
+<p>And finally, this project could be used for testing upcoming language features
+in syntax and functionality.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ProjectGoals.html" class="btn btn-neutral float-left" title="Project Goals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Concepts.html" class="btn btn-neutral float-right" title="Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

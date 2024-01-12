@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.TypeSystem.TypeSystem &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.TypeSystem.std" href="pyVHDLParser.TypeSystem.std.html" />
+    <link rel="prev" title="pyVHDLParser.TypeSystem.Package" href="pyVHDLParser.TypeSystem.Package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.TypeSystem.Package.html">pyVHDLParser.TypeSystem.Package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyVHDLParser.TypeSystem.TypeSystem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem._Attributes"><code class="docutils literal notranslate"><span class="pre">_Attributes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Type"><code class="docutils literal notranslate"><span class="pre">Type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerType"><code class="docutils literal notranslate"><span class="pre">IntegerType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RealType"><code class="docutils literal notranslate"><span class="pre">RealType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral"><code class="docutils literal notranslate"><span class="pre">EnumerationLiteral</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType"><code class="docutils literal notranslate"><span class="pre">EnumerationType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.ArrayType"><code class="docutils literal notranslate"><span class="pre">ArrayType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordMember"><code class="docutils literal notranslate"><span class="pre">RecordMember</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordType"><code class="docutils literal notranslate"><span class="pre">RecordType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Subtype"><code class="docutils literal notranslate"><span class="pre">Subtype</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype"><code class="docutils literal notranslate"><span class="pre">IntegerSubtype</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype"><code class="docutils literal notranslate"><span class="pre">EnumerationSubtype</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Direction"><code class="docutils literal notranslate"><span class="pre">Direction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Range"><code class="docutils literal notranslate"><span class="pre">Range</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.TypeInstance"><code class="docutils literal notranslate"><span class="pre">TypeInstance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Array"><code class="docutils literal notranslate"><span class="pre">Array</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.TypeSystem.std.html">pyVHDLParser.TypeSystem.std</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.TypeSystem.std_logic_1164.html">pyVHDLParser.TypeSystem.std_logic_1164</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+          <li><a href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a> &raquo;</li>
+      <li>pyVHDLParser.TypeSystem.TypeSystem</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.TypeSystem.TypeSystem.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.TypeSystem.TypeSystem">
+<span id="pyvhdlparser-typesystem-typesystem"></span><h1>pyVHDLParser.TypeSystem.TypeSystem<a class="headerlink" href="#module-pyVHDLParser.TypeSystem.TypeSystem" title="Permalink to this heading">¶</a></h1>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem._Attributes" title="pyVHDLParser.TypeSystem.TypeSystem._Attributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">_Attributes</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Type" title="pyVHDLParser.TypeSystem.TypeSystem.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerType" title="pyVHDLParser.TypeSystem.TypeSystem.IntegerType"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerType</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RealType" title="pyVHDLParser.TypeSystem.TypeSystem.RealType"><code class="xref py py-class docutils literal notranslate"><span class="pre">RealType</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral" title="pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumerationLiteral</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType" title="pyVHDLParser.TypeSystem.TypeSystem.EnumerationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumerationType</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.ArrayType" title="pyVHDLParser.TypeSystem.TypeSystem.ArrayType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayType</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordMember" title="pyVHDLParser.TypeSystem.TypeSystem.RecordMember"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecordMember</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordType" title="pyVHDLParser.TypeSystem.TypeSystem.RecordType"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecordType</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Subtype" title="pyVHDLParser.TypeSystem.TypeSystem.Subtype"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subtype</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype" title="pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerSubtype</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype" title="pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumerationSubtype</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Direction" title="pyVHDLParser.TypeSystem.TypeSystem.Direction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Direction</span></code></a>:
+Create a collection of name/value pairs.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Range" title="pyVHDLParser.TypeSystem.TypeSystem.Range"><code class="xref py py-class docutils literal notranslate"><span class="pre">Range</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.TypeInstance" title="pyVHDLParser.TypeSystem.TypeSystem.TypeInstance"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeInstance</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.TypeSystem.TypeSystem.Array" title="pyVHDLParser.TypeSystem.TypeSystem.Array"><code class="xref py py-class docutils literal notranslate"><span class="pre">Array</span></code></a>:
+Undocumented.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem._Attributes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">_Attributes</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#_Attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem._Attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Type">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-05b9760b24c5045eab55c23830d8511f6639250b.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Type</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Type.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Type.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Type.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.IntegerType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">IntegerType</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#IntegerType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerType" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-698968b12f36ea6696e4278beaae70181f60b5d3.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of IntegerType</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.IntegerType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#IntegerType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RealType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">RealType</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RealType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RealType" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-63f0425affcef179fd1b253d1b70ca12845528b9.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of RealType</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RealType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RealType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RealType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">EnumerationLiteral</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationLiteral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-c9d67a85d5f54b25a78d32fc51cbad4865b30ffd.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EnumerationLiteral</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationLiteral.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationLiteral.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationLiteral.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationLiteral.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">EnumerationType</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-6999a84139e1d51c417d20f791a28f9e39cab36d.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EnumerationType</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enumerationValues</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationType.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationType.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationType.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.ArrayType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">ArrayType</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#ArrayType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.ArrayType" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-628136f201643df8da328d86bf29904eff572a1e.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of ArrayType</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.ArrayType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elementType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#ArrayType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.ArrayType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RecordMember">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">RecordMember</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RecordMember"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordMember" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-13157ebbd1e32b5094010a590379aa64a9ab99d7.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of RecordMember</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RecordMember.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elementType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RecordMember.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordMember.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RecordType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">RecordType</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RecordType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordType" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-21c949c5ff8c83c26d816949fb25a27d828b7073.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of RecordType</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.RecordType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#RecordType.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.RecordType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Subtype">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">Subtype</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Subtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Subtype" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-140c11b5fb5ea81e6466ad2938559da8a219e6c9.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Subtype</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Subtype.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolutionFunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Subtype.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Subtype.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">IntegerSubtype</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#IntegerSubtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-43acfd6ad184e319941a6bd565dd7826f166833c.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of IntegerSubtype</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolutionFunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.IntegerSubtype.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">EnumerationSubtype</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationSubtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-659e74300e96b4057436aa3c788a23bb51ef45a5.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EnumerationSubtype</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolutionFunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#EnumerationSubtype.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.EnumerationSubtype.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Direction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">Direction</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Direction" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-e36935e4338ed48e141635245651945355026bbc.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Direction</p></object></div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Range">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">Range</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Range" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-b12186f62fb1a854eaadaafbbfd845d4d64528b6.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Range</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Range.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Range.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Range.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.TypeInstance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">TypeInstance</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#TypeInstance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.TypeInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-9830a5aa0bf6ae5a33250b7fd928f1461aba0e82.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of TypeInstance</p></object></div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Array">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.TypeSystem.TypeSystem.</span></span><span class="sig-name descname"><span class="pre">Array</span></span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Array" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-9dbc80092ddedbf8451f661d1186f239d84de531.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Array</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.TypeSystem.TypeSystem.Array.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/TypeSystem/TypeSystem.html#Array.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.TypeSystem.TypeSystem.Array.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.TypeSystem.Package.html" class="btn btn-neutral float-left" title="pyVHDLParser.TypeSystem.Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.TypeSystem.std.html" class="btn btn-neutral float-right" title="pyVHDLParser.TypeSystem.std" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================================
+pyVHDLParser.SimulationModel.SimulationModel
+============================================
+
+.. automodule:: pyVHDLParser.SimulationModel.SimulationModel
+
+
+.. currentmodule:: pyVHDLParser.SimulationModel.SimulationModel
+
+
+**Classes**
+
+- :py:class:`Simulation`:
+  Undocumented.
+
+- :py:class:`Path`:
+  Undocumented.
+
+- :py:class:`Signal`:
+  Undocumented.
+
+- :py:class:`Process`:
+  Undocumented.
+
+- :py:class:`Source`:
+  Undocumented.
+
+- :py:class:`Driver`:
+  Undocumented.
+
+- :py:class:`ResolutionFunction`:
+  Undocumented.
+
+- :py:class:`DrivingValue`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Simulation
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Simulation
+      :parts: 1
+
+.. autoclass:: Path
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Path
+      :parts: 1
+
+.. autoclass:: Signal
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Signal
+      :parts: 1
+
+.. autoclass:: Process
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Process
+      :parts: 1
+
+.. autoclass:: Source
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Source
+      :parts: 1
+
+.. autoclass:: Driver
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Driver
+      :parts: 1
+
+.. autoclass:: ResolutionFunction
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ResolutionFunction
+      :parts: 1
+
+.. autoclass:: DrivingValue
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DrivingValue
+      :parts: 1

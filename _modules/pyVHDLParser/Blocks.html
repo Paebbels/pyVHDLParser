@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Blocks &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>pyVHDLParser.Blocks</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLParser.Blocks</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#            __     ___   _ ____  _     ____                                                                           #</span>
+<span class="c1">#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #</span>
+<span class="c1"># | &#39;_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | &#39;__/ __|/ _ \ &#39;__|                                                 #</span>
+<span class="c1"># | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #</span>
+<span class="c1"># | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #</span>
+<span class="c1"># |_|    |___/                                                                                                         #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">types</span>                          <span class="kn">import</span> <span class="n">FunctionType</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span>           <span class="kn">import</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">pyTooling.MetaClasses</span> <span class="kn">import</span> <span class="n">ExtendedType</span>
+<span class="kn">from</span> <span class="nn">pyTooling.TerminalUI</span>           <span class="kn">import</span> <span class="n">LineTerminal</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser</span>                   <span class="kn">import</span> <span class="n">StartOfDocument</span><span class="p">,</span> <span class="n">EndOfDocument</span><span class="p">,</span> <span class="n">StartOfSnippet</span><span class="p">,</span> <span class="n">EndOfSnippet</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Base</span>              <span class="kn">import</span> <span class="n">ParserException</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>             <span class="kn">import</span> <span class="n">CharacterToken</span><span class="p">,</span> <span class="n">Token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">,</span> <span class="n">IndentationToken</span><span class="p">,</span> <span class="n">LinebreakToken</span><span class="p">,</span> <span class="n">CommentToken</span><span class="p">,</span> <span class="n">TokenIterator</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>             <span class="kn">import</span> <span class="n">WordToken</span><span class="p">,</span> <span class="n">EndOfDocumentToken</span><span class="p">,</span> <span class="n">StartOfDocumentToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Keywords</span>    <span class="kn">import</span> <span class="n">LibraryKeyword</span><span class="p">,</span> <span class="n">UseKeyword</span><span class="p">,</span> <span class="n">ContextKeyword</span><span class="p">,</span> <span class="n">EntityKeyword</span><span class="p">,</span> <span class="n">ArchitectureKeyword</span><span class="p">,</span> <span class="n">PackageKeyword</span>
+
+
+<div class="viewcode-block" id="BlockParserException"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockParserException">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockParserException</span><span class="p">(</span><span class="n">ParserException</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for exceptions when reading tokens and generating blocks.&quot;&quot;&quot;</span>
+
+	<span class="n">_token</span><span class="p">:</span> <span class="n">Token</span>   <span class="c1">#: Token that was involved in an exception situation</span>
+
+<div class="viewcode-block" id="BlockParserException.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockParserException.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_token</span> <span class="o">=</span> <span class="n">token</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Token</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns the token involved in an exception situation.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_token</span></div>
+
+
+<div class="viewcode-block" id="TokenToBlockParser"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">TokenToBlockParser</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ExtendedType</span><span class="p">,</span> <span class="n">useSlots</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Represents the current state of a token-to-block parser.&quot;&quot;&quot;</span>
+
+	<span class="n">_iterator</span><span class="p">:</span>     <span class="n">Iterator</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span>
+	<span class="n">_stack</span><span class="p">:</span>        <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;TokenToBlockParser&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">int</span><span class="p">]]</span>
+	<span class="n">_tokenMarker</span><span class="p">:</span>  <span class="n">Token</span>
+
+	<span class="n">Token</span><span class="p">:</span>         <span class="n">Token</span>
+	<span class="n">NextState</span><span class="p">:</span>     <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;TokenToBlockParser&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+	<span class="c1"># ReIssue:       bool</span>
+	<span class="n">NewToken</span><span class="p">:</span>      <span class="n">Token</span>
+	<span class="n">NewBlock</span><span class="p">:</span>      <span class="s1">&#39;Block&#39;</span>
+	<span class="n">LastBlock</span><span class="p">:</span>     <span class="s1">&#39;Block&#39;</span>
+	<span class="n">Counter</span><span class="p">:</span>       <span class="nb">int</span>
+
+<div class="viewcode-block" id="TokenToBlockParser.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenGenerator</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Token</span><span class="p">]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Initializes the parser state.&quot;&quot;&quot;</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span> <span class="o">=</span>    <span class="nb">iter</span><span class="p">(</span><span class="n">tokenGenerator</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span>       <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+
+		<span class="n">startToken</span> <span class="o">=</span>        <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">startToken</span><span class="p">,</span> <span class="n">StartOfDocumentToken</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="s2">&quot;First token is not a StartOfDocumentToken.&quot;</span><span class="p">,</span> <span class="n">startToken</span><span class="p">)</span>
+
+		<span class="n">startBlock</span> <span class="o">=</span>        <span class="n">StartOfDocumentBlock</span><span class="p">(</span><span class="n">startToken</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">Token</span> <span class="o">=</span>        <span class="n">startBlock</span><span class="o">.</span><span class="n">StartToken</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>    <span class="n">StartOfDocumentBlock</span><span class="o">.</span><span class="n">stateDocument</span>
+		<span class="c1"># self.ReIssue =      False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>     <span class="n">startBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span> <span class="o">=</span>    <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Counter</span> <span class="o">=</span>      <span class="mi">0</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PushState</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;TokenToBlockParser&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span>
+
+	<span class="nd">@PushState</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">PushState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;TokenToBlockParser&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">]):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Counter</span>
+		<span class="p">))</span>
+		<span class="n">LineTerminal</span><span class="p">()</span><span class="o">.</span><span class="n">WriteDebug</span><span class="p">(</span><span class="s2">&quot;  pushed: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>    <span class="n">value</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span>  <span class="kc">None</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">TokenMarker</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Token</span><span class="p">:</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">Token</span><span class="p">):</span>
+			<span class="n">LineTerminal</span><span class="p">()</span><span class="o">.</span><span class="n">WriteDebug</span><span class="p">(</span><span class="s2">&quot;  </span><span class="si">{DARK_GREEN}</span><span class="s2">@TokenMarker: </span><span class="si">{0!s}</span><span class="s2"> =&gt; </span><span class="si">{GREEN}{1!s}{NOCOLOR}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span><span class="p">,</span> <span class="o">**</span><span class="n">LineTerminal</span><span class="o">.</span><span class="n">Foreground</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span>
+
+	<span class="nd">@TokenMarker</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">TokenMarker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Token</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="TokenToBlockParser.__eq__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__eq__">[docs]</a>	<span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Implement a &#39;==&#39; operator for the current state.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="ow">is</span> <span class="n">other</span></div>
+
+<div class="viewcode-block" id="TokenToBlockParser.__ne__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__ne__">[docs]</a>	<span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Implement a &#39;!=&#39; operator for the current state.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">other</span></div>
+
+<div class="viewcode-block" id="TokenToBlockParser.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns the current state (function name) as str.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="TokenToBlockParser.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns the current state (full) as str.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="s2">&quot;</span><span class="si">{state}</span><span class="se">\n</span><span class="s2">  token:   </span><span class="si">{token}</span><span class="se">\n</span><span class="s2">  Marker: </span><span class="si">{marker}</span><span class="se">\n</span><span class="s2">  NewToken: </span><span class="si">{newToken}</span><span class="se">\n</span><span class="s2">  newBlock: </span><span class="si">{newBlock}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+			<span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span>
+			<span class="n">marker</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span>
+			<span class="n">newToken</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span><span class="p">,</span>
+			<span class="n">newBlock</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span>
+		<span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">Pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tokenMarker</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+			<span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+			<span class="n">LineTerminal</span><span class="p">()</span><span class="o">.</span><span class="n">WriteDebug</span><span class="p">(</span><span class="s2">&quot;popped: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Counter</span> <span class="o">=</span> <span class="n">top</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="n">tokenMarker</span>
+
+<div class="viewcode-block" id="TokenToBlockParser.__call__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser.__call__">[docs]</a>	<span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Block&#39;</span><span class="p">,</span> <span class="n">Token</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>             <span class="kn">import</span> <span class="n">EndOfDocumentToken</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Common</span>     <span class="kn">import</span> <span class="n">LinebreakBlock</span><span class="p">,</span> <span class="n">EmptyLineBlock</span>
+
+		<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span><span class="p">:</span>
+			<span class="c1"># set parserState.Token to current token</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Token</span> <span class="o">=</span> <span class="n">token</span>
+
+			<span class="c1"># overwrite an existing token and connect the next token with the new one</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="c1"># print(&quot;{MAGENTA}NewToken: {token}{NOCOLOR}&quot;.format(token=self.NewToken, **Console.Foreground))</span>
+				<span class="c1"># update topmost TokenMarker</span>
+				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="ow">is</span> <span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">:</span>
+					<span class="c1"># XXX: LineTerminal().WriteDebug(&quot;  update token marker: {0!s} -&gt; {1!s}&quot;.format(self._tokenMarker, self.NewToken))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span>
+
+				<span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>       <span class="kc">None</span>
+
+			<span class="c1"># an empty marker means: fill on next yield run</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">LineTerminal</span><span class="p">()</span><span class="o">.</span><span class="n">WriteDebug</span><span class="p">(</span><span class="s2">&quot;  new token marker: None -&gt; </span><span class="si">{0!s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_tokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+
+			<span class="c1"># a new block is assembled</span>
+			<span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">LinebreakBlock</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="p">(</span><span class="n">LinebreakBlock</span><span class="p">,</span> <span class="n">EmptyLineBlock</span><span class="p">)):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span> <span class="o">=</span> <span class="n">EmptyLineBlock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="o">.</span><span class="n">StartToken</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span><span class="o">.</span><span class="n">NextBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="o">.</span><span class="n">NextBlock</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span>
+
+				<span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="o">.</span><span class="n">NextBlock</span>
+				<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">LastBlock</span>
+
+			<span class="c1"># if self.debug: print(&quot;{MAGENTA}------ iteration end ------{NOCOLOR}&quot;.format(**Console.Foreground))</span>
+			<span class="c1"># XXX: LineTerminal().WriteDebug(&quot;    {DARK_GRAY}state={state!s: &lt;50}  token={token!s: &lt;40}{NOCOLOR}   &quot;.format(state=self, token=token, **LineTerminal.Foreground))</span>
+			<span class="c1"># execute a state</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">EndOfDocumentToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">EndOfDocumentBlock</span><span class="p">):</span>
+				<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="s2">&quot;Unexpected end of document.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Token</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MetaBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.MetaBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MetaBlock</span><span class="p">(</span><span class="n">ExtendedType</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A :term:`meta-class` to construct *Block* classes.</span>
+
+<span class="sd">	Modifications done by this meta-class:</span>
+
+<span class="sd">	* Register all classes of type :class:`Block` or derived variants in a class field :attr:`Block.BLOCKS` in this meta-class.</span>
+<span class="sd">	* Register all method of name `state....` in the constructed class&#39; attribute :attr:`Block.__STATES__`.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">BLOCKS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Block&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>     <span class="c1">#: List of all classes of type :class:`Block` or derived variants</span>
+
+<div class="viewcode-block" id="MetaBlock.__new__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.MetaBlock.__new__">[docs]</a>	<span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">baseClasses</span><span class="p">,</span> <span class="n">classMembers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+		<span class="c1"># &quot;&quot;&quot;Register all state*** methods in a list called `__STATES__`.&quot;&quot;&quot;</span>
+		<span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">memberName</span><span class="p">,</span> <span class="n">memberObject</span> <span class="ow">in</span> <span class="n">classMembers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memberObject</span><span class="p">,</span> <span class="n">FunctionType</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">memberName</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;state&quot;</span><span class="p">):</span>
+				<span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">memberObject</span><span class="p">)</span>
+
+		<span class="n">block</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">baseClasses</span><span class="p">,</span> <span class="n">classMembers</span><span class="p">,</span> <span class="n">useSlots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">__STATES__</span> <span class="o">=</span> <span class="n">states</span>
+
+		<span class="bp">cls</span><span class="o">.</span><span class="n">BLOCKS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">block</span></div></div>
+
+
+<div class="viewcode-block" id="BlockIterator"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockIterator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockIterator</span><span class="p">:</span>
+	<span class="n">_startBlock</span><span class="p">:</span>         <span class="s1">&#39;Block&#39;</span>
+	<span class="n">_currentBlock</span><span class="p">:</span>       <span class="s1">&#39;Block&#39;</span>
+	<span class="n">_stopBlock</span><span class="p">:</span>          <span class="s1">&#39;Block&#39;</span>
+	<span class="n">_inclusiveStopBlock</span><span class="p">:</span> <span class="nb">bool</span>
+
+	<span class="n">_state</span><span class="p">:</span>              <span class="nb">int</span>     <span class="c1">#: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached EndOfBlock</span>
+
+<div class="viewcode-block" id="BlockIterator.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockIterator.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inclusiveStopBlock</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stopBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_startBlock</span> <span class="o">=</span>         <span class="n">startBlock</span> <span class="k">if</span> <span class="n">inclusiveStartBlock</span> <span class="k">else</span> <span class="n">startBlock</span><span class="o">.</span><span class="n">NextBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="o">=</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_startBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_stopBlock</span> <span class="o">=</span>          <span class="n">stopBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_inclusiveStopBlock</span> <span class="o">=</span> <span class="n">inclusiveStopBlock</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span>              <span class="mi">0</span></div>
+
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BlockIterator&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="c1"># in last call of &#39;__next__&#39;, the last block in the sequence was returned</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">)</span>
+
+		<span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span>
+		<span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopBlock</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inclusiveStopBlock</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span><span class="p">,</span> <span class="n">EndOfBlock</span><span class="p">):</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inclusiveStopBlock</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="mi">2</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">NextBlock</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">ParserException</span><span class="p">(</span><span class="s2">&quot;Found open end while iterating block sequence.&quot;</span><span class="p">)</span>  <span class="c1"># FIXME: how to append last block?</span>
+
+		<span class="k">return</span> <span class="n">block</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">StartBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startBlock</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">CurrentBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">StopBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopBlock</span>
+
+	<span class="k">def</span> <span class="nf">Reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_currentBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startBlock</span></div>
+
+
+<div class="viewcode-block" id="BlockReverseIterator"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockReverseIterator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockReverseIterator</span><span class="p">:</span>
+	<span class="n">startBlock</span><span class="p">:</span>   <span class="s1">&#39;Block&#39;</span>
+	<span class="n">currentBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span>
+	<span class="n">stopBlock</span><span class="p">:</span>    <span class="s1">&#39;Block&#39;</span>
+
+	<span class="n">state</span><span class="p">:</span>        <span class="nb">int</span>     <span class="c1">#: internal states: 0 = normal, 1 = reached stopBlock, 2 = reached StartOfBlock</span>
+
+<div class="viewcode-block" id="BlockReverseIterator.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockReverseIterator.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stopBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">startBlock</span> <span class="o">=</span>   <span class="n">startBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span> <span class="o">=</span> <span class="n">startBlock</span> <span class="k">if</span> <span class="n">inclusiveStartBlock</span> <span class="k">else</span> <span class="n">startBlock</span><span class="o">.</span><span class="n">NextBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stopBlock</span> <span class="o">=</span>    <span class="n">stopBlock</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span>        <span class="mi">0</span></div>
+
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BlockReverseIterator&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="c1"># in last call of &#39;__next__&#39;, the last block in the sequence was returned</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+
+		<span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span>
+		<span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopToken</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span> <span class="o">=</span> <span class="kc">None</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span>        <span class="mi">1</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span><span class="p">,</span> <span class="n">EndOfBlock</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span> <span class="o">=</span> <span class="kc">None</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span>        <span class="mi">2</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">PreviousBlock</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">ParserException</span><span class="p">(</span><span class="s2">&quot;Found open end while iterating block sequence.&quot;</span><span class="p">)</span>  <span class="c1"># FIXME: how to append last block?</span>
+
+		<span class="k">return</span> <span class="n">block</span></div>
+
+
+<div class="viewcode-block" id="Block"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Block</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">MetaBlock</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Base-class for all :term:`block` classes.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">__STATES__</span><span class="p">:</span>      <span class="n">List</span>    <span class="c1">#: List of all `state...` methods in this class.</span>
+
+	<span class="n">_previousBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span>  <span class="c1">#: Reference to the previous block.</span>
+	<span class="n">NextBlock</span><span class="p">:</span>      <span class="s1">&#39;Block&#39;</span>  <span class="c1">#: Reference to the next block.</span>
+	<span class="n">StartToken</span><span class="p">:</span>     <span class="n">Token</span>    <span class="c1">#: Reference to the first token in the scope of this block.</span>
+	<span class="n">EndToken</span><span class="p">:</span>       <span class="n">Token</span>    <span class="c1">#: Reference to the last token in the scope of this block.</span>
+	<span class="n">MultiPart</span><span class="p">:</span>      <span class="nb">bool</span>     <span class="c1">#: True, if this block has multiple parts.</span>
+
+<div class="viewcode-block" id="Block.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="p">,</span> <span class="n">startToken</span><span class="p">:</span> <span class="n">Token</span><span class="p">,</span> <span class="n">endToken</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">multiPart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Base-class constructor for a new block instance.&quot;&quot;&quot;</span>
+
+		<span class="n">previousBlock</span><span class="o">.</span><span class="n">NextBlock</span> <span class="o">=</span>       <span class="bp">self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousBlock</span> <span class="o">=</span> <span class="n">previousBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextBlock</span> <span class="o">=</span>      <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span> <span class="o">=</span>     <span class="n">startToken</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">EndToken</span> <span class="o">=</span>       <span class="n">startToken</span> <span class="k">if</span> <span class="p">(</span><span class="n">endToken</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">endToken</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="o">=</span>      <span class="n">multiPart</span></div>
+
+<div class="viewcode-block" id="Block.__len__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.__len__">[docs]</a>	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndToken</span><span class="o">.</span><span class="n">End</span><span class="o">.</span><span class="n">Absolute</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span><span class="o">.</span><span class="n">Start</span><span class="o">.</span><span class="n">Absolute</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Block.__iter__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.__iter__">[docs]</a>	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenIterator</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a token iterator that iterates from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">TokenIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span><span class="p">,</span> <span class="n">inclusiveStartToken</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stopToken</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EndToken</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">GetIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">inclusiveStopBlock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stopBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockIterator</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">BlockIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="o">=</span><span class="n">inclusiveStartBlock</span><span class="p">,</span> <span class="n">inclusiveStopBlock</span><span class="o">=</span><span class="n">inclusiveStopBlock</span><span class="p">,</span> <span class="n">stopBlock</span><span class="o">=</span><span class="n">stopBlock</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">GetReverseIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">inclusiveStopBlock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stopBlock</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockReverseIterator</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">BlockReverseIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inclusiveStartBlock</span><span class="o">=</span><span class="n">inclusiveStartBlock</span><span class="p">,</span> <span class="n">inclusiveStopBlock</span><span class="o">=</span><span class="n">inclusiveStopBlock</span><span class="p">,</span> <span class="n">stopBlock</span><span class="o">=</span><span class="n">stopBlock</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Block.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">buffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+				<span class="n">buffer</span> <span class="o">+=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">buffer</span> <span class="o">+=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span>
+				<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+					<span class="k">pass</span>
+
+		<span class="k">return</span> <span class="n">buffer</span></div>
+
+<div class="viewcode-block" id="Block.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;[</span><span class="si">{blockName: &lt;50s}</span><span class="s2"> </span><span class="si">{stream: &lt;62s}</span><span class="s2"> at </span><span class="si">{start!s}</span><span class="s2"> .. </span><span class="si">{end!s}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">blockName</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{module}</span><span class="s2">.</span><span class="si">{classname}{multiparted}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+				<span class="n">classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+				<span class="n">multiparted</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+			<span class="p">),</span>
+			<span class="n">stream</span><span class="o">=</span><span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">,</span>
+			<span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span>
+			<span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EndToken</span><span class="o">.</span><span class="n">End</span>
+		<span class="p">)</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PreviousBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previousBlock</span>
+	<span class="nd">@PreviousBlock</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">PreviousBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">&#39;Block&#39;</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousBlock</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="n">value</span><span class="o">.</span><span class="n">NextBlock</span> <span class="o">=</span> <span class="bp">self</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns the length of a block in characters from :attr:`~Block.StartToken` to :attr:`~Block.EndToken`.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">States</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a list of all `state...` methods in this class.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__STATES__</span>
+
+<div class="viewcode-block" id="Block.stateError"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block.stateError">[docs]</a>	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateError</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Predefined state to catch error situations.&quot;&quot;&quot;</span>
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="s2">&quot;Reached unreachable state!&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SkipableBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.SkipableBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SkipableBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for blocks that can be skipped in fast-forward scanning.&quot;&quot;&quot;</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="FinalBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.FinalBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">FinalBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for blocks that are final in a fast-forward scanning.&quot;&quot;&quot;</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CommentBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.CommentBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">CommentBlock</span><span class="p">(</span><span class="n">SkipableBlock</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all comment blocks.&quot;&quot;&quot;</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="StartOfBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for a first block in a sequence of double-linked blocks.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StartOfBlock.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startToken</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousBlock</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextBlock</span> <span class="o">=</span>          <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span> <span class="o">=</span>         <span class="n">startToken</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">EndToken</span> <span class="o">=</span>           <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="o">=</span>          <span class="kc">False</span></div>
+
+	<span class="c1"># TODO: needs review: should TokenIterator be used?</span>
+<div class="viewcode-block" id="StartOfBlock.__iter__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock.__iter__">[docs]</a>	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span></div>
+
+<div class="viewcode-block" id="StartOfBlock.__len__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock.__len__">[docs]</a>	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="StartOfBlock.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;[</span><span class="si">{name}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+		<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EndOfBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for a last block in a sequence of double-linked blocks.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EndOfBlock.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousBlock</span><span class="p">,</span> <span class="n">endToken</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">previousBlock</span><span class="p">,</span> <span class="n">endToken</span><span class="p">)</span></div>
+
+	<span class="c1"># TODO: needs review: should TokenIterator be used?</span>
+<div class="viewcode-block" id="EndOfBlock.__iter__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock.__iter__">[docs]</a>	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Token</span><span class="p">]:</span>
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartToken</span></div>
+
+<div class="viewcode-block" id="EndOfBlock.__len__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock.__len__">[docs]</a>	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="EndOfBlock.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;[</span><span class="si">{name}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+		<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StartOfDocumentBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfDocumentBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfDocumentBlock</span><span class="p">(</span><span class="n">StartOfBlock</span><span class="p">,</span> <span class="n">StartOfDocument</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;First block in a sequence of double-linked blocks.&quot;&quot;&quot;</span>
+
+	<span class="n">KEYWORDS</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">__cls_init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Common</span>     <span class="kn">import</span> <span class="n">IndentationBlock</span><span class="p">,</span> <span class="n">WhitespaceBlock</span><span class="p">,</span> <span class="n">LinebreakBlock</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Reference</span>  <span class="kn">import</span> <span class="n">Library</span><span class="p">,</span> <span class="n">Use</span><span class="p">,</span> <span class="n">Context</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Sequential</span> <span class="kn">import</span> <span class="n">Package</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Structural</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">Architecture</span>
+
+		<span class="bp">cls</span><span class="o">.</span><span class="n">KEYWORDS</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="c1"># Keyword             Transition</span>
+			<span class="n">LibraryKeyword</span><span class="p">:</span>       <span class="n">Library</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">stateLibraryKeyword</span><span class="p">,</span>
+			<span class="n">UseKeyword</span><span class="p">:</span>           <span class="n">Use</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">stateUseKeyword</span><span class="p">,</span>
+			<span class="n">ContextKeyword</span><span class="p">:</span>       <span class="n">Context</span><span class="o">.</span><span class="n">NameBlock</span><span class="o">.</span><span class="n">stateContextKeyword</span><span class="p">,</span>
+			<span class="n">EntityKeyword</span><span class="p">:</span>        <span class="n">Entity</span><span class="o">.</span><span class="n">NameBlock</span><span class="o">.</span><span class="n">stateEntityKeyword</span><span class="p">,</span>
+			<span class="n">ArchitectureKeyword</span><span class="p">:</span>  <span class="n">Architecture</span><span class="o">.</span><span class="n">NameBlock</span><span class="o">.</span><span class="n">stateArchitectureKeyword</span><span class="p">,</span>
+			<span class="n">PackageKeyword</span><span class="p">:</span>       <span class="n">Package</span><span class="o">.</span><span class="n">NameBlock</span><span class="o">.</span><span class="n">statePackageKeyword</span>
+		<span class="p">}</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateDocument</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Common</span>     <span class="kn">import</span> <span class="n">IndentationBlock</span><span class="p">,</span> <span class="n">WhitespaceBlock</span><span class="p">,</span> <span class="n">LinebreakBlock</span>
+
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">blockType</span> <span class="o">=</span>               <span class="n">IndentationBlock</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">IndentationToken</span><span class="p">)</span> <span class="k">else</span> <span class="n">WhitespaceBlock</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">blockType</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="p">(</span><span class="n">LinebreakToken</span><span class="p">,</span> <span class="n">CommentToken</span><span class="p">)):</span>
+			<span class="n">block</span> <span class="o">=</span>                   <span class="n">LinebreakBlock</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">LinebreakToken</span><span class="p">)</span> <span class="k">else</span> <span class="n">CommentBlock</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">block</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">tokenValue</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+			<span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">KEYWORDS</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">tokenValue</span> <span class="o">==</span> <span class="n">keyword</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">:</span>
+					<span class="n">newToken</span> <span class="o">=</span>                <span class="n">keyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">KEYWORDS</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">newToken</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">newToken</span>
+					<span class="k">return</span>
+
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">EndOfDocumentToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span> <span class="n">EndOfDocumentBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span>
+			<span class="s2">&quot;Expected one of these keywords: </span><span class="si">{keywords}</span><span class="s2">. Found: &#39;</span><span class="si">{tokenValue}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">keywords</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+					<span class="p">[</span><span class="n">kw</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">KEYWORDS</span><span class="p">]</span>
+				<span class="p">),</span>
+				<span class="n">tokenValue</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">Value</span>
+			<span class="p">),</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EndOfDocumentBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfDocumentBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfDocumentBlock</span><span class="p">(</span><span class="n">EndOfBlock</span><span class="p">,</span> <span class="n">EndOfDocument</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Last block in a sequence of double-linked blocks.&quot;&quot;&quot;</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="StartOfSnippetBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfSnippetBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfSnippetBlock</span><span class="p">(</span><span class="n">StartOfBlock</span><span class="p">,</span> <span class="n">StartOfSnippet</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="EndOfSnippetBlock"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfSnippetBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfSnippetBlock</span><span class="p">(</span><span class="n">EndOfBlock</span><span class="p">,</span> <span class="n">EndOfSnippet</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

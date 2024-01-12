@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.CLI.VHDLParser &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyVHDLParser.CLI.VHDLParser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLParser.CLI.VHDLParser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#            __     ___   _ ____  _     ____                                                                           #</span>
+<span class="c1">#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #</span>
+<span class="c1"># | &#39;_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | &#39;__/ __|/ _ \ &#39;__|                                                 #</span>
+<span class="c1"># | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #</span>
+<span class="c1"># | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #</span>
+<span class="c1"># |_|    |___/                                                                                                         #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">argparse</span>       <span class="kn">import</span> <span class="n">RawDescriptionHelpFormatter</span>
+<span class="kn">from</span> <span class="nn">platform</span>       <span class="kn">import</span> <span class="n">system</span> <span class="k">as</span> <span class="n">platform_system</span>
+<span class="kn">from</span> <span class="nn">textwrap</span>       <span class="kn">import</span> <span class="n">dedent</span><span class="p">,</span> <span class="n">wrap</span>
+<span class="kn">from</span> <span class="nn">typing</span>         <span class="kn">import</span> <span class="n">NoReturn</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.Exceptions</span>             <span class="kn">import</span> <span class="n">ExceptionBase</span>
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span>             <span class="kn">import</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">pyTooling.TerminalUI</span>             <span class="kn">import</span> <span class="n">LineTerminal</span><span class="p">,</span> <span class="n">Severity</span>
+<span class="kn">from</span> <span class="nn">pyAttributes.ArgParseAttributes</span>  <span class="kn">import</span> <span class="n">ArgParseMixin</span><span class="p">,</span> <span class="n">DefaultAttribute</span><span class="p">,</span> <span class="n">CommandAttribute</span><span class="p">,</span> <span class="n">ArgumentAttribute</span><span class="p">,</span> <span class="n">CommonSwitchArgumentAttribute</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser</span>                     <span class="kn">import</span> <span class="n">__author__</span><span class="p">,</span> <span class="n">__license__</span><span class="p">,</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">__copyright__</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks</span>              <span class="kn">import</span> <span class="n">MetaBlock</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser.CLI.Token</span>           <span class="kn">import</span> <span class="n">TokenStreamHandlers</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.CLI.Block</span>           <span class="kn">import</span> <span class="n">BlockStreamHandlers</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.CLI.Group</span>           <span class="kn">import</span> <span class="n">GroupStreamHandlers</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.CLI.CodeDOM</span>         <span class="kn">import</span> <span class="n">CodeDOMHandlers</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.CLI.ANTLR</span>           <span class="kn">import</span> <span class="n">ANTLRHandlers</span>
+
+
+<div class="viewcode-block" id="printImportError"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.CLI.VHDLParser.html#pyVHDLParser.CLI.VHDLParser.printImportError">[docs]</a><span class="nd">@export</span>
+<span class="k">def</span> <span class="nf">printImportError</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+	<span class="c1"># TODO: use pyTooling Platform</span>
+	<span class="n">platform</span> <span class="o">=</span> <span class="n">platform_system</span><span class="p">()</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMPORT ERROR: One or more Python packages are not available in your environment.&quot;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing package: &#39;</span><span class="si">{0}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+	<span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Run: &#39;py.exe -3 -m pip install -r requirements.txt&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;Linux&quot;</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Run: &#39;python3 -m pip install -r requirements.txt&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.CLI.VHDLParser.html#pyVHDLParser.CLI.VHDLParser.Application">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">LineTerminal</span><span class="p">,</span> <span class="n">ArgParseMixin</span><span class="p">,</span> <span class="n">TokenStreamHandlers</span><span class="p">,</span> <span class="n">BlockStreamHandlers</span><span class="p">,</span> <span class="n">GroupStreamHandlers</span><span class="p">,</span> <span class="n">CodeDOMHandlers</span><span class="p">,</span> <span class="n">ANTLRHandlers</span><span class="p">):</span>
+	<span class="n">HeadLine</span> <span class="o">=</span>    <span class="s2">&quot;pyVHDLParser - Test Application&quot;</span>
+
+	<span class="c1"># load platform information (Windows, Linux, Darwin, ...)</span>
+	<span class="c1"># TODO: use pyTooling Platform</span>
+	<span class="n">__PLATFORM</span> <span class="o">=</span>  <span class="n">platform_system</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Application.__init__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.CLI.VHDLParser.html#pyVHDLParser.CLI.VHDLParser.Application.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+		<span class="c1"># Late-initialize Block classes</span>
+		<span class="c1"># --------------------------------------------------------------------------</span>
+		<span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">MetaBlock</span><span class="o">.</span><span class="n">BLOCKS</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">block</span><span class="o">.</span><span class="n">__cls_init__</span><span class="p">()</span>
+			<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+				<span class="k">pass</span>
+
+		<span class="c1"># Call the constructor of the ArgParseMixin</span>
+		<span class="c1"># --------------------------------------------------------------------------</span>
+		<span class="n">textWidth</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Width</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
+		<span class="n">description</span> <span class="o">=</span> <span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">			Test application to test pyVHDLParser capabilities.</span>
+<span class="s2">			&quot;&quot;&quot;</span><span class="p">)</span>
+		<span class="n">epilog</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">			pyVHDLParser is a streaming parser to read and understand VHDL code equipped with comments for documentation extraction.</span>
+<span class="s2">			&quot;&quot;&quot;</span><span class="p">),</span> <span class="n">textWidth</span><span class="p">,</span> <span class="n">replace_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+		<span class="k">class</span> <span class="nc">HelpFormatter</span><span class="p">(</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">):</span>
+			<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+				<span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;max_help_position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
+				<span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">textWidth</span>
+				<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+		<span class="n">ArgParseMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+			<span class="bp">self</span><span class="p">,</span>
+			<span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+			<span class="n">epilog</span><span class="o">=</span><span class="n">epilog</span><span class="p">,</span>
+			<span class="n">formatter_class</span><span class="o">=</span><span class="n">HelpFormatter</span><span class="p">,</span>
+			<span class="n">add_help</span><span class="o">=</span><span class="kc">False</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Change error and warning reporting</span>
+		<span class="c1"># --------------------------------------------------------------------------</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_LOG_MESSAGE_FORMAT__</span><span class="p">[</span><span class="n">Severity</span><span class="o">.</span><span class="n">Fatal</span><span class="p">]</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{DARK_RED}</span><span class="s2">[FATAL] </span><span class="si">{message}{NOCOLOR}</span><span class="s2">&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_LOG_MESSAGE_FORMAT__</span><span class="p">[</span><span class="n">Severity</span><span class="o">.</span><span class="n">Error</span><span class="p">]</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{RED}</span><span class="s2">[ERROR] </span><span class="si">{message}{NOCOLOR}</span><span class="s2">&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_LOG_MESSAGE_FORMAT__</span><span class="p">[</span><span class="n">Severity</span><span class="o">.</span><span class="n">Warning</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{YELLOW}</span><span class="s2">[WARNING] </span><span class="si">{message}{NOCOLOR}</span><span class="s2">&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_LOG_MESSAGE_FORMAT__</span><span class="p">[</span><span class="n">Severity</span><span class="o">.</span><span class="n">Normal</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{GRAY}{message}{NOCOLOR}</span><span class="s2">&quot;</span></div>
+
+	<span class="c1"># class properties</span>
+	<span class="c1"># ============================================================================</span>
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Platform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__PLATFORM</span>
+
+	<span class="k">def</span> <span class="nf">PrintHeadline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">			</span><span class="si">{HEADLINE}{line}</span>
+<span class="s2">			</span><span class="si">{headline: ^80s}</span>
+<span class="s2">			</span><span class="si">{line}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">,</span> <span class="n">headline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HeadLine</span><span class="p">,</span> <span class="o">**</span><span class="n">LineTerminal</span><span class="o">.</span><span class="n">Foreground</span><span class="p">))</span>
+
+	<span class="c1"># ============================================================================</span>
+	<span class="c1"># Common commands</span>
+	<span class="c1"># ============================================================================</span>
+	<span class="c1"># common arguments valid for all commands</span>
+	<span class="c1"># ----------------------------------------------------------------------------</span>
+	<span class="nd">@CommonSwitchArgumentAttribute</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--debug&quot;</span><span class="p">,</span>   <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span>   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enable debug mode.&quot;</span><span class="p">)</span>
+	<span class="nd">@CommonSwitchArgumentAttribute</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print out detailed messages.&quot;</span><span class="p">)</span>
+	<span class="nd">@CommonSwitchArgumentAttribute</span><span class="p">(</span><span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span>   <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;quiet&quot;</span><span class="p">,</span>   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Reduce messages to a minimum.&quot;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">Run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">ArgParseMixin</span><span class="o">.</span><span class="n">Run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+	<span class="nd">@DefaultAttribute</span><span class="p">()</span>
+	<span class="k">def</span> <span class="nf">HandleDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PrintHeadline</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MainParser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+	<span class="c1"># ----------------------------------------------------------------------------</span>
+	<span class="c1"># create the sub-parser for the &quot;help&quot; command</span>
+	<span class="c1"># ----------------------------------------------------------------------------</span>
+	<span class="nd">@CommandAttribute</span><span class="p">(</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Display help page(s) for the given command name.&quot;</span><span class="p">)</span>
+	<span class="nd">@ArgumentAttribute</span><span class="p">(</span><span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;Command&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;Command&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print help page(s) for a command.&quot;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">HandleHelp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PrintHeadline</span><span class="p">()</span>
+
+		<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">Command</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">MainParser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+		<span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">Command</span> <span class="o">==</span> <span class="s2">&quot;help&quot;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">WriteError</span><span class="p">(</span><span class="s2">&quot;This is a recursion ...&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">SubParsers</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">Command</span><span class="p">]</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+			<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">WriteError</span><span class="p">(</span><span class="s2">&quot;Command </span><span class="si">{0}</span><span class="s2"> is unknown.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">Command</span><span class="p">))</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+	<span class="c1"># ----------------------------------------------------------------------------</span>
+	<span class="c1"># create the sub-parser for the &quot;version&quot; command</span>
+	<span class="c1"># ----------------------------------------------------------------------------</span>
+	<span class="nd">@CommandAttribute</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Display tool and version information.&quot;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">HandleInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PrintHeadline</span><span class="p">()</span>
+
+		<span class="n">copyrights</span> <span class="o">=</span> <span class="n">__copyright__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;Copyright:  </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">copyrights</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+		<span class="k">for</span> <span class="n">copyright</span> <span class="ow">in</span> <span class="n">copyrights</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;            </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">copyright</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;License:    </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__license__</span><span class="p">))</span>
+		<span class="n">authors</span> <span class="o">=</span> <span class="n">__author__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;Authors:    </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">authors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+		<span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">authors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;            </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">author</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WriteNormal</span><span class="p">(</span><span class="s2">&quot;Version:    </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
+
+
+<span class="c1"># main program</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>  <span class="c1"># mccabe:disable=MC0001</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;This is the entry point for pyVHDLParser written as a function.</span>
+
+<span class="sd">	1. It extracts common flags from the script&#39;s arguments list, before :py:class:`~argparse.ArgumentParser` is fully loaded.</span>
+<span class="sd">	2. It creates an instance of VHDLParser and hands over to a class based execution.</span>
+<span class="sd">	   All is wrapped in a big ``try..except`` block to catch every unhandled exception.</span>
+<span class="sd">	3. Shutdown the script and return its exit code.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span> <span class="k">as</span> <span class="n">sys_argv</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="c1"># handover to a class instance</span>
+		<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>  <span class="c1"># debug, verbose, quiet)</span>
+		<span class="n">app</span><span class="o">.</span><span class="n">Configure</span><span class="p">(</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="s2">&quot;-v&quot;</span> <span class="ow">in</span> <span class="n">sys_argv</span><span class="p">,</span>
+			<span class="n">debug</span><span class="o">=</span><span class="s2">&quot;-d&quot;</span> <span class="ow">in</span> <span class="n">sys_argv</span><span class="p">,</span>
+			<span class="n">quiet</span><span class="o">=</span><span class="s2">&quot;-q&quot;</span> <span class="ow">in</span> <span class="n">sys_argv</span>
+		<span class="p">)</span>
+		<span class="n">app</span><span class="o">.</span><span class="n">Run</span><span class="p">()</span>
+		<span class="n">app</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+	<span class="c1"># except (CommonException, ConfigurationException) as ex:</span>
+	<span class="c1"># 	print(&quot;{RED}ERROR:{NOCOLOR} {message}&quot;.format(message=ex.message, **Init.Foreground))</span>
+	<span class="c1"># 	cause = ex.__cause__</span>
+	<span class="c1"># 	if isinstance(cause, FileNotFoundError):</span>
+	<span class="c1"># 		print(&quot;{YELLOW}  FileNotFound:{NOCOLOR} &#39;{cause}&#39;&quot;.format(cause=str(cause), **Init.Foreground))</span>
+	<span class="c1"># 	elif isinstance(cause, NotADirectoryError):</span>
+	<span class="c1"># 		print(&quot;{YELLOW}  NotADirectory:{NOCOLOR} &#39;{cause}&#39;&quot;.format(cause=str(cause), **Init.Foreground))</span>
+	<span class="c1"># 	elif isinstance(cause, ParserException):</span>
+	<span class="c1"># 		print(&quot;{YELLOW}  ParserException:{NOCOLOR} {cause}&quot;.format(cause=str(cause), **Init.Foreground))</span>
+	<span class="c1"># 		cause = cause.__cause__</span>
+	<span class="c1"># 		if cause is not None:</span>
+	<span class="c1"># 			print(&quot;{YELLOW}    {name}:{NOCOLOR} {cause}&quot;.format(name=cause.__class__.__name__, cause= str(cause), **Init.Foreground))</span>
+	<span class="c1">#</span>
+	<span class="c1"># 	if not (verbose or debug):</span>
+	<span class="c1"># 		print()</span>
+	<span class="c1"># 		print(&quot;{CYAN}  Use &#39;-v&#39; for verbose or &#39;-d&#39; for debug to print out extended messages.{NOCOLOR}&quot;.format(**Init.Foreground))</span>
+	<span class="c1"># 	LineTerminal.exit(1)</span>
+
+	<span class="k">except</span> <span class="n">ExceptionBase</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+		<span class="n">LineTerminal</span><span class="o">.</span><span class="n">printExceptionBase</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+		<span class="n">LineTerminal</span><span class="o">.</span><span class="n">printNotImplementedError</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+	<span class="c1"># except ImportError as ex:</span>
+	<span class="c1"># 	printImportError(ex)</span>
+	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+		<span class="n">LineTerminal</span><span class="o">.</span><span class="n">printException</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+
+
+<span class="c1"># entry point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">LineTerminal</span><span class="o">.</span><span class="n">versionCheck</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+	<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=================================
+pyVHDLParser.Blocks.Object.Signal
+=================================
+
+.. automodule:: pyVHDLParser.Blocks.Object.Signal
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Object.Signal
+
+
+**Classes**
+
+- :py:class:`SignalDeclarationEndMarkerBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`SignalDeclarationDefaultExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`SignalDeclarationBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: SignalDeclarationEndMarkerBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalDeclarationEndMarkerBlock
+      :parts: 1
+
+.. autoclass:: SignalDeclarationDefaultExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalDeclarationDefaultExpressionBlock
+      :parts: 1
+
+.. autoclass:: SignalDeclarationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalDeclarationBlock
+      :parts: 1

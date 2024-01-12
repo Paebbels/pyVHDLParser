@@ -1,0 +1,108 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+========================================
+pyVHDLParser.SimulationModel.EventSystem
+========================================
+
+.. automodule:: pyVHDLParser.SimulationModel.EventSystem
+
+
+.. currentmodule:: pyVHDLParser.SimulationModel.EventSystem
+
+
+**Classes**
+
+- :py:class:`Scheduler`:
+  Undocumented.
+
+- :py:class:`Event`:
+  Undocumented.
+
+- :py:class:`Transaction`:
+  Undocumented.
+
+- :py:class:`TimeLine`:
+  Undocumented.
+
+- :py:class:`Waveform`:
+  Undocumented.
+
+- :py:class:`ProjectedWaveform`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Scheduler
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Scheduler
+      :parts: 1
+
+.. autoclass:: Event
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Event
+      :parts: 1
+
+.. autoclass:: Transaction
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Transaction
+      :parts: 1
+
+.. autoclass:: TimeLine
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TimeLine
+      :parts: 1
+
+.. autoclass:: Waveform
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Waveform
+      :parts: 1
+
+.. autoclass:: ProjectedWaveform
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProjectedWaveform
+      :parts: 1

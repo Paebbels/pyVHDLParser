@@ -1,0 +1,70 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==========================
+pyVHDLParser.DocumentModel
+==========================
+
+.. automodule:: pyVHDLParser.DocumentModel
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.DocumentModel.DesignUnit
+   pyVHDLParser.DocumentModel.ObjectDeclaration
+   pyVHDLParser.DocumentModel.Reference
+   pyVHDLParser.DocumentModel.Sequential
+
+.. currentmodule:: pyVHDLParser.DocumentModel
+
+
+**Exceptions**
+
+- :py:exc:`DOMParserException`:
+  Common base class for all non-exit exceptions.
+
+
+
+**Classes**
+
+- :py:class:`Document`:
+  A ``Document`` represents a sourcefile. It contains *primary* and *secondary* design units.
+
+
+
+---------------------
+
+**Exceptions**
+
+
+
+
+.. autoexception:: DOMParserException
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DOMParserException
+      :parts: 1
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Document
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Document
+      :parts: 1

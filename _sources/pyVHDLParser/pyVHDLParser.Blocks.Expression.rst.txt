@@ -1,0 +1,108 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==============================
+pyVHDLParser.Blocks.Expression
+==============================
+
+.. automodule:: pyVHDLParser.Blocks.Expression
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Expression
+
+
+**Classes**
+
+- :py:class:`ExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByCharORClosingRoundBracket`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByKeywordORClosingRoundBracket`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByToOrDownto`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByKeywordOrToOrDownto`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedBySemicolon`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlock
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByCharORClosingRoundBracket
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByCharORClosingRoundBracket
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByKeywordORClosingRoundBracket
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByKeywordORClosingRoundBracket
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByToOrDownto
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByToOrDownto
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByKeywordOrToOrDownto
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByKeywordOrToOrDownto
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedBySemicolon
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedBySemicolon
+      :parts: 1

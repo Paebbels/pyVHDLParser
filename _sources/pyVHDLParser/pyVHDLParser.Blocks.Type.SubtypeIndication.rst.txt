@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==========================================
+pyVHDLParser.Blocks.Type.SubtypeIndication
+==========================================
+
+.. automodule:: pyVHDLParser.Blocks.Type.SubtypeIndication
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Type.SubtypeIndication
+
+
+**Classes**
+
+- :py:class:`SubtypeIndicationBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ArrayConstrainedSubtypeIndicationBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`RecordConstrainedSubtypeIndicationBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: SubtypeIndicationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SubtypeIndicationBlock
+      :parts: 1
+
+.. autoclass:: ArrayConstrainedSubtypeIndicationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ArrayConstrainedSubtypeIndicationBlock
+      :parts: 1
+
+.. autoclass:: RecordConstrainedSubtypeIndicationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RecordConstrainedSubtypeIndicationBlock
+      :parts: 1

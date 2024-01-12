@@ -1,0 +1,80 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==========================
+pyVHDLParser.Blocks.Common
+==========================
+
+.. automodule:: pyVHDLParser.Blocks.Common
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Common
+
+
+**Classes**
+
+- :py:class:`WhitespaceBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`LinebreakBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`EmptyLineBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`IndentationBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: WhitespaceBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WhitespaceBlock
+      :parts: 1
+
+.. autoclass:: LinebreakBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LinebreakBlock
+      :parts: 1
+
+.. autoclass:: EmptyLineBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EmptyLineBlock
+      :parts: 1
+
+.. autoclass:: IndentationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IndentationBlock
+      :parts: 1

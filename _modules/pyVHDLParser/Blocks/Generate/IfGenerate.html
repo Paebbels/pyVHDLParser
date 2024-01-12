@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Blocks.Generate.IfGenerate &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html">
+            <img src="../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../Blocks.html">pyVHDLParser.Blocks</a> &raquo;</li>
+          <li><a href="../Generate.html">pyVHDLParser.Blocks.Generate</a> &raquo;</li>
+      <li>pyVHDLParser.Blocks.Generate.IfGenerate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLParser.Blocks.Generate.IfGenerate</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#            __     ___   _ ____  _     ____                                                                           #</span>
+<span class="c1">#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #</span>
+<span class="c1"># | &#39;_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | &#39;__/ __|/ _ \ &#39;__|                                                 #</span>
+<span class="c1"># | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #</span>
+<span class="c1"># | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #</span>
+<span class="c1"># |_|    |___/                                                                                                         #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span>                   <span class="kn">import</span> <span class="n">export</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>                     <span class="kn">import</span> <span class="n">CharacterToken</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">,</span> <span class="n">LinebreakToken</span><span class="p">,</span> <span class="n">IndentationToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Keywords</span>            <span class="kn">import</span> <span class="n">BoundaryToken</span><span class="p">,</span> <span class="n">IdentifierToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Keywords</span>            <span class="kn">import</span> <span class="n">BeginKeyword</span><span class="p">,</span> <span class="n">ProcessKeyword</span><span class="p">,</span> <span class="n">AssertKeyword</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Keywords</span>            <span class="kn">import</span> <span class="n">IsKeyword</span><span class="p">,</span> <span class="n">EndKeyword</span><span class="p">,</span> <span class="n">GenericKeyword</span><span class="p">,</span> <span class="n">PortKeyword</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks</span>                    <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">BlockParserException</span><span class="p">,</span> <span class="n">TokenToBlockParser</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Common</span>             <span class="kn">import</span> <span class="n">LinebreakBlock</span><span class="p">,</span> <span class="n">IndentationBlock</span><span class="p">,</span> <span class="n">WhitespaceBlock</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Comment</span>            <span class="kn">import</span> <span class="n">SingleLineCommentBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Generate</span>           <span class="kn">import</span> <span class="n">EndGenerateBlock</span> <span class="k">as</span> <span class="n">EndGenerateBlockBase</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.List</span>               <span class="kn">import</span> <span class="n">GenericList</span><span class="p">,</span> <span class="n">PortList</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Reporting.Assert</span>   <span class="kn">import</span> <span class="n">AssertBlock</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Sequential</span>         <span class="kn">import</span> <span class="n">Process</span>
+
+
+<div class="viewcode-block" id="IfConditionBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.IfConditionBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">IfConditionBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected generate name (identifier).&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IdentifierToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateGenerateName</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace2</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected keyword IS after generate name.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span> <span class="o">&lt;=</span> <span class="s2">&quot;is&quot;</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IsKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">IfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateDeclarativeRegion</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateDeclarativeRegion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected one of these keywords: generic, port, begin, end.&quot;</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IndentationToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">IndentationBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;generic&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">GenericKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">GenericList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateGenericKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">PortKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">PortList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">statePortKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;begin&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>  <span class="n">BeginKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">BeginBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">BeginBlock</span><span class="o">.</span><span class="n">stateBeginKeyword</span>
+				<span class="k">return</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BeginBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.BeginBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BeginBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateBeginKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected label or one of these keywords: assert, process.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span> <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span> <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="k">return</span>
+		<span class="c1"># 	parserState.NewToken = IndentationToken(fromExistingToken=token)</span>
+		<span class="c1"># 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)</span>
+		<span class="c1"># 	return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;process&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">ProcessKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">Process</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateProcessKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;assert&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">AssertKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">AssertBlock</span><span class="o">.</span><span class="n">stateAssertKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElsIfConditionBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.ElsIfConditionBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElsIfConditionBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected generate name (identifier).&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IdentifierToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateGenerateName</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace2</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected keyword IS after generate name.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span> <span class="o">&lt;=</span> <span class="s2">&quot;is&quot;</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IsKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">ElsIfConditionBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateDeclarativeRegion</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateDeclarativeRegion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected one of these keywords: generic, port, begin, end.&quot;</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IndentationToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">IndentationBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;generic&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">GenericKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">GenericList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateGenericKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">PortKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">PortList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">statePortKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;begin&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>  <span class="n">BeginKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElsIfBeginBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">ElsIfBeginBlock</span><span class="o">.</span><span class="n">stateBeginKeyword</span>
+				<span class="k">return</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElsIfBeginBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.ElsIfBeginBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElsIfBeginBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateBeginKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected label or one of these keywords: assert, process.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span> <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span> <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="k">return</span>
+		<span class="c1"># 	parserState.NewToken = IndentationToken(fromExistingToken=token)</span>
+		<span class="c1"># 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)</span>
+		<span class="c1"># 	return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;process&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">ProcessKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">Process</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateProcessKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;assert&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">AssertKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">AssertBlock</span><span class="o">.</span><span class="n">stateAssertKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElseGenerateBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.ElseGenerateBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElseGenerateBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace1</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected generate name (identifier).&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IdentifierToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateGenerateName</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateGenerateName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected whitespace after keyword GENERATE.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">_</span> <span class="o">=</span>                       <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateWhitespace2</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateWhitespace2</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected keyword IS after generate name.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+					<span class="n">_</span> <span class="o">=</span>                     <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">LinebreakBlock</span><span class="o">.</span><span class="n">stateLinebreak</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">token</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">multiPart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="kc">None</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span> <span class="o">&lt;=</span> <span class="s2">&quot;is&quot;</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IsKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">ElseGenerateBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span><span class="p">,</span> <span class="n">endToken</span><span class="o">=</span><span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>     <span class="bp">cls</span><span class="o">.</span><span class="n">stateDeclarativeRegion</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">MultiLineCommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">BoundaryToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">WhitespaceBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="kc">None</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateDeclarativeRegion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected one of these keywords: generic, port, begin, end.&quot;</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>    <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>    <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">IndentationToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>      <span class="n">IndentationBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;generic&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">GenericKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">GenericList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateGenericKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">PortKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">PortList</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">statePortKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>              <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;begin&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>  <span class="n">BeginKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>  <span class="n">ElseGenerateBeginBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span> <span class="n">ElseGenerateBeginBlock</span><span class="o">.</span><span class="n">stateBeginKeyword</span>
+				<span class="k">return</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElseGenerateBeginBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.ElseGenerateBeginBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElseGenerateBeginBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateBeginKeyword</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">TokenToBlockParser</span><span class="p">):</span>
+		<span class="n">token</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Token</span>
+		<span class="n">errorMessage</span> <span class="o">=</span> <span class="s2">&quot;Expected label or one of these keywords: assert, process.&quot;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">CharacterToken</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span> <span class="n">LinebreakToken</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span> <span class="n">LinebreakBlock</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastBlock</span><span class="p">,</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">SingleLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+			<span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span> <span class="n">MultiLineCommentBlock</span><span class="o">.</span><span class="n">statePossibleCommentStart</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span> <span class="n">token</span>
+				<span class="k">return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SpaceToken</span><span class="p">):</span>
+			<span class="k">return</span>
+		<span class="c1"># 	parserState.NewToken = IndentationToken(fromExistingToken=token)</span>
+		<span class="c1"># 	parserState.NewBlock = IndentationBlock(parserState.LastBlock, parserState.NewToken)</span>
+		<span class="c1"># 	return</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">):</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;process&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">ProcessKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">Process</span><span class="o">.</span><span class="n">OpenBlock</span><span class="o">.</span><span class="n">stateProcessKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;assert&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">AssertKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">AssertBlock</span><span class="o">.</span><span class="n">stateAssertKeyword</span>
+			<span class="k">elif</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span>
+				<span class="n">newToken</span> <span class="o">=</span>                <span class="n">EndKeyword</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>   <span class="n">EndGenerateBlock</span><span class="o">.</span><span class="n">stateEndKeyword</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NewToken</span> <span class="o">=</span>      <span class="n">newToken</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">TokenMarker</span> <span class="o">=</span>   <span class="n">newToken</span>
+			<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">BlockParserException</span><span class="p">(</span><span class="n">errorMessage</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EndGenerateBlock"><a class="viewcode-back" href="../../../../pyVHDLParser/pyVHDLParser.Blocks.Generate.IfGenerate.html#pyVHDLParser.Blocks.Generate.IfGenerate.EndGenerateBlock">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndGenerateBlock</span><span class="p">(</span><span class="n">EndGenerateBlockBase</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

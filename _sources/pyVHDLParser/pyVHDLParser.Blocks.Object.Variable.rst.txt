@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================================
+pyVHDLParser.Blocks.Object.Variable
+===================================
+
+.. automodule:: pyVHDLParser.Blocks.Object.Variable
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Object.Variable
+
+
+**Classes**
+
+- :py:class:`VariableDeclarationEndMarkerBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`VariableDeclarationDefaultExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`VariableDeclarationBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: VariableDeclarationEndMarkerBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableDeclarationEndMarkerBlock
+      :parts: 1
+
+.. autoclass:: VariableDeclarationDefaultExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableDeclarationDefaultExpressionBlock
+      :parts: 1
+
+.. autoclass:: VariableDeclarationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableDeclarationBlock
+      :parts: 1

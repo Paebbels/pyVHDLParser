@@ -1,0 +1,220 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+======================================
+pyVHDLParser.Groups.Sequential.Process
+======================================
+
+.. automodule:: pyVHDLParser.Groups.Sequential.Process
+
+
+.. currentmodule:: pyVHDLParser.Groups.Sequential.Process
+
+
+**Classes**
+
+- :py:class:`ProcessGroup`:
+  Undocumented.
+
+- :py:class:`IfGroup`:
+  Undocumented.
+
+- :py:class:`IfBranchGroup`:
+  Undocumented.
+
+- :py:class:`ElsIfBranchGroup`:
+  Undocumented.
+
+- :py:class:`ElseBranchGroup`:
+  Undocumented.
+
+- :py:class:`CaseGroup`:
+  Undocumented.
+
+- :py:class:`ChoiceGroup`:
+  Undocumented.
+
+- :py:class:`ForLoopGroup`:
+  Undocumented.
+
+- :py:class:`WhileLoopGroup`:
+  Undocumented.
+
+- :py:class:`NextGroup`:
+  Undocumented.
+
+- :py:class:`ExitGroup`:
+  Undocumented.
+
+- :py:class:`ReturnGroup`:
+  Undocumented.
+
+- :py:class:`VariableAssignmentGroup`:
+  Undocumented.
+
+- :py:class:`SignalAssignmentGroup`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ProcessGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProcessGroup
+      :parts: 1
+
+.. autoclass:: IfGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IfGroup
+      :parts: 1
+
+.. autoclass:: IfBranchGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IfBranchGroup
+      :parts: 1
+
+.. autoclass:: ElsIfBranchGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElsIfBranchGroup
+      :parts: 1
+
+.. autoclass:: ElseBranchGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElseBranchGroup
+      :parts: 1
+
+.. autoclass:: CaseGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CaseGroup
+      :parts: 1
+
+.. autoclass:: ChoiceGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ChoiceGroup
+      :parts: 1
+
+.. autoclass:: ForLoopGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ForLoopGroup
+      :parts: 1
+
+.. autoclass:: WhileLoopGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WhileLoopGroup
+      :parts: 1
+
+.. autoclass:: NextGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NextGroup
+      :parts: 1
+
+.. autoclass:: ExitGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExitGroup
+      :parts: 1
+
+.. autoclass:: ReturnGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReturnGroup
+      :parts: 1
+
+.. autoclass:: VariableAssignmentGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableAssignmentGroup
+      :parts: 1
+
+.. autoclass:: SignalAssignmentGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalAssignmentGroup
+      :parts: 1

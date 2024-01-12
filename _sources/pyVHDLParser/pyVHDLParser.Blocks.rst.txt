@@ -1,0 +1,267 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================
+pyVHDLParser.Blocks
+===================
+
+.. automodule:: pyVHDLParser.Blocks
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Blocks.Assignment
+   pyVHDLParser.Blocks.Attribute
+   pyVHDLParser.Blocks.Comment
+   pyVHDLParser.Blocks.Common
+   pyVHDLParser.Blocks.ControlStructure
+   pyVHDLParser.Blocks.Exception
+   pyVHDLParser.Blocks.Expression
+   pyVHDLParser.Blocks.Generate
+   pyVHDLParser.Blocks.Generic
+   pyVHDLParser.Blocks.Generic1
+   pyVHDLParser.Blocks.Instantiation
+   pyVHDLParser.Blocks.InterfaceObject
+   pyVHDLParser.Blocks.List
+   pyVHDLParser.Blocks.Object
+   pyVHDLParser.Blocks.Reference
+   pyVHDLParser.Blocks.Reporting
+   pyVHDLParser.Blocks.Sequential
+   pyVHDLParser.Blocks.Structural
+   pyVHDLParser.Blocks.Type
+
+.. currentmodule:: pyVHDLParser.Blocks
+
+
+**Exceptions**
+
+- :py:exc:`BlockParserException`:
+  Base-class for exceptions when reading tokens and generating blocks.
+
+
+
+**Classes**
+
+- :py:class:`TokenToBlockParser`:
+  Represents the current state of a token-to-block parser.
+
+- :py:class:`MetaBlock`:
+  A :term:`meta-class` to construct *Block* classes.
+
+- :py:class:`BlockIterator`:
+  Undocumented.
+
+- :py:class:`BlockReverseIterator`:
+  Undocumented.
+
+- :py:class:`Block`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`SkipableBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`FinalBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`CommentBlock`:
+  Base-class for all comment blocks.
+
+- :py:class:`StartOfBlock`:
+  Base-class for a first block in a sequence of double-linked blocks.
+
+- :py:class:`EndOfBlock`:
+  Base-class for a last block in a sequence of double-linked blocks.
+
+- :py:class:`StartOfDocumentBlock`:
+  First block in a sequence of double-linked blocks.
+
+- :py:class:`EndOfDocumentBlock`:
+  Last block in a sequence of double-linked blocks.
+
+- :py:class:`StartOfSnippetBlock`:
+  Base-class for a first block in a sequence of double-linked blocks.
+
+- :py:class:`EndOfSnippetBlock`:
+  Base-class for a last block in a sequence of double-linked blocks.
+
+
+
+---------------------
+
+**Exceptions**
+
+
+
+
+.. autoexception:: BlockParserException
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockParserException
+      :parts: 1
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: TokenToBlockParser
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TokenToBlockParser
+      :parts: 1
+
+.. autoclass:: MetaBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MetaBlock
+      :parts: 1
+
+.. autoclass:: BlockIterator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockIterator
+      :parts: 1
+
+.. autoclass:: BlockReverseIterator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockReverseIterator
+      :parts: 1
+
+.. autoclass:: Block
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Block
+      :parts: 1
+
+.. autoclass:: SkipableBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SkipableBlock
+      :parts: 1
+
+.. autoclass:: FinalBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: FinalBlock
+      :parts: 1
+
+.. autoclass:: CommentBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CommentBlock
+      :parts: 1
+
+.. autoclass:: StartOfBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfBlock
+      :parts: 1
+
+.. autoclass:: EndOfBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfBlock
+      :parts: 1
+
+.. autoclass:: StartOfDocumentBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfDocumentBlock
+      :parts: 1
+
+.. autoclass:: EndOfDocumentBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfDocumentBlock
+      :parts: 1
+
+.. autoclass:: StartOfSnippetBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfSnippetBlock
+      :parts: 1
+
+.. autoclass:: EndOfSnippetBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfSnippetBlock
+      :parts: 1

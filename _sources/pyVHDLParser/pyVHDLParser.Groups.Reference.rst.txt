@@ -1,0 +1,52 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=============================
+pyVHDLParser.Groups.Reference
+=============================
+
+.. automodule:: pyVHDLParser.Groups.Reference
+
+
+.. currentmodule:: pyVHDLParser.Groups.Reference
+
+
+**Classes**
+
+- :py:class:`LibraryGroup`:
+  Undocumented.
+
+- :py:class:`UseGroup`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: LibraryGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LibraryGroup
+      :parts: 1
+
+.. autoclass:: UseGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UseGroup
+      :parts: 1

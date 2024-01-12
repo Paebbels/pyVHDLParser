@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.CLI.VHDLParser &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python Class Reference" href="pyVHDLParser.Decorators.html" />
+    <link rel="prev" title="pyVHDLParser.CLI.Token" href="pyVHDLParser.CLI.Token.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.ANTLR.html">pyVHDLParser.CLI.ANTLR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.Block.html">pyVHDLParser.CLI.Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.CodeDOM.html">pyVHDLParser.CLI.CodeDOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.GraphML.html">pyVHDLParser.CLI.GraphML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.Group.html">pyVHDLParser.CLI.Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.CLI.Token.html">pyVHDLParser.CLI.Token</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyVHDLParser.CLI.VHDLParser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.CLI.VHDLParser.printImportError"><code class="docutils literal notranslate"><span class="pre">printImportError()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.CLI.VHDLParser.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+          <li><a href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a> &raquo;</li>
+      <li>pyVHDLParser.CLI.VHDLParser</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.CLI.VHDLParser.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.CLI.VHDLParser">
+<span id="pyvhdlparser-cli-vhdlparser"></span><h1>pyVHDLParser.CLI.VHDLParser<a class="headerlink" href="#module-pyVHDLParser.CLI.VHDLParser" title="Permalink to this heading">¶</a></h1>
+<p><strong>Functions</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.CLI.VHDLParser.printImportError" title="pyVHDLParser.CLI.VHDLParser.printImportError"><code class="xref py py-func docutils literal notranslate"><span class="pre">printImportError()</span></code></a>:
+Undocumented.</p></li>
+</ul>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.CLI.VHDLParser.Application" title="pyVHDLParser.CLI.VHDLParser.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a>:
+A mixin class (interface) to provide class-local terminal writing methods.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Functions</strong></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.printImportError">
+<span class="sig-prename descclassname"><span class="pre">pyVHDLParser.CLI.VHDLParser.</span></span><span class="sig-name descname"><span class="pre">printImportError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/CLI/VHDLParser.html#printImportError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.printImportError" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.CLI.VHDLParser.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><a class="reference internal" href="../_modules/pyVHDLParser/CLI/VHDLParser.html#Application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/CLI/VHDLParser.html#Application.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializer of a line based terminal interface.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application._width">
+<span class="sig-name descname"><span class="pre">_width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application._width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminal width in characters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application._height">
+<span class="sig-name descname"><span class="pre">_height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application._height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminal height in characters</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Debug">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Debug</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true, if debug messages are enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.ExitOnPreviousErrors">
+<span class="sig-name descname"><span class="pre">ExitOnPreviousErrors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.ExitOnPreviousErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exit application if errors have been printed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.ExitOnPreviousWarnings">
+<span class="sig-name descname"><span class="pre">ExitOnPreviousWarnings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.ExitOnPreviousWarnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exit application if warnings have been printed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Foreground">
+<span class="sig-name descname"><span class="pre">Foreground</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'BLUE':</span> <span class="pre">'\x1b[94m',</span> <span class="pre">'CYAN':</span> <span class="pre">'\x1b[96m',</span> <span class="pre">'DARK_BLUE':</span> <span class="pre">'\x1b[34m',</span> <span class="pre">'DARK_CYAN':</span> <span class="pre">'\x1b[36m',</span> <span class="pre">'DARK_GRAY':</span> <span class="pre">'\x1b[90m',</span> <span class="pre">'DARK_GREEN':</span> <span class="pre">'\x1b[32m',</span> <span class="pre">'DARK_RED':</span> <span class="pre">'\x1b[31m',</span> <span class="pre">'DARK_YELLOW':</span> <span class="pre">'\x1b[33m',</span> <span class="pre">'ERROR':</span> <span class="pre">'\x1b[91m',</span> <span class="pre">'GRAY':</span> <span class="pre">'\x1b[37m',</span> <span class="pre">'GREEN':</span> <span class="pre">'\x1b[92m',</span> <span class="pre">'HEADLINE':</span> <span class="pre">'\x1b[95m',</span> <span class="pre">'MAGENTA':</span> <span class="pre">'\x1b[95m',</span> <span class="pre">'NOCOLOR':</span> <span class="pre">'\x1b[39m',</span> <span class="pre">'RED':</span> <span class="pre">'\x1b[91m',</span> <span class="pre">'WARNING':</span> <span class="pre">'\x1b[93m',</span> <span class="pre">'WHITE':</span> <span class="pre">'\x1b[97m',</span> <span class="pre">'YELLOW':</span> <span class="pre">'\x1b[93m'}</span></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Foreground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminal colors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.GetAttributes">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GetAttributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter=&lt;class</span> <span class="pre">'pyAttributes.Attribute'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.GetAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of pyAttributes attached to the given method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">TAttr</span></code>, bound= Attribute)]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>) – </p></li>
+<li><p><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><em>Union</em></a><em>[</em><em>TAttr</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.12)"><em>Iterable</em></a><em>[</em><em>TAttr</em><em>]</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.GetTerminalSize">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GetTerminalSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.GetTerminalSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the terminal size as tuple (width, height) for Windows, Mac OS (Darwin), Linux, cygwin (Windows), MinGW32/64 (Windows).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.HasAttribute">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HasAttribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter=&lt;class</span> <span class="pre">'pyAttributes.Attribute'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.HasAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true, if the given method has pyAttributes attached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>) – </p></li>
+<li><p><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><em>Union</em></a><em>[</em><em>TAttr</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.12)"><em>Iterable</em></a><em>[</em><em>TAttr</em><em>]</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current terminal window’s height.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.LogLevel">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogLevel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://pytooling.github.io/pyTooling/pyTooling/pyTooling.TerminalUI.html#pyTooling.TerminalUI.Severity" title="(in pyTooling v6.0)"><span class="pre">Severity</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.LogLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current minimal severity level for writing.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.MainParser">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MainParser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.12)"><span class="pre">ArgumentParser</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.MainParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the main parser.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Quiet">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Quiet</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Quiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true, if quiet mode is enabled.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.SubParsers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubParsers</span></span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.SubParsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the sub-parsers.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Terminal">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Terminal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Terminal</span></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Terminal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the local terminal instance.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Verbose">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true, if verbose messages are enabled.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.Width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.Width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current terminal window’s width.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteDebug">
+<span class="sig-name descname"><span class="pre">WriteDebug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteDebug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a debug message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteDryRun">
+<span class="sig-name descname"><span class="pre">WriteDryRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteDryRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a dry-run message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteError">
+<span class="sig-name descname"><span class="pre">WriteError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an error message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteFatal">
+<span class="sig-name descname"><span class="pre">WriteFatal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">immediateExit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteFatal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a fatal message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>immediateExit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteInfo">
+<span class="sig-name descname"><span class="pre">WriteInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an info message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteLine">
+<span class="sig-name descname"><span class="pre">WriteLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a formatted line to the underlying terminal/console offered by the operating system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>line</strong> (<a class="reference external" href="https://pytooling.github.io/pyTooling/pyTooling/pyTooling.TerminalUI.html#pyTooling.TerminalUI.Line" title="(in pyTooling v6.0)"><em>Line</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteNormal">
+<span class="sig-name descname"><span class="pre">WriteNormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteNormal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a <em>normal</em> message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteQuiet">
+<span class="sig-name descname"><span class="pre">WriteQuiet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteQuiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a message even in quiet mode if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteVerbose">
+<span class="sig-name descname"><span class="pre">WriteVerbose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteVerbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a verbose message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.WriteWarning">
+<span class="sig-name descname"><span class="pre">WriteWarning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appendLinebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.WriteWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a warning message if <code class="docutils literal notranslate"><span class="pre">condition</span></code> is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>appendLinebreak</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application._LOG_MESSAGE_FORMAT__">
+<span class="sig-name descname"><span class="pre">_LOG_MESSAGE_FORMAT__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{Severity.Debug:</span> <span class="pre">'{DARK_GRAY}{message}{NOCOLOR}',</span> <span class="pre">Severity.Verbose:</span> <span class="pre">'{GRAY}{message}{NOCOLOR}',</span> <span class="pre">Severity.Normal:</span> <span class="pre">'{GRAY}{message}{NOCOLOR}',</span> <span class="pre">Severity.DryRun:</span> <span class="pre">'{DARK_CYAN}[DRY]</span> <span class="pre">{message}{NOCOLOR}',</span> <span class="pre">Severity.Info:</span> <span class="pre">'{WHITE}{message}{NOCOLOR}',</span> <span class="pre">Severity.Warning:</span> <span class="pre">'{YELLOW}[WARNING]</span> <span class="pre">{message}{NOCOLOR}',</span> <span class="pre">Severity.Quiet:</span> <span class="pre">'{WHITE}{message}{NOCOLOR}',</span> <span class="pre">Severity.Error:</span> <span class="pre">'{RED}[ERROR]</span> <span class="pre">{message}{NOCOLOR}',</span> <span class="pre">Severity.Fatal:</span> <span class="pre">'{DARK_RED}[FATAL]</span> <span class="pre">{message}{NOCOLOR}'}</span></em><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application._LOG_MESSAGE_FORMAT__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message formatting rules.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.deinitColors">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deinitColors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.deinitColors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uninitialize the terminal for color support by colorama.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.exit">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">returnCode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exit the terminal application by uninitializing color support and returning an exit code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>returnCode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.fatalExit">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fatalExit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">returnCode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.fatalExit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exit the terminal application by uninitializing color support and returning a fatal exit code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>returnCode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.initColors">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initColors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.initColors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the terminal for color support by colorama.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.printException">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">printException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.printException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints an exception of type <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.printNotImplementedError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">printNotImplementedError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.printNotImplementedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a not-implemented exception of type <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotImplementedError</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.CLI.VHDLParser.Application.versionCheck">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">versionCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.CLI.VHDLParser.Application.versionCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the used Python interpreter fulfills the minimum version requirements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.CLI.Token.html" class="btn btn-neutral float-left" title="pyVHDLParser.CLI.Token" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.Decorators.html" class="btn btn-neutral float-right" title="Python Class Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

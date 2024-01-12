@@ -1,0 +1,122 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==============================
+pyVHDLParser.Groups.DesignUnit
+==============================
+
+.. automodule:: pyVHDLParser.Groups.DesignUnit
+
+
+.. currentmodule:: pyVHDLParser.Groups.DesignUnit
+
+
+**Classes**
+
+- :py:class:`ContextGroup`:
+  Undocumented.
+
+- :py:class:`EntityGroup`:
+  Undocumented.
+
+- :py:class:`ArchitectureGroup`:
+  Undocumented.
+
+- :py:class:`PackageGroup`:
+  Undocumented.
+
+- :py:class:`PackageBodyGroup`:
+  Undocumented.
+
+- :py:class:`ComponentGroup`:
+  Undocumented.
+
+- :py:class:`ConfigurationGroup`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ContextGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ContextGroup
+      :parts: 1
+
+.. autoclass:: EntityGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EntityGroup
+      :parts: 1
+
+.. autoclass:: ArchitectureGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ArchitectureGroup
+      :parts: 1
+
+.. autoclass:: PackageGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageGroup
+      :parts: 1
+
+.. autoclass:: PackageBodyGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageBodyGroup
+      :parts: 1
+
+.. autoclass:: ComponentGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ComponentGroup
+      :parts: 1
+
+.. autoclass:: ConfigurationGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConfigurationGroup
+      :parts: 1

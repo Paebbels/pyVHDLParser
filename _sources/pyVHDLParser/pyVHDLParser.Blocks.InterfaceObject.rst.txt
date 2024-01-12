@@ -1,0 +1,94 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================================
+pyVHDLParser.Blocks.InterfaceObject
+===================================
+
+.. automodule:: pyVHDLParser.Blocks.InterfaceObject
+
+
+.. currentmodule:: pyVHDLParser.Blocks.InterfaceObject
+
+
+**Classes**
+
+- :py:class:`InterfaceObjectBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`InterfaceConstantBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`InterfaceVariableBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`InterfaceSignalBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`InterfaceTypeBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: InterfaceObjectBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InterfaceObjectBlock
+      :parts: 1
+
+.. autoclass:: InterfaceConstantBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InterfaceConstantBlock
+      :parts: 1
+
+.. autoclass:: InterfaceVariableBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InterfaceVariableBlock
+      :parts: 1
+
+.. autoclass:: InterfaceSignalBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InterfaceSignalBlock
+      :parts: 1
+
+.. autoclass:: InterfaceTypeBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InterfaceTypeBlock
+      :parts: 1

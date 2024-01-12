@@ -1,0 +1,48 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================
+pyVHDLParser.Blocks.Generate
+============================
+
+.. automodule:: pyVHDLParser.Blocks.Generate
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Blocks.Generate.CaseGenerate
+   pyVHDLParser.Blocks.Generate.ForGenerate
+   pyVHDLParser.Blocks.Generate.IfGenerate
+
+.. currentmodule:: pyVHDLParser.Blocks.Generate
+
+
+**Classes**
+
+- :py:class:`EndGenerateBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EndGenerateBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndGenerateBlock
+      :parts: 1

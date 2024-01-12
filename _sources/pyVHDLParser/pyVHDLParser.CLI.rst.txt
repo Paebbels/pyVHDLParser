@@ -1,0 +1,26 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+================
+pyVHDLParser.CLI
+================
+
+.. automodule:: pyVHDLParser.CLI
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.CLI.ANTLR
+   pyVHDLParser.CLI.Block
+   pyVHDLParser.CLI.CodeDOM
+   pyVHDLParser.CLI.GraphML
+   pyVHDLParser.CLI.Group
+   pyVHDLParser.CLI.Token
+   pyVHDLParser.CLI.VHDLParser
+
+.. currentmodule:: pyVHDLParser.CLI

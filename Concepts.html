@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concepts &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation/Updates" href="Installation.html" />
+    <link rel="prev" title="Use Cases" href="UseCases.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UseCases.html">Use Cases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-passes">Multiple Passes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#object-oriented-programming">Object-Oriented Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-structures">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inheritance">Inheritance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-inheritance-mixins">Multiple Inheritance (Mixins)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overwriting">Overwriting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overloading">Overloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meta-classes">Meta-Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-annotations">Type Annotations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#double-linked-lists">Double-Linked Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-iterators">Python iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-generators">Python generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parallelism">Parallelism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#token-replacement">Token replacement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#classmethods-as-states">Classmethods as States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parser-state-machine">Parser State Machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-dom">Code-DOM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Concepts</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/Concepts.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="concepts">
+<span id="concept"></span><h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h1>
+<section id="multiple-passes">
+<span id="concept-passes"></span><h2>Multiple Passes<a class="headerlink" href="#multiple-passes" title="Permalink to this heading">¶</a></h2>
+<p>The parser is implemented as a multiple-pass parser, so the gained knowledge is
+deepened pass-by-pass. More over, the parser is implemented as a
+streaming-parser implemented with Python generators.</p>
+<p><strong>Passes:</strong></p>
+<ol class="arabic simple" start="0">
+<li><p>VHDL file pre-processing - needed for tool directives:</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> File decryption</p></li>
+<li><p><em class="fa fa-square-o"></em> Conditional analysis (new since VHDL-2019)</p></li>
+</ul>
+</li>
+<li><p>Token generation</p>
+<ul class="simple">
+<li><p><em class="fa fa-check-square-o"></em> Slice a text file into character groups (tokens/words)</p></li>
+<li><p><em class="fa fa-check-square-o"></em> Preserve whitespace (space, tab, linebreak)</p></li>
+<li><p><em class="fa fa-check-square-o"></em> Preserved comments (single-/multi-line comments)</p></li>
+</ul>
+</li>
+<li><p>Block generation</p>
+<ul class="simple">
+<li><p><em class="fa fa-check-square-o"></em> Assemble tokens in blocks (snippets of a statements) for faster document
+navigation</p></li>
+<li><p><em class="fa fa-check-square-o"></em> Exchange simple tokens (e.g. string token) with specific tokens (e.g.
+identifier or keyword)</p></li>
+</ul>
+</li>
+<li><p>Group generation</p>
+<ul class="simple">
+<li><p><em class="fa fa-check-square-o"></em> Assemble blocks in groups (statements)</p></li>
+</ul>
+</li>
+<li><p>Code-DOM generation</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Consume a stream of groups to assemble the Code-DOM</p></li>
+<li><p><em class="fa fa-square-o"></em> Extract information from a group, their blocks or their specific tokens</p></li>
+</ul>
+</li>
+<li><p>Comment annotation</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Scan the data structure for comments and annotate comment to statements</p></li>
+</ul>
+</li>
+<li><p>Build language model</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Combine multiple Code-DOMs to form a full language model</p></li>
+</ul>
+</li>
+<li><p>Build dependencies</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Analyze order</p></li>
+<li><p><em class="fa fa-square-o"></em> Type hierarchy</p></li>
+<li><p><em class="fa fa-square-o"></em> Instance hierarchy</p></li>
+</ul>
+</li>
+<li><p>Checkers</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Check symbols (identifiers, types, …)</p></li>
+<li><p><em class="fa fa-square-o"></em> Check code style</p></li>
+<li><p><em class="fa fa-square-o"></em> Check documentation</p></li>
+</ul>
+</li>
+<li><p>Statistics</p>
+<ul class="simple">
+<li><p><em class="fa fa-square-o"></em> Create statistics (SLoC, Comments vs. Code, …)</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="object-oriented-programming">
+<h2>Object-Oriented Programming<a class="headerlink" href="#object-oriented-programming" title="Permalink to this heading">¶</a></h2>
+<section id="data-structures">
+<h3>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this heading">¶</a></h3>
+<p>All internal data structures are implemented as classes with fields (Python
+calls it attributes), methods, properties (getter and setters) and references
+(pointers) to other instances of classes.</p>
+<p>All data is accompanied by its modification procedures in form of methods. New
+instances of a class can be created by calling the class and implicitly
+executing its initializer method <code class="docutils literal notranslate"><span class="pre">__init__</span></code> or by calling a classmethod to
+help constructing that instance.</p>
+</section>
+<section id="inheritance">
+<h3>Inheritance<a class="headerlink" href="#inheritance" title="Permalink to this heading">¶</a></h3>
+<p>pyVHDLParser makes heavy use of inheritance to share implementations and to
+allow other classes or a user to modify the behavior of all derived classes by
+modifying a single source.</p>
+</section>
+<section id="multiple-inheritance-mixins">
+<h3>Multiple Inheritance (Mixins)<a class="headerlink" href="#multiple-inheritance-mixins" title="Permalink to this heading">¶</a></h3>
+<p>pyVHDLParser uses multiple inheritance via mixin classes. This allows e.g. an
+abstract definition of data models, which are later combined with a parser.</p>
+</section>
+<section id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this heading">¶</a></h3>
+<p>Instead of individual getter and setter methods, pyVHDLParser user Python
+properties.</p>
+</section>
+<section id="overwriting">
+<h3>Overwriting<a class="headerlink" href="#overwriting" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Concepts -&gt; OOP -&gt; Overwriting</p>
+</div>
+</section>
+<section id="overloading">
+<h3>Overloading<a class="headerlink" href="#overloading" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>Concepts -&gt; OOP -&gt; Overloading</p>
+</div>
+</section>
+<section id="meta-classes">
+<h3>Meta-Classes<a class="headerlink" href="#meta-classes" title="Permalink to this heading">¶</a></h3>
+<p>Some additional behaviour can be easier implemented by modifying the class
+constructing other classes. Python calls this a meta-class. One prominent
+example is <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>.</p>
+</section>
+<section id="type-annotations">
+<h3>Type Annotations<a class="headerlink" href="#type-annotations" title="Permalink to this heading">¶</a></h3>
+<p>pyVHDLParser uses type annotations in method parameter definitions and in
+class field declarations to give hints in IDEs and documentation, what objects
+of which types are expected.</p>
+</section>
+</section>
+<section id="double-linked-lists">
+<h2>Double-Linked Lists<a class="headerlink" href="#double-linked-lists" title="Permalink to this heading">¶</a></h2>
+<p>Data structures with direct references (pointers) in general and double linked
+lists in specific are approaches to implement fast and typed navigation from
+object to object. If a reference has multiple endpoints, it is either an
+order-preserving <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code>.</p>
+<p>Many parts in pyVHDLParser form a chain of double-linked objects like tokens,
+blocks and groups. These object chains (or linked lists) can easily be
+<a class="reference external" href="https://docs.python.org/3/glossary.html#term-iterator" title="(in Python v3.12)"><span class="xref std std-term">iterated</span></a>. Iterators can consume such linked lists and reemit
+the content in a modified way.</p>
+<p>More over, such iterators can be packaged into Python generators.</p>
+<p>Iterators and generators can be used in Python’s <code class="docutils literal notranslate"><span class="pre">for</span></code> <a class="footnote-reference brackets" href="#id9" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> loops.</p>
+</section>
+<section id="python-iterators">
+<h2>Python iterators<a class="headerlink" href="#python-iterators" title="Permalink to this heading">¶</a></h2>
+<p>A Python iterable is an object implementing an <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> method returning an
+iterator. The iterator implements a <code class="docutils literal notranslate"><span class="pre">__next__</span></code> method to return the next
+element in line. Usually, the iterator has some internal state, so it can compute
+the next element. At the end of an iteration, <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#StopIteration" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StopIteration</span></code></a> is raised.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+  <span class="nb">list</span> <span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">class</span> <span class="nc">Iterator</span><span class="p">:</span>
+    <span class="n">obj</span> <span class="p">:</span>   <span class="n">Data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">value</span> <span class="p">:</span> <span class="n">Int</span> <span class="o">=</span>  <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span>   <span class="n">obj</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">list</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+      <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+  <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="n">myData</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">myData</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="python-generators">
+<h2>Python generators<a class="headerlink" href="#python-generators" title="Permalink to this heading">¶</a></h2>
+<p>A Python generator is a co-routine (function or method) that return execution
+flow from callee and in most cases with a return value to the caller. The state
+of the routine is preserved (e.g. local variables). When the execution in the
+co-routine is continued, it continues right after the <code class="docutils literal notranslate"><span class="pre">yield</span></code> statement.</p>
+<p>It’s also possible to send parameters from caller to callee, when continuing the
+co-routines execution. (use <code class="docutils literal notranslate"><span class="pre">send</span></code> method.)</p>
+<p>The generation of tokens, blocks and groups is implemented as a generator heavily
+using the <code class="docutils literal notranslate"><span class="pre">yield</span></code> statement.</p>
+</section>
+<section id="parallelism">
+<h2>Parallelism<a class="headerlink" href="#parallelism" title="Permalink to this heading">¶</a></h2>
+<div class="admonition-todo admonition" id="id4">
+<p class="admonition-title">Todo</p>
+<p>Describe how to parallelize on multiple cores.</p>
+</div>
+</section>
+<section id="token-replacement">
+<h2>Token replacement<a class="headerlink" href="#token-replacement" title="Permalink to this heading">¶</a></h2>
+<div class="admonition-todo admonition" id="id5">
+<p class="admonition-title">Todo</p>
+<p>Describe why and how tokens are replaced. Describe why this is not corrupting data.</p>
+</div>
+</section>
+<section id="classmethods-as-states">
+<h2>Classmethods as States<a class="headerlink" href="#classmethods-as-states" title="Permalink to this heading">¶</a></h2>
+<div class="admonition-todo admonition" id="id6">
+<p class="admonition-title">Todo</p>
+<p>Describe why pyVHDLParser uses classmethods to represent parser states.</p>
+</div>
+</section>
+<section id="parser-state-machine">
+<h2>Parser State Machine<a class="headerlink" href="#parser-state-machine" title="Permalink to this heading">¶</a></h2>
+<div class="admonition-todo admonition" id="id7">
+<p class="admonition-title">Todo</p>
+<p>Describe how the parser works in pyVHDLParser.</p>
+</div>
+</section>
+<section id="code-dom">
+<h2>Code-DOM<a class="headerlink" href="#code-dom" title="Permalink to this heading">¶</a></h2>
+<div class="admonition-todo admonition" id="id8">
+<p class="admonition-title">Todo</p>
+<p>Describe what a Code-DOM is.</p>
+</div>
+<ul class="simple">
+<li><p>Clearly named classes that model the semantics of VHDL.</p></li>
+<li><p>All language constructs (statements, declarations, specifications, …)
+have their own classes. These classes are arranged in a logical hierarchy,
+with a single common base-class.</p></li>
+<li><p>Child objects shall have a reference to their parent.</p></li>
+<li><p>Comments will be associated with a particular code object.</p></li>
+<li><p>Easy modifications of the object tree.</p></li>
+<li><p>Support formatting code objects as text for export and debugging.</p></li>
+<li><p>Allow creating a CodeDOM from input file or via API calls.</p></li>
+<li><p>Support resolving of symbolic references into direct references to other
+objects.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CodeDOM is based on the ideas of <a class="reference external" href="https://github.com/dotnet/roslyn">Project Roslyn</a>
+and a series of <a class="reference external" href="https://www.codeproject.com/">CodeProject</a> articles
+written by <a class="reference external" href="https://www.codeproject.com/script/Membership/View.aspx?mid=473427">Ken Beckett</a>
+in 2012.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/488657/The-Future-of-Software-Development-CodeDOMs-Part-1">The Future of Software Development: CodeDOMs (Part 1)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/490184/Creating-a-CodeDOM-Modeling-the-Semantics-of-Code">Creating a CodeDOM: Modeling the Semantics of Code (Part 2)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/491550/Displaying-a-CodeDOM-using-WPF-Part-3">Displaying a CodeDOM using WPF (Part 3)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/492466/Object-Oriented-Parsing-Breaking-With-Tradition-Pa">Object-Oriented Parsing: Breaking With Tradition (Part 4)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/495311/CodeDOM-Classes-for-Solution-and-Project-Files-Par">CodeDOM Classes for Solution and Project Files (Part 5)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/499960/Accessing-Assembly-Metadata-with-Reflection-or-Mon">Accessing Assembly Metadata with Reflection or Mono Cecil (Part 6)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/502354/Resolving-Symbolic-References-in-a-CodeDOM-Part-7">Resolving Symbolic References in a CodeDOM (Part 7)</a></p></li>
+<li><p><a class="reference external" href="https://www.codeproject.com/Articles/505579/Calculating-Metrics-and-Searching-with-a-CodeDOM-P">Calculating Metrics and Searching with a CodeDOM (Part 8)</a></p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<p class="rubric">Footnotes:</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id9" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
+<p>Actually, Python’s <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop is a <code class="docutils literal notranslate"><span class="pre">foreach</span></code>-loop.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="UseCases.html" class="btn btn-neutral float-left" title="Use Cases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Installation.html" class="btn btn-neutral float-right" title="Installation/Updates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

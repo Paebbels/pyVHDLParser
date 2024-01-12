@@ -1,0 +1,64 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==========================
+pyVHDLParser.Blocks.Object
+==========================
+
+.. automodule:: pyVHDLParser.Blocks.Object
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Blocks.Object.Constant
+   pyVHDLParser.Blocks.Object.File
+   pyVHDLParser.Blocks.Object.SharedVariable
+   pyVHDLParser.Blocks.Object.Signal
+   pyVHDLParser.Blocks.Object.Variable
+
+.. currentmodule:: pyVHDLParser.Blocks.Object
+
+
+**Classes**
+
+- :py:class:`ObjectDeclarationBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ObjectDeclarationEndMarkerBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ObjectDeclarationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ObjectDeclarationBlock
+      :parts: 1
+
+.. autoclass:: ObjectDeclarationEndMarkerBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ObjectDeclarationEndMarkerBlock
+      :parts: 1

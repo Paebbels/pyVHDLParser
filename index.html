@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The pyVHDLParser Documentation &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Project Goals" href="ProjectGoals.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><p><a class="reference external" href="https://github.com/Paebbels/pyVHDLParser"><img alt="Sourcecode on GitHub" src="https://img.shields.io/badge/Paebbels-pyVHDLParser-323131?logo=github&amp;longCache=true" style="height: 22px;" /></a> <a class="reference external" href="https://github.com/Paebbels/pyVHDLParser/tags"><img alt="GitHub tag (latest SemVer incl. pre-release" src="https://img.shields.io/github/v/tag/Paebbels/pyVHDLParser?logo=GitHub&amp;include_prereleases" style="height: 22px;" /></a> <a class="reference external" href="https://github.com/Paebbels/pyVHDLParser/releases/latest"><img alt="GitHub release (latest SemVer incl. including pre-releases" src="https://img.shields.io/github/v/release/Paebbels/pyVHDLParser?logo=GitHub&amp;include_prereleases" style="height: 22px;" /></a> <a class="reference external" href="https://github.com/Paebbels/pyVHDLParser/releases"><img alt="GitHub release date" src="https://img.shields.io/github/release-date/Paebbels/pyVHDLParser?logo=GitHub" style="height: 22px;" /></a> <br />
+<a class="reference external" href="https://libraries.io/github/Paebbels/pyVHDLParser"><img alt="Libraries.io status for latest release" src="https://img.shields.io/librariesio/release/pypi/pyVHDLParser" style="height: 22px;" /></a> <a class="reference external" href="https://github.com/Paebbels/pyVHDLParser/network/dependents"><img alt="Dependent repos (via libraries.io)" src="https://img.shields.io/librariesio/dependent-repos/pypi/pyVHDLParser" style="height: 22px;" /></a> <br />
+<a class="reference external" href="https://travis-ci.com/Paebbels/pyVHDLParser"><img alt="Travis - Build on 'master'" src="https://img.shields.io/travis/com/Paebbels/pyVHDLParser?logo=Travis" style="height: 22px;" /></a> <a class="reference external" href="https://pypi.org/project/pyVHDLParser/"><img alt="PyPI - Tag" src="https://img.shields.io/pypi/v/pyVHDLParser?logo=PyPI" style="height: 22px;" /></a> <a class="reference internal" href="https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/pyVHDLParser?logo=PyPI" style="height: 22px;" /></a> <a class="reference internal" href="https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyVHDLParser?logo=PyPI" style="height: 22px;" /></a> <br />
+<a class="reference external" href="https://www.codacy.com/manual/Paebbels/pyVHDLParser"><img alt="Codacy - Quality" src="https://img.shields.io/codacy/grade/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy" style="height: 22px;" /></a> <a class="reference external" href="https://www.codacy.com/manual/Paebbels/pyVHDLParser"><img alt="Codacy - Line Coverage" src="https://img.shields.io/codacy/coverage/1155f244b6f54a3a95abdaa80d6771f8?logo=codacy" style="height: 22px;" /></a> <a class="reference external" href="https://codecov.io/gh/Paebbels/pyVHDLParser"><img alt="Codecov - Branch Coverage" src="https://img.shields.io/codecov/c/github/Paebbels/pyVHDLParser" style="height: 22px;" /></a> <a class="reference external" href="https://libraries.io/github/Paebbels/pyVHDLParser/sourcerank"><img alt="Libraries.io SourceRank" src="https://img.shields.io/librariesio/sourcerank/pypi/pyVHDLParser" style="height: 22px;" /></a> <br />
+<a class="reference external" href="https://pyVHDLParser.readthedocs.io/en/latest/"><img alt="Read the Docs" src="https://img.shields.io/readthedocs/pyVHDLParser" style="height: 22px;" /></a> <a class="reference internal" href="https://img.shields.io/badge/Apache%20License,%202.0-bd0000?longCache=true&amp;label=license&amp;logo=Apache&amp;logoColor=D22128"><img alt="License" src="https://img.shields.io/badge/Apache%20License,%202.0-bd0000?longCache=true&amp;label=license&amp;logo=Apache&amp;logoColor=D22128" style="height: 22px;" /></a></p>
+<hr class="docutils" />
+<section id="the-pyvhdlparser-documentation">
+<h1>The pyVHDLParser Documentation<a class="headerlink" href="#the-pyvhdlparser-documentation" title="Permalink to this heading">¶</a></h1>
+<p>This is a token-stream based parser for VHDL-2008 creating a document object model (DOM).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>This package requires Python 3.8+</strong>, because it uses some of the latest Python feature for effective code writing:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/pathlib.html">Pathlib</a> (Python 3.4)</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#module-typing">Type hints</a> (Python 3.5) and for <a class="reference external" href="https://docs.python.org/3/whatsnew/3.6.html#pep-526-syntax-for-variable-annotations">variables</a> (Python 3.6)</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/dataclasses.html">Data classes</a> (Python 3.7)</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/whatsnew/3.8.html#assignment-expressions">Assignment expressions</a> (Python 3.8)</p></li>
+</ul>
+</div>
+<section id="main-goals">
+<h2>Main Goals<a class="headerlink" href="#main-goals" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Parsing</strong></p>
+<ul>
+<li><p>Slice an input document into <strong>tokens</strong> and text <strong>blocks</strong> which are categorized in <strong>groups</strong> for fast indexing</p></li>
+<li><p>Preserve case, whitespace and comments</p></li>
+<li><p>Recover on parsing errors</p></li>
+<li><p>Good error reporting / throw exceptions</p></li>
+</ul>
+</li>
+<li><p><strong>Fast Processing</strong></p>
+<ul>
+<li><p>Multi-pass parsing and analysis</p></li>
+<li><p>Delay analysis if not needed for current pass</p></li>
+<li><p>Link tokens and blocks for fast-forward scanning (triple helix)</p></li>
+</ul>
+</li>
+<li><p><strong>Generic VHDL Language Model</strong></p>
+<ul>
+<li><p>Assemble a sourcecode document-object-model (Code-DOM)</p></li>
+<li><p>Provide an API for code introspection</p></li>
+<li><p>Provide an API for code modification / transformation</p></li>
+</ul>
+</li>
+</ul>
+<p>See chapter <a class="reference internal" href="ProjectGoals.html#goal"><span class="std std-ref">Project Goals</span></a> for details.</p>
+</section>
+<section id="use-cases">
+<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Generate <a class="reference internal" href="UseCases.html#usecase-doc"><span class="std std-ref">documentation</span></a> by using the fast-forward scanner</p></li>
+<li><p>Generate a <a class="reference internal" href="UseCases.html#usecase-codedom"><span class="std std-ref">document</span></a>/<a class="reference internal" href="UseCases.html#usecase-vhdlmodel"><span class="std std-ref">language</span></a> model by using the grouped text-block scanner</p></li>
+<li><p>Extract compile orders and other dependency <a class="reference internal" href="UseCases.html#usecase-graphs"><span class="std std-ref">graphs</span></a></p></li>
+<li><p>Generate <a class="reference internal" href="UseCases.html#usecase-highlight"><span class="std std-ref">highlighted syntax</span></a></p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See chapter <a class="reference internal" href="UseCases.html#usecase"><span class="std std-ref">Use Cases</span></a> for details.</p>
+</div>
+</section>
+<section id="parsing-approach">
+<h2>Parsing Approach<a class="headerlink" href="#parsing-approach" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Slice an input document into <strong>tokens</strong></p></li>
+<li><p>Assemble tokens to text <strong>blocks</strong> which are categorized</p></li>
+<li><p>Assemble text blocks for fast-forward scanning into <strong>groups</strong> (indexing)</p></li>
+<li><p>Translate groups into a sourcecode document-object-model (Code-DOM)</p></li>
+<li><p>Provide a generic VHDL language model</p></li>
+</ol>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See chapter <a class="reference internal" href="Concepts.html#concept"><span class="std std-ref">Concepts</span></a> for details.</p>
+</div>
+</section>
+<section id="additional-aims">
+<h2>Additional Aims<a class="headerlink" href="#additional-aims" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>A VHDL domain for Sphinx</p>
+<ul>
+<li><p>A autodoc plugin for the VHDL domain in Sphinx</p></li>
+</ul>
+</li>
+<li><p>VHDL plugins/extensions for style checkers supported by CI environments</p></li>
+<li><p>Testing new VHDL language features beyond VHDL-2008/VHDL-2019</p></li>
+</ul>
+</section>
+<section id="news">
+<h2>News<a class="headerlink" href="#news" title="Permalink to this heading">¶</a></h2>
+<section id="mar-2023-enhancements">
+<h3>Mar. 2023 - Enhancements<a class="headerlink" href="#mar-2023-enhancements" title="Permalink to this heading">¶</a></h3>
+</section>
+<ul class="simple">
+<li><p>Bumped dependencies to pyVHDLModel and updated interfaces.</p></li>
+<li><p>CLI entrypoint will be installed as a binary.</p></li>
+</ul>
+<section id="jun-2021-enhancements">
+<h3>Jun. 2021 - Enhancements<a class="headerlink" href="#jun-2021-enhancements" title="Permalink to this heading">¶</a></h3>
+</section>
+<ul class="simple">
+<li><p>Added infrastructure to run example code provided in issues as testcase.</p></li>
+<li><p>New Single-File GitHub Action workflow (pipeline).</p></li>
+<li><p>Added Dependabot configuration file.</p></li>
+<li><p>Updated dependencies</p>
+<ul>
+<li><p>Sphinx uses now v4.0.2</p></li>
+<li><p>Removed 2 patched Sphinx extensions &amp;rarr; now using original extensions.</p></li>
+</ul>
+</li>
+<li><p>…</p></li>
+</ul>
+<section id="nov-2020-test-cases">
+<h3>Nov. 2020 - Test cases<a class="headerlink" href="#nov-2020-test-cases" title="Permalink to this heading">¶</a></h3>
+</section>
+<ul class="simple">
+<li><p>Added testcases for Tokenizer and block generation.</p></li>
+<li><p>Added first testcases for pass 4 (Code-DOM)</p></li>
+<li><p>Collect code and branch coverage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Frontend.py</span></code> → pyVHDLParser executable installed via pip</p></li>
+</ul>
+<section id="dec-2019-major-reworks">
+<h3>Dec. 2019 - Major reworks<a class="headerlink" href="#dec-2019-major-reworks" title="Permalink to this heading">¶</a></h3>
+</section>
+<ul class="simple">
+<li><p>Reworked and updated documentation.</p></li>
+<li><p>Implemented a new test frontend.</p></li>
+</ul>
+<section id="dec-2018-minor-updates">
+<h3>Dec. 2018 - Minor updates<a class="headerlink" href="#dec-2018-minor-updates" title="Permalink to this heading">¶</a></h3>
+</section>
+<p>Fixed some NextToken linking problems.</p>
+<section id="nov-2017-new-features">
+<h3>Nov. 2017 - New features<a class="headerlink" href="#nov-2017-new-features" title="Permalink to this heading">¶</a></h3>
+</section>
+<p>Implemented new features like case statements.</p>
+<section id="project-started">
+<h3>20.09.2017 - Project started<a class="headerlink" href="#project-started" title="Permalink to this heading">¶</a></h3>
+</section>
+<p>Let’s create a new parser in Python to process VHDL code.</p>
+</section>
+<section id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/Paebbels">Patrick Lehmann</a> (Maintainer)</p></li>
+<li><p><a class="reference external" href="https://github.com/Paebbels/pyVHDLParser/graphs/contributors">and more…</a></p></li>
+</ul>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading">¶</a></h2>
+<p>This library is licensed under <strong>Apache License 2.0</strong>.</p>
+<hr class="docutils" />
+<p>This document was generated on 12.Jan 2024 - 01:04.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ProjectGoals.html" class="btn btn-neutral float-right" title="Project Goals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

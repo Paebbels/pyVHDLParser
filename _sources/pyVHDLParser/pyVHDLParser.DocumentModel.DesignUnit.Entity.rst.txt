@@ -1,0 +1,38 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================================
+pyVHDLParser.DocumentModel.DesignUnit.Entity
+============================================
+
+.. automodule:: pyVHDLParser.DocumentModel.DesignUnit.Entity
+
+
+.. currentmodule:: pyVHDLParser.DocumentModel.DesignUnit.Entity
+
+
+**Classes**
+
+- :py:class:`Entity`:
+  A ``PrimaryUnit`` is a base-class for all primary units.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Entity
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Entity
+      :parts: 1

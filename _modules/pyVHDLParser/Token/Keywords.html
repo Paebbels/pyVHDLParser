@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Token.Keywords &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../Token.html">pyVHDLParser.Token</a> &raquo;</li>
+      <li>pyVHDLParser.Token.Keywords</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLParser.Token.Keywords</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#            __     ___   _ ____  _     ____                                                                           #</span>
+<span class="c1">#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #</span>
+<span class="c1"># | &#39;_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | &#39;__/ __|/ _ \ &#39;__|                                                 #</span>
+<span class="c1"># | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #</span>
+<span class="c1"># | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #</span>
+<span class="c1"># |_|    |___/                                                                                                         #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span>       <span class="kn">import</span> <span class="n">export</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser</span>               <span class="kn">import</span> <span class="n">SourceCodePosition</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>         <span class="kn">import</span> <span class="n">Token</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">,</span> <span class="n">VHDLToken</span><span class="p">,</span> <span class="n">CharacterToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Parser</span>  <span class="kn">import</span> <span class="n">TokenizerException</span>
+
+
+<div class="viewcode-block" id="SpecificVHDLToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SpecificVHDLToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SpecificVHDLToken</span><span class="p">(</span><span class="n">VHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all specific tokens.</span>
+
+<span class="sd">	Simple token will be converted to specific tokens while parsing.</span>
+<span class="sd">	The internal data is copied, and the original token is replaced by this token.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SpecificVHDLToken.__init__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SpecificVHDLToken.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousToken</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialize a specific token, by copying the simple token&#39;s data and link</span>
+<span class="sd">		this new token to the previous token as a replacement.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">fromExistingToken</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">previousToken</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">Value</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">End</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BoundaryToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BoundaryToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BoundaryToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing a boundary between (reserved) words.</span>
+
+<span class="sd">	In many cases, a :class:`SpaceToken`, :class:`CommentToken`,</span>
+<span class="sd">	:class:`LinebreakToken` or :class:`CharacterToken` becomes a BoundaryToken.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Bracket tokens: (), [], {}, &lt;&gt;</span>
+<span class="c1"># ==============================================================================</span>
+<div class="viewcode-block" id="BracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BracketToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all bracket tokens: ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, ``&lt;`` and ``&gt;``.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Round bracket / parenthesis / ()</span>
+<span class="c1"># ----------------------------------------------------------</span>
+<div class="viewcode-block" id="RoundBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RoundBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RoundBracketToken</span><span class="p">(</span><span class="n">BracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all round bracket tokens: ``(`` and ``)``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="OpeningRoundBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OpeningRoundBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OpeningRoundBracketToken</span><span class="p">(</span><span class="n">RoundBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing an opening round bracket: ``(``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ClosingRoundBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ClosingRoundBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ClosingRoundBracketToken</span><span class="p">(</span><span class="n">RoundBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a closing round bracket: ``)``.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Square bracket / []</span>
+<span class="c1"># ----------------------------------------------------------</span>
+<div class="viewcode-block" id="SquareBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SquareBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SquareBracketToken</span><span class="p">(</span><span class="n">BracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all square bracket tokens: ``[`` and ``]``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="OpeningSquareBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OpeningSquareBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OpeningSquareBracketToken</span><span class="p">(</span><span class="n">SquareBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing an square round bracket: ``[``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ClosingSquareBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ClosingSquareBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ClosingSquareBracketToken</span><span class="p">(</span><span class="n">SquareBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a closing square bracket: ``]``.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Curly bracket / brace / curved bracket / {}</span>
+<span class="c1"># ----------------------------------------------------------</span>
+<div class="viewcode-block" id="CurlyBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.CurlyBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">CurlyBracketToken</span><span class="p">(</span><span class="n">BracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all curly bracket tokens: ``{`` and ``}``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="OpeningCurlyBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OpeningCurlyBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OpeningCurlyBracketToken</span><span class="p">(</span><span class="n">CurlyBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing an opening curly bracket: ``{``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ClosingCurlyBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ClosingCurlyBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ClosingCurlyBracketToken</span><span class="p">(</span><span class="n">CurlyBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a closing curly bracket: ``}``.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Angle bracket / arrow bracket / &lt;&gt;</span>
+<span class="c1"># ----------------------------------------------------------</span>
+<div class="viewcode-block" id="AngleBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AngleBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AngleBracketToken</span><span class="p">(</span><span class="n">BracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all angle bracket tokens: ``&lt;`` and ``&gt;``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="OpeningAngleBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OpeningAngleBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OpeningAngleBracketToken</span><span class="p">(</span><span class="n">AngleBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing an opening angle bracket: ``&lt;``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ClosingAngleBracketToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ClosingAngleBracketToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ClosingAngleBracketToken</span><span class="p">(</span><span class="n">AngleBracketToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a closing angle bracket: ``&gt;``.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Operator tokens: +, -, *, /, **, &amp;</span>
+<span class="c1"># ==============================================================================</span>
+<div class="viewcode-block" id="OperatorToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OperatorToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OperatorToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all operator tokens.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="PlusOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PlusOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PlusOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a plus operator: ``+``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span></div>
+
+
+<div class="viewcode-block" id="MinusOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MinusOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MinusOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a minus operator: ``-``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span></div>
+
+
+<div class="viewcode-block" id="MultiplyOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiplyOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MultiplyOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a multiply operator: ``*``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span></div>
+
+
+<div class="viewcode-block" id="DivideOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DivideOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DivideOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a divide operator: ``/``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span></div>
+
+
+<div class="viewcode-block" id="ModuloOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ModuloOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ModuloOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;mod&quot;</span></div>
+
+
+<div class="viewcode-block" id="RemainderOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RemainderOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RemainderOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;rem&quot;</span></div>
+
+
+<div class="viewcode-block" id="PowerOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PowerOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PowerOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a power operator: ``**``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;**&quot;</span></div>
+
+
+<div class="viewcode-block" id="ConcatOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ConcatOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ConcatOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a concat operator: ``&amp;``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span></div>
+
+
+<span class="c1"># Relational operatrors</span>
+<span class="c1"># ----------------------------------------------------------</span>
+<div class="viewcode-block" id="RelationalOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RelationalOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RelationalOperator</span><span class="p">(</span><span class="n">OperatorToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all relational operator tokens.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="EqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.EqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="UnequalOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UnequalOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UnequalOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;/=&quot;</span></div>
+
+
+<div class="viewcode-block" id="LessThanOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LessThanOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LessThanOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&lt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="LessThanOrEqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LessThanOrEqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LessThanOrEqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&lt;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="GreaterThanOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GreaterThanOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GreaterThanOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="GreaterThanOrEqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GreaterThanOrEqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GreaterThanOrEqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&gt;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingEqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingEqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingEqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?=&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingUnequalOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingUnequalOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingUnequalOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?/=&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingLessThanOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingLessThanOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingLessThanOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?&lt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingLessThanOrEqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingLessThanOrEqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingLessThanOrEqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?&lt;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingGreaterThanOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingGreaterThanOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingGreaterThanOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MatchingGreaterThanOrEqualOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MatchingGreaterThanOrEqualOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MatchingGreaterThanOrEqualOperator</span><span class="p">(</span><span class="n">RelationalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;?&gt;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="DelimiterToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DelimiterToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DelimiterToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing a delimiter sign in between list items.</span>
+
+<span class="sd">	This token is usually created from a :class:`CharacterToken` with values ``,``</span>
+<span class="sd">	or ``;``.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="EndToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.EndToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing an end of a statement.</span>
+
+<span class="sd">	This token is usually created from a :class:`CharacterToken` with value ``;``.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="IdentifierToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.IdentifierToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">IdentifierToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing an identifier.</span>
+
+<span class="sd">	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="RepeatedIdentifierToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RepeatedIdentifierToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RepeatedIdentifierToken</span><span class="p">(</span><span class="n">IdentifierToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing a repeated identifier.</span>
+
+<span class="sd">	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SimpleNameToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SimpleNameToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SimpleNameToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="LabelToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LabelToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LabelToken</span><span class="p">(</span><span class="n">SpecificVHDLToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing a label.</span>
+
+<span class="sd">	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="RepeatedLabelToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RepeatedLabelToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RepeatedLabelToken</span><span class="p">(</span><span class="n">LabelToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Token representing a repeated label.</span>
+
+<span class="sd">	This token is usually created from a :class:`WordToken` or :class:`ExtendedIdentifierToken`.</span>
+<span class="sd">	&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MultiCharKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiCharKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MultiCharKeyword</span><span class="p">(</span><span class="n">VHDLToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="MultiCharKeyword.__init__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiCharKeyword.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousToken</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="p">:</span> <span class="n">CharacterToken</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">fromExistingToken</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">previousToken</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">End</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiCharKeyword.__str__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiCharKeyword.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{name: &lt;50}</span><span class="s2"> &#39;</span><span class="si">{value}</span><span class="s2">&#39; at </span><span class="si">{pos!r}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">],</span>
+			<span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">,</span>
+			<span class="n">pos</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Start</span>
+		<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CommentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.CommentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">CommentKeyword</span><span class="p">(</span><span class="n">MultiCharKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all comment keywords: ``--``, ``/*`` and ``*/``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SingleLineCommentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SingleLineCommentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SingleLineCommentKeyword</span><span class="p">(</span><span class="n">CommentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a starting sequence for a single-line comment: ``--``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span></div>
+
+
+<div class="viewcode-block" id="MultiLineCommentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiLineCommentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MultiLineCommentKeyword</span><span class="p">(</span><span class="n">CommentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all tokens related to multi-line comments: ``/*`` and ``*/``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MultiLineCommentStartKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiLineCommentStartKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MultiLineCommentStartKeyword</span><span class="p">(</span><span class="n">MultiLineCommentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a starting sequence for a multi-line comment: ``/*``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;/*&quot;</span></div>
+
+
+<div class="viewcode-block" id="MultiLineCommentEndKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MultiLineCommentEndKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MultiLineCommentEndKeyword</span><span class="p">(</span><span class="n">MultiLineCommentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a closing sequence for a multi-line comment: ``*/``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;*/&quot;</span></div>
+
+
+<div class="viewcode-block" id="AssignmentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AssignmentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AssignmentKeyword</span><span class="p">(</span><span class="n">MultiCharKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base-class for all assignment keywords: ``:=`` and ``&lt;=``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="VariableAssignmentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.VariableAssignmentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">VariableAssignmentKeyword</span><span class="p">(</span><span class="n">AssignmentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a variable assignment: ``:=``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;:=&quot;</span></div>
+
+
+<div class="viewcode-block" id="SignalAssignmentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SignalAssignmentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SignalAssignmentKeyword</span><span class="p">(</span><span class="n">AssignmentKeyword</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Token representing a signal assignment: ``&lt;=``.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&lt;=&quot;</span></div>
+
+
+<div class="viewcode-block" id="AssociationKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AssociationKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AssociationKeyword</span><span class="p">(</span><span class="n">MultiCharKeyword</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="MapAssociationKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MapAssociationKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MapAssociationKeyword</span><span class="p">(</span><span class="n">AssociationKeyword</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;=&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SignalAssociationKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SignalAssociationKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SignalAssociationKeyword</span><span class="p">(</span><span class="n">AssociationKeyword</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;&lt;=&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="KeywordToken"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.KeywordToken">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">KeywordToken</span><span class="p">(</span><span class="n">VHDLToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="KeywordToken.__init__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.KeywordToken.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousToken</span><span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">SourceCodePosition</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="p">:</span> <span class="n">WordToken</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">fromExistingToken</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">TokenizerException</span><span class="p">(</span><span class="s2">&quot;Expected keyword </span><span class="si">{0}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span>
+
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">previousToken</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="p">,</span> <span class="n">WordToken</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">fromExistingToken</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">)):</span>
+				<span class="k">raise</span> <span class="n">TokenizerException</span><span class="p">(</span><span class="s2">&quot;Expected keyword </span><span class="si">{0}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span> <span class="n">fromExistingToken</span><span class="p">)</span>
+
+			<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fromExistingToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__KEYWORD__</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span> <span class="n">fromExistingToken</span><span class="o">.</span><span class="n">End</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeywordToken.__str__"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.KeywordToken.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{name: &lt;50}</span><span class="s2">  </span><span class="si">{value:.&lt;59}</span><span class="s2"> at </span><span class="si">{pos!r}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+				<span class="n">value</span><span class="o">=</span><span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Value</span> <span class="o">+</span> <span class="s2">&quot;&#39;  &quot;</span><span class="p">,</span>
+				<span class="n">pos</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Start</span>
+			<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DirectionKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DirectionKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DirectionKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Operator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.Operator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Operator</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="LogicalOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LogicalOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LogicalOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="MiscellaneousOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MiscellaneousOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MiscellaneousOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ShiftOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ShiftOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ShiftOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="AbsOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AbsOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AbsOperator</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;abs&#39; for unary operator *absolute value*.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;abs&quot;</span></div>
+
+
+<div class="viewcode-block" id="AccessKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AccessKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AccessKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;access&#39; to defined access types.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;access&quot;</span></div>
+
+
+<div class="viewcode-block" id="AfterKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AfterKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AfterKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;after&#39;.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;after&quot;</span></div>
+
+
+<div class="viewcode-block" id="AliasKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AliasKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AliasKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;alias&#39; to declare aliases.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;alias&quot;</span></div>
+
+
+<div class="viewcode-block" id="AllKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AllKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AllKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;all&#39;.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span></div>
+
+
+<div class="viewcode-block" id="AndOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AndOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AndOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;and&#39; for binary logical operator *and*.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;and&quot;</span></div>
+
+
+<div class="viewcode-block" id="ArchitectureKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ArchitectureKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ArchitectureKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;architecture&#39; to define architectures.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;architecture&quot;</span></div>
+
+
+<div class="viewcode-block" id="ArrayKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ArrayKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ArrayKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;array&#39; to define array types.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span></div>
+
+
+<div class="viewcode-block" id="AssertKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AssertKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AssertKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;assert&#39; for *assert*-statements.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;assert&quot;</span></div>
+
+
+<div class="viewcode-block" id="AttributeKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.AttributeKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">AttributeKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;attribute&#39;.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;attribute&quot;</span></div>
+
+
+<div class="viewcode-block" id="BeginKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BeginKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BeginKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;begin&#39; to distinguish declarative regions from statements regions.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;begin&quot;</span></div>
+
+
+<div class="viewcode-block" id="BlockKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BlockKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;block&#39; for *block*-statements.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;block&quot;</span></div>
+
+
+<div class="viewcode-block" id="BodyKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BodyKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BodyKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;body&#39; to distinguish declarations from implementations (bodies).&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;body&quot;</span></div>
+
+
+<div class="viewcode-block" id="BufferKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BufferKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BufferKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;buffer&#39; for mode *buffer*.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;buffer&quot;</span></div>
+
+
+<div class="viewcode-block" id="BusKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.BusKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BusKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Reserved word &#39;bus&#39;.&quot;&quot;&quot;</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;bus&quot;</span></div>
+
+
+<div class="viewcode-block" id="CaseKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.CaseKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">CaseKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;case&quot;</span></div>
+
+
+<div class="viewcode-block" id="ComponentKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ComponentKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ComponentKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;component&quot;</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ConfigurationKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ConfigurationKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;configuration&quot;</span></div>
+
+
+<div class="viewcode-block" id="ConstantKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ConstantKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ConstantKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span></div>
+
+
+<div class="viewcode-block" id="ContextKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ContextKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ContextKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;context&quot;</span></div>
+
+
+<div class="viewcode-block" id="DefaultKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DefaultKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DefaultKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span></div>
+
+
+<div class="viewcode-block" id="DisconnectKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DisconnectKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DisconnectKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;disconnect&quot;</span></div>
+
+
+<div class="viewcode-block" id="DowntoKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.DowntoKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DowntoKeyword</span><span class="p">(</span><span class="n">DirectionKeyword</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;downto&quot;</span></div>
+
+
+<div class="viewcode-block" id="ElseKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ElseKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElseKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;else&quot;</span></div>
+
+
+<div class="viewcode-block" id="ElsIfKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ElsIfKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ElsIfKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;elsif&quot;</span></div>
+
+
+<div class="viewcode-block" id="EndKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.EndKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;end&quot;</span></div>
+
+
+<div class="viewcode-block" id="EntityKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.EntityKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EntityKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;entity&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExitKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ExitKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ExitKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;exit&quot;</span></div>
+
+
+<div class="viewcode-block" id="FileKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.FileKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">FileKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span></div>
+
+
+<div class="viewcode-block" id="ForKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ForKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ForKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;for&quot;</span></div>
+
+
+<div class="viewcode-block" id="ForceKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ForceKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ForceKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;force&quot;</span></div>
+
+
+<div class="viewcode-block" id="FunctionKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.FunctionKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">FunctionKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;function&quot;</span></div>
+
+
+<div class="viewcode-block" id="GenerateKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GenerateKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GenerateKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;generate&quot;</span></div>
+
+
+<div class="viewcode-block" id="GenericKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GenericKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GenericKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;generic&quot;</span></div>
+
+
+<div class="viewcode-block" id="GroupKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GroupKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GroupKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span></div>
+
+
+<div class="viewcode-block" id="GuardedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.GuardedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GuardedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;guarded&quot;</span></div>
+
+
+<div class="viewcode-block" id="IfKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.IfKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">IfKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;if&quot;</span></div>
+
+
+<div class="viewcode-block" id="IsKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.IsKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">IsKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;is&quot;</span></div>
+
+
+<div class="viewcode-block" id="InKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.InKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">InKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;in&quot;</span></div>
+
+
+<div class="viewcode-block" id="InoutKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.InoutKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">InoutKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;inout&quot;</span></div>
+
+
+<div class="viewcode-block" id="ImpureKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ImpureKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ImpureKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;impure&quot;</span></div>
+
+
+<div class="viewcode-block" id="InertialKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.InertialKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">InertialKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;inertial&quot;</span></div>
+
+
+<div class="viewcode-block" id="LabelKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LabelKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LabelKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;lable&quot;</span></div>
+
+
+<div class="viewcode-block" id="LibraryKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LibraryKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LibraryKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;library&quot;</span></div>
+
+
+<div class="viewcode-block" id="LinkageKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LinkageKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LinkageKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;linkage&quot;</span></div>
+
+
+<div class="viewcode-block" id="LiteralKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LiteralKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LiteralKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;literal&quot;</span></div>
+
+
+<div class="viewcode-block" id="LoopKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.LoopKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LoopKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;loop&quot;</span></div>
+
+
+<div class="viewcode-block" id="MapKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.MapKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MapKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;map&quot;</span>\</div>
+
+
+<div class="viewcode-block" id="NandOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NandOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NandOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;nand&quot;</span></div>
+
+
+<div class="viewcode-block" id="NewKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NewKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NewKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span></div>
+
+
+<div class="viewcode-block" id="NextKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NextKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NextKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;next&quot;</span></div>
+
+
+<div class="viewcode-block" id="NorOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NorOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NorOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;nor&quot;</span></div>
+
+
+<div class="viewcode-block" id="NotOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NotOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NotOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;not&quot;</span></div>
+
+
+<div class="viewcode-block" id="NullKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.NullKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">NullKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span></div>
+
+
+<div class="viewcode-block" id="OfKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OfKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OfKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;of&quot;</span></div>
+
+
+<div class="viewcode-block" id="OnKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OnKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OnKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;on&quot;</span></div>
+
+
+<div class="viewcode-block" id="OpenKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OpenKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OpenKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;open&quot;</span></div>
+
+
+<div class="viewcode-block" id="OrOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OrOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OrOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;or&quot;</span></div>
+
+
+<div class="viewcode-block" id="OthersKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OthersKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OthersKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;others&quot;</span></div>
+
+
+<div class="viewcode-block" id="OutKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.OutKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">OutKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;out&quot;</span></div>
+
+
+<div class="viewcode-block" id="PackageKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PackageKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PackageKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;package&quot;</span></div>
+
+
+<div class="viewcode-block" id="ParameterKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ParameterKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ParameterKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;parameter&quot;</span></div>
+
+
+<div class="viewcode-block" id="PortKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PortKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PortKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;port&quot;</span></div>
+
+
+<div class="viewcode-block" id="PostponedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PostponedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PostponedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;postponed&quot;</span></div>
+
+
+<div class="viewcode-block" id="PrivateKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PrivateKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PrivateKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;private&quot;</span></div>
+
+
+<div class="viewcode-block" id="ProcedureKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ProcedureKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ProcedureKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;procedure&quot;</span></div>
+
+
+<div class="viewcode-block" id="ProcessKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ProcessKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ProcessKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span></div>
+
+
+<div class="viewcode-block" id="PropertyKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PropertyKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PropertyKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;property&quot;</span></div>
+
+
+<div class="viewcode-block" id="ProtectedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ProtectedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ProtectedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;protected&quot;</span></div>
+
+
+<div class="viewcode-block" id="PureKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.PureKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PureKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;pure&quot;</span></div>
+
+
+<div class="viewcode-block" id="RangeKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RangeKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RangeKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;range&quot;</span></div>
+
+
+<div class="viewcode-block" id="RecordKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RecordKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RecordKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;record&quot;</span></div>
+
+
+<div class="viewcode-block" id="RegisterKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RegisterKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RegisterKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;register&quot;</span></div>
+
+
+<div class="viewcode-block" id="RejectKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RejectKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RejectKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;reject&quot;</span></div>
+
+
+<div class="viewcode-block" id="ReleaseKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ReleaseKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ReleaseKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;release&quot;</span></div>
+
+
+<div class="viewcode-block" id="ReportKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ReportKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ReportKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;report&quot;</span></div>
+
+
+<div class="viewcode-block" id="ReturnKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ReturnKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ReturnKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;return&quot;</span></div>
+
+
+<div class="viewcode-block" id="RolOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RolOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RolOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;rol&quot;</span></div>
+
+
+<div class="viewcode-block" id="RorOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.RorOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">RorOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;ror&quot;</span></div>
+
+
+<div class="viewcode-block" id="SelectKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SelectKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SelectKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;select&quot;</span></div>
+
+
+<div class="viewcode-block" id="SequenceKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SequenceKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SequenceKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;sequence&quot;</span></div>
+
+
+<div class="viewcode-block" id="SeverityKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SeverityKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SeverityKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;severity&quot;</span></div>
+
+
+<div class="viewcode-block" id="SharedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SharedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SharedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;shared&quot;</span></div>
+
+
+<div class="viewcode-block" id="SignalKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SignalKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SignalKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;signal&quot;</span></div>
+
+
+<div class="viewcode-block" id="SlaOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SlaOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SlaOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;sla&quot;</span></div>
+
+
+<div class="viewcode-block" id="SllOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SllOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SllOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;sll&quot;</span></div>
+
+
+<div class="viewcode-block" id="SraOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SraOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SraOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;sra&quot;</span></div>
+
+
+<div class="viewcode-block" id="SrlOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SrlOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SrlOperator</span><span class="p">(</span><span class="n">ShiftOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;srl&quot;</span></div>
+
+
+<div class="viewcode-block" id="SubtypeKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.SubtypeKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SubtypeKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;subtype&quot;</span></div>
+
+
+<div class="viewcode-block" id="ThenKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ThenKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ThenKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;then&quot;</span></div>
+
+
+<div class="viewcode-block" id="ToKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ToKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ToKeyword</span><span class="p">(</span><span class="n">DirectionKeyword</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span></div>
+
+
+<div class="viewcode-block" id="TransportKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.TransportKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">TransportKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;transport&quot;</span></div>
+
+
+<div class="viewcode-block" id="TypeKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.TypeKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">TypeKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;type&quot;</span></div>
+
+
+<div class="viewcode-block" id="UnaffectedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UnaffectedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UnaffectedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;unaffected&quot;</span></div>
+
+
+<div class="viewcode-block" id="UnitsKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UnitsKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UnitsKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;units&quot;</span></div>
+
+
+<div class="viewcode-block" id="UntilKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UntilKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UntilKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;until&quot;</span></div>
+
+
+<div class="viewcode-block" id="UseKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UseKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UseKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;use&quot;</span></div>
+
+
+<div class="viewcode-block" id="UnbufferedKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.UnbufferedKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UnbufferedKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;unbuffered&quot;</span></div>
+
+
+<div class="viewcode-block" id="VariableKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.VariableKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">VariableKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;variable&quot;</span></div>
+
+
+<div class="viewcode-block" id="ViewKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.ViewKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ViewKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;view&quot;</span></div>
+
+
+<div class="viewcode-block" id="VunitKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.VunitKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">VunitKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;vunit&quot;</span></div>
+
+
+<div class="viewcode-block" id="WaitKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.WaitKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">WaitKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;wait&quot;</span></div>
+
+
+<div class="viewcode-block" id="WhenKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.WhenKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">WhenKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;when&quot;</span></div>
+
+
+<div class="viewcode-block" id="WhileKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.WhileKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">WhileKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;while&quot;</span></div>
+
+
+<div class="viewcode-block" id="WithKeyword"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.WithKeyword">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">WithKeyword</span><span class="p">(</span><span class="n">KeywordToken</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;with&quot;</span></div>
+
+
+<div class="viewcode-block" id="XorOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.XorOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">XorOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;xor&quot;</span></div>
+
+
+<div class="viewcode-block" id="XnorOperator"><a class="viewcode-back" href="../../../pyVHDLParser/pyVHDLParser.Token.Keywords.html#pyVHDLParser.Token.Keywords.XnorOperator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">XnorOperator</span><span class="p">(</span><span class="n">LogicalOperator</span><span class="p">):</span>
+	<span class="n">__KEYWORD__</span> <span class="o">=</span> <span class="s2">&quot;xnor&quot;</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

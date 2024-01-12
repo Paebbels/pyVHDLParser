@@ -1,0 +1,26 @@
+.. # Template created by Patrick Lehmann
+
+Python Class Reference
+######################
+
+Reference of all packages and modules:
+
+.. automodule:: pyVHDLParser
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.ANTLR4
+   pyVHDLParser.Base
+   pyVHDLParser.Blocks
+   pyVHDLParser.CLI
+   pyVHDLParser.Decorators
+   pyVHDLParser.DocumentModel
+   pyVHDLParser.Filters
+   pyVHDLParser.Groups
+   pyVHDLParser.LanguageModel
+   pyVHDLParser.NetlistModel
+   pyVHDLParser.SimulationModel
+   pyVHDLParser.StyleChecks
+   pyVHDLParser.Token
+   pyVHDLParser.TypeSystem

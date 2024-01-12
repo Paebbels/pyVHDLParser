@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Groups &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.Groups.Comment" href="pyVHDLParser.Groups.Comment.html" />
+    <link rel="prev" title="pyVHDLParser.Filters.Comment" href="pyVHDLParser.Filters.Comment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyVHDLParser.Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.Comment.html">pyVHDLParser.Groups.Comment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.Concurrent.html">pyVHDLParser.Groups.Concurrent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.DesignUnit.html">pyVHDLParser.Groups.DesignUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.List.html">pyVHDLParser.Groups.List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.Object.html">pyVHDLParser.Groups.Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.Reference.html">pyVHDLParser.Groups.Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Groups.Sequential.html">pyVHDLParser.Groups.Sequential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.GroupParserException"><code class="docutils literal notranslate"><span class="pre">GroupParserException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.GroupParserException.__init__"><code class="docutils literal notranslate"><span class="pre">GroupParserException.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.GroupParserException.__new__"><code class="docutils literal notranslate"><span class="pre">GroupParserException.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.BlockIterator"><code class="docutils literal notranslate"><span class="pre">BlockIterator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockIterator.__init__"><code class="docutils literal notranslate"><span class="pre">BlockIterator.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__init__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__eq__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__ne__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__ne__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__str__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__call__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser.__hash__"><code class="docutils literal notranslate"><span class="pre">BlockToGroupParser.__hash__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup"><code class="docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__new__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__base__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__base__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__call__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__delattr__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__delattr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__dir__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__dir__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__getattribute__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__getattribute__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__init__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__instancecheck__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__instancecheck__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__or__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__or__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__prepare__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__prepare__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__ror__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__ror__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__setattr__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__setattr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__sizeof__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__sizeof__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__subclasscheck__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__subclasscheck__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__subclasses__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__subclasses__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.__text_signature__"><code class="docutils literal notranslate"><span class="pre">MetaGroup.__text_signature__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup._checkForAbstractMethods"><code class="docutils literal notranslate"><span class="pre">MetaGroup._checkForAbstractMethods()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfAbstract"><code class="docutils literal notranslate"><span class="pre">MetaGroup._wrapNewMethodIfAbstract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfSingleton"><code class="docutils literal notranslate"><span class="pre">MetaGroup._wrapNewMethodIfSingleton()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup.mro"><code class="docutils literal notranslate"><span class="pre">MetaGroup.mro()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.__init__"><code class="docutils literal notranslate"><span class="pre">Group.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group._previousGroup"><code class="docutils literal notranslate"><span class="pre">Group._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.NextGroup"><code class="docutils literal notranslate"><span class="pre">Group.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.InnerGroup"><code class="docutils literal notranslate"><span class="pre">Group.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group._subGroups"><code class="docutils literal notranslate"><span class="pre">Group._subGroups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.StartBlock"><code class="docutils literal notranslate"><span class="pre">Group.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.EndBlock"><code class="docutils literal notranslate"><span class="pre">Group.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.MultiPart"><code class="docutils literal notranslate"><span class="pre">Group.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.__repr__"><code class="docutils literal notranslate"><span class="pre">Group.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.Group.__str__"><code class="docutils literal notranslate"><span class="pre">Group.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup"><code class="docutils literal notranslate"><span class="pre">StartOfGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.__init__"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">StartOfGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">StartOfGroup._subGroups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.__str__"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">StartOfGroup.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup"><code class="docutils literal notranslate"><span class="pre">EndOfGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.__init__"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">EndOfGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">EndOfGroup._subGroups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup.__str__"><code class="docutils literal notranslate"><span class="pre">EndOfGroup.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__str__"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__init__"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentGroup._subGroups</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__init__"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__str__"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentGroup._subGroups</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__init__"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__str__"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetGroup._subGroups</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.EndBlock"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.EndBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.InnerGroup"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.InnerGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.MultiPart"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.MultiPart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.NextGroup"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.NextGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.StartBlock"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.StartBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__init__"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__repr__"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__str__"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup._previousGroup"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup._previousGroup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup._subGroups"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetGroup._subGroups</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+      <li>pyVHDLParser.Groups</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.Groups.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.Groups">
+<span id="pyvhdlparser-groups"></span><h1>pyVHDLParser.Groups<a class="headerlink" href="#module-pyVHDLParser.Groups" title="Permalink to this heading">¶</a></h1>
+<p><strong>Submodules</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.Comment.html">pyVHDLParser.Groups.Comment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.Concurrent.html">pyVHDLParser.Groups.Concurrent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.DesignUnit.html">pyVHDLParser.Groups.DesignUnit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.List.html">pyVHDLParser.Groups.List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.Object.html">pyVHDLParser.Groups.Object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.Reference.html">pyVHDLParser.Groups.Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.Groups.Sequential.html">pyVHDLParser.Groups.Sequential</a></li>
+</ul>
+</div>
+<p><strong>Exceptions</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.GroupParserException" title="pyVHDLParser.Groups.GroupParserException"><code class="xref py py-exc docutils literal notranslate"><span class="pre">GroupParserException</span></code></a>:
+Common base class for all non-exit exceptions.</p></li>
+</ul>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.BlockIterator" title="pyVHDLParser.Groups.BlockIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockIterator</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.BlockToGroupParser" title="pyVHDLParser.Groups.BlockToGroupParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockToGroupParser</span></code></a>:
+Represents the current state of a block-to-group parser.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a>:
+Register all state*** methods in an array called ‘__STATES__’</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.StartOfGroup" title="pyVHDLParser.Groups.StartOfGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartOfGroup</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.EndOfGroup" title="pyVHDLParser.Groups.EndOfGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndOfGroup</span></code></a>:
+Undocumented.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.StartOfDocumentGroup" title="pyVHDLParser.Groups.StartOfDocumentGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartOfDocumentGroup</span></code></a>:
+Base-class (mixin) for all StartOf***Document classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.EndOfDocumentGroup" title="pyVHDLParser.Groups.EndOfDocumentGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndOfDocumentGroup</span></code></a>:
+Base-class (mixin) for all EndOf***Document classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.StartOfSnippetGroup" title="pyVHDLParser.Groups.StartOfSnippetGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartOfSnippetGroup</span></code></a>:
+Base-class (mixin) for all StartOf***Snippet classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Groups.EndOfSnippetGroup" title="pyVHDLParser.Groups.EndOfSnippetGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndOfSnippetGroup</span></code></a>:
+Base-class (mixin) for all EndOf***Snippet classes.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Exceptions</strong></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.GroupParserException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">GroupParserException</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#GroupParserException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.GroupParserException" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-89b5782bd2413538a8abb418e51a65f7f06162bf.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of GroupParserException</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.GroupParserException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#GroupParserException.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.GroupParserException.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>block</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.GroupParserException.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.GroupParserException.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">BlockIterator</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockIterator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-ce20a291b7d069a29458f8d9550f33216d2c90ae.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of BlockIterator</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockGenerator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockIterator.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockIterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blockGenerator</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><em>Iterator</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">BlockToGroupParser</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the current state of a block-to-group parser.</p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-f3e018a13b5e237bedb5cd3f223fdab5bc8d5d5c.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of BlockToGroupParser</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blockGenerator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the parser state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blockGenerator</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><em>Generator</em></a><em>[</em><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>, </em><em>None</em><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if parser state is equal to the second operand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a><em>[</em><em>[</em><em>ParserState</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser.__ne__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if parser state is not equal to the second operand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a><em>[</em><em>[</em><em>ParserState</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#BlockToGroupParser.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self as a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.BlockToGroupParser.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyVHDLParser.Groups.BlockToGroupParser.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">MetaGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#MetaGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register all state*** methods in an array called ‘__STATES__’</p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-5a090bf7915922bf8609e52f08a90d7672b1efad.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of MetaGroup</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">className</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseClasses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classMembers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#MetaGroup.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__new__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a new class using this <a class="reference internal" href="../Glossary.html#term-Meta-Class"><span class="xref std std-term">meta-class</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>className</strong> – The name of the class to construct.</p></li>
+<li><p><strong>baseClasses</strong> – The tuple of <a class="reference external" href="https://pytooling.github.io/pyTooling/Glossary.html#term-Base-Class" title="(in pyTooling v6.0)"><span class="xref std std-term">base-classes</span></a> the class is derived from.</p></li>
+<li><p><strong>members</strong> – The dictionary of members for the constructed class.</p></li>
+<li><p><strong>singleton</strong> – If true, make the class a <a class="reference external" href="https://pytooling.github.io/pyTooling/Glossary.html#term-Singleton" title="(in pyTooling v6.0)"><span class="xref std std-term">Singleton</span></a>.</p></li>
+<li><p><strong>useSlots</strong> – If true, store object attributes in <a class="reference external" href="https://pytooling.github.io/pyTooling/Glossary.html#term-Slots" title="(in pyTooling v6.0)"><span class="xref std std-term">__slots__</span></a> instead of <code class="docutils literal notranslate"><span class="pre">__dict__</span></code>.</p></li>
+<li><p><strong>classMembers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new class.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.12)"><strong>AttributeError</strong></a> – If base-class has no ‘__slots__’ attribute.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.12)"><strong>AttributeError</strong></a> – If slot already exists in base-class.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__base__">
+<span class="sig-name descname"><span class="pre">__base__</span></span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__base__" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference external" href="https://pytooling.github.io/pyTooling/pyTooling/pyTooling.MetaClasses.html#pyTooling.MetaClasses.ExtendedType" title="(in pyTooling v6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedType</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self as a function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__delattr__">
+<span class="sig-name descname"><span class="pre">__delattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__delattr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement delattr(self, name).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__dir__">
+<span class="sig-name descname"><span class="pre">__dir__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__dir__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specialized __dir__ implementation for types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__getattribute__">
+<span class="sig-name descname"><span class="pre">__getattribute__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__getattribute__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return getattr(self, name).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__instancecheck__">
+<span class="sig-name descname"><span class="pre">__instancecheck__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__instancecheck__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if an object is an instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__or__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self|value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__prepare__">
+<span class="sig-name descname"><span class="pre">__prepare__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__prepare__" title="Permalink to this definition">¶</a></dt>
+<dd><p>used to create the namespace for the class statement</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__ror__">
+<span class="sig-name descname"><span class="pre">__ror__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__ror__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value|self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__setattr__">
+<span class="sig-name descname"><span class="pre">__setattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__setattr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement setattr(self, name, value).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__sizeof__">
+<span class="sig-name descname"><span class="pre">__sizeof__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__sizeof__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return memory consumption of the type object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__subclasscheck__">
+<span class="sig-name descname"><span class="pre">__subclasscheck__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subclass</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__subclasscheck__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a class is a subclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__subclasses__">
+<span class="sig-name descname"><span class="pre">__subclasses__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__subclasses__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of immediate subclasses.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.__text_signature__">
+<span class="sig-name descname"><span class="pre">__text_signature__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.__text_signature__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup._checkForAbstractMethods">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_checkForAbstractMethods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseClasses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup._checkForAbstractMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the current class contains abstract methods and return a tuple of them.</p>
+<p>These abstract methods might be inherited from any base-class. If there are inherited abstract methods, check if
+they are now implemented (overridden) by the current class that’s right now constructed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>baseClasses</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>]) – The tuple of <a class="reference external" href="https://pytooling.github.io/pyTooling/Glossary.html#term-Base-Class" title="(in pyTooling v6.0)"><span class="xref std std-term">base-classes</span></a> the class is derived from.</p></li>
+<li><p><strong>members</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]) – The dictionary of members for the constructed class.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple of abstract method’s names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfAbstract">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_wrapNewMethodIfAbstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfAbstract" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the class has abstract methods, replace the <code class="docutils literal notranslate"><span class="pre">_new__</span></code> method, so it raises an exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>newClass</strong> – The newly constructed class for further modifications.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code>, if the class is abstract.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AbstractClassError</strong> – If the class is abstract and can’t be instantiated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfSingleton">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_wrapNewMethodIfSingleton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singleton</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup._wrapNewMethodIfSingleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a class is a singleton, wrap the <code class="docutils literal notranslate"><span class="pre">_new__</span></code> method, so it returns a cached object, if a first object was created.</p>
+<p>Only the first object creation initializes the object.</p>
+<p>This implementation is threadsafe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>newClass</strong> – The newly constructed class for further modifications.</p></li>
+<li><p><strong>singleton</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the class allows only a single instance to exist.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code>, if the class is a singleton.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.MetaGroup.mro">
+<span class="sig-name descname"><span class="pre">mro</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.MetaGroup.mro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a type’s method resolution order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#Group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-64afeeca08f484ba2cd0a50f008af6b53fc22bb1.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Group</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousGroup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endBlock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#Group.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.Group.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousGroup</strong> (<a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><em>Group</em></a>) – </p></li>
+<li><p><strong>startBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>endBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.Group._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.Group.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#Group.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.Group.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.Group.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#Group.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.Group.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">StartOfGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-943fa57d486901029a207a229c3f257afc3b4265.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of StartOfGroup</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startBlock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>startBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfGroup.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">EndOfGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#EndOfGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-de67b8d7ed3e12e8bee6a52df5a89895e63abb96.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EndOfGroup</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endBlock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#EndOfGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>endBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#EndOfGroup.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.EndOfGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">StartOfDocumentGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfDocumentGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startBlock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfDocumentGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>startBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfDocumentGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfDocumentGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">EndOfDocumentGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#EndOfDocumentGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endBlock</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>endBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfDocumentGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfDocumentGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">StartOfSnippetGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#StartOfSnippetGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startBlock</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>startBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.StartOfSnippetGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.StartOfSnippetGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Groups.</span></span><span class="sig-name descname"><span class="pre">EndOfSnippetGroup</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Groups.html#EndOfSnippetGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.EndBlock">
+<span class="sig-name descname"><span class="pre">EndBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.InnerGroup">
+<span class="sig-name descname"><span class="pre">InnerGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.InnerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first inner group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this group has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.NextGroup">
+<span class="sig-name descname"><span class="pre">NextGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.NextGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.StartBlock">
+<span class="sig-name descname"><span class="pre">StartBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.StartBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first block in the scope of this group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endBlock</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>endBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup._previousGroup">
+<span class="sig-name descname"><span class="pre">_previousGroup</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup._previousGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous group.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Groups.EndOfSnippetGroup._subGroups">
+<span class="sig-name descname"><span class="pre">_subGroups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a><span class="pre">[</span><a class="reference internal" href="#pyVHDLParser.Groups.MetaGroup" title="pyVHDLParser.Groups.MetaGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaGroup</span></code></a><span class="pre">,</span> <a class="reference internal" href="#pyVHDLParser.Groups.Group" title="pyVHDLParser.Groups.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#pyVHDLParser.Groups.EndOfSnippetGroup._subGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to all inner groups by group type.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.Filters.Comment.html" class="btn btn-neutral float-left" title="pyVHDLParser.Filters.Comment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.Groups.Comment.html" class="btn btn-neutral float-right" title="pyVHDLParser.Groups.Comment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

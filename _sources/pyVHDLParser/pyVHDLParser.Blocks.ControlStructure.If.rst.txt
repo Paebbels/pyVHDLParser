@@ -1,0 +1,108 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=======================================
+pyVHDLParser.Blocks.ControlStructure.If
+=======================================
+
+.. automodule:: pyVHDLParser.Blocks.ControlStructure.If
+
+
+.. currentmodule:: pyVHDLParser.Blocks.ControlStructure.If
+
+
+**Classes**
+
+- :py:class:`EndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`ThenBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ElseBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExpressionBlockEndedByThen`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`IfConditionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ElsIfConditionBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1
+
+.. autoclass:: ThenBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ThenBlock
+      :parts: 1
+
+.. autoclass:: ElseBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElseBlock
+      :parts: 1
+
+.. autoclass:: ExpressionBlockEndedByThen
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExpressionBlockEndedByThen
+      :parts: 1
+
+.. autoclass:: IfConditionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IfConditionBlock
+      :parts: 1
+
+.. autoclass:: ElsIfConditionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElsIfConditionBlock
+      :parts: 1

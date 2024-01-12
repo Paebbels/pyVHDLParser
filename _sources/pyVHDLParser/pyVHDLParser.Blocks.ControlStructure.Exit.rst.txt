@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=========================================
+pyVHDLParser.Blocks.ControlStructure.Exit
+=========================================
+
+.. automodule:: pyVHDLParser.Blocks.ControlStructure.Exit
+
+
+.. currentmodule:: pyVHDLParser.Blocks.ControlStructure.Exit
+
+
+**Classes**
+
+- :py:class:`EndBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExitConditionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ExitBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1
+
+.. autoclass:: ExitConditionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExitConditionBlock
+      :parts: 1
+
+.. autoclass:: ExitBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExitBlock
+      :parts: 1

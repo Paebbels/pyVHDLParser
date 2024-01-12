@@ -1,0 +1,23 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================
+pyVHDLParser.ANTLR4
+===================
+
+.. automodule:: pyVHDLParser.ANTLR4
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.ANTLR4.VHDLLexer
+   pyVHDLParser.ANTLR4.VHDLParser
+   pyVHDLParser.ANTLR4.VHDLParserVisitor
+   pyVHDLParser.ANTLR4.Visitor
+
+.. currentmodule:: pyVHDLParser.ANTLR4

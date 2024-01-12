@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expressions &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specific Blocks" href="SpecificBlocks.html" />
+    <link rel="prev" title="Common Blocks" href="CommonBlocks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Pass - Blocks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="MetaBlocks.html">Meta Blocks</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="CommonBlocks.html">Common Blocks</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generic-baseexpression-form">Generic BaseExpression Form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specific-baseexpression-forms">Specific BaseExpression Forms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SpecificBlocks.html">Specific Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BlockGenerator.html">Block Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Usage.html">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">2. Pass - Blocks</a> &raquo;</li>
+          <li><a href="CommonBlocks.html">Common Blocks</a> &raquo;</li>
+      <li>Expressions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/BlockStream/Expressions.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="expressions">
+<h1>Expressions<a class="headerlink" href="#expressions" title="Permalink to this heading">¶</a></h1>
+<p>BaseExpression blocks are base-classes for a specific expression implementation. All
+four expression base-classes are derived from another base-class called <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>
+E.g. <a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Blocks.Object.Constant.html#pyVHDLParser.Blocks.Object.Constant.ConstantDeclarationDefaultExpressionBlock" title="pyVHDLParser.Blocks.Object.Constant.ConstantDeclarationDefaultExpressionBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstantDeclarationDefaultExpressionBlock</span></code></a>
+is derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedBySemicolon</span></code>.</p>
+<section id="generic-baseexpression-form">
+<h2>Generic BaseExpression Form<a class="headerlink" href="#generic-baseexpression-form" title="Permalink to this heading">¶</a></h2>
+<section id="expressionblock">
+<h3>ExpressionBlock<a class="headerlink" href="#expressionblock" title="Permalink to this heading">¶</a></h3>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ExpressionBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+  <span class="n">CHARACTER_TRANSLATION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;=&quot;</span><span class="p">:</span>    <span class="n">EqualOperator</span><span class="p">,</span>
+    <span class="s2">&quot;+&quot;</span><span class="p">:</span>    <span class="n">PlusOperator</span><span class="p">,</span>
+    <span class="s2">&quot;-&quot;</span><span class="p">:</span>    <span class="n">MinusOperator</span><span class="p">,</span>
+    <span class="s2">&quot;*&quot;</span><span class="p">:</span>    <span class="n">MultiplyOperator</span><span class="p">,</span>
+    <span class="s2">&quot;/&quot;</span><span class="p">:</span>    <span class="n">DivideOperator</span><span class="p">,</span>
+    <span class="s2">&quot;&amp;&quot;</span><span class="p">:</span>    <span class="n">ConcatOperator</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span>    <span class="n">LessThanOperator</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span>    <span class="n">GreaterThanOperator</span><span class="p">,</span>
+    <span class="s2">&quot;,&quot;</span><span class="p">:</span>    <span class="n">DelimiterToken</span>
+    <span class="c1"># &quot;;&quot;:    EndToken</span>
+  <span class="p">}</span>
+  <span class="n">FUSED_CHARACTER_TRANSLATION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;**&quot;</span><span class="p">:</span>   <span class="n">PowerOperator</span><span class="p">,</span>
+    <span class="s2">&quot;/=&quot;</span><span class="p">:</span>   <span class="n">UnequalOperator</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>   <span class="n">LessThanOrEqualOperator</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>   <span class="n">GreaterThanOrEqualOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?=&quot;</span><span class="p">:</span>   <span class="n">MatchingEqualOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?/=&quot;</span><span class="p">:</span>  <span class="n">MatchingUnequalOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?&lt;&quot;</span><span class="p">:</span>   <span class="n">MatchingLessThanOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?&lt;=&quot;</span><span class="p">:</span>  <span class="n">MatchingLessThanOrEqualOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?&gt;&quot;</span><span class="p">:</span>   <span class="n">MatchingGreaterThanOperator</span><span class="p">,</span>
+    <span class="s2">&quot;?&gt;=&quot;</span><span class="p">:</span>  <span class="n">MatchingGreaterThanOrEqualOperator</span>
+    <span class="c1"># &quot;=&gt;&quot;:   MapAssociationKeyword,</span>
+    <span class="c1"># &quot;&lt;=&gt;&quot;:  SignalAssociationKeyword</span>
+  <span class="p">}</span>
+  <span class="n">OPERATOR_TRANSLATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;or&quot;</span><span class="p">:</span>    <span class="n">OrKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;nor&quot;</span><span class="p">:</span>   <span class="n">NorKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;and&quot;</span><span class="p">:</span>   <span class="n">AndKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;nand&quot;</span><span class="p">:</span>  <span class="n">NandKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;xor&quot;</span><span class="p">:</span>   <span class="n">XorKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;xnor&quot;</span><span class="p">:</span>  <span class="n">XnorKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;sla&quot;</span><span class="p">:</span>   <span class="n">SlaKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;sll&quot;</span><span class="p">:</span>   <span class="n">SllKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;sra&quot;</span><span class="p">:</span>   <span class="n">SraKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;srl&quot;</span><span class="p">:</span>   <span class="n">SrlKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;not&quot;</span><span class="p">:</span>   <span class="n">NotKeyword</span><span class="p">,</span>
+    <span class="s2">&quot;abs&quot;</span><span class="p">:</span>   <span class="n">AbsKeyword</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="specific-baseexpression-forms">
+<h2>Specific BaseExpression Forms<a class="headerlink" href="#specific-baseexpression-forms" title="Permalink to this heading">¶</a></h2>
+<p>Expressions can be ended by:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">)</span></code> or a user-defined character</dt><dd><p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedByCharORClosingRoundBracket</span></code></p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">)</span></code> or a user-defined keyword
+See <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedByKeywordORClosingRoundBracket</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to</span></code> or <code class="docutils literal notranslate"><span class="pre">downto</span></code> keyword
+See <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedByKeywordOrToOrDownto</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">;</span></code>
+See <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedBySemicolon</span></code></p></li>
+</ul>
+<section id="expressionblockendedbycharorclosingroundbracket">
+<h3>ExpressionBlockEndedByCharORClosingRoundBracket<a class="headerlink" href="#expressionblockendedbycharorclosingroundbracket" title="Permalink to this heading">¶</a></h3>
+<p>This block is derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>.
+It implements an expression that is either ended by a closing round bracket
+(``)``) or a user-defined character. When this base-class is inherited, the user
+needs to overwrite:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXIT_CHAR</span></code></dt><dd><p>The character causing this parser to exit and close this expression block.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXIT_TOKEN</span></code></dt><dd><p>The token that is emitted as a replacement for the <a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterToken" title="pyVHDLParser.Token.CharacterToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharacterToken</span></code></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXIT_BLOCK</span></code></dt><dd><p>The block that is generated when exiting the block.</p>
+</dd>
+</dl>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlockEndedByCharORClosingRoundBracket</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ExpressionBlockEndedByCharORClosingRoundBracket</span><span class="p">(</span><span class="n">ExpressionBlock</span><span class="p">):</span>
+  <span class="n">EXIT_CHAR</span>  <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span>   <span class="kc">None</span>
+  <span class="n">EXIT_TOKEN</span> <span class="p">:</span> <span class="n">Token</span> <span class="o">=</span> <span class="kc">None</span>
+  <span class="n">EXIT_BLOCK</span> <span class="p">:</span> <span class="n">Block</span> <span class="o">=</span> <span class="kc">None</span>
+
+  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">stateBeforeExpression</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">ParserState</span><span class="p">):</span>
+
+  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">stateExpression</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">ParserState</span><span class="p">):</span>
+
+  <span class="nd">@classmethod</span>
+  <span class="k">def</span> <span class="nf">stateWhitespace1</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">ParserState</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="expressionblockendedbykeywordorclosingroundbracket">
+<h3>ExpressionBlockEndedByKeywordORClosingRoundBracket<a class="headerlink" href="#expressionblockendedbykeywordorclosingroundbracket" title="Permalink to this heading">¶</a></h3>
+<p>This block is derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>.</p>
+</section>
+<section id="expressionblockendedbykeywordortoordownto">
+<h3>ExpressionBlockEndedByKeywordOrToOrDownto<a class="headerlink" href="#expressionblockendedbykeywordortoordownto" title="Permalink to this heading">¶</a></h3>
+<p>This block is derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>.</p>
+</section>
+<section id="expressionblockendedbysemicolon">
+<h3>ExpressionBlockEndedBySemicolon<a class="headerlink" href="#expressionblockendedbysemicolon" title="Permalink to this heading">¶</a></h3>
+<p>This block is derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionBlock</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CommonBlocks.html" class="btn btn-neutral float-left" title="Common Blocks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SpecificBlocks.html" class="btn btn-neutral float-right" title="Specific Blocks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

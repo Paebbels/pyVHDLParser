@@ -1,0 +1,20 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=====================================
+pyVHDLParser.DocumentModel.Sequential
+=====================================
+
+.. automodule:: pyVHDLParser.DocumentModel.Sequential
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.DocumentModel.Sequential.Function
+
+.. currentmodule:: pyVHDLParser.DocumentModel.Sequential

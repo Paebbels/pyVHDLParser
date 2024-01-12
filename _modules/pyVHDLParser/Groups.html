@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Groups &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>pyVHDLParser.Groups</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLParser.Groups</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#            __     ___   _ ____  _     ____                                                                           #</span>
+<span class="c1">#  _ __  _   \ \   / / | | |  _ \| |   |  _ \ __ _ _ __ ___  ___ _ __                                                  #</span>
+<span class="c1"># | &#39;_ \| | | \ \ / /| |_| | | | | |   | |_) / _` | &#39;__/ __|/ _ \ &#39;__|                                                 #</span>
+<span class="c1"># | |_) | |_| |\ V / |  _  | |_| | |___|  __/ (_| | |  \__ \  __/ |                                                    #</span>
+<span class="c1"># | .__/ \__, | \_/  |_| |_|____/|_____|_|   \__,_|_|  |___/\___|_|                                                    #</span>
+<span class="c1"># |_|    |___/                                                                                                         #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">types</span>                                  <span class="kn">import</span> <span class="n">FunctionType</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.MetaClasses</span> <span class="kn">import</span> <span class="n">ExtendedType</span>
+<span class="kn">from</span> <span class="nn">pyTooling.TerminalUI</span>                   <span class="kn">import</span> <span class="n">LineTerminal</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span>                   <span class="kn">import</span> <span class="n">export</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser</span>                           <span class="kn">import</span> <span class="n">StartOfDocument</span><span class="p">,</span> <span class="n">EndOfDocument</span><span class="p">,</span> <span class="n">StartOfSnippet</span><span class="p">,</span> <span class="n">EndOfSnippet</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Base</span>                      <span class="kn">import</span> <span class="n">ParserException</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks</span>                    <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">CommentBlock</span><span class="p">,</span> <span class="n">StartOfDocumentBlock</span><span class="p">,</span> <span class="n">EndOfDocumentBlock</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Common</span>             <span class="kn">import</span> <span class="n">LinebreakBlock</span><span class="p">,</span> <span class="n">IndentationBlock</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Reference</span>          <span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">Library</span><span class="p">,</span> <span class="n">Use</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Sequential</span>         <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">PackageBody</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Blocks.Structural</span>         <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">Architecture</span><span class="p">,</span> <span class="n">Configuration</span>
+
+
+<div class="viewcode-block" id="GroupParserException"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.GroupParserException">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">GroupParserException</span><span class="p">(</span><span class="n">ParserException</span><span class="p">):</span>
+<div class="viewcode-block" id="GroupParserException.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.GroupParserException.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_block</span> <span class="o">=</span> <span class="n">block</span></div></div>
+
+
+<span class="c1"># @export</span>
+<span class="c1"># class BlockToGroupParser:</span>
+<span class="c1"># 	&quot;&quot;&quot;Wrapping class to offer some class methods.&quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># 	@staticmethod</span>
+<span class="c1"># 	def Transform(blockGenerator: Generator[Block, Any, None]) -&gt; Generator[&#39;Group&#39;, Any, None]:</span>
+<span class="c1"># 		&quot;&quot;&quot;Returns a generator, that reads from a token generator and emits a chain of blocks.&quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># 		state = ParserState(blockGenerator)</span>
+<span class="c1"># 		return state.GetGenerator()</span>
+
+
+<div class="viewcode-block" id="BlockIterator"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockIterator">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockIterator</span><span class="p">:</span>
+<div class="viewcode-block" id="BlockIterator.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockIterator.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parserState</span><span class="p">,</span> <span class="n">blockGenerator</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_parserState</span><span class="p">:</span> <span class="n">BlockToGroupParser</span> <span class="o">=</span> <span class="n">parserState</span>
+		<span class="c1">#self._blockIterator             = iter(FastForward(groupGenerator))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_blockIterator</span>             <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">blockGenerator</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BlockIterator&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="n">nextBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blockIterator</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_parserState</span><span class="o">.</span><span class="n">Block</span> <span class="o">=</span> <span class="n">nextBlock</span>
+		<span class="k">return</span> <span class="n">nextBlock</span></div>
+
+
+<div class="viewcode-block" id="BlockToGroupParser"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">BlockToGroupParser</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ExtendedType</span><span class="p">,</span> <span class="n">useSlots</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Represents the current state of a block-to-group parser.&quot;&quot;&quot;</span>
+
+	<span class="n">_iterator</span><span class="p">:</span>    <span class="n">Iterator</span>
+	<span class="n">_stack</span><span class="p">:</span>       <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;BlockToGroupParser&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Block</span><span class="p">,</span> <span class="s1">&#39;Group&#39;</span><span class="p">]]</span>
+	<span class="n">_blockMarker</span><span class="p">:</span> <span class="n">Block</span>
+
+	<span class="n">Block</span><span class="p">:</span>        <span class="n">Block</span>
+	<span class="n">NextState</span><span class="p">:</span>    <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;BlockToGroupParser&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
+
+	<span class="n">NewBlock</span><span class="p">:</span>     <span class="n">Block</span>
+	<span class="n">NewGroup</span><span class="p">:</span>     <span class="s1">&#39;Group&#39;</span>
+	<span class="n">LastGroup</span><span class="p">:</span>    <span class="s1">&#39;Group&#39;</span>
+	<span class="n">NextGroup</span><span class="p">:</span>    <span class="s1">&#39;Group&#39;</span>
+
+<div class="viewcode-block" id="BlockToGroupParser.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockGenerator</span><span class="p">:</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Block</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Initializes the parser state.&quot;&quot;&quot;</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span> <span class="o">=</span>    <span class="nb">iter</span><span class="p">(</span><span class="n">BlockIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockGenerator</span><span class="p">))</span>   <span class="c1"># XXX: review iterator vs. generator</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span>       <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="o">=</span> <span class="kc">None</span>
+
+		<span class="n">startBlock</span> <span class="o">=</span>        <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span><span class="p">)</span>
+		<span class="n">startGroup</span> <span class="o">=</span>        <span class="n">StartOfDocumentGroup</span><span class="p">(</span><span class="n">startBlock</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">startBlock</span><span class="p">,</span> <span class="n">StartOfDocumentBlock</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="n">GroupParserException</span><span class="p">(</span><span class="s2">&quot;First block is not a StartOfDocumentBlock.&quot;</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">Block</span> <span class="o">=</span>        <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>    <span class="n">StartOfDocumentGroup</span><span class="o">.</span><span class="n">stateDocument</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LastGroup</span> <span class="o">=</span>    <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>    <span class="n">startGroup</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PushState</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;BlockToGroupParser&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span>
+
+	<span class="nd">@PushState</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">PushState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;BlockToGroupParser&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]):</span>
+		<span class="k">assert</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span><span class="p">,</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span>
+		<span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="o">=</span>    <span class="n">value</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>    <span class="kc">None</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">GetBlockIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    <span class="c1"># FIXME: what return type?</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span>
+
+	<span class="c1"># XXX: implement this method</span>
+	<span class="c1"># def __iter__(self):</span>
+	<span class="c1"># 	return self._iterator</span>
+
+	<span class="c1"># def __iter__(self):</span>
+	<span class="c1"># 	if self.Block.MultiPart:</span>
+	<span class="c1"># 		return iter(BlockToGroupParser._TokenGenerator(self.Block, self.BlockIterator))</span>
+	<span class="c1"># 	else:</span>
+	<span class="c1"># 		return iter(self.Block)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">BlockMarker</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Block&#39;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">Block</span><span class="p">):</span>
+			<span class="c1"># if self.debug: print(&quot;  {DARK_GREEN}@BlockMarker: {0!s} =&gt; {GREEN}{1!s}{NOCOLOR}&quot;.format(self._blockMarker, self.NewBlock, **Console.Foreground))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewBlock</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span>
+
+	<span class="nd">@BlockMarker</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">BlockMarker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Block</span><span class="p">):</span>
+		<span class="c1"># if self.debug: print(&quot;  {DARK_GREEN}@BlockMarker: {0!s} --&gt; {GREEN}{1!s}{NOCOLOR}&quot;.format(self._blockMarker, value, **Console.Foreground))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="BlockToGroupParser.__eq__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser.__eq__">[docs]</a>	<span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;ParserState&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return true if parser state is equal to the second operand.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="ow">is</span> <span class="n">other</span></div>
+
+<div class="viewcode-block" id="BlockToGroupParser.__ne__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser.__ne__">[docs]</a>	<span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;ParserState&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Return true if parser state is not equal to the second operand.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">other</span></div>
+
+<div class="viewcode-block" id="BlockToGroupParser.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__qualname__</span></div>
+
+	<span class="k">def</span> <span class="nf">Pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span>
+
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+			<span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span> <span class="n">top</span>
+
+		<span class="c1"># print(&quot;{MAGENTA}appending {0!s} to {1!s}{NOCOLOR}&quot;.format(self.NewGroup.__class__.__qualname__, self.NextGroup.__class__,**Console.Foreground))</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span><span class="o">.</span><span class="n">InnerGroup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span><span class="o">.</span><span class="n">InnerGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span><span class="o">.</span><span class="n">_subGroups</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="n">GroupParserException</span><span class="p">(</span><span class="s2">&quot;Group &#39;</span><span class="si">{group1}</span><span class="s2">&#39; not supported in </span><span class="si">{group2}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">group1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+				<span class="n">group2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span>
+			<span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Block</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span><span class="o">.</span><span class="n">_subGroups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span><span class="o">.</span><span class="vm">__class__</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BlockToGroupParser.__call__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.BlockToGroupParser.__call__">[docs]</a>	<span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+		<span class="c1"># yield StartOfDocumentGroup</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LastGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span>
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">LastGroup</span>
+
+		<span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator</span><span class="p">:</span>
+			<span class="c1"># an empty marker means: set on next yield run</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="c1"># if self.debug: print(&quot;  new block marker: None -&gt; {0!s}&quot;.format(block))</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_blockMarker</span> <span class="o">=</span> <span class="n">block</span>
+
+			<span class="c1"># if self.debug: print(&quot;{MAGENTA}------ iteration end ------{NOCOLOR}&quot;.format(**Console.Foreground))</span>
+			<span class="c1"># execute a state and reissue execution if needed</span>
+			<span class="n">reissue</span> <span class="o">=</span> <span class="kc">True</span>
+			<span class="k">while</span> <span class="n">reissue</span><span class="p">:</span>
+				<span class="n">LineTerminal</span><span class="p">()</span><span class="o">.</span><span class="n">WriteDryRun</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{DARK_GRAY}</span><span class="s2">reissue state=</span><span class="si">{state!s: &lt;50}</span><span class="s2">  block=</span><span class="si">{block!s: &lt;40}</span><span class="s2">     </span><span class="si">{NOCOLOR}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="o">**</span><span class="n">LineTerminal</span><span class="o">.</span><span class="n">Foreground</span><span class="p">))</span>
+				<span class="n">reissue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NextState</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+				<span class="c1"># yield a new group</span>
+				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">LastGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">NewGroup</span> <span class="o">=</span> <span class="kc">None</span>
+
+					<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Block</span><span class="p">,</span> <span class="n">EndOfDocumentBlock</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LastGroup</span><span class="p">,</span> <span class="n">EndOfDocumentGroup</span><span class="p">):</span>
+						<span class="k">return</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="n">GroupParserException</span><span class="p">(</span><span class="s2">&quot;Unexpected end of document.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Block</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MetaGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.MetaGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">MetaGroup</span><span class="p">(</span><span class="n">ExtendedType</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Register all state*** methods in an array called &#39;__STATES__&#39;&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="MetaGroup.__new__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.MetaGroup.__new__">[docs]</a>	<span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">baseClasses</span><span class="p">,</span> <span class="n">classMembers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+		<span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">memberName</span><span class="p">,</span> <span class="n">memberObject</span> <span class="ow">in</span> <span class="n">classMembers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memberObject</span><span class="p">,</span> <span class="n">FunctionType</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">memberName</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;state&quot;</span><span class="p">):</span>
+				<span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">memberObject</span><span class="p">)</span>
+
+		<span class="n">group</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">baseClasses</span><span class="p">,</span> <span class="n">classMembers</span><span class="p">,</span> <span class="n">useSlots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">group</span><span class="o">.</span><span class="n">__STATES__</span> <span class="o">=</span> <span class="n">states</span>
+		<span class="k">return</span> <span class="n">group</span></div></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.Group">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">MetaGroup</span><span class="p">):</span>
+	<span class="n">__STATES__</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="n">_previousGroup</span><span class="p">:</span>  <span class="s1">&#39;Group&#39;</span>                   <span class="c1">#: Reference to the previous group.</span>
+	<span class="n">NextGroup</span><span class="p">:</span>       <span class="s1">&#39;Group&#39;</span>                   <span class="c1">#: Reference to the next group.</span>
+	<span class="n">InnerGroup</span><span class="p">:</span>      <span class="s1">&#39;Group&#39;</span>                   <span class="c1">#: Reference to the first inner group.</span>
+	<span class="n">_subGroups</span><span class="p">:</span>      <span class="n">Dict</span><span class="p">[</span><span class="n">MetaGroup</span><span class="p">,</span> <span class="s1">&#39;Group&#39;</span><span class="p">]</span>  <span class="c1">#: References to all inner groups by group type.</span>
+
+	<span class="n">StartBlock</span><span class="p">:</span>      <span class="n">Block</span>                     <span class="c1">#: Reference to the first block in the scope of this group.</span>
+	<span class="n">EndBlock</span><span class="p">:</span>        <span class="n">Block</span>                     <span class="c1">#: Reference to the last block in the scope of this group.</span>
+	<span class="n">MultiPart</span><span class="p">:</span>       <span class="nb">bool</span>                      <span class="c1">#: True, if this group has multiple parts.</span>
+
+<div class="viewcode-block" id="Group.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.Group.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousGroup</span><span class="p">:</span> <span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">endBlock</span><span class="p">:</span> <span class="n">Block</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="n">previousGroup</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span> <span class="bp">self</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousGroup</span> <span class="o">=</span>     <span class="n">previousGroup</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>          <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">InnerGroup</span> <span class="o">=</span>         <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subGroups</span> <span class="o">=</span>         <span class="p">{}</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span> <span class="o">=</span>         <span class="n">startBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span> <span class="o">=</span>           <span class="n">startBlock</span> <span class="k">if</span> <span class="p">(</span><span class="n">endBlock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">endBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="o">=</span>          <span class="kc">False</span></div>
+
+	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span><span class="o">.</span><span class="n">EndToken</span><span class="o">.</span><span class="n">End</span><span class="o">.</span><span class="n">Absolute</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">StartToken</span><span class="o">.</span><span class="n">Start</span><span class="o">.</span><span class="n">Absolute</span> <span class="o">+</span> <span class="mi">1</span>
+
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>   <span class="c1"># XXX: return type; iterator vs. generator</span>
+		<span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;group=</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)  start=</span><span class="si">{2!s}</span><span class="s2">  end=</span><span class="si">{3!s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">StartToken</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span><span class="o">.</span><span class="n">EndToken</span><span class="p">))</span>
+		<span class="k">while</span> <span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span><span class="p">:</span>
+			<span class="k">yield</span> <span class="n">block</span>
+			<span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">NextBlock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="n">GroupParserException</span><span class="p">(</span><span class="s2">&quot;Token after </span><span class="si">{0!r}</span><span class="s2"> &lt;- </span><span class="si">{1!r}</span><span class="s2"> &lt;- </span><span class="si">{2!r}</span><span class="s2"> is empty (None).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">PreviousToken</span><span class="o">.</span><span class="n">PreviousToken</span><span class="p">),</span> <span class="n">block</span><span class="p">)</span>
+			<span class="n">block</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">NextBlock</span>
+
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span>
+
+<div class="viewcode-block" id="Group.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.Group.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">buffer</span> <span class="o">=</span> <span class="s2">&quot;undefined block content&quot;</span>
+		<span class="c1"># buffer = buffer.replace(&quot;\t&quot;, &quot;\\t&quot;)</span>
+		<span class="c1"># buffer = buffer.replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
+		<span class="k">return</span> <span class="n">buffer</span></div>
+
+<div class="viewcode-block" id="Group.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.Group.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;{{</span><span class="si">{groupName:.&lt;156s}</span><span class="s2">  at </span><span class="si">{start!s}</span><span class="s2"> .. </span><span class="si">{end!s}</span><span class="s2">}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">groupName</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{module}</span><span class="s2">.</span><span class="si">{classname}</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+				<span class="n">classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+			<span class="p">),</span>
+			<span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">StartToken</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span>
+			<span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span><span class="o">.</span><span class="n">EndToken</span><span class="o">.</span><span class="n">End</span>
+		<span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">GetSubGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupTypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># XXX: return type</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">InnerGroup</span>
+		<span class="k">while</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">yield</span> <span class="n">group</span>
+			<span class="n">group</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">NextGroup</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PreviousGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Group&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previousGroup</span>
+	<span class="nd">@PreviousGroup</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">PreviousGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s1">&#39;Group&#39;</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousGroup</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="n">value</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span> <span class="bp">self</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">States</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__STATES__</span></div>
+
+
+<div class="viewcode-block" id="StartOfGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfGroup</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+<div class="viewcode-block" id="StartOfGroup.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfGroup.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">:</span> <span class="n">Block</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousGroup</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>      <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">InnerGroup</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subGroups</span> <span class="o">=</span>     <span class="p">{}</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span> <span class="o">=</span>     <span class="n">startBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span> <span class="o">=</span>       <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="o">=</span>      <span class="kc">False</span></div>
+
+	<span class="c1"># TODO: needs review: should TokenIterator be used?</span>
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span>
+
+	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="StartOfGroup.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfGroup.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;{{</span><span class="si">{groupName:.&lt;156s}</span><span class="s2">  at </span><span class="si">{start!s}</span><span class="s2">}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">groupName</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{module}</span><span class="s2">.</span><span class="si">{classname}</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+				<span class="n">classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+			<span class="p">),</span>
+			<span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span><span class="o">.</span><span class="n">StartToken</span><span class="o">.</span><span class="n">Start</span>
+		<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EndOfGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.EndOfGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfGroup</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+<div class="viewcode-block" id="EndOfGroup.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.EndOfGroup.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endBlock</span><span class="p">:</span> <span class="n">Block</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_previousGroup</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>      <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">StartBlock</span> <span class="o">=</span>     <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span> <span class="o">=</span>       <span class="n">endBlock</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MultiPart</span> <span class="o">=</span>      <span class="kc">False</span></div>
+
+	<span class="c1"># TODO: needs review: should TokenIterator be used?</span>
+	<span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span>
+
+	<span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="EndOfGroup.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.EndOfGroup.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;{{</span><span class="si">{groupName:.&lt;156s}</span><span class="s2">  at                      .. </span><span class="si">{end!s}</span><span class="s2">}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">groupName</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{module}</span><span class="s2">.</span><span class="si">{classname}</span><span class="s2">  &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+				<span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span>
+				<span class="n">classname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+			<span class="p">),</span>
+			<span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EndBlock</span><span class="o">.</span><span class="n">EndToken</span><span class="o">.</span><span class="n">Start</span>
+		<span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StartOfDocumentGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfDocumentGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfDocumentGroup</span><span class="p">(</span><span class="n">StartOfGroup</span><span class="p">,</span> <span class="n">StartOfDocument</span><span class="p">):</span>
+<div class="viewcode-block" id="StartOfDocumentGroup.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfDocumentGroup.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startBlock</span><span class="p">:</span> <span class="n">Block</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.Comment</span>      <span class="kn">import</span> <span class="n">CommentGroup</span><span class="p">,</span> <span class="n">WhitespaceGroup</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.DesignUnit</span>   <span class="kn">import</span> <span class="n">ContextGroup</span><span class="p">,</span> <span class="n">EntityGroup</span><span class="p">,</span> <span class="n">ArchitectureGroup</span><span class="p">,</span> <span class="n">PackageGroup</span><span class="p">,</span> <span class="n">PackageBodyGroup</span><span class="p">,</span> <span class="n">ConfigurationGroup</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.Reference</span>    <span class="kn">import</span> <span class="n">LibraryGroup</span><span class="p">,</span> <span class="n">UseGroup</span>
+
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">startBlock</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subGroups</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="n">CommentGroup</span><span class="p">:</span>       <span class="p">[],</span>
+			<span class="n">WhitespaceGroup</span><span class="p">:</span>    <span class="p">[],</span>
+			<span class="n">LibraryGroup</span><span class="p">:</span>       <span class="p">[],</span>
+			<span class="n">UseGroup</span><span class="p">:</span>           <span class="p">[],</span>
+			<span class="n">ContextGroup</span><span class="p">:</span>       <span class="p">[],</span>
+			<span class="n">EntityGroup</span><span class="p">:</span>        <span class="p">[],</span>
+			<span class="n">ArchitectureGroup</span><span class="p">:</span>  <span class="p">[],</span>
+			<span class="n">PackageGroup</span><span class="p">:</span>       <span class="p">[],</span>
+			<span class="n">PackageBodyGroup</span><span class="p">:</span>   <span class="p">[],</span>
+			<span class="n">ConfigurationGroup</span><span class="p">:</span> <span class="p">[]</span>
+		<span class="p">}</span></div>
+
+	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">stateDocument</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parserState</span><span class="p">:</span> <span class="n">BlockToGroupParser</span><span class="p">):</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.DesignUnit</span>     <span class="kn">import</span> <span class="n">ContextGroup</span><span class="p">,</span> <span class="n">EntityGroup</span><span class="p">,</span> <span class="n">ArchitectureGroup</span><span class="p">,</span> <span class="n">PackageGroup</span><span class="p">,</span> <span class="n">PackageBodyGroup</span><span class="p">,</span> <span class="n">ConfigurationGroup</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.Reference</span>      <span class="kn">import</span> <span class="n">LibraryGroup</span><span class="p">,</span> <span class="n">UseGroup</span>
+		<span class="kn">from</span> <span class="nn">pyVHDLParser.Groups.Comment</span> <span class="kn">import</span> <span class="n">CommentGroup</span><span class="p">,</span> <span class="n">WhitespaceGroup</span>
+
+		<span class="n">SIMPLE_BLOCKS</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="n">Library</span><span class="o">.</span><span class="n">StartBlock</span><span class="p">:</span>       <span class="n">LibraryGroup</span><span class="p">,</span>
+			<span class="n">Use</span><span class="o">.</span><span class="n">StartBlock</span><span class="p">:</span>           <span class="n">UseGroup</span>
+		<span class="p">}</span>
+		<span class="n">COMPOUND_BLOCKS</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="n">Context</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>        <span class="n">ContextGroup</span><span class="p">,</span>
+			<span class="n">Entity</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>         <span class="n">EntityGroup</span><span class="p">,</span>
+			<span class="n">Architecture</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>   <span class="n">ArchitectureGroup</span><span class="p">,</span>
+			<span class="n">Package</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>        <span class="n">PackageGroup</span><span class="p">,</span>
+			<span class="n">PackageBody</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>    <span class="n">PackageBodyGroup</span><span class="p">,</span>
+			<span class="n">Configuration</span><span class="o">.</span><span class="n">NameBlock</span><span class="p">:</span>  <span class="n">ConfigurationGroup</span>
+		<span class="p">}</span>
+
+		<span class="n">currentBlock</span> <span class="o">=</span> <span class="n">parserState</span><span class="o">.</span><span class="n">Block</span>
+
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">,</span> <span class="p">(</span><span class="n">LinebreakBlock</span><span class="p">,</span> <span class="n">IndentationBlock</span><span class="p">)):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">WhitespaceGroup</span><span class="o">.</span><span class="n">stateParse</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>   <span class="n">WhitespaceGroup</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastGroup</span><span class="p">,</span> <span class="n">currentBlock</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">BlockMarker</span> <span class="o">=</span> <span class="n">currentBlock</span>
+			<span class="k">return</span> <span class="kc">True</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">,</span> <span class="n">CommentBlock</span><span class="p">):</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">CommentGroup</span><span class="o">.</span><span class="n">stateParse</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>   <span class="n">CommentGroup</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastGroup</span><span class="p">,</span> <span class="n">currentBlock</span><span class="p">)</span>
+			<span class="n">parserState</span><span class="o">.</span><span class="n">BlockMarker</span> <span class="o">=</span> <span class="n">currentBlock</span>
+			<span class="k">return</span> <span class="kc">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">blk</span> <span class="ow">in</span> <span class="n">SIMPLE_BLOCKS</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">,</span> <span class="n">blk</span><span class="p">):</span>
+					<span class="n">group</span> <span class="o">=</span>                   <span class="n">SIMPLE_BLOCKS</span><span class="p">[</span><span class="n">blk</span><span class="p">]</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">group</span><span class="o">.</span><span class="n">stateParse</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>   <span class="n">group</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastGroup</span><span class="p">,</span> <span class="n">currentBlock</span><span class="p">)</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">BlockMarker</span> <span class="o">=</span> <span class="n">currentBlock</span>
+					<span class="k">return</span> <span class="kc">True</span>
+
+			<span class="k">for</span> <span class="n">blk</span> <span class="ow">in</span> <span class="n">COMPOUND_BLOCKS</span><span class="p">:</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">,</span> <span class="n">blk</span><span class="p">):</span>
+					<span class="n">group</span> <span class="o">=</span>                   <span class="n">COMPOUND_BLOCKS</span><span class="p">[</span><span class="n">blk</span><span class="p">]</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">PushState</span> <span class="o">=</span>   <span class="n">group</span><span class="o">.</span><span class="n">stateParse</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">NextGroup</span> <span class="o">=</span>   <span class="n">group</span><span class="p">(</span><span class="n">parserState</span><span class="o">.</span><span class="n">LastGroup</span><span class="p">,</span> <span class="n">currentBlock</span><span class="p">)</span>
+					<span class="n">parserState</span><span class="o">.</span><span class="n">BlockMarker</span> <span class="o">=</span> <span class="n">currentBlock</span>
+					<span class="k">return</span> <span class="kc">True</span>
+
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">,</span> <span class="n">EndOfDocumentBlock</span><span class="p">):</span>
+				<span class="n">parserState</span><span class="o">.</span><span class="n">NewGroup</span> <span class="o">=</span> <span class="n">EndOfDocumentGroup</span><span class="p">(</span><span class="n">currentBlock</span><span class="p">)</span>
+				<span class="k">return</span>
+
+		<span class="k">raise</span> <span class="n">GroupParserException</span><span class="p">(</span><span class="s2">&quot;Expected keywords: architecture, context, entity, library, package, use. Found &#39;</span><span class="si">{block!s}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+			<span class="n">block</span><span class="o">=</span><span class="n">currentBlock</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span>
+		<span class="p">),</span> <span class="n">currentBlock</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EndOfDocumentGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.EndOfDocumentGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfDocumentGroup</span><span class="p">(</span><span class="n">EndOfGroup</span><span class="p">,</span> <span class="n">EndOfDocument</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="StartOfSnippetGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.StartOfSnippetGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">StartOfSnippetGroup</span><span class="p">(</span><span class="n">StartOfGroup</span><span class="p">,</span> <span class="n">StartOfSnippet</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="EndOfSnippetGroup"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.Groups.html#pyVHDLParser.Groups.EndOfSnippetGroup">[docs]</a><span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">EndOfSnippetGroup</span><span class="p">(</span><span class="n">EndOfGroup</span><span class="p">,</span> <span class="n">EndOfSnippet</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

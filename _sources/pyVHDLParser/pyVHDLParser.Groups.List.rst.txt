@@ -1,0 +1,220 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+========================
+pyVHDLParser.Groups.List
+========================
+
+.. automodule:: pyVHDLParser.Groups.List
+
+
+.. currentmodule:: pyVHDLParser.Groups.List
+
+
+**Classes**
+
+- :py:class:`GenericListGroup`:
+  Undocumented.
+
+- :py:class:`GenericListItemGroup`:
+  Undocumented.
+
+- :py:class:`GenericMapGroup`:
+  Undocumented.
+
+- :py:class:`GenericMapItemGroup`:
+  Undocumented.
+
+- :py:class:`PortListGroup`:
+  Undocumented.
+
+- :py:class:`PortListItemGroup`:
+  Undocumented.
+
+- :py:class:`PortMapGroup`:
+  Undocumented.
+
+- :py:class:`PortMapItemGroup`:
+  Undocumented.
+
+- :py:class:`ParameterListGroup`:
+  Undocumented.
+
+- :py:class:`ParameterListItemGroup`:
+  Undocumented.
+
+- :py:class:`ParameterMapGroup`:
+  Undocumented.
+
+- :py:class:`ParameterMapItemGroup`:
+  Undocumented.
+
+- :py:class:`SensitivityListGroup`:
+  Undocumented.
+
+- :py:class:`SensitivityListItemGroup`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: GenericListGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericListGroup
+      :parts: 1
+
+.. autoclass:: GenericListItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericListItemGroup
+      :parts: 1
+
+.. autoclass:: GenericMapGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapGroup
+      :parts: 1
+
+.. autoclass:: GenericMapItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapItemGroup
+      :parts: 1
+
+.. autoclass:: PortListGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortListGroup
+      :parts: 1
+
+.. autoclass:: PortListItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortListItemGroup
+      :parts: 1
+
+.. autoclass:: PortMapGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapGroup
+      :parts: 1
+
+.. autoclass:: PortMapItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapItemGroup
+      :parts: 1
+
+.. autoclass:: ParameterListGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ParameterListGroup
+      :parts: 1
+
+.. autoclass:: ParameterListItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ParameterListItemGroup
+      :parts: 1
+
+.. autoclass:: ParameterMapGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ParameterMapGroup
+      :parts: 1
+
+.. autoclass:: ParameterMapItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ParameterMapItemGroup
+      :parts: 1
+
+.. autoclass:: SensitivityListGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SensitivityListGroup
+      :parts: 1
+
+.. autoclass:: SensitivityListItemGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SensitivityListItemGroup
+      :parts: 1

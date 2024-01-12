@@ -1,0 +1,53 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===========================
+pyVHDLParser.CLI.VHDLParser
+===========================
+
+.. automodule:: pyVHDLParser.CLI.VHDLParser
+
+
+.. currentmodule:: pyVHDLParser.CLI.VHDLParser
+
+
+**Functions**
+
+- :py:func:`printImportError`:
+  Undocumented.
+
+
+
+**Classes**
+
+- :py:class:`Application`:
+  A mixin class (interface) to provide class-local terminal writing methods.
+
+
+
+---------------------
+
+**Functions**
+
+
+.. autofunction:: printImportError
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Application
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Application
+      :parts: 1

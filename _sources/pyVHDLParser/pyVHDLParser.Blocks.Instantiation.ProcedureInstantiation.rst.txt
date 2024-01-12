@@ -1,0 +1,164 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+========================================================
+pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation
+========================================================
+
+.. automodule:: pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Instantiation.ProcedureInstantiation
+
+
+**Classes**
+
+- :py:class:`EntityInstantiationBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`GenericMapBeginBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`GenericMapItemBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`GenericMapDelimiterBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`GenericMapEndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`PortMapBeginBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`PortMapItemBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`PortMapDelimiterBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`PortMapEndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`EndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EntityInstantiationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EntityInstantiationBlock
+      :parts: 1
+
+.. autoclass:: GenericMapBeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapBeginBlock
+      :parts: 1
+
+.. autoclass:: GenericMapItemBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapItemBlock
+      :parts: 1
+
+.. autoclass:: GenericMapDelimiterBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapDelimiterBlock
+      :parts: 1
+
+.. autoclass:: GenericMapEndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericMapEndBlock
+      :parts: 1
+
+.. autoclass:: PortMapBeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapBeginBlock
+      :parts: 1
+
+.. autoclass:: PortMapItemBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapItemBlock
+      :parts: 1
+
+.. autoclass:: PortMapDelimiterBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapDelimiterBlock
+      :parts: 1
+
+.. autoclass:: PortMapEndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortMapEndBlock
+      :parts: 1
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1

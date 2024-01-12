@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Tokens &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Specific Tokens" href="SpecificTokens.html" />
+    <link rel="prev" title="Meta Tokens" href="MetaTokens.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Pass - Tokens</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="MetaTokens.html">Meta Tokens</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simple Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpecificTokens.html">Specific Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tokenizer.html">Token Generator (Tokenizer)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Usage.html">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">1. Pass - Tokens</a> &raquo;</li>
+      <li>Simple Tokens</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/TokenStream/SimpleTokens.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="simple-tokens">
+<span id="tokstm-simpletoken"></span><h1>Simple Tokens<a class="headerlink" href="#simple-tokens" title="Permalink to this heading">¶</a></h1>
+<p>Simple tokens, are tokens created by the <a class="reference internal" href="Tokenizer.html#tokstm-tokenizer"><span class="std std-ref">Token Generator (Tokenizer)</span></a>.</p>
+<p>The tokenizer has no deep knowledge of the VHDL language, thus it can only detect
+a limited number of distinct tokens. These token require only a context of up to
+two characters while parsing.</p>
+<p><strong>List of simple tokens:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>Examples</p></th>
+<th class="head"><p>pyVHDLParser Token Class</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single character</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">;</span></code>, <code class="docutils literal notranslate"><span class="pre">(</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterToken" title="pyVHDLParser.Token.CharacterToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharacterToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiple characters</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">:=</span></code>, <code class="docutils literal notranslate"><span class="pre">**</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.FusedCharacterToken" title="pyVHDLParser.Token.FusedCharacterToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">FusedCharacterToken</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Whitespace (space, tab)</p></td>
+<td></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.SpaceToken" title="pyVHDLParser.Token.SpaceToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpaceToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Word</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">entity</span></code>, <code class="docutils literal notranslate"><span class="pre">xor</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.WordToken" title="pyVHDLParser.Token.WordToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">WordToken</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Single-line comment</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--</span> <span class="pre">TODO</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.SingleLineCommentToken" title="pyVHDLParser.Token.SingleLineCommentToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleLineCommentToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Multi-line comment</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/*comment*/</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.MultiLineCommentToken" title="pyVHDLParser.Token.MultiLineCommentToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiLineCommentToken</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Integer literal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">42</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.IntegerLiteralToken" title="pyVHDLParser.Token.IntegerLiteralToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerLiteralToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Real literal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.25</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.RealLiteralToken" title="pyVHDLParser.Token.RealLiteralToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">RealLiteralToken</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Character literal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'a'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Z'</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterLiteralToken" title="pyVHDLParser.Token.CharacterLiteralToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharacterLiteralToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>String literal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.StringLiteralToken" title="pyVHDLParser.Token.StringLiteralToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringLiteralToken</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bit string literal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">x&quot;42&quot;</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.BitStringLiteralToken" title="pyVHDLParser.Token.BitStringLiteralToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">BitStringLiteralToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Extended identifiers</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">\$cell35\</span></code></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtendedIdentifierToken</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Tool directives</p></td>
+<td></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.DirectiveToken" title="pyVHDLParser.Token.DirectiveToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirectiveToken</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Linebreak</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">\n</span></code></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">LineBreakToken</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>indentation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">\t</span></code></p></td>
+<td><p><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.IndentationToken" title="pyVHDLParser.Token.IndentationToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndentationToken</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MetaTokens.html" class="btn btn-neutral float-left" title="Meta Tokens" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SpecificTokens.html" class="btn btn-neutral float-right" title="Specific Tokens" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+========================
+pyVHDLParser.Blocks.List
+========================
+
+.. automodule:: pyVHDLParser.Blocks.List
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Blocks.List.GenericList
+   pyVHDLParser.Blocks.List.GenericMapList
+   pyVHDLParser.Blocks.List.ParameterList
+   pyVHDLParser.Blocks.List.PortList
+   pyVHDLParser.Blocks.List.PortMapList
+   pyVHDLParser.Blocks.List.SensitivityList
+
+.. currentmodule:: pyVHDLParser.Blocks.List

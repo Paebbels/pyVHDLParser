@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+========================================
+pyVHDLParser.Blocks.Generate.ForGenerate
+========================================
+
+.. automodule:: pyVHDLParser.Blocks.Generate.ForGenerate
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Generate.ForGenerate
+
+
+**Classes**
+
+- :py:class:`RangeBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`BeginBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`EndGenerateBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: RangeBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RangeBlock
+      :parts: 1
+
+.. autoclass:: BeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BeginBlock
+      :parts: 1
+
+.. autoclass:: EndGenerateBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndGenerateBlock
+      :parts: 1

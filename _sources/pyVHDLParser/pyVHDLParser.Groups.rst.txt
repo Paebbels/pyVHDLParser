@@ -1,0 +1,199 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================
+pyVHDLParser.Groups
+===================
+
+.. automodule:: pyVHDLParser.Groups
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Groups.Comment
+   pyVHDLParser.Groups.Concurrent
+   pyVHDLParser.Groups.DesignUnit
+   pyVHDLParser.Groups.List
+   pyVHDLParser.Groups.Object
+   pyVHDLParser.Groups.Reference
+   pyVHDLParser.Groups.Sequential
+
+.. currentmodule:: pyVHDLParser.Groups
+
+
+**Exceptions**
+
+- :py:exc:`GroupParserException`:
+  Common base class for all non-exit exceptions.
+
+
+
+**Classes**
+
+- :py:class:`BlockIterator`:
+  Undocumented.
+
+- :py:class:`BlockToGroupParser`:
+  Represents the current state of a block-to-group parser.
+
+- :py:class:`MetaGroup`:
+  Register all state*** methods in an array called '__STATES__'
+
+- :py:class:`Group`:
+  Undocumented.
+
+- :py:class:`StartOfGroup`:
+  Undocumented.
+
+- :py:class:`EndOfGroup`:
+  Undocumented.
+
+- :py:class:`StartOfDocumentGroup`:
+  Base-class (mixin) for all StartOf***Document classes.
+
+- :py:class:`EndOfDocumentGroup`:
+  Base-class (mixin) for all EndOf***Document classes.
+
+- :py:class:`StartOfSnippetGroup`:
+  Base-class (mixin) for all StartOf***Snippet classes.
+
+- :py:class:`EndOfSnippetGroup`:
+  Base-class (mixin) for all EndOf***Snippet classes.
+
+
+
+---------------------
+
+**Exceptions**
+
+
+
+
+.. autoexception:: GroupParserException
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroupParserException
+      :parts: 1
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: BlockIterator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockIterator
+      :parts: 1
+
+.. autoclass:: BlockToGroupParser
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockToGroupParser
+      :parts: 1
+
+.. autoclass:: MetaGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MetaGroup
+      :parts: 1
+
+.. autoclass:: Group
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Group
+      :parts: 1
+
+.. autoclass:: StartOfGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfGroup
+      :parts: 1
+
+.. autoclass:: EndOfGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfGroup
+      :parts: 1
+
+.. autoclass:: StartOfDocumentGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfDocumentGroup
+      :parts: 1
+
+.. autoclass:: EndOfDocumentGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfDocumentGroup
+      :parts: 1
+
+.. autoclass:: StartOfSnippetGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfSnippetGroup
+      :parts: 1
+
+.. autoclass:: EndOfSnippetGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfSnippetGroup
+      :parts: 1

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scripts and Applications &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ChangeLog" href="../ChangeLog/index.html" />
+    <link rel="prev" title="pyVHDLParser.TypeSystem.std_logic_1164" href="../pyVHDLParser/pyVHDLParser.TypeSystem.std_logic_1164.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scripts and Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vhdlparser">VHDLParser</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#options">options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-codedom">VHDLParser CodeDOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-antlr">VHDLParser antlr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-block-check">VHDLParser block-check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-block-stream">VHDLParser block-stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-group-stream">VHDLParser group-stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-help">VHDLParser help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-token-check">VHDLParser token-check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-token-stream">VHDLParser token-stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vhdlparser-version">VHDLParser version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Scripts and Applications</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/References/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="scripts-and-applications">
+<h1>Scripts and Applications<a class="headerlink" href="#scripts-and-applications" title="Permalink to this heading">¶</a></h1>
+<p>The pyVHDLParser package comes with an executables registered by pip in the
+search path.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">VHDLParser</span></code> is a wrapper for <code class="docutils literal notranslate"><span class="pre">pyVHDLParser.CLI.VHDLParser:main</span></code>.</p></li>
+</ul>
+<section id="vhdlparser">
+<span id="cmdref-vhdlparser-vhdlparser"></span><span id="cmdref-vhdlparser"></span><h2>VHDLParser<a class="headerlink" href="#vhdlparser" title="Permalink to this heading">¶</a></h2>
+<p>Test application to test pyVHDLParser capabilities.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser [-d] [-v] [-q]</span>
+<span class="go">                  {help,version,token-stream,token-check,block-stream,block-check,group-stream,CodeDOM,antlr}</span>
+<span class="go">                  ...</span>
+</pre></div>
+</div>
+<p>pyVHDLParser is a streaming parser to read and understand VHDL code equipped
+with comments for documentation extraction.</p>
+<section id="options">
+<span id="cmdref-vhdlparser-options"></span><h3>options<a class="headerlink" href="#options" title="Permalink to this heading">¶</a></h3>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-d">
+<span id="cmdoption-vhdlparser-d"></span><span id="cmdoption-VHDLParser-debug"></span><span id="cmdoption-vhdlparser-debug"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--debug</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable debug mode.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-v">
+<span id="cmdoption-vhdlparser-v"></span><span id="cmdoption-VHDLParser-verbose"></span><span id="cmdoption-vhdlparser-verbose"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out detailed messages.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-q">
+<span id="cmdoption-vhdlparser-q"></span><span id="cmdoption-VHDLParser-quiet"></span><span id="cmdoption-vhdlparser-quiet"></span><span class="sig-name descname"><span class="pre">-q</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--quiet</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce messages to a minimum.</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-codedom">
+<span id="cmdref-vhdlparser-vhdlparser-codedom"></span><h3>VHDLParser CodeDOM<a class="headerlink" href="#vhdlparser-codedom" title="Permalink to this heading">¶</a></h3>
+<p>Create a code document object model (CodeDOM).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser CodeDOM [-h] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-CodeDOM-arg-filename">
+<span id="cmdoption-vhdlparser-codedom-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-CodeDOM-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-CodeDOM-h">
+<span id="cmdoption-vhdlparser-codedom-h"></span><span id="cmdoption-VHDLParser-CodeDOM-help"></span><span id="cmdoption-vhdlparser-codedom-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-CodeDOM-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-antlr">
+<span id="cmdref-vhdlparser-vhdlparser-antlr"></span><h3>VHDLParser antlr<a class="headerlink" href="#vhdlparser-antlr" title="Permalink to this heading">¶</a></h3>
+<p>Create DOM from ANTLR4 grammar.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser antlr [-h] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-antlr-arg-filename">
+<span id="cmdoption-vhdlparser-antlr-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-antlr-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-antlr-h">
+<span id="cmdoption-vhdlparser-antlr-h"></span><span id="cmdoption-VHDLParser-antlr-help"></span><span id="cmdoption-vhdlparser-antlr-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-antlr-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-block-check">
+<span id="cmdref-vhdlparser-vhdlparser-block-check"></span><h3>VHDLParser block-check<a class="headerlink" href="#vhdlparser-block-check" title="Permalink to this heading">¶</a></h3>
+<p>Check a stream of block objects.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser block-check [-h] [-T] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-check-arg-filename">
+<span id="cmdoption-vhdlparser-block-check-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-check-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-check-h">
+<span id="cmdoption-vhdlparser-block-check-h"></span><span id="cmdoption-VHDLParser-block-check-help"></span><span id="cmdoption-vhdlparser-block-check-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-check-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-check-T">
+<span id="cmdoption-vhdlparser-block-check-t"></span><span id="cmdoption-VHDLParser-block-check-with-tokens"></span><span id="cmdoption-vhdlparser-block-check-with-tokens"></span><span class="sig-name descname"><span class="pre">-T</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--with-tokens</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-check-T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display tokens in between.</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-block-stream">
+<span id="cmdref-vhdlparser-vhdlparser-block-stream"></span><h3>VHDLParser block-stream<a class="headerlink" href="#vhdlparser-block-stream" title="Permalink to this heading">¶</a></h3>
+<p>Create a stream of block objects.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser block-stream [-h] [-T] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-stream-arg-filename">
+<span id="cmdoption-vhdlparser-block-stream-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-stream-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-stream-h">
+<span id="cmdoption-vhdlparser-block-stream-h"></span><span id="cmdoption-VHDLParser-block-stream-help"></span><span id="cmdoption-vhdlparser-block-stream-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-stream-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-block-stream-T">
+<span id="cmdoption-vhdlparser-block-stream-t"></span><span id="cmdoption-VHDLParser-block-stream-with-tokens"></span><span id="cmdoption-vhdlparser-block-stream-with-tokens"></span><span class="sig-name descname"><span class="pre">-T</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--with-tokens</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-block-stream-T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display tokens in between.</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-group-stream">
+<span id="cmdref-vhdlparser-vhdlparser-group-stream"></span><h3>VHDLParser group-stream<a class="headerlink" href="#vhdlparser-group-stream" title="Permalink to this heading">¶</a></h3>
+<p>Create a stream of group objects.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser group-stream [-h] [-T] [-B] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-group-stream-arg-filename">
+<span id="cmdoption-vhdlparser-group-stream-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-group-stream-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-group-stream-h">
+<span id="cmdoption-vhdlparser-group-stream-h"></span><span id="cmdoption-VHDLParser-group-stream-help"></span><span id="cmdoption-vhdlparser-group-stream-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-group-stream-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-group-stream-T">
+<span id="cmdoption-vhdlparser-group-stream-t"></span><span id="cmdoption-VHDLParser-group-stream-with-tokens"></span><span id="cmdoption-vhdlparser-group-stream-with-tokens"></span><span class="sig-name descname"><span class="pre">-T</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--with-tokens</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-group-stream-T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display tokens in between.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-group-stream-B">
+<span id="cmdoption-vhdlparser-group-stream-b"></span><span id="cmdoption-VHDLParser-group-stream-with-blocks"></span><span id="cmdoption-vhdlparser-group-stream-with-blocks"></span><span class="sig-name descname"><span class="pre">-B</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--with-blocks</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-group-stream-B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display blocks in between.</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-help">
+<span id="cmdref-vhdlparser-vhdlparser-help"></span><h3>VHDLParser help<a class="headerlink" href="#vhdlparser-help" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser help [-h] [Command]</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-help-arg-command">
+<span id="cmdoption-vhdlparser-help-arg-command"></span><span class="sig-name descname"><span class="pre">command</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-help-arg-command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print help page(s) for a command.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-help-h">
+<span id="cmdoption-vhdlparser-help-h"></span><span id="cmdoption-VHDLParser-help-help"></span><span id="cmdoption-vhdlparser-help-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-help-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-token-check">
+<span id="cmdref-vhdlparser-vhdlparser-token-check"></span><h3>VHDLParser token-check<a class="headerlink" href="#vhdlparser-token-check" title="Permalink to this heading">¶</a></h3>
+<p>Generates and checks a stream of token objects for correct double-pointers.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser token-check [-h] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-token-check-arg-filename">
+<span id="cmdoption-vhdlparser-token-check-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-token-check-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-token-check-h">
+<span id="cmdoption-vhdlparser-token-check-h"></span><span id="cmdoption-VHDLParser-token-check-help"></span><span id="cmdoption-vhdlparser-token-check-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-token-check-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-token-stream">
+<span id="cmdref-vhdlparser-vhdlparser-token-stream"></span><h3>VHDLParser token-stream<a class="headerlink" href="#vhdlparser-token-stream" title="Permalink to this heading">¶</a></h3>
+<p>Create a stream of token objects.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser token-stream [-h] filename</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-token-stream-arg-filename">
+<span id="cmdoption-vhdlparser-token-stream-arg-filename"></span><span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-token-stream-arg-filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The filename to parse.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-token-stream-h">
+<span id="cmdoption-vhdlparser-token-stream-h"></span><span id="cmdoption-VHDLParser-token-stream-help"></span><span id="cmdoption-vhdlparser-token-stream-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-token-stream-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+<section id="vhdlparser-version">
+<span id="cmdref-vhdlparser-vhdlparser-version"></span><h3>VHDLParser version<a class="headerlink" href="#vhdlparser-version" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: VHDLParser version [-h]</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-VHDLParser-version-h">
+<span id="cmdoption-vhdlparser-version-h"></span><span id="cmdoption-VHDLParser-version-help"></span><span id="cmdoption-vhdlparser-version-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-VHDLParser-version-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show this help message and exit</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../pyVHDLParser/pyVHDLParser.TypeSystem.std_logic_1164.html" class="btn btn-neutral float-left" title="pyVHDLParser.TypeSystem.std_logic_1164" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ChangeLog/index.html" class="btn btn-neutral float-right" title="ChangeLog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

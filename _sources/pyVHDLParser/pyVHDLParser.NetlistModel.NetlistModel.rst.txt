@@ -1,0 +1,80 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+======================================
+pyVHDLParser.NetlistModel.NetlistModel
+======================================
+
+.. automodule:: pyVHDLParser.NetlistModel.NetlistModel
+
+
+.. currentmodule:: pyVHDLParser.NetlistModel.NetlistModel
+
+
+**Classes**
+
+- :py:class:`ModelBase`:
+  Undocumented.
+
+- :py:class:`Netlist`:
+  Undocumented.
+
+- :py:class:`Wire`:
+  Undocumented.
+
+- :py:class:`Primitive`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ModelBase
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ModelBase
+      :parts: 1
+
+.. autoclass:: Netlist
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Netlist
+      :parts: 1
+
+.. autoclass:: Wire
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Wire
+      :parts: 1
+
+.. autoclass:: Primitive
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Primitive
+      :parts: 1

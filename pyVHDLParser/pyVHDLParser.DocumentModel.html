@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.DocumentModel &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.DocumentModel.DesignUnit" href="pyVHDLParser.DocumentModel.DesignUnit.html" />
+    <link rel="prev" title="Python Class Reference" href="pyVHDLParser.Decorators.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyVHDLParser.DocumentModel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.DocumentModel.DesignUnit.html">pyVHDLParser.DocumentModel.DesignUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.DocumentModel.ObjectDeclaration.html">pyVHDLParser.DocumentModel.ObjectDeclaration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.DocumentModel.Reference.html">pyVHDLParser.DocumentModel.Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.DocumentModel.Sequential.html">pyVHDLParser.DocumentModel.Sequential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.DocumentModel.DOMParserException"><code class="docutils literal notranslate"><span class="pre">DOMParserException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.DOMParserException.__init__"><code class="docutils literal notranslate"><span class="pre">DOMParserException.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.DOMParserException.__new__"><code class="docutils literal notranslate"><span class="pre">DOMParserException.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document"><code class="docutils literal notranslate"><span class="pre">Document</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.__init__"><code class="docutils literal notranslate"><span class="pre">Document.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._parent"><code class="docutils literal notranslate"><span class="pre">Document._parent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Architectures"><code class="docutils literal notranslate"><span class="pre">Document.Architectures</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Configurations"><code class="docutils literal notranslate"><span class="pre">Document.Configurations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Contexts"><code class="docutils literal notranslate"><span class="pre">Document.Contexts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.DesignUnits"><code class="docutils literal notranslate"><span class="pre">Document.DesignUnits</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Documentation"><code class="docutils literal notranslate"><span class="pre">Document.Documentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Entities"><code class="docutils literal notranslate"><span class="pre">Document.Entities</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.PackageBodies"><code class="docutils literal notranslate"><span class="pre">Document.PackageBodies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Packages"><code class="docutils literal notranslate"><span class="pre">Document.Packages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.Parent"><code class="docutils literal notranslate"><span class="pre">Document.Parent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.VerificationModes"><code class="docutils literal notranslate"><span class="pre">Document.VerificationModes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.VerificationProperties"><code class="docutils literal notranslate"><span class="pre">Document.VerificationProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document.VerificationUnits"><code class="docutils literal notranslate"><span class="pre">Document.VerificationUnits</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._path"><code class="docutils literal notranslate"><span class="pre">Document._path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._designUnits"><code class="docutils literal notranslate"><span class="pre">Document._designUnits</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._contexts"><code class="docutils literal notranslate"><span class="pre">Document._contexts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._configurations"><code class="docutils literal notranslate"><span class="pre">Document._configurations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._entities"><code class="docutils literal notranslate"><span class="pre">Document._entities</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._architectures"><code class="docutils literal notranslate"><span class="pre">Document._architectures</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._packages"><code class="docutils literal notranslate"><span class="pre">Document._packages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._packageBodies"><code class="docutils literal notranslate"><span class="pre">Document._packageBodies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._verificationUnits"><code class="docutils literal notranslate"><span class="pre">Document._verificationUnits</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._verificationProperties"><code class="docutils literal notranslate"><span class="pre">Document._verificationProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._verificationModes"><code class="docutils literal notranslate"><span class="pre">Document._verificationModes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document._documentation"><code class="docutils literal notranslate"><span class="pre">Document._documentation</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+      <li>pyVHDLParser.DocumentModel</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.DocumentModel.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.DocumentModel">
+<span id="pyvhdlparser-documentmodel"></span><h1>pyVHDLParser.DocumentModel<a class="headerlink" href="#module-pyVHDLParser.DocumentModel" title="Permalink to this heading">¶</a></h1>
+<p><strong>Submodules</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.DocumentModel.DesignUnit.html">pyVHDLParser.DocumentModel.DesignUnit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.DocumentModel.ObjectDeclaration.html">pyVHDLParser.DocumentModel.ObjectDeclaration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.DocumentModel.Reference.html">pyVHDLParser.DocumentModel.Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyVHDLParser.DocumentModel.Sequential.html">pyVHDLParser.DocumentModel.Sequential</a></li>
+</ul>
+</div>
+<p><strong>Exceptions</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.DocumentModel.DOMParserException" title="pyVHDLParser.DocumentModel.DOMParserException"><code class="xref py py-exc docutils literal notranslate"><span class="pre">DOMParserException</span></code></a>:
+Common base class for all non-exit exceptions.</p></li>
+</ul>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.DocumentModel.Document" title="pyVHDLParser.DocumentModel.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a>:
+A <code class="docutils literal notranslate"><span class="pre">Document</span></code> represents a sourcefile. It contains <em>primary</em> and <em>secondary</em> design units.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Exceptions</strong></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.DOMParserException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.DocumentModel.</span></span><span class="sig-name descname"><span class="pre">DOMParserException</span></span><a class="reference internal" href="../_modules/pyVHDLParser/DocumentModel.html#DOMParserException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.DocumentModel.DOMParserException" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-10d11fac04faa71700434befb05da76833db8da2.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of DOMParserException</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.DOMParserException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/DocumentModel.html#DOMParserException.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.DocumentModel.DOMParserException.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.DOMParserException.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.DocumentModel.DOMParserException.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.DocumentModel.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><a class="reference internal" href="../_modules/pyVHDLParser/DocumentModel.html#Document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-28b1c3ff483255fed48f36495c5f3e6f431ad961.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Document</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/DocumentModel.html#Document.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a VHDL model entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><em>Path</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._parent">
+<span class="sig-name descname"><span class="pre">_parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ModelEntity</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to a parent entity in the model.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Architectures">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Architectures</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Architecture</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Architectures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all architecture declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Configurations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Configurations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Configuration</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Configurations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all configuration declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Contexts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Contexts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Context</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Contexts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all context declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.DesignUnits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DesignUnits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">DesignUnit</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.DesignUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all design units declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Documentation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Documentation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Documentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a model entity’s associated documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Associated documentation of a model entity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Entities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Entities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Entity</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all entity declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.PackageBodies">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PackageBodies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">PackageBody</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.PackageBodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all package body declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Packages">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Packages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Package</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all package declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.Parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ModelEntity</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.Parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a reference to the parent entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Parent entity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.VerificationModes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VerificationModes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">VerificationMode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.VerificationModes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all verification mode declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.VerificationProperties">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VerificationProperties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">VerificationProperty</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.VerificationProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all verification property declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document.VerificationUnits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VerificationUnits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">VerificationUnit</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document.VerificationUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all verification unit declarations found in this document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._path">
+<span class="sig-name descname"><span class="pre">_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._path" title="Permalink to this definition">¶</a></dt>
+<dd><p>path to the document. <code class="docutils literal notranslate"><span class="pre">None</span></code> if virtual document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._designUnits">
+<span class="sig-name descname"><span class="pre">_designUnits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List[DesignUnit]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._designUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all design units defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._contexts">
+<span class="sig-name descname"><span class="pre">_contexts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">Context]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._contexts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all contexts defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._configurations">
+<span class="sig-name descname"><span class="pre">_configurations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">Configuration]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._configurations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all configurations defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._entities">
+<span class="sig-name descname"><span class="pre">_entities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">Entity]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all entities defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._architectures">
+<span class="sig-name descname"><span class="pre">_architectures</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">Dict[str,</span> <span class="pre">Architecture]]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._architectures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all architectures defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._packages">
+<span class="sig-name descname"><span class="pre">_packages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">Package]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all packages defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._packageBodies">
+<span class="sig-name descname"><span class="pre">_packageBodies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">PackageBody]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._packageBodies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all package bodies defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._verificationUnits">
+<span class="sig-name descname"><span class="pre">_verificationUnits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">VerificationUnit]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._verificationUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all PSL verification units defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._verificationProperties">
+<span class="sig-name descname"><span class="pre">_verificationProperties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">VerificationProperty]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._verificationProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all PSL verification properties defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._verificationModes">
+<span class="sig-name descname"><span class="pre">_verificationModes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict[str,</span> <span class="pre">VerificationMode]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._verificationModes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all PSL verification modes defined in a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.DocumentModel.Document._documentation">
+<span class="sig-name descname"><span class="pre">_documentation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Nullable[str]</span></em><a class="headerlink" href="#pyVHDLParser.DocumentModel.Document._documentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The associated documentation of a model entity.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.Decorators.html" class="btn btn-neutral float-left" title="Python Class Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.DocumentModel.DesignUnit.html" class="btn btn-neutral float-right" title="pyVHDLParser.DocumentModel.DesignUnit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

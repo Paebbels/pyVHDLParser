@@ -1,0 +1,80 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=======================================
+pyVHDLParser.Blocks.List.GenericMapList
+=======================================
+
+.. automodule:: pyVHDLParser.Blocks.List.GenericMapList
+
+
+.. currentmodule:: pyVHDLParser.Blocks.List.GenericMapList
+
+
+**Classes**
+
+- :py:class:`OpenBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ItemBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`DelimiterBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`CloseBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: OpenBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpenBlock
+      :parts: 1
+
+.. autoclass:: ItemBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ItemBlock
+      :parts: 1
+
+.. autoclass:: DelimiterBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DelimiterBlock
+      :parts: 1
+
+.. autoclass:: CloseBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CloseBlock
+      :parts: 1

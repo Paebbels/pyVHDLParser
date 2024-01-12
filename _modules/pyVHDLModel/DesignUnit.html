@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLModel.DesignUnit &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>pyVHDLModel.DesignUnit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyVHDLModel.DesignUnit</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#             __     ___   _ ____  _     __  __           _      _                                                     #</span>
+<span class="c1">#   _ __  _   \ \   / / | | |  _ \| |   |  \/  | ___   __| | ___| |                                                    #</span>
+<span class="c1">#  | &#39;_ \| | | \ \ / /| |_| | | | | |   | |\/| |/ _ \ / _` |/ _ \ |                                                    #</span>
+<span class="c1">#  | |_) | |_| |\ V / |  _  | |_| | |___| |  | | (_) | (_| |  __/ |                                                    #</span>
+<span class="c1">#  | .__/ \__, | \_/  |_| |_|____/|_____|_|  |_|\___/ \__,_|\___|_|                                                    #</span>
+<span class="c1">#  |_|    |___/                                                                                                        #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Authors:                                                                                                             #</span>
+<span class="c1">#   Patrick Lehmann                                                                                                    #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># License:                                                                                                             #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1"># Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany                                                            #</span>
+<span class="c1"># Copyright 2016-2017 Patrick Lehmann - Dresden, Germany                                                               #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);                                                      #</span>
+<span class="c1"># you may not use this file except in compliance with the License.                                                     #</span>
+<span class="c1"># You may obtain a copy of the License at                                                                              #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1">#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software                                                  #</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,                                                    #</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #</span>
+<span class="c1"># See the License for the specific language governing permissions and                                                  #</span>
+<span class="c1"># limitations under the License.                                                                                       #</span>
+<span class="c1">#                                                                                                                      #</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0                                                                                  #</span>
+<span class="c1"># ==================================================================================================================== #</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains parts of an abstract document language model for VHDL.</span>
+
+<span class="sd">Design units are contexts, entities, architectures, packages and their bodies as well as configurations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span> <span class="k">as</span> <span class="n">Nullable</span>
+
+<span class="kn">from</span> <span class="nn">pyTooling.Decorators</span> <span class="kn">import</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">pyTooling.Graph</span> <span class="kn">import</span> <span class="n">Vertex</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Exception</span>  <span class="kn">import</span> <span class="n">VHDLModelException</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Base</span>       <span class="kn">import</span> <span class="n">ModelEntity</span><span class="p">,</span> <span class="n">NamedEntityMixin</span><span class="p">,</span> <span class="n">DocumentedEntityMixin</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Namespace</span>  <span class="kn">import</span> <span class="n">Namespace</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Symbol</span>     <span class="kn">import</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">PackageSymbol</span><span class="p">,</span> <span class="n">EntitySymbol</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Interface</span>  <span class="kn">import</span> <span class="n">GenericInterfaceItem</span><span class="p">,</span> <span class="n">PortInterfaceItem</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Subprogram</span> <span class="kn">import</span> <span class="n">Procedure</span><span class="p">,</span> <span class="n">Function</span><span class="p">,</span> <span class="n">Subprogram</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Object</span>     <span class="kn">import</span> <span class="n">Constant</span><span class="p">,</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">SharedVariable</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Type</span>       <span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Subtype</span>
+<span class="kn">from</span> <span class="nn">pyVHDLModel.Concurrent</span> <span class="kn">import</span> <span class="n">ConcurrentStatement</span><span class="p">,</span> <span class="n">ConcurrentStatements</span><span class="p">,</span> <span class="n">ConcurrentDeclarations</span>
+
+
+<span class="n">ContextUnion</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+	<span class="s1">&#39;LibraryClause&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;UseClause&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;ContextReference&#39;</span>
+<span class="p">]</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Reference</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">):</span>
+	<span class="n">_symbols</span><span class="p">:</span>       <span class="n">List</span><span class="p">[</span><span class="n">Symbol</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Symbol</span><span class="p">]):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">]</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbol</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symbols</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">LibraryClause</span><span class="p">(</span><span class="n">Reference</span><span class="p">):</span>
+	<span class="k">pass</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">UseClause</span><span class="p">(</span><span class="n">Reference</span><span class="p">):</span>
+	<span class="k">pass</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">ContextReference</span><span class="p">(</span><span class="n">Reference</span><span class="p">):</span>
+	<span class="c1"># TODO: rename to ContextClause?</span>
+	<span class="k">pass</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DesignUnitWithContextMixin</span><span class="p">:</span>  <span class="c1"># (metaclass=ExtendedType, useSlots=True):</span>
+	<span class="k">pass</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">DesignUnit</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">,</span> <span class="n">NamedEntityMixin</span><span class="p">,</span> <span class="n">DocumentedEntityMixin</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;A ``DesignUnit`` is a base-class for all design units.&quot;&quot;&quot;</span>
+
+	<span class="n">_library</span><span class="p">:</span>             <span class="s1">&#39;Library&#39;</span>                        <span class="c1">#: The VHDL library, the design unit was analyzed into.</span>
+
+	<span class="c1"># Either written as statements before (e.g. entity, architecture, package, ...), or as statements inside (context)</span>
+	<span class="n">_contextItems</span><span class="p">:</span>        <span class="n">List</span><span class="p">[</span><span class="s1">&#39;ContextUnion&#39;</span><span class="p">]</span>             <span class="c1">#: List of all context items (library, use and context clauses).</span>
+	<span class="n">_libraryReferences</span><span class="p">:</span>   <span class="n">List</span><span class="p">[</span><span class="s1">&#39;LibraryClause&#39;</span><span class="p">]</span>            <span class="c1">#: List of library clauses.</span>
+	<span class="n">_packageReferences</span><span class="p">:</span>   <span class="n">List</span><span class="p">[</span><span class="s1">&#39;UseClause&#39;</span><span class="p">]</span>                <span class="c1">#: List of use clauses.</span>
+	<span class="n">_contextReferences</span><span class="p">:</span>   <span class="n">List</span><span class="p">[</span><span class="s1">&#39;ContextReference&#39;</span><span class="p">]</span>         <span class="c1">#: List of context clauses.</span>
+
+	<span class="n">_referencedLibraries</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Library&#39;</span><span class="p">]</span>             <span class="c1">#: Referenced libraries based on explicit library clauses or implicit inheritance</span>
+	<span class="n">_referencedPackages</span><span class="p">:</span>  <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Package&#39;</span><span class="p">]]</span>  <span class="c1">#: Referenced packages based on explicit use clauses or implicit inheritance</span>
+	<span class="n">_referencedContexts</span><span class="p">:</span>  <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Context&#39;</span><span class="p">]</span>             <span class="c1">#: Referenced contexts based on explicit context references or implicit inheritance</span>
+
+	<span class="n">_dependencyVertex</span><span class="p">:</span>    <span class="n">Vertex</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;DesignUnit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1">#: The vertex in the dependency graph</span>
+	<span class="n">_hierarchyVertex</span><span class="p">:</span>     <span class="n">Vertex</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;DesignUnit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1">#: The vertex in the hierarchy graph</span>
+
+	<span class="n">_namespace</span><span class="p">:</span>           <span class="s1">&#39;Namespace&#39;</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;ContextUnion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initializes a design unit.</span>
+
+<span class="sd">		:param identifier:    Identifier (name) of the design unit.</span>
+<span class="sd">		:param contextItems:  A sequence of library, use or context clauses.</span>
+<span class="sd">		:param documentation: Associated documentation of the design unit.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+		<span class="n">NamedEntityMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span>
+		<span class="n">DocumentedEntityMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="o">=</span> <span class="kc">None</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_contextItems</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">if</span> <span class="n">contextItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">contextItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_contextItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">UseClause</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LibraryClause</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ContextReference</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_referencedLibraries</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_referencedPackages</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_referencedContexts</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_dependencyVertex</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_hierarchyVertex</span> <span class="o">=</span> <span class="kc">None</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalizedIdentifier</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Document&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
+
+	<span class="nd">@Document</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="s1">&#39;Document&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">document</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Library</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Library&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span>
+
+	<span class="nd">@Library</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">Library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library</span><span class="p">:</span> <span class="s1">&#39;Library&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="o">=</span> <span class="n">library</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ContextItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;ContextUnion&#39;</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Read-only property to access the sequence of all context items comprising library, use and context clauses</span>
+<span class="sd">		(:py:attr:`_contextItems`).</span>
+
+<span class="sd">		:returns: Sequence of context items.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contextItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ContextReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;ContextReference&#39;</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Read-only property to access the sequence of context clauses (:py:attr:`_contextReferences`).</span>
+
+<span class="sd">		:returns: Sequence of context clauses.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">LibraryReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;LibraryClause&#39;</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Read-only property to access the sequence of library clauses (:py:attr:`_libraryReferences`).</span>
+
+<span class="sd">		:returns: Sequence of library clauses.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PackageReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;UseClause&#39;</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Read-only property to access the sequence of use clauses (:py:attr:`_packageReferences`).</span>
+
+<span class="sd">		:returns: Sequence of use clauses.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ReferencedLibraries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Library&#39;</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_referencedLibraries</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ReferencedPackages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Package&#39;</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_referencedPackages</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ReferencedContexts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Context&#39;</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_referencedContexts</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">DependencyVertex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dependencyVertex</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">HierarchyVertex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vertex</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchyVertex</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PrimaryUnit</span><span class="p">(</span><span class="n">DesignUnit</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;A ``PrimaryUnit`` is a base-class for all primary units.&quot;&quot;&quot;</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">SecondaryUnit</span><span class="p">(</span><span class="n">DesignUnit</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;A ``SecondaryUnit`` is a base-class for all secondary units.&quot;&quot;&quot;</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="n">PrimaryUnit</span><span class="p">):</span>
+	<span class="n">_references</span><span class="p">:</span>        <span class="n">List</span><span class="p">[</span><span class="n">ContextUnion</span><span class="p">]</span>
+	<span class="n">_libraryReferences</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LibraryClause</span><span class="p">]</span>
+	<span class="n">_packageReferences</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UseClause</span><span class="p">]</span>
+	<span class="n">_contextReferences</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ContextReference</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Context.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Context.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ContextUnion</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_references</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">if</span> <span class="n">references</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_references</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+				<span class="n">reference</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+				<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">LibraryClause</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">UseClause</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">ContextReference</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="n">VHDLModelException</span><span class="p">()</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">LibraryReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LibraryClause</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_libraryReferences</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PackageReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">UseClause</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packageReferences</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ContextReferences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ContextReference</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contextReferences</span>
+
+<div class="viewcode-block" id="Context.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Context.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Context: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Package</span><span class="p">(</span><span class="n">PrimaryUnit</span><span class="p">,</span> <span class="n">DesignUnitWithContextMixin</span><span class="p">):</span>
+	<span class="n">_genericItems</span><span class="p">:</span>      <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span>
+	<span class="n">_declaredItems</span><span class="p">:</span>     <span class="n">List</span>
+
+	<span class="n">_types</span><span class="p">:</span>      <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Subtype</span><span class="p">]]</span>
+	<span class="n">_objects</span><span class="p">:</span>    <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Constant</span><span class="p">,</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">Signal</span><span class="p">]]</span>
+	<span class="n">_constants</span><span class="p">:</span>  <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Constant</span><span class="p">]</span>
+	<span class="n">_functions</span><span class="p">:</span>  <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Function</span><span class="p">]]</span>
+	<span class="n">_procedures</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Procedure</span><span class="p">]]</span>
+	<span class="n">_components</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Component&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Package.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Package.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;Context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">genericItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">declaredItems</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+		<span class="n">DesignUnitWithContextMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># TODO: convert to dict</span>
+		<span class="k">if</span> <span class="n">genericItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">generic</span> <span class="ow">in</span> <span class="n">genericItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generic</span><span class="p">)</span>
+				<span class="n">generic</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># TODO: convert to dict</span>
+		<span class="k">if</span> <span class="n">declaredItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">declaredItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="o">=</span>       <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_objects</span> <span class="o">=</span>     <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_constants</span> <span class="o">=</span>   <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_sharedVariables</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_signals</span> <span class="o">=</span>     <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subprograms</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_functions</span> <span class="o">=</span>   <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_procedures</span> <span class="o">=</span>  <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span>  <span class="p">{}</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">GenericItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">DeclaredItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Subtype</span><span class="p">]]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_types</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Objects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Constant</span><span class="p">,</span> <span class="n">SharedVariable</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">File</span><span class="p">]]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Constants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Constant</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Subprograms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Subprogram</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subprograms</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Function</span><span class="p">]]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Procedures</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Procedure</span><span class="p">]]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_procedures</span>
+
+	<span class="c1"># TODO: move into __init__ ?</span>
+	<span class="c1"># TODO: share with architecture and block statement?</span>
+	<span class="k">def</span> <span class="nf">IndexPackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Type</span><span class="p">):</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Subtype</span><span class="p">):</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Function</span><span class="p">):</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Procedure</span><span class="p">):</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Constant</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">Identifiers</span><span class="p">:</span>
+					<span class="n">normalizedIdentifier</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_constants</span><span class="p">[</span><span class="n">normalizedIdentifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">normalizedIdentifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Variable</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">Identifiers</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">identifier</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">item</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Signal</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">Identifiers</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="n">identifier</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">item</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Component</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">NormalizedIdentifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Package.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Package.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Package: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="Package.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Package.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">PackageBody</span><span class="p">(</span><span class="n">SecondaryUnit</span><span class="p">,</span> <span class="n">DesignUnitWithContextMixin</span><span class="p">):</span>
+	<span class="n">_package</span><span class="p">:</span> <span class="n">PackageSymbol</span>
+	<span class="n">_declaredItems</span><span class="p">:</span>     <span class="n">List</span>
+
+<div class="viewcode-block" id="PackageBody.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.PackageBody.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packageSymbol</span><span class="p">:</span> <span class="n">PackageSymbol</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;Context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">declaredItems</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">packageSymbol</span><span class="o">.</span><span class="n">Identifier</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+		<span class="n">DesignUnitWithContextMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_package</span> <span class="o">=</span> <span class="n">packageSymbol</span>
+		<span class="n">packageSymbol</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># TODO: convert to dict</span>
+		<span class="k">if</span> <span class="n">declaredItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">declaredItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Package</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PackageSymbol</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_package</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">DeclaredItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_declaredItems</span>
+
+	<span class="k">def</span> <span class="nf">IndexPackageBody</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">pass</span>
+
+	<span class="k">def</span> <span class="nf">LinkDeclaredItemsToPackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">pass</span>
+
+<div class="viewcode-block" id="PackageBody.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.PackageBody.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Package Body: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">(body)&quot;</span></div>
+
+<div class="viewcode-block" id="PackageBody.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.PackageBody.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">(body)&quot;</span></div>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">PrimaryUnit</span><span class="p">,</span> <span class="n">DesignUnitWithContextMixin</span><span class="p">,</span> <span class="n">ConcurrentDeclarations</span><span class="p">,</span> <span class="n">ConcurrentStatements</span><span class="p">):</span>
+	<span class="n">_genericItems</span><span class="p">:</span>  <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span>
+	<span class="n">_portItems</span><span class="p">:</span>     <span class="n">List</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]</span>
+
+	<span class="n">_architectures</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Architecture&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Entity.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Entity.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+		<span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ContextUnion</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">genericItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">portItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">declaredItems</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">statements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ConcurrentStatement</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+		<span class="n">DesignUnitWithContextMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">ConcurrentDeclarations</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">declaredItems</span><span class="p">)</span>
+		<span class="n">ConcurrentStatements</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statements</span><span class="p">)</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="n">genericItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">genericItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="n">portItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">portItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_architectures</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+	<span class="c1"># TODO: extract to mixin for generics</span>
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">GenericItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span>
+
+	<span class="c1"># TODO: extract to mixin for ports</span>
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PortItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Architectures</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;Architecture&#39;</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_architectures</span>
+
+<div class="viewcode-block" id="Entity.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Entity.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Entity: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_architectures</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+<div class="viewcode-block" id="Entity.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Entity.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_architectures</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Architecture</span><span class="p">(</span><span class="n">SecondaryUnit</span><span class="p">,</span> <span class="n">DesignUnitWithContextMixin</span><span class="p">,</span> <span class="n">ConcurrentDeclarations</span><span class="p">,</span> <span class="n">ConcurrentStatements</span><span class="p">):</span>
+	<span class="n">_library</span><span class="p">:</span>       <span class="s1">&#39;Library&#39;</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">_entity</span><span class="p">:</span> <span class="n">EntitySymbol</span>
+
+<div class="viewcode-block" id="Architecture.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Architecture.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entity</span><span class="p">:</span> <span class="n">EntitySymbol</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Context</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">declaredItems</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">statements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;ConcurrentStatement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+		<span class="n">DesignUnitWithContextMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">ConcurrentDeclarations</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">declaredItems</span><span class="p">)</span>
+		<span class="n">ConcurrentStatements</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statements</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="o">=</span> <span class="n">entity</span>
+		<span class="n">entity</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Entity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntitySymbol</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span>
+
+	<span class="c1"># TODO: move to Design Unit</span>
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Library</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Library&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span>
+
+	<span class="nd">@Library</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">Library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library</span><span class="p">:</span> <span class="s1">&#39;Library&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="o">=</span> <span class="n">library</span>
+
+<div class="viewcode-block" id="Architecture.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Architecture.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+		<span class="n">ent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Architecture: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ent</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+<div class="viewcode-block" id="Architecture.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Architecture.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+		<span class="n">ent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ent</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Component</span><span class="p">(</span><span class="n">ModelEntity</span><span class="p">,</span> <span class="n">NamedEntityMixin</span><span class="p">,</span> <span class="n">DocumentedEntityMixin</span><span class="p">):</span>
+	<span class="n">_genericItems</span><span class="p">:</span>      <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span>
+	<span class="n">_portItems</span><span class="p">:</span>         <span class="n">List</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]</span>
+
+	<span class="n">_entity</span><span class="p">:</span>            <span class="n">Nullable</span><span class="p">[</span><span class="n">Entity</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">genericItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">portItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+		<span class="n">NamedEntityMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span>
+		<span class="n">DocumentedEntityMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="n">genericItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">genericItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+		<span class="c1"># TODO: extract to mixin</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">if</span> <span class="n">portItems</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">portItems</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">GenericItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GenericInterfaceItem</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genericItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">PortItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PortInterfaceItem</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_portItems</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">Entity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Nullable</span><span class="p">[</span><span class="n">Entity</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span>
+
+	<span class="nd">@Entity</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span> <span class="nf">Entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Entity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="nd">@export</span>
+<span class="k">class</span> <span class="nc">Configuration</span><span class="p">(</span><span class="n">PrimaryUnit</span><span class="p">,</span> <span class="n">DesignUnitWithContextMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Configuration.__init__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Configuration.__init__">[docs]</a>	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Context</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">documentation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">contextItems</span><span class="p">,</span> <span class="n">documentation</span><span class="p">)</span>
+		<span class="n">DesignUnitWithContextMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Configuration.__str__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Configuration.__str__">[docs]</a>	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Configuration: </span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="Configuration.__repr__"><a class="viewcode-back" href="../../pyVHDLParser/pyVHDLParser.LanguageModel.DesignUnit.html#pyVHDLParser.DocumentModel.DesignUnit.Architecture.Configuration.__repr__">[docs]</a>	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">lib</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span><span class="o">.</span><span class="n">Identifier</span> <span class="o">+</span> <span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_library</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lib</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

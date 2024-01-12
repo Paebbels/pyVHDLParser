@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===================================
+pyVHDLParser.Blocks.Object.Constant
+===================================
+
+.. automodule:: pyVHDLParser.Blocks.Object.Constant
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Object.Constant
+
+
+**Classes**
+
+- :py:class:`ConstantDeclarationEndMarkerBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ConstantDeclarationDefaultExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ConstantDeclarationBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ConstantDeclarationEndMarkerBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConstantDeclarationEndMarkerBlock
+      :parts: 1
+
+.. autoclass:: ConstantDeclarationDefaultExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConstantDeclarationDefaultExpressionBlock
+      :parts: 1
+
+.. autoclass:: ConstantDeclarationBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConstantDeclarationBlock
+      :parts: 1

@@ -1,0 +1,2390 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===========================
+pyVHDLParser.Token.Keywords
+===========================
+
+.. automodule:: pyVHDLParser.Token.Keywords
+
+
+.. currentmodule:: pyVHDLParser.Token.Keywords
+
+
+**Classes**
+
+- :py:class:`SpecificVHDLToken`:
+  Base-class for all specific tokens.
+
+- :py:class:`BoundaryToken`:
+  Token representing a boundary between (reserved) words.
+
+- :py:class:`BracketToken`:
+  Base-class for all bracket tokens: ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, ``<`` and ``>``.
+
+- :py:class:`RoundBracketToken`:
+  Base-class for all round bracket tokens: ``(`` and ``)``.
+
+- :py:class:`OpeningRoundBracketToken`:
+  Token representing an opening round bracket: ``(``.
+
+- :py:class:`ClosingRoundBracketToken`:
+  Token representing a closing round bracket: ``)``.
+
+- :py:class:`SquareBracketToken`:
+  Base-class for all square bracket tokens: ``[`` and ``]``.
+
+- :py:class:`OpeningSquareBracketToken`:
+  Token representing an square round bracket: ``[``.
+
+- :py:class:`ClosingSquareBracketToken`:
+  Token representing a closing square bracket: ``]``.
+
+- :py:class:`CurlyBracketToken`:
+  Base-class for all curly bracket tokens: ``{`` and ``}``.
+
+- :py:class:`OpeningCurlyBracketToken`:
+  Token representing an opening curly bracket: ``{``.
+
+- :py:class:`ClosingCurlyBracketToken`:
+  Token representing a closing curly bracket: ``}``.
+
+- :py:class:`AngleBracketToken`:
+  Base-class for all angle bracket tokens: ``<`` and ``>``.
+
+- :py:class:`OpeningAngleBracketToken`:
+  Token representing an opening angle bracket: ``<``.
+
+- :py:class:`ClosingAngleBracketToken`:
+  Token representing a closing angle bracket: ``>``.
+
+- :py:class:`OperatorToken`:
+  Base-class for all operator tokens.
+
+- :py:class:`PlusOperator`:
+  Token representing a plus operator: ``+``.
+
+- :py:class:`MinusOperator`:
+  Token representing a minus operator: ``-``.
+
+- :py:class:`MultiplyOperator`:
+  Token representing a multiply operator: ``*``.
+
+- :py:class:`DivideOperator`:
+  Token representing a divide operator: ``/``.
+
+- :py:class:`ModuloOperator`:
+  Base-class for all operator tokens.
+
+- :py:class:`RemainderOperator`:
+  Base-class for all operator tokens.
+
+- :py:class:`PowerOperator`:
+  Token representing a power operator: ``**``.
+
+- :py:class:`ConcatOperator`:
+  Token representing a concat operator: ``&``.
+
+- :py:class:`RelationalOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`EqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`UnequalOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`LessThanOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`LessThanOrEqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`GreaterThanOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`GreaterThanOrEqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingEqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingUnequalOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingLessThanOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingLessThanOrEqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingGreaterThanOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`MatchingGreaterThanOrEqualOperator`:
+  Base-class for all relational operator tokens.
+
+- :py:class:`DelimiterToken`:
+  Token representing a delimiter sign in between list items.
+
+- :py:class:`EndToken`:
+  Token representing an end of a statement.
+
+- :py:class:`IdentifierToken`:
+  Token representing an identifier.
+
+- :py:class:`RepeatedIdentifierToken`:
+  Token representing a repeated identifier.
+
+- :py:class:`SimpleNameToken`:
+  Base-class for all specific tokens.
+
+- :py:class:`LabelToken`:
+  Token representing a label.
+
+- :py:class:`RepeatedLabelToken`:
+  Token representing a repeated label.
+
+- :py:class:`MultiCharKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`CommentKeyword`:
+  Base-class for all comment keywords: ``--``, ``/*`` and ``*/``.
+
+- :py:class:`SingleLineCommentKeyword`:
+  Token representing a starting sequence for a single-line comment: ``--``.
+
+- :py:class:`MultiLineCommentKeyword`:
+  Base-class for all tokens related to multi-line comments: ``/*`` and ``*/``.
+
+- :py:class:`MultiLineCommentStartKeyword`:
+  Token representing a starting sequence for a multi-line comment: ``/*``.
+
+- :py:class:`MultiLineCommentEndKeyword`:
+  Token representing a closing sequence for a multi-line comment: ``*/``.
+
+- :py:class:`AssignmentKeyword`:
+  Base-class for all assignment keywords: ``:=`` and ``<=``.
+
+- :py:class:`VariableAssignmentKeyword`:
+  Token representing a variable assignment: ``:=``.
+
+- :py:class:`SignalAssignmentKeyword`:
+  Token representing a signal assignment: ``<=``.
+
+- :py:class:`AssociationKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`MapAssociationKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SignalAssociationKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`KeywordToken`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`DirectionKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`Operator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LogicalOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`MiscellaneousOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ShiftOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`AbsOperator`:
+  Reserved word 'abs' for unary operator *absolute value*.
+
+- :py:class:`AccessKeyword`:
+  Reserved word 'access' to defined access types.
+
+- :py:class:`AfterKeyword`:
+  Reserved word 'after'.
+
+- :py:class:`AliasKeyword`:
+  Reserved word 'alias' to declare aliases.
+
+- :py:class:`AllKeyword`:
+  Reserved word 'all'.
+
+- :py:class:`AndOperator`:
+  Reserved word 'and' for binary logical operator *and*.
+
+- :py:class:`ArchitectureKeyword`:
+  Reserved word 'architecture' to define architectures.
+
+- :py:class:`ArrayKeyword`:
+  Reserved word 'array' to define array types.
+
+- :py:class:`AssertKeyword`:
+  Reserved word 'assert' for *assert*-statements.
+
+- :py:class:`AttributeKeyword`:
+  Reserved word 'attribute'.
+
+- :py:class:`BeginKeyword`:
+  Reserved word 'begin' to distinguish declarative regions from statements regions.
+
+- :py:class:`BlockKeyword`:
+  Reserved word 'block' for *block*-statements.
+
+- :py:class:`BodyKeyword`:
+  Reserved word 'body' to distinguish declarations from implementations (bodies).
+
+- :py:class:`BufferKeyword`:
+  Reserved word 'buffer' for mode *buffer*.
+
+- :py:class:`BusKeyword`:
+  Reserved word 'bus'.
+
+- :py:class:`CaseKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ComponentKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ConfigurationKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ConstantKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ContextKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`DefaultKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`DisconnectKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`DowntoKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ElseKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ElsIfKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`EndKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`EntityKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ExitKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`FileKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ForKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ForceKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`FunctionKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`GenerateKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`GenericKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`GroupKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`GuardedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`IfKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`IsKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`InKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`InoutKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ImpureKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`InertialKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LabelKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LibraryKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LinkageKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LiteralKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`LoopKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`MapKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NandOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NewKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NextKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NorOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NotOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`NullKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OfKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OnKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OpenKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OrOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OthersKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`OutKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PackageKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ParameterKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PortKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PostponedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PrivateKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ProcedureKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ProcessKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PropertyKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ProtectedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`PureKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RangeKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RecordKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RegisterKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RejectKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ReleaseKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ReportKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ReturnKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RolOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`RorOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SelectKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SequenceKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SeverityKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SharedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SignalKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SlaOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SllOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SraOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SrlOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`SubtypeKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ThenKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ToKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`TransportKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`TypeKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`UnaffectedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`UnitsKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`UntilKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`UseKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`UnbufferedKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`VariableKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`ViewKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`VunitKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`WaitKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`WhenKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`WhileKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`WithKeyword`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`XorOperator`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`XnorOperator`:
+  Base-class for all VHDL specific tokens.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: SpecificVHDLToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SpecificVHDLToken
+      :parts: 1
+
+.. autoclass:: BoundaryToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BoundaryToken
+      :parts: 1
+
+.. autoclass:: BracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BracketToken
+      :parts: 1
+
+.. autoclass:: RoundBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RoundBracketToken
+      :parts: 1
+
+.. autoclass:: OpeningRoundBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpeningRoundBracketToken
+      :parts: 1
+
+.. autoclass:: ClosingRoundBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ClosingRoundBracketToken
+      :parts: 1
+
+.. autoclass:: SquareBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SquareBracketToken
+      :parts: 1
+
+.. autoclass:: OpeningSquareBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpeningSquareBracketToken
+      :parts: 1
+
+.. autoclass:: ClosingSquareBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ClosingSquareBracketToken
+      :parts: 1
+
+.. autoclass:: CurlyBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CurlyBracketToken
+      :parts: 1
+
+.. autoclass:: OpeningCurlyBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpeningCurlyBracketToken
+      :parts: 1
+
+.. autoclass:: ClosingCurlyBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ClosingCurlyBracketToken
+      :parts: 1
+
+.. autoclass:: AngleBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AngleBracketToken
+      :parts: 1
+
+.. autoclass:: OpeningAngleBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpeningAngleBracketToken
+      :parts: 1
+
+.. autoclass:: ClosingAngleBracketToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ClosingAngleBracketToken
+      :parts: 1
+
+.. autoclass:: OperatorToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OperatorToken
+      :parts: 1
+
+.. autoclass:: PlusOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PlusOperator
+      :parts: 1
+
+.. autoclass:: MinusOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MinusOperator
+      :parts: 1
+
+.. autoclass:: MultiplyOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiplyOperator
+      :parts: 1
+
+.. autoclass:: DivideOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DivideOperator
+      :parts: 1
+
+.. autoclass:: ModuloOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ModuloOperator
+      :parts: 1
+
+.. autoclass:: RemainderOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RemainderOperator
+      :parts: 1
+
+.. autoclass:: PowerOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PowerOperator
+      :parts: 1
+
+.. autoclass:: ConcatOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConcatOperator
+      :parts: 1
+
+.. autoclass:: RelationalOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RelationalOperator
+      :parts: 1
+
+.. autoclass:: EqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EqualOperator
+      :parts: 1
+
+.. autoclass:: UnequalOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UnequalOperator
+      :parts: 1
+
+.. autoclass:: LessThanOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LessThanOperator
+      :parts: 1
+
+.. autoclass:: LessThanOrEqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LessThanOrEqualOperator
+      :parts: 1
+
+.. autoclass:: GreaterThanOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GreaterThanOperator
+      :parts: 1
+
+.. autoclass:: GreaterThanOrEqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GreaterThanOrEqualOperator
+      :parts: 1
+
+.. autoclass:: MatchingEqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingEqualOperator
+      :parts: 1
+
+.. autoclass:: MatchingUnequalOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingUnequalOperator
+      :parts: 1
+
+.. autoclass:: MatchingLessThanOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingLessThanOperator
+      :parts: 1
+
+.. autoclass:: MatchingLessThanOrEqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingLessThanOrEqualOperator
+      :parts: 1
+
+.. autoclass:: MatchingGreaterThanOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingGreaterThanOperator
+      :parts: 1
+
+.. autoclass:: MatchingGreaterThanOrEqualOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MatchingGreaterThanOrEqualOperator
+      :parts: 1
+
+.. autoclass:: DelimiterToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DelimiterToken
+      :parts: 1
+
+.. autoclass:: EndToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndToken
+      :parts: 1
+
+.. autoclass:: IdentifierToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IdentifierToken
+      :parts: 1
+
+.. autoclass:: RepeatedIdentifierToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RepeatedIdentifierToken
+      :parts: 1
+
+.. autoclass:: SimpleNameToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SimpleNameToken
+      :parts: 1
+
+.. autoclass:: LabelToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LabelToken
+      :parts: 1
+
+.. autoclass:: RepeatedLabelToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RepeatedLabelToken
+      :parts: 1
+
+.. autoclass:: MultiCharKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiCharKeyword
+      :parts: 1
+
+.. autoclass:: CommentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CommentKeyword
+      :parts: 1
+
+.. autoclass:: SingleLineCommentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SingleLineCommentKeyword
+      :parts: 1
+
+.. autoclass:: MultiLineCommentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiLineCommentKeyword
+      :parts: 1
+
+.. autoclass:: MultiLineCommentStartKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiLineCommentStartKeyword
+      :parts: 1
+
+.. autoclass:: MultiLineCommentEndKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiLineCommentEndKeyword
+      :parts: 1
+
+.. autoclass:: AssignmentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AssignmentKeyword
+      :parts: 1
+
+.. autoclass:: VariableAssignmentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableAssignmentKeyword
+      :parts: 1
+
+.. autoclass:: SignalAssignmentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalAssignmentKeyword
+      :parts: 1
+
+.. autoclass:: AssociationKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AssociationKeyword
+      :parts: 1
+
+.. autoclass:: MapAssociationKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MapAssociationKeyword
+      :parts: 1
+
+.. autoclass:: SignalAssociationKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalAssociationKeyword
+      :parts: 1
+
+.. autoclass:: KeywordToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: KeywordToken
+      :parts: 1
+
+.. autoclass:: DirectionKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DirectionKeyword
+      :parts: 1
+
+.. autoclass:: Operator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Operator
+      :parts: 1
+
+.. autoclass:: LogicalOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LogicalOperator
+      :parts: 1
+
+.. autoclass:: MiscellaneousOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MiscellaneousOperator
+      :parts: 1
+
+.. autoclass:: ShiftOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ShiftOperator
+      :parts: 1
+
+.. autoclass:: AbsOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AbsOperator
+      :parts: 1
+
+.. autoclass:: AccessKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AccessKeyword
+      :parts: 1
+
+.. autoclass:: AfterKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AfterKeyword
+      :parts: 1
+
+.. autoclass:: AliasKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AliasKeyword
+      :parts: 1
+
+.. autoclass:: AllKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AllKeyword
+      :parts: 1
+
+.. autoclass:: AndOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AndOperator
+      :parts: 1
+
+.. autoclass:: ArchitectureKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ArchitectureKeyword
+      :parts: 1
+
+.. autoclass:: ArrayKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ArrayKeyword
+      :parts: 1
+
+.. autoclass:: AssertKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AssertKeyword
+      :parts: 1
+
+.. autoclass:: AttributeKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: AttributeKeyword
+      :parts: 1
+
+.. autoclass:: BeginKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BeginKeyword
+      :parts: 1
+
+.. autoclass:: BlockKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BlockKeyword
+      :parts: 1
+
+.. autoclass:: BodyKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BodyKeyword
+      :parts: 1
+
+.. autoclass:: BufferKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BufferKeyword
+      :parts: 1
+
+.. autoclass:: BusKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BusKeyword
+      :parts: 1
+
+.. autoclass:: CaseKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CaseKeyword
+      :parts: 1
+
+.. autoclass:: ComponentKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ComponentKeyword
+      :parts: 1
+
+.. autoclass:: ConfigurationKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConfigurationKeyword
+      :parts: 1
+
+.. autoclass:: ConstantKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConstantKeyword
+      :parts: 1
+
+.. autoclass:: ContextKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ContextKeyword
+      :parts: 1
+
+.. autoclass:: DefaultKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DefaultKeyword
+      :parts: 1
+
+.. autoclass:: DisconnectKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DisconnectKeyword
+      :parts: 1
+
+.. autoclass:: DowntoKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DowntoKeyword
+      :parts: 1
+
+.. autoclass:: ElseKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElseKeyword
+      :parts: 1
+
+.. autoclass:: ElsIfKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ElsIfKeyword
+      :parts: 1
+
+.. autoclass:: EndKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndKeyword
+      :parts: 1
+
+.. autoclass:: EntityKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EntityKeyword
+      :parts: 1
+
+.. autoclass:: ExitKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExitKeyword
+      :parts: 1
+
+.. autoclass:: FileKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: FileKeyword
+      :parts: 1
+
+.. autoclass:: ForKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ForKeyword
+      :parts: 1
+
+.. autoclass:: ForceKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ForceKeyword
+      :parts: 1
+
+.. autoclass:: FunctionKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: FunctionKeyword
+      :parts: 1
+
+.. autoclass:: GenerateKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenerateKeyword
+      :parts: 1
+
+.. autoclass:: GenericKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GenericKeyword
+      :parts: 1
+
+.. autoclass:: GroupKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GroupKeyword
+      :parts: 1
+
+.. autoclass:: GuardedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: GuardedKeyword
+      :parts: 1
+
+.. autoclass:: IfKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IfKeyword
+      :parts: 1
+
+.. autoclass:: IsKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IsKeyword
+      :parts: 1
+
+.. autoclass:: InKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InKeyword
+      :parts: 1
+
+.. autoclass:: InoutKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InoutKeyword
+      :parts: 1
+
+.. autoclass:: ImpureKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ImpureKeyword
+      :parts: 1
+
+.. autoclass:: InertialKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: InertialKeyword
+      :parts: 1
+
+.. autoclass:: LabelKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LabelKeyword
+      :parts: 1
+
+.. autoclass:: LibraryKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LibraryKeyword
+      :parts: 1
+
+.. autoclass:: LinkageKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LinkageKeyword
+      :parts: 1
+
+.. autoclass:: LiteralKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LiteralKeyword
+      :parts: 1
+
+.. autoclass:: LoopKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LoopKeyword
+      :parts: 1
+
+.. autoclass:: MapKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MapKeyword
+      :parts: 1
+
+.. autoclass:: NandOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NandOperator
+      :parts: 1
+
+.. autoclass:: NewKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NewKeyword
+      :parts: 1
+
+.. autoclass:: NextKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NextKeyword
+      :parts: 1
+
+.. autoclass:: NorOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NorOperator
+      :parts: 1
+
+.. autoclass:: NotOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NotOperator
+      :parts: 1
+
+.. autoclass:: NullKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NullKeyword
+      :parts: 1
+
+.. autoclass:: OfKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OfKeyword
+      :parts: 1
+
+.. autoclass:: OnKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OnKeyword
+      :parts: 1
+
+.. autoclass:: OpenKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpenKeyword
+      :parts: 1
+
+.. autoclass:: OrOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OrOperator
+      :parts: 1
+
+.. autoclass:: OthersKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OthersKeyword
+      :parts: 1
+
+.. autoclass:: OutKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OutKeyword
+      :parts: 1
+
+.. autoclass:: PackageKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageKeyword
+      :parts: 1
+
+.. autoclass:: ParameterKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ParameterKeyword
+      :parts: 1
+
+.. autoclass:: PortKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortKeyword
+      :parts: 1
+
+.. autoclass:: PostponedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PostponedKeyword
+      :parts: 1
+
+.. autoclass:: PrivateKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PrivateKeyword
+      :parts: 1
+
+.. autoclass:: ProcedureKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProcedureKeyword
+      :parts: 1
+
+.. autoclass:: ProcessKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProcessKeyword
+      :parts: 1
+
+.. autoclass:: PropertyKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PropertyKeyword
+      :parts: 1
+
+.. autoclass:: ProtectedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProtectedKeyword
+      :parts: 1
+
+.. autoclass:: PureKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PureKeyword
+      :parts: 1
+
+.. autoclass:: RangeKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RangeKeyword
+      :parts: 1
+
+.. autoclass:: RecordKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RecordKeyword
+      :parts: 1
+
+.. autoclass:: RegisterKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RegisterKeyword
+      :parts: 1
+
+.. autoclass:: RejectKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RejectKeyword
+      :parts: 1
+
+.. autoclass:: ReleaseKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReleaseKeyword
+      :parts: 1
+
+.. autoclass:: ReportKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReportKeyword
+      :parts: 1
+
+.. autoclass:: ReturnKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReturnKeyword
+      :parts: 1
+
+.. autoclass:: RolOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RolOperator
+      :parts: 1
+
+.. autoclass:: RorOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RorOperator
+      :parts: 1
+
+.. autoclass:: SelectKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SelectKeyword
+      :parts: 1
+
+.. autoclass:: SequenceKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SequenceKeyword
+      :parts: 1
+
+.. autoclass:: SeverityKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SeverityKeyword
+      :parts: 1
+
+.. autoclass:: SharedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SharedKeyword
+      :parts: 1
+
+.. autoclass:: SignalKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalKeyword
+      :parts: 1
+
+.. autoclass:: SlaOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SlaOperator
+      :parts: 1
+
+.. autoclass:: SllOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SllOperator
+      :parts: 1
+
+.. autoclass:: SraOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SraOperator
+      :parts: 1
+
+.. autoclass:: SrlOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SrlOperator
+      :parts: 1
+
+.. autoclass:: SubtypeKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SubtypeKeyword
+      :parts: 1
+
+.. autoclass:: ThenKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ThenKeyword
+      :parts: 1
+
+.. autoclass:: ToKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ToKeyword
+      :parts: 1
+
+.. autoclass:: TransportKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TransportKeyword
+      :parts: 1
+
+.. autoclass:: TypeKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TypeKeyword
+      :parts: 1
+
+.. autoclass:: UnaffectedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UnaffectedKeyword
+      :parts: 1
+
+.. autoclass:: UnitsKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UnitsKeyword
+      :parts: 1
+
+.. autoclass:: UntilKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UntilKeyword
+      :parts: 1
+
+.. autoclass:: UseKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UseKeyword
+      :parts: 1
+
+.. autoclass:: UnbufferedKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: UnbufferedKeyword
+      :parts: 1
+
+.. autoclass:: VariableKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableKeyword
+      :parts: 1
+
+.. autoclass:: ViewKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ViewKeyword
+      :parts: 1
+
+.. autoclass:: VunitKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VunitKeyword
+      :parts: 1
+
+.. autoclass:: WaitKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WaitKeyword
+      :parts: 1
+
+.. autoclass:: WhenKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WhenKeyword
+      :parts: 1
+
+.. autoclass:: WhileKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WhileKeyword
+      :parts: 1
+
+.. autoclass:: WithKeyword
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WithKeyword
+      :parts: 1
+
+.. autoclass:: XorOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: XorOperator
+      :parts: 1
+
+.. autoclass:: XnorOperator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: XnorOperator
+      :parts: 1

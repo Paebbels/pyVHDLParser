@@ -1,0 +1,164 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===============================
+pyVHDLParser.TypeSystem.Package
+===============================
+
+.. automodule:: pyVHDLParser.TypeSystem.Package
+
+
+.. currentmodule:: pyVHDLParser.TypeSystem.Package
+
+
+**Classes**
+
+- :py:class:`Parameter`:
+  Undocumented.
+
+- :py:class:`SubProgramDeclaration`:
+  Undocumented.
+
+- :py:class:`ProcedureDeclaration`:
+  Undocumented.
+
+- :py:class:`FunctionDeclaration`:
+  Undocumented.
+
+- :py:class:`SubProgram`:
+  Undocumented.
+
+- :py:class:`Procedure`:
+  Undocumented.
+
+- :py:class:`Function`:
+  Undocumented.
+
+- :py:class:`PackageDeclation`:
+  Undocumented.
+
+- :py:class:`PackageBody`:
+  Undocumented.
+
+- :py:class:`Package`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Parameter
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Parameter
+      :parts: 1
+
+.. autoclass:: SubProgramDeclaration
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SubProgramDeclaration
+      :parts: 1
+
+.. autoclass:: ProcedureDeclaration
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ProcedureDeclaration
+      :parts: 1
+
+.. autoclass:: FunctionDeclaration
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: FunctionDeclaration
+      :parts: 1
+
+.. autoclass:: SubProgram
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SubProgram
+      :parts: 1
+
+.. autoclass:: Procedure
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Procedure
+      :parts: 1
+
+.. autoclass:: Function
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Function
+      :parts: 1
+
+.. autoclass:: PackageDeclation
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageDeclation
+      :parts: 1
+
+.. autoclass:: PackageBody
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageBody
+      :parts: 1
+
+.. autoclass:: Package
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Package
+      :parts: 1

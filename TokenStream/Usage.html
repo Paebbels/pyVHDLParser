@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="Examples.html" />
+    <link rel="prev" title="Token Generator (Tokenizer)" href="Tokenizer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Pass - Tokens</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="MetaTokens.html">Meta Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SimpleTokens.html">Simple Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpecificTokens.html">Specific Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tokenizer.html">Token Generator (Tokenizer)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#token-generator">Token Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#token-iterator">Token Iterator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">1. Pass - Tokens</a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/TokenStream/Usage.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
+<p>The following shows two code examples on how to use the Tokenizer. The first is
+generator-based. The second one retrieves an iterator from the generator and
+uses low-level access to the chain of tokens.</p>
+<section id="token-generator">
+<h2>Token Generator<a class="headerlink" href="#token-generator" title="Permalink to this heading">¶</a></h2>
+<p>At first, a file is opened and the file content is read into a string buffer
+called <code class="docutils literal notranslate"><span class="pre">content</span></code>. Strings are iterable, thus a string can be an input for the
+Tokenizer.</p>
+<p>At second, a generator object is created by <code class="docutils literal notranslate"><span class="pre">GetVHDLTokenizer(...)</span></code>.</p>
+<p>Finally, a <em>for</em>-loop can process each token from <a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.StartOfDocumentToken" title="pyVHDLParser.Token.StartOfDocumentToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartOfDocumentToken</span></code></a>
+to <a class="reference internal" href="../pyVHDLParser/pyVHDLParser.Token.html#pyVHDLParser.Token.EndOfDocumentToken" title="pyVHDLParser.Token.EndOfDocumentToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndOfDocumentToken</span></code></a>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a source file</span>
+<span class="k">with</span> <span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileHandle</span><span class="p">:</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">fileHandle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Base</span>         <span class="kn">import</span> <span class="n">ParserException</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>        <span class="kn">import</span> <span class="n">StartOfDocumentToken</span><span class="p">,</span> <span class="n">EndOfDocumentToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Parser</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+
+<span class="c1"># get a token generator</span>
+<span class="n">tokenStream</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">GetVHDLTokenizer</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenStream</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{token}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">))</span>
+  <span class="k">except</span> <span class="n">ParserException</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: </span><span class="si">{0!s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+  <span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NotImplementedError: </span><span class="si">{0!s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="token-iterator">
+<h2>Token Iterator<a class="headerlink" href="#token-iterator" title="Permalink to this heading">¶</a></h2>
+<p>Similar to the previous example, a stream of tokens is generated by a token
+generator. This time, iteration is manually implemented with a <em>while</em>-loop. The
+function <a class="reference external" href="https://docs.python.org/3/library/functions.html#iter" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">iter()</span></code></a> creates an iterator object from a generator object. At
+next, calling <a class="reference external" href="https://docs.python.org/3/library/functions.html#next" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">next()</span></code></a> returns a new token for each call.</p>
+<p>The example wants to print the outer objects (first and last) of the token chain.
+So at first, <a class="reference external" href="https://docs.python.org/3/library/functions.html#next" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">next()</span></code></a> is called once to get the first element. Then an
+endless loop is used to generate all tokens. If the generator ends, it raises
+a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#StopIteration" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StopIteration</span></code></a> exception. The last token will be stored in variable
+<code class="docutils literal notranslate"><span class="pre">lastToken</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a source file</span>
+<span class="k">with</span> <span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileHandle</span><span class="p">:</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">fileHandle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Base</span>         <span class="kn">import</span> <span class="n">ParserException</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token</span>        <span class="kn">import</span> <span class="n">StartOfDocumentToken</span><span class="p">,</span> <span class="n">EndOfDocumentToken</span>
+<span class="kn">from</span> <span class="nn">pyVHDLParser.Token.Parser</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+
+<span class="c1"># get a token generator</span>
+<span class="n">tokenStream</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">GetVHDLTokenizer</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># get the iterator for that generator</span>
+<span class="n">tokenIterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">tokenStream</span><span class="p">)</span>
+<span class="n">firstToken</span> <span class="o">=</span>    <span class="nb">next</span><span class="p">(</span><span class="n">tokenIterator</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="k">while</span> <span class="n">lastToken</span> <span class="o">:=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokenIterator</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+  <span class="k">pass</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;first token: </span><span class="si">{token}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">firstToken</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;last token:  </span><span class="si">{token}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">lastToken</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tokenizer.html" class="btn btn-neutral float-left" title="Token Generator (Tokenizer)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

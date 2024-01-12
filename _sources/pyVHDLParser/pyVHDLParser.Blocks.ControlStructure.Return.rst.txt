@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===========================================
+pyVHDLParser.Blocks.ControlStructure.Return
+===========================================
+
+.. automodule:: pyVHDLParser.Blocks.ControlStructure.Return
+
+
+.. currentmodule:: pyVHDLParser.Blocks.ControlStructure.Return
+
+
+**Classes**
+
+- :py:class:`EndBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ReturnExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`ReturnBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1
+
+.. autoclass:: ReturnExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReturnExpressionBlock
+      :parts: 1
+
+.. autoclass:: ReturnBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ReturnBlock
+      :parts: 1

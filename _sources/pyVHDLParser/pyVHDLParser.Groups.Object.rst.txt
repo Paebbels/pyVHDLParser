@@ -1,0 +1,66 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==========================
+pyVHDLParser.Groups.Object
+==========================
+
+.. automodule:: pyVHDLParser.Groups.Object
+
+
+.. currentmodule:: pyVHDLParser.Groups.Object
+
+
+**Classes**
+
+- :py:class:`ConstantGroup`:
+  Undocumented.
+
+- :py:class:`VariableGroup`:
+  Undocumented.
+
+- :py:class:`SignalGroup`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: ConstantGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConstantGroup
+      :parts: 1
+
+.. autoclass:: VariableGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VariableGroup
+      :parts: 1
+
+.. autoclass:: SignalGroup
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SignalGroup
+      :parts: 1

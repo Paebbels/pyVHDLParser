@@ -1,0 +1,80 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=====================================
+pyVHDLParser.Blocks.Structural.Entity
+=====================================
+
+.. automodule:: pyVHDLParser.Blocks.Structural.Entity
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Structural.Entity
+
+
+**Classes**
+
+- :py:class:`EndBlock`:
+  Base-class for blocks that are final in a fast-forward scanning.
+
+- :py:class:`BeginBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`DeclarativeRegion`:
+  Base-class for all concurrent declarative region blocks.
+
+- :py:class:`NameBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: EndBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndBlock
+      :parts: 1
+
+.. autoclass:: BeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BeginBlock
+      :parts: 1
+
+.. autoclass:: DeclarativeRegion
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DeclarativeRegion
+      :parts: 1
+
+.. autoclass:: NameBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: NameBlock
+      :parts: 1

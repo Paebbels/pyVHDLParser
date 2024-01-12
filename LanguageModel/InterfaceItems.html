@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interface Items &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Subprogram Declarations" href="SubprogramDefinitions.html" />
+    <link rel="prev" title="Design Units" href="DesignUnits.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">VHDL Language Model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Miscellaneous.html">Concepts not defined by IEEE Std. 1076</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Enumerations.html">Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DesignUnits.html">Design Units</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Interface Items</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generic-interface-item">Generic Interface Item</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#genericconstantinterfaceitem">GenericConstantInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generictypeinterfaceitem">GenericTypeInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#genericsubprograminterfaceitem">GenericSubprogramInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#genericpackageinterfaceitem">GenericPackageInterfaceItem</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#port-interface-item">Port Interface Item</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#portsignalinterfaceitem">PortSignalInterfaceItem</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-interface-item">Parameter Interface Item</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameterconstantinterfaceitem">ParameterConstantInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parametervariableinterfaceitem">ParameterVariableInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parametersignalinterfaceitem">ParameterSignalInterfaceItem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameterfileinterfaceitem">ParameterFileInterfaceItem</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SubprogramDefinitions.html">Subprogram Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TypeDefinitions.html">Type Declarations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ObjectDeclarations.html">Object Declartions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConcurrentStatements.html">Concurrent Statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SequentialStatements.html">Sequential Statements</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyVHDLParser/pyVHDLParser.html">Python Class Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">VHDL Language Model</a> &raquo;</li>
+      <li>Interface Items</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/LanguageModel/InterfaceItems.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="interface-items">
+<span id="vhdlmodel-inter"></span><h1>Interface Items<a class="headerlink" href="#interface-items" title="Permalink to this heading">¶</a></h1>
+<p>Interface items are used in generic, port and parameter declarations.</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericInterfaceItem</span></code></p>
+<ul>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericConstantInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTypeInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericSubprogramInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPackageInterfaceItem</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PortInterfaceItem</span></code></p>
+<ul>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PortSignalInterfaceItem</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterInterfaceItem</span></code></p>
+<ul>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterConstantInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterVariableInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSignalInterfaceItem</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterFileInterfaceItem</span></code></p></li>
+</ul>
+</li>
+</ul>
+<section id="generic-interface-item">
+<h2>Generic Interface Item<a class="headerlink" href="#generic-interface-item" title="Permalink to this heading">¶</a></h2>
+<section id="genericconstantinterfaceitem">
+<h3>GenericConstantInterfaceItem<a class="headerlink" href="#genericconstantinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericConstantInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">GenericConstantInterfaceItem</span><span class="p">(</span><span class="n">GenericInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="generictypeinterfaceitem">
+<h3>GenericTypeInterfaceItem<a class="headerlink" href="#generictypeinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericTypeInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">GenericTypeInterfaceItem</span><span class="p">(</span><span class="n">GenericInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="genericsubprograminterfaceitem">
+<h3>GenericSubprogramInterfaceItem<a class="headerlink" href="#genericsubprograminterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id3">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericSubprogramInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">GenericSubprogramInterfaceItem</span><span class="p">(</span><span class="n">GenericInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="genericpackageinterfaceitem">
+<h3>GenericPackageInterfaceItem<a class="headerlink" href="#genericpackageinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id4">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPackageInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">GenericPackageInterfaceItem</span><span class="p">(</span><span class="n">GenericInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="port-interface-item">
+<h2>Port Interface Item<a class="headerlink" href="#port-interface-item" title="Permalink to this heading">¶</a></h2>
+<section id="portsignalinterfaceitem">
+<h3>PortSignalInterfaceItem<a class="headerlink" href="#portsignalinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id5">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">PortSignalInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">PortSignalInterfaceItem</span><span class="p">(</span><span class="n">PortInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="parameter-interface-item">
+<h2>Parameter Interface Item<a class="headerlink" href="#parameter-interface-item" title="Permalink to this heading">¶</a></h2>
+<section id="parameterconstantinterfaceitem">
+<h3>ParameterConstantInterfaceItem<a class="headerlink" href="#parameterconstantinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id6">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterConstantInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ParameterConstantInterfaceItem</span><span class="p">(</span><span class="n">ParameterInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="parametervariableinterfaceitem">
+<h3>ParameterVariableInterfaceItem<a class="headerlink" href="#parametervariableinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id7">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterVariableInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ParameterVariableInterfaceItem</span><span class="p">(</span><span class="n">ParameterInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="parametersignalinterfaceitem">
+<h3>ParameterSignalInterfaceItem<a class="headerlink" href="#parametersignalinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id8">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSignalInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ParameterSignalInterfaceItem</span><span class="p">(</span><span class="n">ParameterInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="parameterfileinterfaceitem">
+<h3>ParameterFileInterfaceItem<a class="headerlink" href="#parameterfileinterfaceitem" title="Permalink to this heading">¶</a></h3>
+<div class="admonition-todo admonition" id="id9">
+<p class="admonition-title">Todo</p>
+<p>Write documentation.</p>
+</div>
+<p><strong>Condensed definition of class</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterFileInterfaceItem</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@Export</span>
+<span class="k">class</span> <span class="nc">ParameterFileInterfaceItem</span><span class="p">(</span><span class="n">ParameterInterfaceItem</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DesignUnits.html" class="btn btn-neutral float-left" title="Design Units" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SubprogramDefinitions.html" class="btn btn-neutral float-right" title="Subprogram Declarations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

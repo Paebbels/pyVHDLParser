@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Blocks.ControlStructure.Next &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.Blocks.ControlStructure.Null" href="pyVHDLParser.Blocks.ControlStructure.Null.html" />
+    <link rel="prev" title="pyVHDLParser.Blocks.ControlStructure.If" href="pyVHDLParser.Blocks.ControlStructure.If.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Assignment.html">pyVHDLParser.Blocks.Assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Attribute.html">pyVHDLParser.Blocks.Attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Comment.html">pyVHDLParser.Blocks.Comment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Common.html">pyVHDLParser.Blocks.Common</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.html">pyVHDLParser.Blocks.ControlStructure</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.Case.html">pyVHDLParser.Blocks.ControlStructure.Case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.Exit.html">pyVHDLParser.Blocks.ControlStructure.Exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.ForLoop.html">pyVHDLParser.Blocks.ControlStructure.ForLoop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.If.html">pyVHDLParser.Blocks.ControlStructure.If</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pyVHDLParser.Blocks.ControlStructure.Next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.Null.html">pyVHDLParser.Blocks.ControlStructure.Null</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.Return.html">pyVHDLParser.Blocks.ControlStructure.Return</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyVHDLParser.Blocks.ControlStructure.WhileLoop.html">pyVHDLParser.Blocks.ControlStructure.WhileLoop</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Exception.html">pyVHDLParser.Blocks.Exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Expression.html">pyVHDLParser.Blocks.Expression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generate.html">pyVHDLParser.Blocks.Generate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generic.html">pyVHDLParser.Blocks.Generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Generic1.html">pyVHDLParser.Blocks.Generic1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Instantiation.html">pyVHDLParser.Blocks.Instantiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.InterfaceObject.html">pyVHDLParser.Blocks.InterfaceObject</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.List.html">pyVHDLParser.Blocks.List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Object.html">pyVHDLParser.Blocks.Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Reference.html">pyVHDLParser.Blocks.Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Reporting.html">pyVHDLParser.Blocks.Reporting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Sequential.html">pyVHDLParser.Blocks.Sequential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Structural.html">pyVHDLParser.Blocks.Structural</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.Type.html">pyVHDLParser.Blocks.Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockParserException"><code class="docutils literal notranslate"><span class="pre">BlockParserException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser"><code class="docutils literal notranslate"><span class="pre">TokenToBlockParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.MetaBlock"><code class="docutils literal notranslate"><span class="pre">MetaBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockIterator"><code class="docutils literal notranslate"><span class="pre">BlockIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.BlockReverseIterator"><code class="docutils literal notranslate"><span class="pre">BlockReverseIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block"><code class="docutils literal notranslate"><span class="pre">Block</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.SkipableBlock"><code class="docutils literal notranslate"><span class="pre">SkipableBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.FinalBlock"><code class="docutils literal notranslate"><span class="pre">FinalBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.CommentBlock"><code class="docutils literal notranslate"><span class="pre">CommentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfBlock"><code class="docutils literal notranslate"><span class="pre">StartOfBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfBlock"><code class="docutils literal notranslate"><span class="pre">EndOfBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfDocumentBlock"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfDocumentBlock"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.StartOfSnippetBlock"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.EndOfSnippetBlock"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+          <li><a href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a> &raquo;</li>
+          <li><a href="pyVHDLParser.Blocks.ControlStructure.html">pyVHDLParser.Blocks.ControlStructure</a> &raquo;</li>
+      <li>pyVHDLParser.Blocks.ControlStructure.Next</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.Blocks.ControlStructure.Next.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.Blocks.ControlStructure.Next">
+<span id="pyvhdlparser-blocks-controlstructure-next"></span><h1>pyVHDLParser.Blocks.ControlStructure.Next<a class="headerlink" href="#module-pyVHDLParser.Blocks.ControlStructure.Next" title="Permalink to this heading">¶</a></h1>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock" title="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock" title="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">NextConditionBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+<li><p><a class="reference internal" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock" title="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">NextBlock</span></code></a>:
+Base-class for all <a class="reference internal" href="../Glossary.html#term-Block"><span class="xref std std-term">block</span></a> classes.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.ControlStructure.Next.</span></span><span class="sig-name descname"><span class="pre">EndBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/ControlStructure/Next.html#EndBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-a2a032e977abfe9412b80a7e79abb671c613f519.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of EndBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.ControlStructure.Next.</span></span><span class="sig-name descname"><span class="pre">NextConditionBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/ControlStructure/Next.html#NextConditionBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-e22fef0aeefc45578a6e137669f241b4a09b90e2.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of NextConditionBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.END_BLOCK">
+<span class="sig-name descname"><span class="pre">END_BLOCK</span></span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.END_BLOCK" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyVHDLParser.Blocks.ControlStructure.Next.EndBlock" title="pyVHDLParser.Blocks.ControlStructure.Next.EndBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">EndBlock</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextConditionBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Blocks.ControlStructure.Next.</span></span><span class="sig-name descname"><span class="pre">NextBlock</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Blocks/ControlStructure/Next.html#NextBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-8ff3f4c962c335ff0ef4b09db5d5fe3c05235faa.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of NextBlock</p></object></div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.EndToken">
+<span class="sig-name descname"><span class="pre">EndToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.EndToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the last token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.Length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.Length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.MultiPart">
+<span class="sig-name descname"><span class="pre">MultiPart</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.MultiPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if this block has multiple parts.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.NextBlock">
+<span class="sig-name descname"><span class="pre">NextBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.NextBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the next block.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.StartToken">
+<span class="sig-name descname"><span class="pre">StartToken</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.StartToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the first token in the scope of this block.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.States">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">States</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.States" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__STATES__">
+<span class="sig-name descname"><span class="pre">__STATES__</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__STATES__" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all <cite>state…</cite> methods in this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previousBlock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startToken</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endToken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiPart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base-class constructor for a new block instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousBlock</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><em>Block</em></a>) – </p></li>
+<li><p><strong>startToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>endToken</strong> (<a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token" title="pyVHDLParser.Token.Token"><em>Token</em></a>) – </p></li>
+<li><p><strong>multiPart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a token iterator that iterates from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator" title="pyVHDLParser.Token.TokenIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of a block in characters from <code class="xref py py-attr docutils literal notranslate"><span class="pre">StartToken</span></code> to <code class="xref py py-attr docutils literal notranslate"><span class="pre">EndToken</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock._previousBlock">
+<span class="sig-name descname"><span class="pre">_previousBlock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.Block" title="pyVHDLParser.Blocks.Block"><code class="xref py py-class docutils literal notranslate"><span class="pre">Block</span></code></a></em><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock._previousBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the previous block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.stateError">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parserState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Blocks.ControlStructure.Next.NextBlock.stateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predefined state to catch error situations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parserState</strong> (<a class="reference internal" href="pyVHDLParser.Blocks.html#pyVHDLParser.Blocks.TokenToBlockParser" title="pyVHDLParser.Blocks.TokenToBlockParser"><em>TokenToBlockParser</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.Blocks.ControlStructure.If.html" class="btn btn-neutral float-left" title="pyVHDLParser.Blocks.ControlStructure.If" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.Blocks.ControlStructure.Null.html" class="btn btn-neutral float-right" title="pyVHDLParser.Blocks.ControlStructure.Null" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

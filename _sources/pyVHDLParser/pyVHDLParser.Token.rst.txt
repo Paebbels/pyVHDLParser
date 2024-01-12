@@ -1,0 +1,440 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==================
+pyVHDLParser.Token
+==================
+
+.. automodule:: pyVHDLParser.Token
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Token.Keywords
+   pyVHDLParser.Token.Parser
+
+.. currentmodule:: pyVHDLParser.Token
+
+
+**Functions**
+
+- :py:func:`CharacterTranslation`:
+  Undocumented.
+
+
+
+**Classes**
+
+- :py:class:`TokenIterator`:
+  Undocumented.
+
+- :py:class:`TokenReverseIterator`:
+  Undocumented.
+
+- :py:class:`Token`:
+  Base-class for all token classes.
+
+- :py:class:`ValuedToken`:
+  Base-class for all *valued* token.
+
+- :py:class:`StartOfToken`:
+  Base-class for meta-tokens representing the start of a token stream.
+
+- :py:class:`EndOfToken`:
+  Base-class for meta-tokens representing the end of a token stream.
+
+- :py:class:`StartOfDocumentToken`:
+  Base-class for meta-tokens representing the start of a token stream.
+
+- :py:class:`EndOfDocumentToken`:
+  Base-class for meta-tokens representing the end of a token stream.
+
+- :py:class:`StartOfSnippetToken`:
+  Base-class for meta-tokens representing the start of a token stream.
+
+- :py:class:`EndOfSnippetToken`:
+  Base-class for meta-tokens representing the end of a token stream.
+
+- :py:class:`CharacterToken`:
+  Token representing a single character.
+
+- :py:class:`FusedCharacterToken`:
+  Token representing a double (or triple) character.
+
+- :py:class:`SpaceToken`:
+  Token representing a space (space or tab).
+
+- :py:class:`WordToken`:
+  Token representing a string.
+
+- :py:class:`VHDLToken`:
+  Base-class for all VHDL specific tokens.
+
+- :py:class:`CommentToken`:
+  Base-class for comment tokens.
+
+- :py:class:`SingleLineCommentToken`:
+  Token representing a single-line comment.
+
+- :py:class:`MultiLineCommentToken`:
+  Token representing a multi-line comment.
+
+- :py:class:`LiteralToken`:
+  Base-class for all literals in VHDL.
+
+- :py:class:`IntegerLiteralToken`:
+  Token representing an integer literal.
+
+- :py:class:`RealLiteralToken`:
+  Token representing a real literal.
+
+- :py:class:`CharacterLiteralToken`:
+  Token representing a character literal in VHDL.
+
+- :py:class:`StringLiteralToken`:
+  Token representing a string literal in VHDL.
+
+- :py:class:`BitStringLiteralToken`:
+  Token representing a bit-string literal in VHDL.
+
+- :py:class:`ExtendedIdentifier`:
+  Token representing an extended identifier in VHDL.
+
+- :py:class:`DirectiveToken`:
+  Base-class for comment tokens.
+
+- :py:class:`LinebreakToken`:
+  Token representing a linebreak in the source code file.
+
+- :py:class:`IndentationToken`:
+  Token representing an indentation in a source code line.
+
+
+
+---------------------
+
+**Functions**
+
+
+.. autofunction:: CharacterTranslation
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: TokenIterator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TokenIterator
+      :parts: 1
+
+.. autoclass:: TokenReverseIterator
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TokenReverseIterator
+      :parts: 1
+
+.. autoclass:: Token
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Token
+      :parts: 1
+
+.. autoclass:: ValuedToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ValuedToken
+      :parts: 1
+
+.. autoclass:: StartOfToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfToken
+      :parts: 1
+
+.. autoclass:: EndOfToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfToken
+      :parts: 1
+
+.. autoclass:: StartOfDocumentToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfDocumentToken
+      :parts: 1
+
+.. autoclass:: EndOfDocumentToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfDocumentToken
+      :parts: 1
+
+.. autoclass:: StartOfSnippetToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StartOfSnippetToken
+      :parts: 1
+
+.. autoclass:: EndOfSnippetToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EndOfSnippetToken
+      :parts: 1
+
+.. autoclass:: CharacterToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CharacterToken
+      :parts: 1
+
+.. autoclass:: FusedCharacterToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: FusedCharacterToken
+      :parts: 1
+
+.. autoclass:: SpaceToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SpaceToken
+      :parts: 1
+
+.. autoclass:: WordToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WordToken
+      :parts: 1
+
+.. autoclass:: VHDLToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: VHDLToken
+      :parts: 1
+
+.. autoclass:: CommentToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CommentToken
+      :parts: 1
+
+.. autoclass:: SingleLineCommentToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SingleLineCommentToken
+      :parts: 1
+
+.. autoclass:: MultiLineCommentToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: MultiLineCommentToken
+      :parts: 1
+
+.. autoclass:: LiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LiteralToken
+      :parts: 1
+
+.. autoclass:: IntegerLiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IntegerLiteralToken
+      :parts: 1
+
+.. autoclass:: RealLiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RealLiteralToken
+      :parts: 1
+
+.. autoclass:: CharacterLiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CharacterLiteralToken
+      :parts: 1
+
+.. autoclass:: StringLiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: StringLiteralToken
+      :parts: 1
+
+.. autoclass:: BitStringLiteralToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: BitStringLiteralToken
+      :parts: 1
+
+.. autoclass:: ExtendedIdentifier
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ExtendedIdentifier
+      :parts: 1
+
+.. autoclass:: DirectiveToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DirectiveToken
+      :parts: 1
+
+.. autoclass:: LinebreakToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LinebreakToken
+      :parts: 1
+
+.. autoclass:: IndentationToken
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IndentationToken
+      :parts: 1

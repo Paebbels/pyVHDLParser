@@ -1,0 +1,94 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===========================
+pyVHDLParser.Blocks.Generic
+===========================
+
+.. automodule:: pyVHDLParser.Blocks.Generic
+
+
+.. currentmodule:: pyVHDLParser.Blocks.Generic
+
+
+**Classes**
+
+- :py:class:`DeclarativeRegion`:
+  Base-class for all declarative region blocks.
+
+- :py:class:`ConcurrentDeclarativeRegion`:
+  Base-class for all concurrent declarative region blocks.
+
+- :py:class:`SequentialDeclarativeRegion`:
+  Base-class for all sequential declarative region blocks.
+
+- :py:class:`ConcurrentBeginBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`SequentialBeginBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: DeclarativeRegion
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DeclarativeRegion
+      :parts: 1
+
+.. autoclass:: ConcurrentDeclarativeRegion
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConcurrentDeclarativeRegion
+      :parts: 1
+
+.. autoclass:: SequentialDeclarativeRegion
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SequentialDeclarativeRegion
+      :parts: 1
+
+.. autoclass:: ConcurrentBeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ConcurrentBeginBlock
+      :parts: 1
+
+.. autoclass:: SequentialBeginBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SequentialBeginBlock
+      :parts: 1

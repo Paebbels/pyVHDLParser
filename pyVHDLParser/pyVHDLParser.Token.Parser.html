@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyVHDLParser.Token.Parser &mdash; pyVHDLParser 0.8.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.svg"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyVHDLParser.TypeSystem" href="pyVHDLParser.TypeSystem.html" />
+    <link rel="prev" title="pyVHDLParser.Token.Keywords" href="pyVHDLParser.Token.Keywords.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ProjectGoals.html">Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UseCases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TestApplication/index.html">Test Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Preprocessing/index.html">0. Pass - Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../TokenStream/index.html">1. Pass - Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BlockStream/index.html">2. Pass - Blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GroupStream/index.html">3. Pass - Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DocumentObjectModel/index.html">4. Pass - Code-DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LanguageModel/index.html">VHDL Language Model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyVHDLParser.html">Python Class Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.ANTLR4.html">pyVHDLParser.ANTLR4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Base.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Blocks.html">pyVHDLParser.Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.CLI.html">pyVHDLParser.CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Decorators.html">Python Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.DocumentModel.html">pyVHDLParser.DocumentModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Filters.html">pyVHDLParser.Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.Groups.html">pyVHDLParser.Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.LanguageModel.html">pyVHDLParser.LanguageModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.NetlistModel.html">pyVHDLParser.NetlistModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.SimulationModel.html">pyVHDLParser.SimulationModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.StyleChecks.html">pyVHDLParser.StyleChecks</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pyVHDLParser.Token.html">pyVHDLParser.Token</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.Keywords.html">pyVHDLParser.Token.Keywords</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyVHDLParser.Token.Parser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Token.Parser.TokenizerException"><code class="docutils literal notranslate"><span class="pre">TokenizerException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyVHDLParser.Token.Parser.Tokenizer"><code class="docutils literal notranslate"><span class="pre">Tokenizer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterTranslation"><code class="docutils literal notranslate"><span class="pre">CharacterTranslation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenIterator"><code class="docutils literal notranslate"><span class="pre">TokenIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.TokenReverseIterator"><code class="docutils literal notranslate"><span class="pre">TokenReverseIterator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.Token"><code class="docutils literal notranslate"><span class="pre">Token</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.ValuedToken"><code class="docutils literal notranslate"><span class="pre">ValuedToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.StartOfToken"><code class="docutils literal notranslate"><span class="pre">StartOfToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.EndOfToken"><code class="docutils literal notranslate"><span class="pre">EndOfToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.StartOfDocumentToken"><code class="docutils literal notranslate"><span class="pre">StartOfDocumentToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.EndOfDocumentToken"><code class="docutils literal notranslate"><span class="pre">EndOfDocumentToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.StartOfSnippetToken"><code class="docutils literal notranslate"><span class="pre">StartOfSnippetToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.EndOfSnippetToken"><code class="docutils literal notranslate"><span class="pre">EndOfSnippetToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterToken"><code class="docutils literal notranslate"><span class="pre">CharacterToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.FusedCharacterToken"><code class="docutils literal notranslate"><span class="pre">FusedCharacterToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.SpaceToken"><code class="docutils literal notranslate"><span class="pre">SpaceToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.WordToken"><code class="docutils literal notranslate"><span class="pre">WordToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.VHDLToken"><code class="docutils literal notranslate"><span class="pre">VHDLToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.CommentToken"><code class="docutils literal notranslate"><span class="pre">CommentToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.SingleLineCommentToken"><code class="docutils literal notranslate"><span class="pre">SingleLineCommentToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.MultiLineCommentToken"><code class="docutils literal notranslate"><span class="pre">MultiLineCommentToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.LiteralToken"><code class="docutils literal notranslate"><span class="pre">LiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.IntegerLiteralToken"><code class="docutils literal notranslate"><span class="pre">IntegerLiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.RealLiteralToken"><code class="docutils literal notranslate"><span class="pre">RealLiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.CharacterLiteralToken"><code class="docutils literal notranslate"><span class="pre">CharacterLiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.StringLiteralToken"><code class="docutils literal notranslate"><span class="pre">StringLiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.BitStringLiteralToken"><code class="docutils literal notranslate"><span class="pre">BitStringLiteralToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.ExtendedIdentifier"><code class="docutils literal notranslate"><span class="pre">ExtendedIdentifier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.DirectiveToken"><code class="docutils literal notranslate"><span class="pre">DirectiveToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.LinebreakToken"><code class="docutils literal notranslate"><span class="pre">LinebreakToken</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyVHDLParser.Token.html#pyVHDLParser.Token.IndentationToken"><code class="docutils literal notranslate"><span class="pre">IndentationToken</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyVHDLParser.TypeSystem.html">pyVHDLParser.TypeSystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References/index.html">Scripts and Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChangeLog/index.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyVHDLParser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="pyVHDLParser.html">Python Class Reference</a> &raquo;</li>
+          <li><a href="pyVHDLParser.Token.html">pyVHDLParser.Token</a> &raquo;</li>
+      <li>pyVHDLParser.Token.Parser</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/Paebbels/pyVHDLParser/blob/main/doc/pyVHDLParser/pyVHDLParser.Token.Parser.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+</style><section id="module-pyVHDLParser.Token.Parser">
+<span id="pyvhdlparser-token-parser"></span><h1>pyVHDLParser.Token.Parser<a class="headerlink" href="#module-pyVHDLParser.Token.Parser" title="Permalink to this heading">¶</a></h1>
+<p><strong>Exceptions</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Token.Parser.TokenizerException" title="pyVHDLParser.Token.Parser.TokenizerException"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TokenizerException</span></code></a>:
+A <code class="xref py py-exc docutils literal notranslate"><span class="pre">ParserException</span></code> generated by the <a class="reference internal" href="#pyVHDLParser.Token.Parser.Tokenizer" title="pyVHDLParser.Token.Parser.Tokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokenizer</span></code></a>.</p></li>
+</ul>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyVHDLParser.Token.Parser.Tokenizer" title="pyVHDLParser.Token.Parser.Tokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokenizer</span></code></a>:
+Undocumented.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Exceptions</strong></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.TokenizerException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Token.Parser.</span></span><span class="sig-name descname"><span class="pre">TokenizerException</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Token/Parser.html#TokenizerException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Token.Parser.TokenizerException" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-exc docutils literal notranslate"><span class="pre">ParserException</span></code> generated by the <a class="reference internal" href="#pyVHDLParser.Token.Parser.Tokenizer" title="pyVHDLParser.Token.Parser.Tokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokenizer</span></code></a>.</p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-3e9134b9a7fab88a44be88ad5e23a6fda80790df.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of TokenizerException</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.TokenizerException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyVHDLParser/Token/Parser.html#TokenizerException.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Token.Parser.TokenizerException.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>position</strong> (<em>SourceCodePosition</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.TokenizerException.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.TokenizerException.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<p><strong>Classes</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyVHDLParser.Token.Parser.</span></span><span class="sig-name descname"><span class="pre">Tokenizer</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Token/Parser.html#Tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-eda1c3367952639db091a93b7d4697ecf63b4763.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of Tokenizer</p></object></div>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TokenKind</span></span><a class="reference internal" href="../_modules/pyVHDLParser/Token/Parser.html#Tokenizer.TokenKind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration of all Tokenizer states.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.SpaceChars">
+<span class="sig-name descname"><span class="pre">SpaceChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.SpaceChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a space</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.IntegerChars">
+<span class="sig-name descname"><span class="pre">IntegerChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.IntegerChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a digit</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.RealChars">
+<span class="sig-name descname"><span class="pre">RealChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.RealChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a digit</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.AlphaChars">
+<span class="sig-name descname"><span class="pre">AlphaChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.AlphaChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a letter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.DelimiterChars">
+<span class="sig-name descname"><span class="pre">DelimiterChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.DelimiterChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a delimiter character</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleSingleLineCommentStart">
+<span class="sig-name descname"><span class="pre">PossibleSingleLineCommentStart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleSingleLineCommentStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a dash</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleLinebreak">
+<span class="sig-name descname"><span class="pre">PossibleLinebreak</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleLinebreak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">\r</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleRealLiteral">
+<span class="sig-name descname"><span class="pre">PossibleRealLiteral</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleRealLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">.</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleCharacterLiteral">
+<span class="sig-name descname"><span class="pre">PossibleCharacterLiteral</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleCharacterLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">'</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleStringLiteralStart">
+<span class="sig-name descname"><span class="pre">PossibleStringLiteralStart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleStringLiteralStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">&quot;</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleExtendedIdentifierStart">
+<span class="sig-name descname"><span class="pre">PossibleExtendedIdentifierStart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.PossibleExtendedIdentifierStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">\</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.SingleLineComment">
+<span class="sig-name descname"><span class="pre">SingleLineComment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.SingleLineComment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Found <code class="docutils literal notranslate"><span class="pre">--</span></code> before</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.MultiLineComment">
+<span class="sig-name descname"><span class="pre">MultiLineComment</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.MultiLineComment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Found <code class="docutils literal notranslate"><span class="pre">/*</span></code> before</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.Linebreak">
+<span class="sig-name descname"><span class="pre">Linebreak</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.Linebreak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a <code class="docutils literal notranslate"><span class="pre">\n</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.Directive">
+<span class="sig-name descname"><span class="pre">Directive</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.Directive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a `` ` ``</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.FuseableCharacter">
+<span class="sig-name descname"><span class="pre">FuseableCharacter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.FuseableCharacter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last char was a character that could be fused</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.OtherChars">
+<span class="sig-name descname"><span class="pre">OtherChars</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.OtherChars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anything else</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__abs__">
+<span class="sig-name descname"><span class="pre">__abs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__abs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>abs(self)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self+value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__and__">
+<span class="sig-name descname"><span class="pre">__and__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__and__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&amp;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__bool__">
+<span class="sig-name descname"><span class="pre">__bool__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__bool__" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if self else False</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ceil__">
+<span class="sig-name descname"><span class="pre">__ceil__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ceil__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ceiling of an Integral returns itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__dir__">
+<span class="sig-name descname"><span class="pre">__dir__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__dir__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all members and all public methods</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__divmod__">
+<span class="sig-name descname"><span class="pre">__divmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__divmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(self, value).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__float__">
+<span class="sig-name descname"><span class="pre">__float__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__float__" title="Permalink to this definition">¶</a></dt>
+<dd><p>float(self)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__floor__">
+<span class="sig-name descname"><span class="pre">__floor__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__floor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flooring an Integral returns itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__floordiv__">
+<span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__floordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self//value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__format__">
+<span class="sig-name descname"><span class="pre">__format__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_spec</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__format__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default object formatter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__getattribute__">
+<span class="sig-name descname"><span class="pre">__getattribute__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__getattribute__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return getattr(self, name).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return hash(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__index__">
+<span class="sig-name descname"><span class="pre">__index__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__index__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self converted to an integer, if self is suitable for use as an index into a list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__int__">
+<span class="sig-name descname"><span class="pre">__int__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__int__" title="Permalink to this definition">¶</a></dt>
+<dd><p>int(self)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__invert__">
+<span class="sig-name descname"><span class="pre">__invert__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__invert__" title="Permalink to this definition">¶</a></dt>
+<dd><p>~self</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__lshift__">
+<span class="sig-name descname"><span class="pre">__lshift__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__lshift__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;&lt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__mod__">
+<span class="sig-name descname"><span class="pre">__mod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__mod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self%value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self*value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self!=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__neg__">
+<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__neg__" title="Permalink to this definition">¶</a></dt>
+<dd><p>-self</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__or__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self|value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__pos__">
+<span class="sig-name descname"><span class="pre">__pos__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__pos__" title="Permalink to this definition">¶</a></dt>
+<dd><p>+self</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__pow__">
+<span class="sig-name descname"><span class="pre">__pow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__pow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(self, value, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__radd__">
+<span class="sig-name descname"><span class="pre">__radd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value+self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rand__">
+<span class="sig-name descname"><span class="pre">__rand__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rand__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value&amp;self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rdivmod__">
+<span class="sig-name descname"><span class="pre">__rdivmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rdivmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(value, self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__reduce_ex__">
+<span class="sig-name descname"><span class="pre">__reduce_ex__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__reduce_ex__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rfloordiv__">
+<span class="sig-name descname"><span class="pre">__rfloordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rfloordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value//self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rlshift__">
+<span class="sig-name descname"><span class="pre">__rlshift__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rlshift__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value&lt;&lt;self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rmod__">
+<span class="sig-name descname"><span class="pre">__rmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value%self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rmul__">
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value*self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ror__">
+<span class="sig-name descname"><span class="pre">__ror__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__ror__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value|self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__round__">
+<span class="sig-name descname"><span class="pre">__round__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__round__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rounding an Integral returns itself.</p>
+<p>Rounding with an ndigits argument also returns an integer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rpow__">
+<span class="sig-name descname"><span class="pre">__rpow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rpow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(value, self, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rrshift__">
+<span class="sig-name descname"><span class="pre">__rrshift__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rrshift__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value&gt;&gt;self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rshift__">
+<span class="sig-name descname"><span class="pre">__rshift__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rshift__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rsub__">
+<span class="sig-name descname"><span class="pre">__rsub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rsub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value-self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rtruediv__">
+<span class="sig-name descname"><span class="pre">__rtruediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rtruediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value/self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rxor__">
+<span class="sig-name descname"><span class="pre">__rxor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__rxor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value^self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__sizeof__">
+<span class="sig-name descname"><span class="pre">__sizeof__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__sizeof__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns size in memory, in bytes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self-value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__truediv__">
+<span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self/value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__trunc__">
+<span class="sig-name descname"><span class="pre">__trunc__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__trunc__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncating an Integral returns itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__xor__">
+<span class="sig-name descname"><span class="pre">__xor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.__xor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self^value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.as_integer_ratio">
+<span class="sig-name descname"><span class="pre">as_integer_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.as_integer_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer ratio.</p>
+<p>Return a pair of integers, whose ratio is exactly equal to the original int
+and with a positive denominator.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(10, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(-10, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(0, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.bit_count">
+<span class="sig-name descname"><span class="pre">bit_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.bit_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of ones in the binary representation of the absolute value of self.</p>
+<p>Also known as the population count.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="go">&#39;0b1101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">bit_count</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.bit_length">
+<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.bit_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of bits necessary to represent self in binary.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+<span class="go">&#39;0b100101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.conjugate">
+<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.conjugate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns self, the complex conjugate of any int.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.denominator">
+<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.denominator" title="Permalink to this definition">¶</a></dt>
+<dd><p>the denominator of a rational number in lowest terms</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.from_bytes">
+<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'big'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.from_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the integer represented by the given array of bytes.</p>
+<dl class="simple">
+<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
+support the buffer protocol or be an iterable object producing bytes.
+Bytes and bytearray are examples of built-in objects that support the
+buffer protocol.</p>
+</dd>
+<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
+the most significant byte is at the beginning of the byte array.  If
+byteorder is ‘little’, the most significant byte is at the end of the
+byte array.  To request the native byte order of the host system, use
+<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.  Default is to use ‘big’.</p>
+</dd>
+<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.imag">
+<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.imag" title="Permalink to this definition">¶</a></dt>
+<dd><p>the imaginary part of a complex number</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.numerator">
+<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.numerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>the numerator of a rational number in lowest terms</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.real">
+<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.real" title="Permalink to this definition">¶</a></dt>
+<dd><p>the real part of a complex number</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyVHDLParser.Token.Parser.Tokenizer.TokenKind.to_bytes">
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'big'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyVHDLParser.Token.Parser.Tokenizer.TokenKind.to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of bytes representing an integer.</p>
+<dl class="simple">
+<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
+integer is not representable with the given number of bytes.  Default
+is length 1.</p>
+</dd>
+<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
+the most significant byte is at the beginning of the byte array.  If
+byteorder is ‘little’, the most significant byte is at the end of the
+byte array.  To request the native byte order of the host system, use
+<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.  Default is to use ‘big’.</p>
+</dd>
+<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
+If signed is False and a negative integer is given, an OverflowError
+is raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyVHDLParser.Token.Keywords.html" class="btn btn-neutral float-left" title="pyVHDLParser.Token.Keywords" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyVHDLParser.TypeSystem.html" class="btn btn-neutral float-right" title="pyVHDLParser.TypeSystem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright 2017-2023 Patrick Lehmann - Boetzingen, Germany
+Copyright 2016-2017 Patrick Lehmann - Dresden, Germany.
+      <span class="lastupdated">Last updated on 12.01.2024.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

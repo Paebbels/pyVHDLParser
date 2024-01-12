@@ -1,0 +1,94 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=================================
+pyVHDLParser.Blocks.List.PortList
+=================================
+
+.. automodule:: pyVHDLParser.Blocks.List.PortList
+
+
+.. currentmodule:: pyVHDLParser.Blocks.List.PortList
+
+
+**Classes**
+
+- :py:class:`CloseBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`DelimiterBlock`:
+  Base-class for blocks that can be skipped in fast-forward scanning.
+
+- :py:class:`DefaultValueExpressionBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`PortListInterfaceSignalBlock`:
+  Base-class for all :term:`block` classes.
+
+- :py:class:`OpenBlock`:
+  Base-class for all :term:`block` classes.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: CloseBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CloseBlock
+      :parts: 1
+
+.. autoclass:: DelimiterBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DelimiterBlock
+      :parts: 1
+
+.. autoclass:: DefaultValueExpressionBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DefaultValueExpressionBlock
+      :parts: 1
+
+.. autoclass:: PortListInterfaceSignalBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PortListInterfaceSignalBlock
+      :parts: 1
+
+.. autoclass:: OpenBlock
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: OpenBlock
+      :parts: 1

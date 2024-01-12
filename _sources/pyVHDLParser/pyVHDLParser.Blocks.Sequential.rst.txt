@@ -1,0 +1,24 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==============================
+pyVHDLParser.Blocks.Sequential
+==============================
+
+.. automodule:: pyVHDLParser.Blocks.Sequential
+
+
+
+**Submodules**
+
+.. toctree::
+   :maxdepth: 1
+
+   pyVHDLParser.Blocks.Sequential.Function
+   pyVHDLParser.Blocks.Sequential.Package
+   pyVHDLParser.Blocks.Sequential.PackageBody
+   pyVHDLParser.Blocks.Sequential.Procedure
+   pyVHDLParser.Blocks.Sequential.Process
+
+.. currentmodule:: pyVHDLParser.Blocks.Sequential

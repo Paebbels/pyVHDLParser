@@ -1,0 +1,248 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+==================================
+pyVHDLParser.TypeSystem.TypeSystem
+==================================
+
+.. automodule:: pyVHDLParser.TypeSystem.TypeSystem
+
+
+.. currentmodule:: pyVHDLParser.TypeSystem.TypeSystem
+
+
+**Classes**
+
+- :py:class:`_Attributes`:
+  Undocumented.
+
+- :py:class:`Type`:
+  Undocumented.
+
+- :py:class:`IntegerType`:
+  Undocumented.
+
+- :py:class:`RealType`:
+  Undocumented.
+
+- :py:class:`EnumerationLiteral`:
+  Undocumented.
+
+- :py:class:`EnumerationType`:
+  Undocumented.
+
+- :py:class:`ArrayType`:
+  Undocumented.
+
+- :py:class:`RecordMember`:
+  Undocumented.
+
+- :py:class:`RecordType`:
+  Undocumented.
+
+- :py:class:`Subtype`:
+  Undocumented.
+
+- :py:class:`IntegerSubtype`:
+  Undocumented.
+
+- :py:class:`EnumerationSubtype`:
+  Undocumented.
+
+- :py:class:`Direction`:
+  Create a collection of name/value pairs.
+
+- :py:class:`Range`:
+  Undocumented.
+
+- :py:class:`TypeInstance`:
+  Undocumented.
+
+- :py:class:`Array`:
+  Undocumented.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: _Attributes
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: _Attributes
+      :parts: 1
+
+.. autoclass:: Type
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Type
+      :parts: 1
+
+.. autoclass:: IntegerType
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IntegerType
+      :parts: 1
+
+.. autoclass:: RealType
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RealType
+      :parts: 1
+
+.. autoclass:: EnumerationLiteral
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EnumerationLiteral
+      :parts: 1
+
+.. autoclass:: EnumerationType
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EnumerationType
+      :parts: 1
+
+.. autoclass:: ArrayType
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ArrayType
+      :parts: 1
+
+.. autoclass:: RecordMember
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RecordMember
+      :parts: 1
+
+.. autoclass:: RecordType
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: RecordType
+      :parts: 1
+
+.. autoclass:: Subtype
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Subtype
+      :parts: 1
+
+.. autoclass:: IntegerSubtype
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: IntegerSubtype
+      :parts: 1
+
+.. autoclass:: EnumerationSubtype
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: EnumerationSubtype
+      :parts: 1
+
+.. autoclass:: Direction
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Direction
+      :parts: 1
+
+.. autoclass:: Range
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Range
+      :parts: 1
+
+.. autoclass:: TypeInstance
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: TypeInstance
+      :parts: 1
+
+.. autoclass:: Array
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Array
+      :parts: 1

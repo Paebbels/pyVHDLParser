@@ -1,0 +1,108 @@
+.. # Template modified by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=====================================
+pyVHDLParser.LanguageModel.DesignUnit
+=====================================
+
+.. automodule:: pyVHDLParser.LanguageModel.DesignUnit
+
+
+.. currentmodule:: pyVHDLParser.LanguageModel.DesignUnit
+
+
+**Classes**
+
+- :py:class:`Context`:
+  A ``PrimaryUnit`` is a base-class for all primary units.
+
+- :py:class:`Entity`:
+  A ``PrimaryUnit`` is a base-class for all primary units.
+
+- :py:class:`Architecture`:
+  A ``SecondaryUnit`` is a base-class for all secondary units.
+
+- :py:class:`Configuration`:
+  A ``PrimaryUnit`` is a base-class for all primary units.
+
+- :py:class:`Package`:
+  A ``PrimaryUnit`` is a base-class for all primary units.
+
+- :py:class:`PackageBody`:
+  A ``SecondaryUnit`` is a base-class for all secondary units.
+
+
+
+---------------------
+
+**Classes**
+
+
+
+
+.. autoclass:: Context
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Context
+      :parts: 1
+
+.. autoclass:: Entity
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Entity
+      :parts: 1
+
+.. autoclass:: Architecture
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Architecture
+      :parts: 1
+
+.. autoclass:: Configuration
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Configuration
+      :parts: 1
+
+.. autoclass:: Package
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Package
+      :parts: 1
+
+.. autoclass:: PackageBody
+   :members:
+   :private-members:
+   :special-members:
+   :inherited-members:
+   :exclude-members: __weakref__
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: PackageBody
+      :parts: 1
