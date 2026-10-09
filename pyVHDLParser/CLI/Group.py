@@ -83,7 +83,7 @@ class GroupStreamHandlers:
 		if buffered:
 			self.WriteVerbose("Reading and buffering tokens...")
 			try:
-				tokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
+				tokenStream = list(Tokenizer.GetVHDLTokenizer(content))
 			except ParserException as ex:
 				self.WriteError("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 			except NotImplementedError as ex:
@@ -91,7 +91,7 @@ class GroupStreamHandlers:
 
 			self.WriteVerbose("Reading and buffering blocks...")
 			try:
-				blockStream = [block for block in TokenToBlockParser(tokenStream)()]
+				blockStream = list(TokenToBlockParser(tokenStream)())
 			except ParserException as ex:
 				print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
 			except NotImplementedError as ex:

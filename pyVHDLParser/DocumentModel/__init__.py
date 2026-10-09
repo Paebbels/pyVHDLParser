@@ -81,7 +81,7 @@ class Document(DocumentModel):
 		vhdlBlockStream = TokenToBlockParser(vhdlTokenStream)()
 		vhdlGroupStream = BlockToGroupParser(vhdlBlockStream)()
 		try:
-			groups =          [group for group in vhdlGroupStream]
+			groups =          list(vhdlGroupStream)
 		except BlockParserException as ex:
 			raise DOMParserException("Error while parsing and indexing the source code.", ex.Group) from ex
 		except GroupParserException as ex:
