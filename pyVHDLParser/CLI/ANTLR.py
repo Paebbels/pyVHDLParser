@@ -97,55 +97,55 @@ class ANTLRHandlers:
 
 		print("=" * 80)
 		print(f"Sourcefile: {document.Path}")
-		print(f"  Entities:")
+		print("  Entities:")
 		for entity in document.Entities:
 			print(f"    {entity.Identifier}")
-			print(f"      Doc-String:")
+			print("      Doc-String:")
 			for line in entity.docstring:
 				print(f"        {line}")
-			print(f"      Context:")
+			print("      Context:")
 			for item in entity.ContextItems:
 				if isinstance(item, LibraryClause):
 					print(f"        library: {', '.join(item.Names)}")
 				elif isinstance(item, UseClause):
 					print(f"        use: {', '.join(item.Names)}")
-			print(f"      Generics:")
+			print("      Generics:")
 			for generic in entity.GenericItems:
 				if isinstance(generic, GenericConstantInterfaceItem):
 					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Mode} {generic.Subtype}")
-			print(f"      Ports:")
+			print("      Ports:")
 			for port in entity.PortItems:
 				if isinstance(port, PortSignalInterfaceItem):
 					print(f"        signal {', '.join(port.Identifiers)} : {port.Mode} {port.Subtype}")
 
-			print(f"  Architectures:")
+			print("  Architectures:")
 			for arch in document.Architectures:
 				print(f"    {arch.Identifier}")
-				print(f"      Context:")
+				print("      Context:")
 				for item in arch.ContextItems:
 					if isinstance(item, LibraryClause):
 						print(f"        library: {', '.join(item.Names)}")
 					elif isinstance(item, UseClause):
 						print(f"        use: {', '.join(item.Names)}")
 
-		print(f"  Packages:")
+		print("  Packages:")
 		for package in document.Packages:
 			print(f"    {package.Identifier}")
-			print(f"      Context:")
+			print("      Context:")
 			for item in package.ContextItems:
 				if isinstance(item, LibraryClause):
 					print(f"        library: {', '.join(item.Names)}")
 				elif isinstance(item, UseClause):
 					print(f"        use: {', '.join(item.Names)}")
-			print(f"      Generics:")
+			print("      Generics:")
 			for generic in package.GenericItems:
 				if isinstance(generic, GenericConstantInterfaceItem):
 					print(f"        constant {', '.join(generic.Identifiers)} : {generic.Subtype}")
 
-		print(f"  Package bodies:")
+		print("  Package bodies:")
 		for packageBody in document.PackageBodies:
 			print(f"    {packageBody.Identifier}")
-			print(f"      Context:")
+			print("      Context:")
 			for item in packageBody.ContextItems:
 				if isinstance(item, LibraryClause):
 					print(f"        library: {', '.join(item.Names)}")

@@ -32,7 +32,7 @@ class GraphML:
 		lastVertex["order"] = tokenID + 1
 		lastVertex["kind"] = type(lastToken).__name__
 
-		firstVertex.EdgeToVertex(tokenStreamSubgraph._verticesWithID[id(firstToken.NextToken)], edgeID=f"n0_next")
+		firstVertex.EdgeToVertex(tokenStreamSubgraph._verticesWithID[id(firstToken.NextToken)], edgeID="n0_next")
 		tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
 		for tokenID, token in enumerate(tokenIterator, start=1):
 			vertex = tokenStreamSubgraph._verticesWithID[id(token)]
@@ -73,7 +73,7 @@ class GraphML:
 		lastLink = lastVertex.LinkToVertex(tokenStreamSubgraph._verticesWithID[id(lastBlock.StartToken)])
 		lastLink["kind"] = "block2token"
 
-		firstVertex.EdgeToVertex(blockStreamSubgraph._verticesWithID[id(firstBlock.NextBlock)], edgeID=f"n0_next")
+		firstVertex.EdgeToVertex(blockStreamSubgraph._verticesWithID[id(firstBlock.NextBlock)], edgeID="n0_next")
 		blockIterator = firstBlock.GetIterator(inclusiveStopBlock=False)
 		for blockID, block in enumerate(blockIterator, start=1):
 			vertex = blockStreamSubgraph._verticesWithID[id(block)]
@@ -114,7 +114,7 @@ class GraphML:
 		lastLink = lastVertex.LinkToVertex(blockStreamSubgraph._verticesWithID[id(lastGroup.StartToken)])
 		lastLink["kind"] = "group2block"
 
-		firstVertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(firstGroup.NextBlock)], edgeID=f"n0_next")
+		firstVertex.EdgeToVertex(groupStreamSubgraph._verticesWithID[id(firstGroup.NextBlock)], edgeID="n0_next")
 		groupIterator = firstGroup.GetIterator(inclusiveStopBlock=False)
 		for groupID, group in enumerate(groupIterator, start=1):
 			vertex = groupStreamSubgraph._verticesWithID[id(group)]
