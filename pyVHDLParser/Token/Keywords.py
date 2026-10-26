@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from typing import Any
+from typing import Any, ClassVar
 
 from pyTooling.Decorators       import export
 
@@ -324,7 +324,7 @@ class RepeatedLabelToken(LabelToken):
 
 @export
 class MultiCharKeyword(VHDLToken):
-	__KEYWORD__: str
+	__KEYWORD__: ClassVar[str]
 
 	def __init__(self, previousToken: Token = None, value: Any = None, start: SourceCodePosition = None, end: SourceCodePosition = None, fromExistingToken: CharacterToken = None):
 		if fromExistingToken is None:
@@ -402,7 +402,7 @@ class SignalAssociationKeyword(AssociationKeyword):
 
 @export
 class KeywordToken(VHDLToken):
-	__KEYWORD__ : str
+	__KEYWORD__: ClassVar[str]
 
 	def __init__(self, previousToken: Token = None, value: str = None, start: SourceCodePosition = None, end: SourceCodePosition = None, fromExistingToken: WordToken = None):
 		if fromExistingToken is None:

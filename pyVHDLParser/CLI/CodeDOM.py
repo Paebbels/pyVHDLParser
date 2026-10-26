@@ -27,21 +27,22 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pathlib                       import Path
 
-from pyAttributes.ArgParseAttributes import CommandAttribute
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
 
-from ..Base                   import ParserException
-from ..DocumentModel          import Document
+from ..Base                        import ParserException
+from ..DocumentModel               import Document
 
-from .                        import FrontEndProtocol, FilenameAttribute
+from .                             import FrontEndProtocol, FilenameAttribute
 
 
-class CodeDOMHandlers:
+class CodeDOMHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "DOM" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("CodeDOM", help="Create a CodeDOM.", description="Create a code document object model (CodeDOM).")
+	@CommandHandler("CodeDOM", help="Create a CodeDOM.", description="Create a code document object model (CodeDOM).")
 	@FilenameAttribute()
 	def HandleCodeDOM(self : FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -60,8 +61,8 @@ class CodeDOMHandlers:
 			document.Print(0)
 
 		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
-		self.exit()
+		self.Exit()

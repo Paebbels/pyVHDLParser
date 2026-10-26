@@ -28,29 +28,31 @@
 # ==================================================================================================================== #
 #
 import time
-from pathlib        import Path
+from pathlib                       import Path
 
-from antlr4 import CommonTokenStream, InputStream
-from pyAttributes.ArgParseAttributes import CommandAttribute
+from antlr4                        import CommonTokenStream, InputStream
 
-from ..LanguageModel import Document
-from ..LanguageModel.Reference import UseClause, LibraryClause
-from ..LanguageModel.DesignUnit import Entity, Architecture, Package, PackageBody
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
+
+from ..LanguageModel               import Document
+from ..LanguageModel.Reference     import UseClause, LibraryClause
+from ..LanguageModel.DesignUnit    import Entity, Architecture, Package, PackageBody
 from ..LanguageModel.InterfaceItem import GenericConstantInterfaceItem, PortSignalInterfaceItem
 
-from ..ANTLR4 import ANTLR2Token
-from ..ANTLR4.VHDLLexer import VHDLLexer
-from ..ANTLR4.VHDLParser import VHDLParser
-from ..ANTLR4.Visitor import VHDLVisitor
+from ..ANTLR4                      import ANTLR2Token
+from ..ANTLR4.VHDLLexer            import VHDLLexer
+from ..ANTLR4.VHDLParser           import VHDLParser
+from ..ANTLR4.Visitor              import VHDLVisitor
 
-from . import FrontEndProtocol, FilenameAttribute
+from .                             import FrontEndProtocol, FilenameAttribute
 
 
-class ANTLRHandlers:
+class ANTLRHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "token-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("antlr", help="Create DOM from ANTLR4 grammar.", description="Create DOM from ANTLR4 grammar.")
+	@CommandHandler("antlr", help="Create DOM from ANTLR4 grammar.", description="Create DOM from ANTLR4 grammar.")
 	@FilenameAttribute()
 	def HandleANTLR(self: FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -152,5 +154,5 @@ class ANTLRHandlers:
 				elif isinstance(item, UseClause):
 					print(f"        use: {', '.join(item.Names)}")
 
-		self.exit()
+		self.Exit()
 

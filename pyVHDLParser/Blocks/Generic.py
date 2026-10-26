@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from typing import Any
+from typing import Any, ClassVar
 
 from pyTooling.Decorators         import export
 
@@ -330,9 +330,9 @@ class EndBlock(FinalBlock):
 
 @export
 class BeginBlock(Block):
-	END_BLOCK: EndBlock
+	END_BLOCK: ClassVar[EndBlock]
 
-	KEYWORDS: Any  # TODO: what type?
+	KEYWORDS: ClassVar[Any]  # TODO: what type?
 
 	@classmethod
 	def stateStatementRegion(cls, parserState: TokenToBlockParser):

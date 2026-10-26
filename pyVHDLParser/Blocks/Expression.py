@@ -27,6 +27,8 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
+from typing                       import ClassVar
+
 from pyTooling.Decorators         import export
 
 from pyVHDLParser.Token           import FusedCharacterToken, CharacterToken, WordToken, LiteralToken, WhitespaceToken, LinebreakToken
@@ -88,9 +90,9 @@ class ExpressionBlock(Block):
 
 @export
 class ExpressionBlockEndedByCharORClosingRoundBracket(ExpressionBlock):
-	EXIT_CHAR:  str
-	EXIT_TOKEN: Token
-	EXIT_BLOCK: Block
+	EXIT_CHAR:  ClassVar[str]
+	EXIT_TOKEN: ClassVar[Token]
+	EXIT_BLOCK: ClassVar[Block]
 
 	@classmethod
 	def stateBeforeExpression(cls, parserState: TokenToBlockParser):

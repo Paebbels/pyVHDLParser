@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pyTooling.TerminalUI                           import LineTerminal
+from pyTooling.TerminalUI                           import TerminalApplication
 
 from pyVHDLModel.Object                             import Constant as ConstantBase
 
@@ -73,8 +73,12 @@ class Constant(ConstantBase):
 		parserState.CurrentNode = constant
 
 	def __str__(self):
-		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(self._name, self._subtype, **LineTerminal().Foreground)
+		return "{GREEN}{0}{NOCOLOR} : {YELLOW}{1}{NOCOLOR}".format(
+			self._name,
+			self._subtype,
+			**TerminalApplication.FOREGROUND
+		)
 
 	def Print(self, indent=0):
 		indentation = "  " * indent
-		print("{indent}{DARK_CYAN}CONSTANT {GREEN}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR} := xxx;".format(indent=indentation, name=self._name, type="", **LineTerminal().Foreground))
+		print("{indent}{DARK_CYAN}CONSTANT {GREEN}{name}{NOCOLOR} : {GREEN}{type}{NOCOLOR} := xxx;".format(indent=indentation, name=self._name, type="", **TerminalApplication.FOREGROUND))

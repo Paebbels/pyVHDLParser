@@ -27,26 +27,27 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib        import Path
+from pathlib                       import Path
 
-from pyAttributes.ArgParseAttributes import CommandAttribute
-from pyTooling.Graph import Graph, Vertex, Subgraph
-from pyTooling.Graph.GraphML         import GraphMLDocument
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
+from pyTooling.Graph               import Graph, Vertex, Subgraph
+from pyTooling.Graph.GraphML       import GraphMLDocument
 
-from pyVHDLParser.Base         import ParserException
-from pyVHDLParser.CLI.GraphML import GraphML
-from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token        import CharacterTranslation, SingleLineCommentToken
-from pyVHDLParser.Token.Parser import Tokenizer
+from pyVHDLParser.Base             import ParserException
+from pyVHDLParser.CLI.GraphML      import GraphML
+from pyVHDLParser.Token            import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token            import CharacterTranslation, SingleLineCommentToken
+from pyVHDLParser.Token.Parser     import Tokenizer
 
 from pyVHDLParser.CLI              import FrontEndProtocol, FilenameAttribute, translate
 
 
-class TokenStreamHandlers:
+class TokenStreamHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "token-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("token-stream", help="Create a stream of token objects.", description="Create a stream of token objects.")
+	@CommandHandler("token-stream", help="Create a stream of token objects.", description="Create a stream of token objects.")
 	@FilenameAttribute()
 	def HandleTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -70,42 +71,42 @@ class TokenStreamHandlers:
 			pass
 
 		if isinstance(firstToken, StartOfDocumentToken):
-			print("{YELLOW}{token!r}{NOCOLOR}".format(token=firstToken, **self.Foreground))
+			print("{YELLOW}{token!r}{NOCOLOR}".format(token=firstToken, **self.FOREGROUND))
 
 		try:
 			tokenIterator = firstToken.GetIterator(inclusiveStopToken=False)
 			for token in tokenIterator:
 				if isinstance(token, (LinebreakToken, WhitespaceToken, IndentationToken)):
-					print("{DARK_GRAY}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{DARK_GRAY}{token!r}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 				elif isinstance(token, CommentToken):
-					print("{DARK_GREEN}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{DARK_GREEN}{token!r}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 				elif isinstance(token, CharacterToken):
-					print("{DARK_CYAN}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{DARK_CYAN}{token!r}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 				elif isinstance(token, WordToken):
-					print("{WHITE}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{WHITE}{token!r}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 				else:
-					print("{RED}{token!r}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{RED}{token!r}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 
 			tokenIterator = token.GetIterator()
 			lastToken = next(tokenIterator)
 			if isinstance(lastToken, EndOfDocumentToken):
-				print("{YELLOW}{token!r}{NOCOLOR}".format(token=lastToken, **self.Foreground))
+				print("{YELLOW}{token!r}{NOCOLOR}".format(token=lastToken, **self.FOREGROUND))
 
 		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
 		exporter = GraphML()
 		exporter.AddTokenStream(firstToken)
 		exporter.WriteDocument(Path.cwd() / "temp/TokenStream.graphml")
 
-		self.exit()
+		self.Exit()
 
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "token-check" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("token-check", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
+	@CommandHandler("token-check", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
 	@FilenameAttribute()
 	def HandleCheckTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -131,9 +132,9 @@ class TokenStreamHandlers:
 				pass
 
 			if not isinstance(firstToken, StartOfDocumentToken):
-				print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.Foreground))
+				print("{RED}First token is not StartOfDocumentToken: {token}{NOCOLOR}".format(token=firstToken, **self.FOREGROUND))
 			if firstToken.NextToken is None:
-				print("{RED}First token has an open end.{NOCOLOR}".format(**self.Foreground))
+				print("{RED}First token has an open end.{NOCOLOR}".format(**self.FOREGROUND))
 
 			tokenIterator = firstToken.GetIterator()
 			lastToken =     None
@@ -141,53 +142,53 @@ class TokenStreamHandlers:
 
 			for newToken in tokenIterator:
 				if token.NextToken is None:
-					print("{RED}Token has an open end.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **self.Foreground))
+					print("{RED}Token has an open end.{NOCOLOR}".format(**self.FOREGROUND))
+					print("{RED}  Token:  {token}{NOCOLOR}".format(token=token, **self.FOREGROUND))
 				elif (token is not firstToken) and (lastToken.NextToken is not token):
-					print("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
-					print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
-					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-					print("{RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
+					print("{RED}Last token is not connected to the current token.{NOCOLOR}".format(**self.FOREGROUND))
+					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.FOREGROUND))
+					print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.FOREGROUND))
+					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.FOREGROUND))
+					print("{RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.FOREGROUND))
 					if lastToken.NextToken is None:
-						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
+						print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token="--------", **self.FOREGROUND))
 					else:
 						print(
-							"{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken.NextToken, **self.Foreground))
+							"{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken.NextToken, **self.FOREGROUND))
 					if token.PreviousToken is None:
-						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token="--------", **self.Foreground))
+						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token="--------", **self.FOREGROUND))
 					else:
 						print("{DARK_RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken.PreviousToken,
-						                                                    **self.Foreground))
+						                                                    **self.FOREGROUND))
 				elif token.PreviousToken is not lastToken:
-					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
-					print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
-					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-					print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
+					print("{RED}Current token is not connected to lastToken.{NOCOLOR}".format(**self.FOREGROUND))
+					print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.FOREGROUND))
+					print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.FOREGROUND))
+					print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.FOREGROUND))
+					print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.FOREGROUND))
 
 				lastToken = token
 				token = newToken
 
 				if isinstance(newToken, EndOfDocumentToken):
-					print("{GREEN}No double-linking errors in token stream found.{NOCOLOR}".format(**self.Foreground))
+					print("{GREEN}No double-linking errors in token stream found.{NOCOLOR}".format(**self.FOREGROUND))
 					break
 			else:
-				print("{RED}No EndOfDocumentToken found.{NOCOLOR}".format(**self.Foreground))
+				print("{RED}No EndOfDocumentToken found.{NOCOLOR}".format(**self.FOREGROUND))
 
 			if not isinstance(token, EndOfDocumentToken):
 				print(
-					"{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
+					"{RED}Last token is not EndOfDocumentToken: {token}{NOCOLOR}".format(token=lastToken, **self.FOREGROUND))
 			elif token.PreviousToken is not lastToken:
-				print("{RED}EndOfDocumentToken is not connected to lastToken.{NOCOLOR}".format(**self.Foreground))
-				print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.Foreground))
-				print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.Foreground))
-				print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.Foreground))
-				print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.Foreground))
+				print("{RED}EndOfDocumentToken is not connected to lastToken.{NOCOLOR}".format(**self.FOREGROUND))
+				print("{RED}  Curr:   {token}{NOCOLOR}".format(token=token, **self.FOREGROUND))
+				print("{RED}    Prev: {token}{NOCOLOR}".format(token=token.PreviousToken, **self.FOREGROUND))
+				print("{RED}  Last:   {token}{NOCOLOR}".format(token=lastToken, **self.FOREGROUND))
+				print("{DARK_RED}    Next: {token}{NOCOLOR}".format(token=lastToken.NextToken, **self.FOREGROUND))
 
 		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
-		self.exit()
+		self.Exit()

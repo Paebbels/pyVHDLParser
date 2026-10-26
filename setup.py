@@ -31,6 +31,7 @@
 #
 """Package installer for 'A streaming-based VHDL parser'."""
 from pathlib             import Path
+from setuptools          import setup
 from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub, DEFAULT_CLASSIFIERS
 
 gitHubNamespace =        "Paebbels"
@@ -38,26 +39,28 @@ packageName =            "pyVHDLParser"
 packageDirectory =       packageName.replace(".", "/")
 packageInformationFile = Path(f"{packageDirectory}/__init__.py")
 
-DescribePythonPackageHostedOnGitHub(
-	packageName=packageName,
-	description="A streaming-based VHDL parser.",
-	gitHubNamespace=gitHubNamespace,
-	keywords="Python3 VHDL Parser",
-	sourceFileWithVersion=packageInformationFile,
-	consoleScripts={
-		"VHDLParser": "pyVHDLParser.CLI.VHDLParser:main",
-	},
-	developmentStatus="pre-alpha",
-	classifiers=list(DEFAULT_CLASSIFIERS) + [
-		"Operating System :: OS Independent",
-		"Intended Audience :: Developers",
-		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
-		"Topic :: Software Development :: Code Generators",
-		"Topic :: Software Development :: Compilers",
-		"Topic :: Software Development :: Testing",
-		"Topic :: Utilities"
-	],
-	dataFiles={
-		packageName: ["py.typed"]
-	}
+setup(
+	**DescribePythonPackageHostedOnGitHub(
+		packageName=packageName,
+		description="A streaming-based VHDL parser.",
+		gitHubNamespace=gitHubNamespace,
+		keywords="Python3 VHDL Parser",
+		sourceFileWithVersion=packageInformationFile,
+		consoleScripts={
+			"VHDLParser": "pyVHDLParser.CLI.VHDLParser:main",
+		},
+		developmentStatus="pre-alpha",
+		classifiers=list(DEFAULT_CLASSIFIERS) + [
+			"Operating System :: OS Independent",
+			"Intended Audience :: Developers",
+			"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+			"Topic :: Software Development :: Code Generators",
+			"Topic :: Software Development :: Compilers",
+			"Topic :: Software Development :: Testing",
+			"Topic :: Utilities"
+		],
+		dataFiles={
+			packageName: ["py.typed"]
+		}
+	)
 )
