@@ -60,8 +60,8 @@ class CodeDOMHandlers:
 			document.Print(0)
 
 		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
-		self.exit()
+		self.Exit()

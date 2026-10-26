@@ -57,14 +57,14 @@ class WithBlocksAttribute(Attribute):
 
 class FrontEndProtocol(Protocol):
 	# TerminalUI
-	Foreground:    Dict
+	FOREGROUND:    Dict
 	WriteError:    Callable[[str], None]
 	WriteWarning:  Callable[[str], None]
 	WriteQuiet:    Callable[[str], None]
 	WriteNormal:   Callable[[str], None]
 	WriteVerbose:  Callable[[str], None]
 	WriteDebug:    Callable[[str], None]
-	exit:          Callable[[int], None]
+	Exit:          Callable[[int], None]
 
 	# Frontend
 	PrintHeadline: Callable

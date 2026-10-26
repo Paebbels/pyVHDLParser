@@ -30,11 +30,11 @@
 from argparse       import RawDescriptionHelpFormatter
 from platform       import system as platform_system
 from textwrap       import dedent, wrap
-from typing         import NoReturn
+from typing         import ClassVar, NoReturn
 
 from pyTooling.Exceptions             import ExceptionBase
 from pyTooling.Decorators             import export
-from pyTooling.TerminalUI             import LineTerminal, Severity
+from pyTooling.TerminalUI             import TerminalApplication, Severity
 from pyAttributes.ArgParseAttributes  import ArgParseMixin, DefaultAttribute, CommandAttribute, ArgumentAttribute, CommonSwitchArgumentAttribute
 
 from pyVHDLParser                     import __author__, __license__, __version__, __copyright__
@@ -62,8 +62,8 @@ def printImportError(ex) -> NoReturn:
 
 
 @export
-class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers, ANTLRHandlers):
-	HeadLine =    "pyVHDLParser - Test Application"
+class Application(TerminalApplication, ArgParseMixin, TokenStreamHandlers, BlockStreamHandlers, GroupStreamHandlers, CodeDOMHandlers, ANTLRHandlers):
+	HEADLINE: ClassVar[str] = "pyVHDLParser - Test Application"
 
 	# load platform information (Windows, Linux, Darwin, ...)
 	# TODO: use pyTooling Platform
@@ -121,7 +121,7 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 		self.WriteNormal(dedent("""\
 			{HEADLINE}{line}
 			{headline: ^80s}
-			{line}""").format(line="=" * 80, headline=self.HeadLine, **LineTerminal.Foreground))
+			{line}""").format(line="=" * 80, headline=self.HEADLINE, **TerminalApplication.FOREGROUND))
 
 	# ============================================================================
 	# Common commands
@@ -140,7 +140,7 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 		self.MainParser.print_help()
 
 		self.WriteNormal("")
-		self.exit()
+		self.Exit()
 
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "help" command
@@ -161,7 +161,7 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 				self.WriteError(f"Command {args.Command} is unknown.")
 
 		self.WriteNormal("")
-		self.exit()
+		self.Exit()
 
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "version" command
@@ -180,7 +180,7 @@ class Application(LineTerminal, ArgParseMixin, TokenStreamHandlers, BlockStreamH
 		for author in authors[1:]:
 			self.WriteNormal(f"            {author}")
 		self.WriteNormal(f"Version:    {__version__}")
-		self.exit()
+		self.Exit()
 
 
 # main program
@@ -203,7 +203,7 @@ def main():  # mccabe:disable=MC0001
 			quiet="-q" in sys_argv
 		)
 		app.Run()
-		app.exit()
+		app.Exit()
 
 	# except (CommonException, ConfigurationException) as ex:
 	# 	print("{RED}ERROR:{NOCOLOR} {message}".format(message=ex.message, **Init.Foreground))
@@ -224,16 +224,15 @@ def main():  # mccabe:disable=MC0001
 	# 	LineTerminal.exit(1)
 
 	except ExceptionBase as ex:
-		LineTerminal.printExceptionBase(ex)
+		TerminalApplication().PrintExceptionBase(ex)
 	except NotImplementedError as ex:
-		LineTerminal.printNotImplementedError(ex)
+		TerminalApplication().PrintNotImplementedError(ex)
 	# except ImportError as ex:
 	# 	printImportError(ex)
 	except Exception as ex:
-		LineTerminal.printException(ex)
+		TerminalApplication().PrintException(ex)
 
 
 # entry point
 if __name__ == "__main__":
-	LineTerminal.versionCheck((3,8,0))
 	main()

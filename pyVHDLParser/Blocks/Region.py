@@ -27,7 +27,7 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from typing import Any
+from typing import Any, ClassVar
 
 from pyTooling.Decorators                 import export
 
@@ -45,10 +45,10 @@ from pyVHDLParser.Blocks.Generic         import EndBlock, BeginBlock
 class DeclarativeRegion(metaclass=MetaBlock):
 	"""Base-class for all declarative region blocks."""
 
-	BEGIN_BLOCK: BeginBlock
-	END_BLOCK:   EndBlock
+	BEGIN_BLOCK: ClassVar[BeginBlock]
+	END_BLOCK:   ClassVar[EndBlock]
 
-	KEYWORDS: Any  # TODO: what type?
+	KEYWORDS: ClassVar[Any]  # TODO: what type?
 
 	@classmethod
 	def __cls_init__(cls):

@@ -32,7 +32,7 @@ from typing import List, Callable, Iterator, Generator, Tuple, Any
 
 from pyTooling.Decorators           import export
 from pyTooling.MetaClasses import ExtendedType
-from pyTooling.TerminalUI           import LineTerminal
+from pyTooling.TerminalUI           import TerminalApplication
 
 from pyVHDLParser                   import StartOfDocument, EndOfDocument, StartOfSnippet, EndOfSnippet
 from pyVHDLParser.Base              import ParserException
@@ -105,14 +105,14 @@ class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 			self.NextState,
 			self.Counter
 		))
-		LineTerminal().WriteDebug("  pushed: " + str(self.NextState))
+		TerminalApplication().WriteDebug("  pushed: " + str(self.NextState))
 		self.NextState =    value
 		self._tokenMarker =  None
 
 	@property
 	def TokenMarker(self) -> Token:
 		if (self.NewToken is not None) and (self._tokenMarker is self.Token):
-			LineTerminal().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **LineTerminal.Foreground))
+			TerminalApplication().WriteDebug("  {DARK_GREEN}@TokenMarker: {0!s} => {GREEN}{1!s}{NOCOLOR}".format(self._tokenMarker, self.NewToken, **TerminalApplication.FOREGROUND))
 			self._tokenMarker = self.NewToken
 		return self._tokenMarker
 
@@ -145,7 +145,7 @@ class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 	def Pop(self, n: int = 1, tokenMarker: Token = None) -> None:
 		for i in range(n):
 			top = self._stack.pop()
-			LineTerminal().WriteDebug("popped: " + str(top[0]))
+			TerminalApplication().WriteDebug("popped: " + str(top[0]))
 		self.NextState, self.Counter = top
 		self._tokenMarker = tokenMarker
 
@@ -162,7 +162,7 @@ class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 				# print("{MAGENTA}NewToken: {token}{NOCOLOR}".format(token=self.NewToken, **Console.Foreground))
 				# update topmost TokenMarker
 				if self._tokenMarker is token.PreviousToken:
-					# XXX: LineTerminal().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
+					# XXX: TerminalApplication().WriteDebug("  update token marker: {0!s} -> {1!s}".format(self._tokenMarker, self.NewToken))
 					self._tokenMarker = self.NewToken
 
 				token.PreviousToken = self.NewToken
@@ -170,7 +170,7 @@ class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 
 			# an empty marker means: fill on next yield run
 			if self._tokenMarker is None:
-				LineTerminal().WriteDebug("  new token marker: None -> {0!s}".format(token))
+				TerminalApplication().WriteDebug("  new token marker: None -> {0!s}".format(token))
 				self._tokenMarker = token
 
 			# a new block is assembled
@@ -185,7 +185,7 @@ class TokenToBlockParser(metaclass=ExtendedType, slots=True):
 				yield self.LastBlock
 
 			# if self.debug: print("{MAGENTA}------ iteration end ------{NOCOLOR}".format(**Console.Foreground))
-			# XXX: LineTerminal().WriteDebug("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **LineTerminal.Foreground))
+			# XXX: TerminalApplication().WriteDebug("    {DARK_GRAY}state={state!s: <50}  token={token!s: <40}{NOCOLOR}   ".format(state=self, token=token, **TerminalApplication.FOREGROUND))
 			# execute a state
 			self.NextState(self)
 

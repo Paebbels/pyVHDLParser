@@ -152,5 +152,5 @@ class ANTLRHandlers:
 				elif isinstance(item, UseClause):
 					print(f"        use: {', '.join(item.Names)}")
 
-		self.exit()
+		self.Exit()
 

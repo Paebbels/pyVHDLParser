@@ -31,7 +31,7 @@ from types                                  import FunctionType
 from typing import Iterator, Callable, List, Generator, Any, Dict, Tuple
 
 from pyTooling.MetaClasses import ExtendedType
-from pyTooling.TerminalUI                   import LineTerminal
+from pyTooling.TerminalUI                   import TerminalApplication
 
 from pyTooling.Decorators                   import export
 
@@ -201,7 +201,7 @@ class BlockToGroupParser(metaclass=ExtendedType, slots=True):
 			# execute a state and reissue execution if needed
 			reissue = True
 			while reissue:
-				LineTerminal().WriteDryRun("{DARK_GRAY}reissue state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **LineTerminal.Foreground))
+				TerminalApplication().WriteDryRun("{DARK_GRAY}reissue state={state!s: <50}  block={block!s: <40}     {NOCOLOR}".format(state=self, block=self.Block, **TerminalApplication.FOREGROUND))
 				reissue = self.NextState(self)
 
 				# yield a new group

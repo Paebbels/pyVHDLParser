@@ -75,9 +75,9 @@ class GroupStreamHandlers:
 			pass
 
 		if isinstance(firstGroup, StartOfDocumentGroup):
-			print("{YELLOW}{group!r}{NOCOLOR}".format(block=firstGroup, **self.Foreground))
-			print("  {YELLOW}{block!r}{NOCOLOR}".format(block=firstGroup.StartBlock, **self.Foreground))
-			print("    {YELLOW}{token!r}{NOCOLOR}".format(token=firstGroup.StartBlock.StartToken, **self.Foreground))
+			print("{YELLOW}{group!r}{NOCOLOR}".format(block=firstGroup, **self.FOREGROUND))
+			print("  {YELLOW}{block!r}{NOCOLOR}".format(block=firstGroup.StartBlock, **self.FOREGROUND))
+			print("    {YELLOW}{token!r}{NOCOLOR}".format(token=firstGroup.StartBlock.StartToken, **self.FOREGROUND))
 
 		buffered = True
 		if buffered:
@@ -85,17 +85,17 @@ class GroupStreamHandlers:
 			try:
 				tokenStream = [token for token in Tokenizer.GetVHDLTokenizer(content)]
 			except ParserException as ex:
-				self.WriteError("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+				self.WriteError("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 			except NotImplementedError as ex:
-				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
 			self.WriteVerbose("Reading and buffering blocks...")
 			try:
 				blockStream = [block for block in TokenToBlockParser(tokenStream)()]
 			except ParserException as ex:
-				print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+				print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 			except NotImplementedError as ex:
-				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+				print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		else:
 			tokenStream = Tokenizer.GetVHDLTokenizer(content)
 			blockStream = TokenToBlockParser(tokenStream)()
@@ -105,23 +105,23 @@ class GroupStreamHandlers:
 
 		try:
 			for group in groupStream:
-				print("{CYAN}{group}{NOCOLOR}".format(group=group, **self.Foreground))
+				print("{CYAN}{group}{NOCOLOR}".format(group=group, **self.FOREGROUND))
 				for block in group:
 					if isinstance(block, (IndentationToken, LinebreakToken, BoundaryToken, DelimiterToken, EndToken)):
-						print("{DARK_GRAY}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+						print("{DARK_GRAY}  {block}{NOCOLOR}".format(block=block, **self.FOREGROUND))
 					elif isinstance(block, (CommentToken)):
-						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.FOREGROUND))
 					elif isinstance(block, KeywordToken):
-						print("{DARK_CYAN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+						print("{DARK_CYAN}  {block}{NOCOLOR}".format(block=block, **self.FOREGROUND))
 					elif isinstance(block, (WordToken, WhitespaceToken, CharacterToken)):
-						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+						print("{DARK_GREEN}  {block}{NOCOLOR}".format(block=block, **self.FOREGROUND))
 					else:
-						print("{YELLOW}  {block}{NOCOLOR}".format(block=block, **self.Foreground))
+						print("{YELLOW}  {block}{NOCOLOR}".format(block=block, **self.FOREGROUND))
 
 		except ParserException as ex:
-			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}ERROR: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 		except NotImplementedError as ex:
-			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.Foreground))
+			print("{RED}NotImplementedError: {0!s}{NOCOLOR}".format(ex, **self.FOREGROUND))
 
 		exporter = GraphML()
 		tokenStreamSubgraph = exporter.AddTokenStream(firstBlock.StartToken)
@@ -129,4 +129,4 @@ class GroupStreamHandlers:
 		blockStreamSubgraph = exporter.AddGroupStream(firstBlock, blockStreamSubgraph)
 		exporter.WriteDocument(Path.cwd() / "temp/BlockStream.graphml")
 
-		self.exit()
+		self.Exit()
