@@ -50,11 +50,7 @@ pyVHDLParser Package
 
 * colorama
 * py-flags
-* pydecor
-* pyExceptions
-* pyAttributes
-* pyCallBy
-* pyTerminalUI
+* pyTooling
 * pyVHDLModel
 
 
