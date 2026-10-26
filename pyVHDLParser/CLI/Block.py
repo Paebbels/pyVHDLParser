@@ -27,28 +27,30 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pathlib                       import Path
 
-from pyAttributes.ArgParseAttributes import CommandAttribute
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
 
-from .GraphML import GraphML
-from ..Base                   import ParserException
-from ..Token                  import Token, StartOfDocumentToken, EndOfDocumentToken
-from ..Token.Parser           import Tokenizer
-from ..Blocks                 import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, CommentBlock
-from ..Blocks.Whitespace          import LinebreakBlock, IndentationBlock
-from ..Blocks.List            import GenericList, PortList
-from ..Blocks.InterfaceObject import InterfaceConstantBlock, InterfaceSignalBlock
-from ..Blocks.Structural      import Entity
+from .GraphML                      import GraphML
+from ..Base                        import ParserException
+from ..Token                       import Token, StartOfDocumentToken, EndOfDocumentToken
+from ..Token.Parser                import Tokenizer
+from ..Blocks                      import Block, TokenToBlockParser, StartOfDocumentBlock, EndOfDocumentBlock, \
+                                          CommentBlock
+from ..Blocks.Whitespace           import LinebreakBlock, IndentationBlock
+from ..Blocks.List                 import GenericList, PortList
+from ..Blocks.InterfaceObject      import InterfaceConstantBlock, InterfaceSignalBlock
+from ..Blocks.Structural           import Entity
 
-from .                        import FrontEndProtocol, FilenameAttribute, WithTokensAttribute
+from .                             import FrontEndProtocol, FilenameAttribute, WithTokensAttribute
 
 
-class BlockStreamHandlers:
+class BlockStreamHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "block-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("block-stream", help="Create a stream of block objects.", description="Create a stream of block objects.")
+	@CommandHandler("block-stream", help="Create a stream of block objects.", description="Create a stream of block objects.")
 	@WithTokensAttribute()
 	@FilenameAttribute()
 	def HandleBlockStreaming(self: FrontEndProtocol, args):
@@ -122,7 +124,7 @@ class BlockStreamHandlers:
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "block-check" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("block-check", help="Check a stream of block objects.", description="Check a stream of block objects.")
+	@CommandHandler("block-check", help="Check a stream of block objects.", description="Check a stream of block objects.")
 	@WithTokensAttribute()
 	@FilenameAttribute()
 	def HandleCheckBlockStreaming(self: FrontEndProtocol, args):

@@ -27,26 +27,27 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib import Path
+from pathlib                       import Path
 
-from pyAttributes.ArgParseAttributes import CommandAttribute
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
 
-from .GraphML import GraphML
-from ..Base                   import ParserException
-from ..Token                  import CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-from ..Token.Parser           import Tokenizer
-from ..Token.Keywords         import BoundaryToken, EndToken, KeywordToken, DelimiterToken
-from ..Blocks                 import TokenToBlockParser
-from ..Groups import BlockToGroupParser, StartOfDocumentGroup
+from .GraphML                      import GraphML
+from ..Base                        import ParserException
+from ..Token                       import CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from ..Token.Parser                import Tokenizer
+from ..Token.Keywords              import BoundaryToken, EndToken, KeywordToken, DelimiterToken
+from ..Blocks                      import TokenToBlockParser
+from ..Groups                      import BlockToGroupParser, StartOfDocumentGroup
 
-from .                        import FrontEndProtocol, WithTokensAttribute, WithBlocksAttribute, FilenameAttribute
+from .                             import FrontEndProtocol, WithTokensAttribute, WithBlocksAttribute, FilenameAttribute
 
 
-class GroupStreamHandlers:
+class GroupStreamHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "groupstreaming" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("group-stream", help="Create a stream of group objects.", description="Create a stream of group objects.")
+	@CommandHandler("group-stream", help="Create a stream of group objects.", description="Create a stream of group objects.")
 	@WithTokensAttribute()
 	@WithBlocksAttribute()
 	@FilenameAttribute()

@@ -27,26 +27,27 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from pathlib        import Path
+from pathlib                       import Path
 
-from pyAttributes.ArgParseAttributes import CommandAttribute
-from pyTooling.Graph import Graph, Vertex, Subgraph
-from pyTooling.Graph.GraphML         import GraphMLDocument
+from pyTooling.Attributes.ArgParse import CommandHandler
+from pyTooling.MetaClasses         import ExtendedType
+from pyTooling.Graph               import Graph, Vertex, Subgraph
+from pyTooling.Graph.GraphML       import GraphMLDocument
 
-from pyVHDLParser.Base         import ParserException
-from pyVHDLParser.CLI.GraphML import GraphML
-from pyVHDLParser.Token        import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
-from pyVHDLParser.Token        import CharacterTranslation, SingleLineCommentToken
-from pyVHDLParser.Token.Parser import Tokenizer
+from pyVHDLParser.Base             import ParserException
+from pyVHDLParser.CLI.GraphML      import GraphML
+from pyVHDLParser.Token            import StartOfDocumentToken, EndOfDocumentToken, CharacterToken, WhitespaceToken, WordToken, LinebreakToken, CommentToken, IndentationToken
+from pyVHDLParser.Token            import CharacterTranslation, SingleLineCommentToken
+from pyVHDLParser.Token.Parser     import Tokenizer
 
 from pyVHDLParser.CLI              import FrontEndProtocol, FilenameAttribute, translate
 
 
-class TokenStreamHandlers:
+class TokenStreamHandlers(metaclass=ExtendedType, mixin=True):
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "token-stream" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("token-stream", help="Create a stream of token objects.", description="Create a stream of token objects.")
+	@CommandHandler("token-stream", help="Create a stream of token objects.", description="Create a stream of token objects.")
 	@FilenameAttribute()
 	def HandleTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()
@@ -105,7 +106,7 @@ class TokenStreamHandlers:
 	# ----------------------------------------------------------------------------
 	# create the sub-parser for the "token-check" command
 	# ----------------------------------------------------------------------------
-	@CommandAttribute("token-check", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
+	@CommandHandler("token-check", help="Check a stream of token objects.", description="Generates and checks a stream of token objects for correct double-pointers.")
 	@FilenameAttribute()
 	def HandleCheckTokenize(self: FrontEndProtocol, args):
 		self.PrintHeadline()

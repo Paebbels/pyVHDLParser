@@ -27,31 +27,32 @@
 # limitations under the License.                                                                                       #
 # ==================================================================================================================== #
 #
-from typing                           import Protocol, Callable, Dict
+from typing                             import Protocol, Callable, Dict
 
-from pyAttributes                     import Attribute
-from pyAttributes.ArgParseAttributes  import ArgumentAttribute, SwitchArgumentAttribute
+from pyTooling.Attributes               import Attribute
+from pyTooling.Attributes.ArgParse      import CommandLineArgument
+from pyTooling.Attributes.ArgParse.Flag import FlagArgument
 
-from pyVHDLParser.Token               import LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
-from pyVHDLParser.Token               import IntegerLiteralToken, WordToken, Token, WhitespaceToken, CharacterToken
-from pyVHDLParser.Token.Keywords      import KeywordToken
+from pyVHDLParser.Token                 import LinebreakToken, IndentationToken, CommentToken, StringLiteralToken
+from pyVHDLParser.Token                 import IntegerLiteralToken, WordToken, Token, WhitespaceToken, CharacterToken
+from pyVHDLParser.Token.Keywords        import KeywordToken
 
 
 class FilenameAttribute(Attribute):
 	def __call__(self, func):
-		self._AppendAttribute(func, ArgumentAttribute(metavar="filename", dest="Filename", type=str, help="The filename to parse."))
+		self._AppendAttribute(func, CommandLineArgument(metavar="filename", dest="Filename", type=str, help="The filename to parse."))
 		return func
 
 
 class WithTokensAttribute(Attribute):
 	def __call__(self, func):
-		self._AppendAttribute(func, SwitchArgumentAttribute("-T", "--with-tokens",  dest="withTokens",    help="Display tokens in between."))
+		self._AppendAttribute(func, FlagArgument("-T", "--with-tokens",  dest="withTokens",    help="Display tokens in between."))
 		return func
 
 
 class WithBlocksAttribute(Attribute):
 	def __call__(self, func):
-		self._AppendAttribute(func, SwitchArgumentAttribute("-B", "--with-blocks",  dest="withBlocks",    help="Display blocks in between."))
+		self._AppendAttribute(func, FlagArgument("-B", "--with-blocks",  dest="withBlocks",    help="Display blocks in between."))
 		return func
 
 
