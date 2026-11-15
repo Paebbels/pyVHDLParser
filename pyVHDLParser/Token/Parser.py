@@ -509,7 +509,7 @@ class Tokenizer:
 		elif tokenKind is cls.TokenKind.SingleLineComment:
 			previousToken = SingleLineCommentToken(previousToken, buffer, start, SourceCodePosition(row, column, absolute))
 			yield previousToken
-		elif tokenKind in (cls.TokenKind.OtherChars, cls.TokenKind.DelimiterChars):
+		elif tokenKind is cls.TokenKind.OtherChars or tokenKind is cls.TokenKind.DelimiterChars:
 			pass
 		else:
 			raise TokenizerException("End of document before ...", SourceCodePosition(row, column, absolute))
